@@ -1,0 +1,20 @@
+$primary: #ca164c;
+$secondary: #f9c8d7;
+$body-color: #303030;
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer * 0.75,
+  4: $spacer,
+  5: $spacer * 1.25,
+  6: $spacer * 1.5,
+  7: $spacer * 1.75,
+  8: $spacer * 2,
+  9: $spacer * 3,
+  10: $spacer * 4,
+);
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
