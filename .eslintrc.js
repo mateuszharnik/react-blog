@@ -30,6 +30,7 @@ module.exports = {
             extensions: ['.jsx', '.js'],
             alias: {
               '@client': resolve(__dirname, './src/client'),
+              '@server': resolve(__dirname, './src/server'),
             },
           },
         },
