@@ -6,4 +6,9 @@ module.exports = {
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-transform-runtime',
   ],
+  env: {
+    development: {
+      plugins: [['babel-plugin-webpack-alias', { config: './webpack/webpack.config.server.js' }]],
+    },
+  },
 };
