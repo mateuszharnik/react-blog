@@ -1,4 +1,7 @@
 const { resolve } = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = {
   root: true,

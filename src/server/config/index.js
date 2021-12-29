@@ -6,9 +6,7 @@ config();
 
 const schema = Joi.object({
   NODE_ENV: Joi.string().trim().default('development').valid('development', 'production'),
-  SERVER_PORT: Joi.string().trim().default('3000'),
-  CLIENT_PORT: Joi.string().trim().default('8080'),
-  SERVER_URL: Joi.string().trim().default('http://localhost:3000'),
+  PORT: Joi.string().trim().default('3000'),
   CLIENT_URL: Joi.string().trim().default('http://localhost:8080'),
   DB_URL: Joi.string().trim().default('mongodb://localhost/db'),
 }).unknown(true);

@@ -16,7 +16,7 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 
 module.exports = (webpackEnv, { mode }) => {
-  const env = dotenv.config().parsed;
+  dotenv.config();
 
   return {
     entry: {
@@ -128,9 +128,9 @@ module.exports = (webpackEnv, { mode }) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
-        'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
-        'process.env.SERVER_URL': JSON.stringify(env.SERVER_URL),
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
+        'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL),
       }),
       new CleanWebpackPlugin(),
       new FriendlyErrorsWebpackPlugin({
