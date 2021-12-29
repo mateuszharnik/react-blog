@@ -1,11 +1,18 @@
 import React, { memo, useState } from 'react';
+import axios from 'axios';
 import logo from '@client/assets/images/logo-dark.svg';
 
 const App = memo(() => {
   const [message, setMessage] = useState('');
 
-  const handleClick = () => {
-    setMessage('Hello World');
+  const handleClick = async () => {
+    try {
+      const { data } = await axios('/api');
+
+      setMessage(data.message);
+    } catch (error) {
+      setMessage('Wystąpił błąd.');
+    }
   };
 
   return (

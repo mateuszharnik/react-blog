@@ -3,9 +3,9 @@ import config from '@server/config';
 import app from '@server/app';
 import db from '@server/db';
 
-const { SERVER_PORT, SERVER_URL } = config;
+const { PORT } = config;
 
 db.on('open', () => {
   // eslint-disable-next-line
-  app.listen(SERVER_PORT, () => console.log(colors.blue(`App listening on ${SERVER_URL}`)));
+  app.listen(PORT, () => console.log(colors.blue(`App listening on http://localhost:${PORT}`)));
 });
