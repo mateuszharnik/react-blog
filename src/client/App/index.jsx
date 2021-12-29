@@ -1,30 +1,104 @@
-import React, { memo, useState } from 'react';
-import axios from 'axios';
-import logo from '@client/assets/images/logo-dark.svg';
+import React, { lazy, memo } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+import Main from '@client/views/Webpage/Main';
+import SuspenseComponent from '@client/components/SuspenseComponent';
 
-const App = memo(() => {
-  const [message, setMessage] = useState('');
+const Home = lazy(() => import(/* webpackChunkName: 'home' */ '@client/views/Webpage/Home'));
+const About = lazy(() => import(/* webpackChunkName: 'about' */ '@client/views/Webpage/About'));
+const Contact = lazy(() => import(/* webpackChunkName: 'contact' */ '@client/views/Webpage/Contact'));
+const FAQs = lazy(() => import(/* webpackChunkName: 'faqs' */ '@client/views/Webpage/FAQs'));
+const SignIn = lazy(() => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn'));
+const NotFound = lazy(() => import(/* webpackChunkName: 'not-found' */ '@client/views/NotFound'));
 
-  const handleClick = async () => {
-    try {
-      const { data } = await axios('/api');
-
-      setMessage(data.message);
-    } catch (error) {
-      setMessage('Wystąpił błąd.');
-    }
-  };
-
-  return (
-    <div className="container text-center mt-5">
-      <img src={logo} width="100px" height="55px" className="img-fluid" alt="Logo strony" />
-      <h2 className="mt-5 mb-10">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
-      <button type="button" className="btn btn-primary rounded-pill" title="Pokaż" onClick={handleClick}>
-        Pokaż wiadomość
-      </button>
-      {message && <p className="mt-6">{message}</p>}
-    </div>
-  );
-});
+const App = memo(() => (
+  <div>
+    <nav>
+      <ul className="nav">
+        <li className="nav-item">
+          <Link className="nav-link" to="/">
+            Strona główna
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/o-nas">
+            O nas
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/kontakt">
+            Kontakt
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/najczesciej-zadawane-pytania">
+            FAQ
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/zaloguj">
+            Logowanie
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/404">
+            404
+          </Link>
+        </li>
+      </ul>
+    </nav>
+    <Routes>
+      <Route path="/" element={<Main />}>
+        <Route
+          index
+          element={(
+            <SuspenseComponent>
+              <Home />
+            </SuspenseComponent>
+          )}
+        />
+        <Route
+          path="o-nas"
+          element={(
+            <SuspenseComponent>
+              <About />
+            </SuspenseComponent>
+          )}
+        />
+        <Route
+          path="kontakt"
+          element={(
+            <SuspenseComponent>
+              <Contact />
+            </SuspenseComponent>
+          )}
+        />
+        <Route
+          path="najczesciej-zadawane-pytania"
+          element={(
+            <SuspenseComponent>
+              <FAQs />
+            </SuspenseComponent>
+          )}
+        />
+      </Route>
+      <Route
+        path="zaloguj"
+        element={(
+          <SuspenseComponent>
+            <SignIn />
+          </SuspenseComponent>
+        )}
+      />
+      <Route
+        path="*"
+        element={(
+          <SuspenseComponent>
+            <NotFound />
+          </SuspenseComponent>
+        )}
+      />
+    </Routes>
+  </div>
+));
 
 export default App;

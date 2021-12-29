@@ -1,1 +1,17 @@
+/*** Imports ***/
+@import "./assets/scss/variables";
+
+/*** App ***/
 @import "./App/index";
+
+/*** Components ***/
+@import "./components/SuspenseComponent/index";
+
+/*** Views ***/
+@import "./views/Webpage/Main/index";
+@import "./views/Webpage/Home/index";
+@import "./views/Webpage/About/index";
+@import "./views/Webpage/Contact/index";
+@import "./views/Webpage/FAQs/index";
+@import "./views/Auth/SignIn/index";
+@import "./views/NotFound/index";
