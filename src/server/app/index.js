@@ -6,8 +6,10 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
-import { notFound, errorHandler } from '@server/middlewares/errors';
+import { serve, setup } from 'swagger-ui-express';
 import { join } from 'path';
+import swaggerDocument from '@server/docs/API.json';
+import { notFound, errorHandler } from '@server/middlewares/errors';
 
 const { NODE_ENV, CLIENT_URL } = config;
 const app = express();
@@ -26,6 +28,7 @@ if (NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '../client')));
 }
 
+app.use('/docs', serve, setup(swaggerDocument, { explorer: true }));
 app.use('/api', api);
 
 if (NODE_ENV === 'production') {
