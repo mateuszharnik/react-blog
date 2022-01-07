@@ -5,7 +5,8 @@
 @import "./App/index";
 
 /*** Components ***/
-@import "./components/SuspenseComponent/index";
+@import "./components/Spinner/index";
+@import "./components/LazyComponentError/index";
 
 /*** Views ***/
 @import "./views/Webpage/Main/index";
