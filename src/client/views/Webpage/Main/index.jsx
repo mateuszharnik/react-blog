@@ -18,7 +18,7 @@ const Main = memo(() => {
 
   return (
     <div className="container text-center mt-5">
-      <img src={logo} width="100px" height="55px" className="img-fluid" alt="Logo strony" />
+      <img src={logo} width="100" height="55" className="img-fluid" alt="Logo strony" />
       <h2 className="mt-5 mb-10">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
       <button
         type="button"
