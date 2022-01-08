@@ -1,9 +1,16 @@
-import React, { memo } from 'react';
+import React, { useEffect, memo } from 'react';
+import { setTitle } from '@client/helpers/documentMeta';
 
-const About = memo(() => (
-  <div>
-    O nas
-  </div>
-));
+const About = memo(() => {
+  useEffect(() => {
+    setTitle('O nas');
+  }, []);
+
+  return (
+    <div>
+      O nas
+    </div>
+  );
+});
 
 export default About;
