@@ -1,42 +1,42 @@
 import React, { memo } from 'react';
 import Loadable from 'react-loadable';
 import { Routes, Route } from 'react-router-dom';
-import LazyComponentError from '@client/components/LazyComponentError';
-import Spinner from '@client/components/Spinner';
+import LazyComponentError from '@client/components/LazyComponent/LazyComponentError';
+import LazyComponentSpinner from '@client/components/LazyComponent/LazyComponentSpinner';
 
 const Main = Loadable({
   loader: () => import(/* webpackChunkName: 'main' */ '@client/views/Webpage/Main'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const SignIn = Loadable({
   loader: () => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const NotFound = Loadable({
   loader: () => import(/* webpackChunkName: 'not-found' */ '@client/views/NotFound'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const Home = Loadable({
   loader: () => import(/* webpackChunkName: 'home' */ '@client/views/Webpage/Home'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const About = Loadable({
   loader: () => import(/* webpackChunkName: 'about' */ '@client/views/Webpage/About'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const Contact = Loadable({
   loader: () => import(/* webpackChunkName: 'contact' */ '@client/views/Webpage/Contact'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const FAQs = Loadable({
   loader: () => import(/* webpackChunkName: 'faqs' */ '@client/views/Webpage/FAQs'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <Spinner />),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
 const Router = memo(() => (

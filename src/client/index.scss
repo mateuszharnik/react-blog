@@ -1,12 +1,16 @@
 /*** Imports ***/
 @import "./assets/scss/variables";
+@import "./assets/scss/helpers";
 
 /*** App ***/
 @import "./App/index";
 
 /*** Components ***/
 @import "./components/Spinner/index";
-@import "./components/LazyComponentError/index";
+@import "./components/MaxViewHeight/index";
+@import "./components/LazyComponent/LazyComponentError/index";
+@import "./components/LazyComponent/LazyComponentSpinner/index";
+@import "./components/LazyComponent/LazyComponentWrapper/index";
 
 /*** Views ***/
 @import "./views/Webpage/Main/index";
