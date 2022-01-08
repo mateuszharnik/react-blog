@@ -1,9 +1,16 @@
-import React, { memo } from 'react';
+import React, { useEffect, memo } from 'react';
+import { setTitle } from '@client/helpers/documentMeta';
 
-const SignIn = memo(() => (
-  <div>
-    Zaloguj się
-  </div>
-));
+const SignIn = memo(() => {
+  useEffect(() => {
+    setTitle('Zaloguj się');
+  }, []);
+
+  return (
+    <div>
+      Zaloguj się
+    </div>
+  );
+});
 
 export default SignIn;
