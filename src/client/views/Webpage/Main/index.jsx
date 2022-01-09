@@ -1,6 +1,5 @@
 import React, { memo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import axios from 'axios';
 import logo from '@client/assets/images/logo-dark.svg';
 
 const Main = memo(() => {
@@ -8,6 +7,8 @@ const Main = memo(() => {
 
   const handleClick = async () => {
     try {
+      const { default: axios } = await import(/* webpackChunkName: 'axios' */ 'axios');
+
       const { data } = await axios('/api');
 
       setMessage(data.message);
