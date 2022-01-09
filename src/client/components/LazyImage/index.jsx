@@ -1,5 +1,5 @@
 import React, { useState, useMemo, memo } from 'react';
-import PropTypes from 'prop-types';
+import { string, number } from 'prop-types';
 import lazySizes from 'lazysizes';
 import Spinner from '@client/components/Spinner';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
@@ -44,13 +44,13 @@ const LazyImage = memo(
 );
 
 LazyImage.propTypes = {
-  src: PropTypes.string.isRequired,
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  alt: PropTypes.string,
-  divClassName: PropTypes.string,
-  imgClassName: PropTypes.string,
-  spinnerClassName: PropTypes.string,
+  src: string.isRequired,
+  height: number.isRequired,
+  width: number.isRequired,
+  alt: string,
+  divClassName: string,
+  imgClassName: string,
+  spinnerClassName: string,
 };
 
 LazyImage.defaultProps = {

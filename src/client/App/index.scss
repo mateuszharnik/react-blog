@@ -1,2 +1,7 @@
 /*** Imports ***/
 @import "../assets/scss/variables";
+
+::selection {
+  background-color: $primary;
+  color: $white;
+}

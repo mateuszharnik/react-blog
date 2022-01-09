@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+import { oneOfType, arrayOf, node } from 'prop-types';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 
 const LazyComponentWrapper = memo(({ children }) => (
@@ -11,7 +11,7 @@ const LazyComponentWrapper = memo(({ children }) => (
 ));
 
 LazyComponentWrapper.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
+  children: oneOfType([arrayOf(node), node]).isRequired,
 };
 
 export default LazyComponentWrapper;

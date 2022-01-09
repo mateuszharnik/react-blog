@@ -1,11 +1,15 @@
 import React, {
-  useEffect, useState, useCallback, memo,
+  useEffect, useState, useMemo, useCallback, memo,
 } from 'react';
-import PropTypes from 'prop-types';
+import {
+  oneOfType, arrayOf, node, string, number,
+} from 'prop-types';
 import getWindowInnerHeight from '@client/helpers/getWindowInnerHeight';
 
 const MaxViewHeight = memo(({ children, offsetHeight, classList }) => {
   const [height, setHeight] = useState(getWindowInnerHeight(offsetHeight));
+
+  const className = useMemo(() => `max-vh-100 ${classList}`.trim(), [classList]);
 
   const setHeightOnResize = useCallback(() => {
     const innerHeight = getWindowInnerHeight(offsetHeight);
@@ -22,16 +26,16 @@ const MaxViewHeight = memo(({ children, offsetHeight, classList }) => {
   }, [setHeightOnResize]);
 
   return (
-    <div className={classList} style={{ height: `${height}px` }}>
+    <div className={className} style={{ height: `${height}px` }}>
       {children}
     </div>
   );
 });
 
 MaxViewHeight.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
-  offsetHeight: PropTypes.number,
-  classList: PropTypes.string,
+  children: oneOfType([arrayOf(node), node]).isRequired,
+  offsetHeight: number,
+  classList: string,
 };
 
 MaxViewHeight.defaultProps = {
