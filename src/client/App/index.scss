@@ -5,3 +5,18 @@
   background-color: $primary;
   color: $white;
 }
+
+a {
+  text-decoration: none;
+  transition: background-color 0.15s ease-in-out;
+
+  &:focus {
+    background-color: fade-out($secondary, 0.3);
+    outline: none;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
