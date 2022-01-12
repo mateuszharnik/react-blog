@@ -9,40 +9,39 @@ import notFoundImage from '@client/assets/images/undraw_page_not_found_su7k 1.sv
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
-  const intervalRef = useRef();
+  const intervalRef = useRef(null);
   const navigate = useNavigate();
 
-  const handleClick = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      clearInterval(intervalRef.current);
-      navigate('/');
-    },
-    [intervalRef],
-  );
-
-  const counting = useCallback(() => {
-    let time = seconds;
-
-    return () => {
-      if (time <= 0) {
-        clearInterval(intervalRef.current);
-        navigate('/');
-      } else {
-        setSeconds((state) => state - 1);
-        time -= 1;
-      }
-    };
+  const startInterval = useCallback((callback) => {
+    intervalRef.current = setInterval(callback, 1000);
   }, [intervalRef]);
 
+  const stopInterval = useCallback(() => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }, [intervalRef]);
+
+  const handleClick = useCallback((e) => {
+    e.preventDefault();
+
+    stopInterval();
+    navigate('/');
+  }, [stopInterval]);
+
+  const counting = useCallback(() => {
+    if (seconds <= 0) {
+      stopInterval();
+      navigate('/');
+    } else {
+      setSeconds((state) => state - 1);
+    }
+  }, [stopInterval, seconds]);
+
   useEffect(() => {
-    const callback = counting();
+    startInterval(counting);
 
-    intervalRef.current = setInterval(callback, 1000);
-  }, [intervalRef, counting]);
-
-  useEffect(() => () => clearInterval(intervalRef.current), [intervalRef]);
+    return () => stopInterval();
+  }, [counting, startInterval, stopInterval]);
 
   useEffect(() => {
     setTitle('404');
