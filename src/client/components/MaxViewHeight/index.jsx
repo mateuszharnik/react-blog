@@ -14,8 +14,10 @@ const MaxViewHeight = memo(({ children, offsetHeight, classList }) => {
   const setHeightOnResize = useCallback(() => {
     const innerHeight = getWindowInnerHeight(offsetHeight);
 
-    setHeight(innerHeight);
-  }, [offsetHeight]);
+    if (innerHeight !== height) {
+      setHeight(innerHeight);
+    }
+  }, [offsetHeight, height]);
 
   useEffect(() => {
     window.addEventListener('resize', setHeightOnResize);

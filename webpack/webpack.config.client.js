@@ -1,4 +1,5 @@
 const { join, resolve } = require('path');
+const colors = require('colors/safe');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
@@ -135,7 +136,7 @@ module.exports = (webpackEnv, { mode }) => {
       new CleanWebpackPlugin(),
       new FriendlyErrorsWebpackPlugin({
         compilationSuccessInfo: {
-          messages: [`Your application is running here http://localhost:${process.env.CLIENT_PORT}`],
+          messages: [`Your application is running here ${colors.red(`http://localhost:${process.env.CLIENT_PORT}`)}`],
         },
         clearConsole: true,
       }),
