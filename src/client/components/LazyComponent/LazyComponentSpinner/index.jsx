@@ -11,4 +11,6 @@ const LazyComponentSpinner = memo(() => (
   </LazyComponentWrapper>
 ));
 
+LazyComponentSpinner.displayName = 'LazyComponentSpinner';
+
 export default LazyComponentSpinner;

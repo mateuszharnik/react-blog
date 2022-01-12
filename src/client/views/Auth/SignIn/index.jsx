@@ -13,4 +13,6 @@ const SignIn = memo(() => {
   );
 });
 
+SignIn.displayName = 'SignIn';
+
 export default SignIn;

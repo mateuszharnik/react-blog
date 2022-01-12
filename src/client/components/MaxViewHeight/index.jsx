@@ -32,6 +32,8 @@ const MaxViewHeight = memo(({ children, offsetHeight, classList }) => {
   );
 });
 
+MaxViewHeight.displayName = 'MaxViewHeight';
+
 MaxViewHeight.propTypes = {
   children: oneOfType([arrayOf(node), node]).isRequired,
   offsetHeight: number,

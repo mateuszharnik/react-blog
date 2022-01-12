@@ -13,4 +13,6 @@ const FAQs = memo(() => {
   );
 });
 
+FAQs.displayName = 'FAQs';
+
 export default FAQs;

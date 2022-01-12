@@ -13,4 +13,6 @@ const About = memo(() => {
   );
 });
 
+About.displayName = 'About';
+
 export default About;

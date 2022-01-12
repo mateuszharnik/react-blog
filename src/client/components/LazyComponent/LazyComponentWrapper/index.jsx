@@ -10,6 +10,8 @@ const LazyComponentWrapper = memo(({ children }) => (
   </MaxViewHeight>
 ));
 
+LazyComponentWrapper.displayName = 'LazyComponentWrapper';
+
 LazyComponentWrapper.propTypes = {
   children: oneOfType([arrayOf(node), node]).isRequired,
 };
