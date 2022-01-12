@@ -73,4 +73,6 @@ const Main = memo(() => {
   );
 });
 
+Main.displayName = 'Main';
+
 export default Main;

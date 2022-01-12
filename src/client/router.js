@@ -52,4 +52,6 @@ const Router = memo(() => (
   </Routes>
 ));
 
+Router.displayName = 'Router';
+
 export default Router;

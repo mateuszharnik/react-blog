@@ -47,4 +47,6 @@ const LazyComponentError = memo(() => {
   );
 });
 
+LazyComponentError.displayName = 'LazyComponentError';
+
 export default LazyComponentError;

@@ -8,4 +8,6 @@ const Spinner = memo(() => (
   </div>
 ));
 
+Spinner.displayName = 'Spinner';
+
 export default Spinner;

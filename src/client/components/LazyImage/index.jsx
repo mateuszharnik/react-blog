@@ -43,6 +43,8 @@ const LazyImage = memo(
   },
 );
 
+LazyImage.displayName = 'LazyImage';
+
 LazyImage.propTypes = {
   src: string.isRequired,
   height: number.isRequired,
