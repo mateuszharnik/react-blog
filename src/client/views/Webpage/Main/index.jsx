@@ -1,9 +1,11 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import SkipNavLink from '@client/components/SkipNavLink';
 import logo from '@client/assets/images/logo-dark.svg';
 
 const Main = memo(() => {
   const [message, setMessage] = useState('');
+  const mainRef = useRef(null);
 
   const handleClick = async () => {
     try {
@@ -19,6 +21,7 @@ const Main = memo(() => {
 
   return (
     <>
+      <SkipNavLink target={mainRef} />
       <nav>
         <ul className="nav">
           <li className="nav-item">
@@ -53,7 +56,7 @@ const Main = memo(() => {
           </li>
         </ul>
       </nav>
-      <div className="container text-center mt-5">
+      <main id="tresc" ref={mainRef} className="app-main container text-center mt-5">
         <img src={logo} width="100" height="55" className="img-fluid" alt="Logo strony" />
         <h2 className="mt-5 mb-10">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
         <button
@@ -68,7 +71,7 @@ const Main = memo(() => {
         <div className="mt-4">
           <Outlet />
         </div>
-      </div>
+      </main>
     </>
   );
 });
