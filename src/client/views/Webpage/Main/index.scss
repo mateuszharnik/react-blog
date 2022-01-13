@@ -1,2 +1,8 @@
 /*** Imports ***/
 @import "../../../assets/scss/variables";
+
+.app-main {
+  &:focus-visible {
+    outline: none;
+  }
+}
