@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useState, useRef, memo,
+  useCallback, useEffect, useState, memo,
 } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import MaxViewHeight from '@client/components/MaxViewHeight';
@@ -9,39 +9,22 @@ import notFoundImage from '@client/assets/images/undraw_page_not_found_su7k 1.sv
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
-  const intervalRef = useRef(null);
   const navigate = useNavigate();
-
-  const startInterval = useCallback((callback) => {
-    intervalRef.current = setInterval(callback, 1000);
-  }, [intervalRef]);
-
-  const stopInterval = useCallback(() => {
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-  }, [intervalRef]);
 
   const handleClick = useCallback((e) => {
     e.preventDefault();
 
-    stopInterval();
     navigate('/');
-  }, [stopInterval]);
-
-  const counting = useCallback(() => {
-    if (seconds <= 0) {
-      stopInterval();
-      navigate('/');
-    } else {
-      setSeconds((state) => state - 1);
-    }
-  }, [stopInterval, seconds]);
+  }, []);
 
   useEffect(() => {
-    startInterval(counting);
+    const interval = setInterval(
+      () => (seconds <= 0 ? navigate('/') : setSeconds((state) => state - 1)),
+      1000,
+    );
 
-    return () => stopInterval();
-  }, [counting, startInterval, stopInterval]);
+    return () => clearInterval(interval);
+  }, [seconds]);
 
   useEffect(() => {
     setTitle('404');
@@ -54,7 +37,7 @@ const NotFound = memo(() => {
           <LazyImage
             src={notFoundImage}
             alt="Napis 404"
-            divClassName="mb-6 px-2"
+            divClassName="mb-4 px-2"
             imgClassName="img-fluid"
             height={477}
             width={1075}

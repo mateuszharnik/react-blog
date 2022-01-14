@@ -11,7 +11,7 @@ const SkipNavLink = memo(({ target }) => {
     if (!target?.current) return;
 
     try {
-      const { default: jump } = await import('jump.js');
+      const { default: jump } = await import(/* webpackChunkName: 'jump' */ 'jump.js');
 
       jump(target.current, { a11y: true, duration: 0 });
       // eslint-disable-next-line no-empty
