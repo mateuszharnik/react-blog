@@ -56,9 +56,9 @@ const Main = memo(() => {
           </li>
         </ul>
       </nav>
-      <main id="tresc" ref={mainRef} className="app-main container text-center mt-5">
+      <main id="tresc" ref={mainRef} className="app-main container text-center mt-3">
         <img src={logo} width="100" height="55" className="img-fluid" alt="Logo strony" />
-        <h2 className="mt-5 mb-10">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
+        <h2 className="mt-3 mb-5">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
         <button
           type="button"
           className="btn btn-primary rounded-pill"
@@ -67,8 +67,8 @@ const Main = memo(() => {
         >
           Pokaż wiadomość
         </button>
-        {message && <p className="mt-5">{message}</p>}
-        <div className="mt-4">
+        {message && <p className="mt-3">{message}</p>}
+        <div className="mt-3">
           <Outlet />
         </div>
       </main>

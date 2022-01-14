@@ -20,12 +20,12 @@ const LazyComponentError = memo(() => {
         <LazyImage
           src={bugImage}
           alt="Błąd na stronie"
-          divClassName="mb-6 px-2"
+          divClassName="mb-4 px-2"
           imgClassName="img-fluid"
           height={283}
           width={400}
         />
-        <strong className="d-block mb-4">
+        <strong className="d-block mb-3">
           <div>Nie udało się załadować tej strony.</div>
         </strong>
         <button
