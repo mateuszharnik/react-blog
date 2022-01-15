@@ -1,5 +1,5 @@
 import React, {
-  memo, useCallback, useRef, useEffect,
+  memo, useCallback, useRef, useEffect, useMemo,
 } from 'react';
 import Loadable from 'react-loadable';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -14,7 +14,7 @@ const NavImageLink = Loadable({
 });
 
 const timeout = 300;
-const user = false;
+const user = true;
 const gender = 'female';
 
 const Nav = memo(() => {
@@ -23,6 +23,16 @@ const Nav = memo(() => {
   const { isOpen } = useStoreState((store) => store.nav);
   const { isDesktop } = useStoreState((store) => store.matchMedia);
   const { toggleNav, closeNav } = useStoreActions((actions) => actions.nav);
+
+  const navItemClassName = useMemo(
+    () => `nav__item text-center mb-3 mb-lg-0 ${user ? '' : 'nav__link-image-wrapper'}`.trim(),
+    [user],
+  );
+
+  const divClassName = useMemo(
+    () => `d-flex align-items-center justify-content-${user ? 'between' : 'end'}`.trim(),
+    [user],
+  );
 
   const handleCloseNavOnBlur = useCallback((e) => {
     if (!e?.relatedTarget || isDesktop) return;
@@ -57,8 +67,13 @@ const Nav = memo(() => {
   return (
     <nav className="nav">
       <h2 className="visually-hidden">Nawigacja</h2>
-      {!isDesktop && (
-        <Hamburger ref={openNavButtonRef} title="Otwórz menu" onClick={handleOpenNav} />
+      {!isDesktop && !isOpen && (
+        <Hamburger
+          ref={openNavButtonRef}
+          title="Otwórz menu"
+          onClick={handleOpenNav}
+          isExpanded={isOpen}
+        />
       )}
       <TransitionGroup component={null}>
         <CSSTransition
@@ -70,9 +85,10 @@ const Nav = memo(() => {
             <div className="nav__list-wrapper">
               <MaxViewHeight className="nav__list-container">
                 {!isDesktop && (
-                  <div className={`d-flex align-items-center${user ? ' justify-content-between' : ' justify-content-end'}`}>
+                  <div className={divClassName}>
                     <Hamburger
                       attr
+                      isExpanded={isOpen}
                       ref={closeNavButtonRef}
                       title="Zamknij menu"
                       className="open order-1 order-lg-0"
@@ -80,13 +96,13 @@ const Nav = memo(() => {
                       onBlur={handleCloseNavOnBlur}
                     />
                     {user && (
-                    <div className="order-0 order-lg-1">
-                      <NavImageLink
-                        className="d-block p-1"
-                        onBlur={handleCloseNavOnBlur}
-                        gender={gender}
-                      />
-                    </div>
+                      <div className="order-0 order-lg-1">
+                        <NavImageLink
+                          className="d-block p-1"
+                          onBlur={handleCloseNavOnBlur}
+                          gender={gender}
+                        />
+                      </div>
                     )}
                   </div>
                 )}
@@ -122,10 +138,10 @@ const Nav = memo(() => {
                       title="Zobacz najczęściej zadawane pytania"
                       onBlur={handleCloseNavOnBlur}
                     >
-                      FAQs
+                      FAQ
                     </NavLink>
                   </li>
-                  <li className={`nav__item text-center mb-3 mb-lg-0${user ? '' : ' nav__link-image-wrapper'}`}>
+                  <li className={navItemClassName}>
                     <NavLink to="/kontakt" title="Skontaktuj się" onBlur={handleCloseNavOnBlur}>
                       Kontakt
                     </NavLink>
