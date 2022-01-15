@@ -1,8 +1,10 @@
 import { createStore } from 'easy-peasy';
 import app from './app.store';
+import nav from './nav.store';
 
 const model = {
   app,
+  nav,
 };
 
 const store = createStore(

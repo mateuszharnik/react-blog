@@ -1,5 +1,8 @@
-import React, { memo, useState, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, {
+  memo, useState, useRef, useEffect,
+} from 'react';
+import { useStoreActions } from 'easy-peasy';
+import { Outlet, useLocation } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import Header from '@client/components/NavBar/Header';
 import logo from '@client/assets/images/logo-dark.svg';
@@ -12,6 +15,8 @@ const SkipNavLink = Loadable({
 const Main = memo(() => {
   const [message, setMessage] = useState('');
   const mainRef = useRef(null);
+  const { pathname } = useLocation();
+  const { closeNav } = useStoreActions((actions) => actions.nav);
 
   const handleClick = async () => {
     try {
@@ -24,6 +29,8 @@ const Main = memo(() => {
       setMessage('Wystąpił błąd.');
     }
   };
+
+  useEffect(() => () => closeNav(), [pathname]);
 
   return (
     <>
