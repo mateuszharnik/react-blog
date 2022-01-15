@@ -1,0 +1,6 @@
+/*** Imports ***/
+@import "../../assets/scss/variables";
+
+.logo {
+  @include toRem(height, 34);
+}

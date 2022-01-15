@@ -1,0 +1,23 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+
+.nav {
+  &__link {
+    &-image {
+      @include toRem(width, 36);
+      @include toRem(height, 36);
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      svg {
+        max-width: 100%;
+      }
+
+      @include media-breakpoint-up(lg) {
+        @include toRem(width, 31);
+        @include toRem(height, 31);
+      }
+    }
+  }
+}

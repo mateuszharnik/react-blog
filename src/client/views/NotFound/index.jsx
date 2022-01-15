@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import LazyImage from '@client/components/LazyImage';
 import { setTitle } from '@client/helpers/documentMeta';
-import notFoundImage from '@client/assets/images/undraw_page_not_found_su7k 1.svg';
+import notFound from '@client/assets/images/undraw_page_not_found_su7k 1.svg';
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
@@ -31,11 +31,11 @@ const NotFound = memo(() => {
   }, []);
 
   return (
-    <MaxViewHeight classList="position-relative bg-white">
+    <MaxViewHeight classNames="position-relative bg-white">
       <div className="w-100 position-center">
         <div className="not-found m-auto">
           <LazyImage
-            src={notFoundImage}
+            src={notFound}
             alt="Napis 404"
             divClassName="mb-4 px-2"
             imgClassName="img-fluid"

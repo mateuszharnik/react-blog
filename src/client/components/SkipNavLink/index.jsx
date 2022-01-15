@@ -21,7 +21,7 @@ const SkipNavLink = memo(({ target }) => {
   return createPortal(
     <a
       href="#tresc"
-      className="skip-nav-link"
+      className="skip-nav-link px-3 py-2"
       title="Przejdź do głównej treści"
       onClick={handleScroll}
     >

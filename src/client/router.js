@@ -43,7 +43,7 @@ const Router = memo(() => (
   <Routes>
     <Route path="/" element={<Main />}>
       <Route index element={<Home />} />
-      <Route path="o-nas" element={<About />} />
+      <Route path="o-blogu" element={<About />} />
       <Route path="kontakt" element={<Contact />} />
       <Route path="najczesciej-zadawane-pytania" element={<FAQs />} />
     </Route>

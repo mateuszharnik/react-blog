@@ -6,9 +6,15 @@
 @import "./App/index";
 
 /*** Components ***/
+@import "./components/Logo/index";
 @import "./components/Spinner/index";
 @import "./components/MaxViewHeight/index";
 @import "./components/LazyImage/index";
+@import "./components/NavBar/Header/index";
+@import "./components/NavBar/Nav/index";
+@import "./components/NavBar/Hamburger/index";
+@import "./components/NavBar/NavLink/index";
+@import "./components/NavBar/NavImageLink/index";
 @import "./components/SkipNavLink/index";
 @import "./components/LazyComponent/LazyComponentError/index";
 @import "./components/LazyComponent/LazyComponentSpinner/index";
@@ -22,3 +28,6 @@
 @import "./views/Webpage/FAQs/index";
 @import "./views/Auth/SignIn/index";
 @import "./views/NotFound/index";
+
+/*** Animations ***/
+@import "./assets/scss/animations";

@@ -3,16 +3,19 @@
 
 .skip-nav-link {
   background-color: $primary;
-  border-radius: 8px;
   color: $white;
-  left: -99999px;
-  padding: 10px 20px;
   position: absolute;
-  top: -99999px;
+  text-align: center;
+  @include toRem(border-radius, 8);
+  @include toRem(left, -99999);
+  @include toRem(top, -99999);
+  @include toRem(width, 180);
 
   &:focus {
-    left: 10px;
-    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    @include toRem(top, 10);
   }
 
   &:focus-visible {
