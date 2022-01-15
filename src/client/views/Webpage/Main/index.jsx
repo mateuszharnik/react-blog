@@ -30,7 +30,7 @@ const Main = memo(() => {
     }
   };
 
-  useEffect(() => () => closeNav(), [pathname]);
+  useEffect(() => () => closeNav(), [pathname, closeNav]);
 
   return (
     <>

@@ -10,11 +10,11 @@ const nav = {
 
       setTimeout(() => {
         actions.setDisabled();
-      }, 300);
+      }, 350);
     }
   }),
   closeNav: action((state) => {
-    state.isOpen = false;
+    if (state.isOpen) state.isOpen = false;
   }),
   toggleState: action((state, payload) => {
     state.isDisabled = true;
@@ -26,7 +26,7 @@ const nav = {
     }
   }),
   setDisabled: action((state) => {
-    state.isDisabled = false;
+    if (state.isDisabled) state.isDisabled = false;
   }),
 };
 

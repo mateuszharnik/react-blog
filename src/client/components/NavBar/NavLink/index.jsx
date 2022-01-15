@@ -5,13 +5,13 @@ import {
 } from 'prop-types';
 
 const NavLink = memo(({
-  handleBlur, to, title, children,
+  onBlur, to, title, children,
 }) => (
   <Link
     to={to}
     title={title}
     className={({ isActive }) => (isActive ? 'nav__link mx-auto active' : 'nav__link mx-auto')}
-    onBlur={handleBlur}
+    onBlur={onBlur}
     data-nav
   >
     {({ isActive }) => (
@@ -29,11 +29,11 @@ NavLink.propTypes = {
   children: oneOfType([arrayOf(node), node]).isRequired,
   title: string.isRequired,
   to: string.isRequired,
-  handleBlur: func,
+  onBlur: func,
 };
 
 NavLink.defaultProps = {
-  handleBlur: () => {},
+  onBlur: () => {},
 };
 
 export default NavLink;

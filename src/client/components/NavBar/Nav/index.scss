@@ -54,7 +54,13 @@
 
     @include media-breakpoint-up(lg) {
       padding: 0;
-      @include toRem(margin-right, 20);
+      @include toRem(margin-left, 20);
     }
+  }
+}
+
+.nav__link-image-wrapper {
+  @include media-breakpoint-up(lg) {
+    @include toRem(margin-right, 20);
   }
 }
