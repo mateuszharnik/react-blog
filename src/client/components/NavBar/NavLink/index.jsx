@@ -7,22 +7,20 @@ import {
 const NavLink = memo(({
   handleBlur, to, title, children,
 }) => (
-  <li className="nav__item text-center mb-3">
-    <Link
-      to={to}
-      title={title}
-      className={({ isActive }) => (isActive ? 'nav__link mx-auto active' : 'nav__link mx-auto')}
-      onBlur={handleBlur}
-      data-nav
-    >
-      {({ isActive }) => (
-        <>
-          {children}
-          {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
-        </>
-      )}
-    </Link>
-  </li>
+  <Link
+    to={to}
+    title={title}
+    className={({ isActive }) => (isActive ? 'nav__link mx-auto active' : 'nav__link mx-auto')}
+    onBlur={handleBlur}
+    data-nav
+  >
+    {({ isActive }) => (
+      <>
+        {children}
+        {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
+      </>
+    )}
+  </Link>
 ));
 
 NavLink.displayName = 'NavLink';

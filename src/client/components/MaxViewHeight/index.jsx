@@ -6,10 +6,10 @@ import {
 } from 'prop-types';
 import getWindowInnerHeight from '@client/helpers/getWindowInnerHeight';
 
-const MaxViewHeight = memo(({ children, offsetHeight, classList }) => {
+const MaxViewHeight = memo(({ children, offsetHeight, classNames }) => {
   const [height, setHeight] = useState(getWindowInnerHeight(offsetHeight));
 
-  const className = useMemo(() => `max-vh-100 ${classList}`.trim(), [classList]);
+  const className = useMemo(() => `max-vh-100 ${classNames}`.trim(), [classNames]);
 
   const setHeightOnResize = useCallback(() => {
     const innerHeight = getWindowInnerHeight(offsetHeight);
@@ -39,12 +39,12 @@ MaxViewHeight.displayName = 'MaxViewHeight';
 MaxViewHeight.propTypes = {
   children: oneOfType([arrayOf(node), node]).isRequired,
   offsetHeight: number,
-  classList: string,
+  classNames: string,
 };
 
 MaxViewHeight.defaultProps = {
   offsetHeight: 0,
-  classList: '',
+  classNames: '',
 };
 
 export default MaxViewHeight;

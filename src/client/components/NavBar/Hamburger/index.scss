@@ -11,13 +11,17 @@
   @include toRem(height, 44);
   @include toRem(width, 44);
 
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+
   &:hover {
     .hamburger__bar {
-      background-color: $gray-400;
+      background-color: #bcbcbc;
 
       &::after,
       &::before {
-        background-color: $gray-400;
+        background-color: #bcbcbc;
       }
     }
   }
@@ -65,7 +69,7 @@
 
       &::before,
       &::after {
-        background-color: $gray-400;
+        background-color: #bcbcbc;
         top: 0;
         transform: rotate(45deg);
       }

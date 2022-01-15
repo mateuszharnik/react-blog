@@ -3,9 +3,9 @@ import { func, string, bool } from 'prop-types';
 
 const Hamburger = memo(
   forwardRef(({
-    handleBlur, handleClick, title, classList, attr,
+    handleBlur, handleClick, title, classNames, attr,
   }, ref) => {
-    const className = useMemo(() => `hamburger p-1 ${classList}`.trim());
+    const className = useMemo(() => `hamburger p-1 ${classNames}`.trim());
 
     return (
       <button
@@ -32,13 +32,13 @@ Hamburger.propTypes = {
   title: string.isRequired,
   handleClick: func.isRequired,
   handleBlur: func,
-  classList: string,
+  classNames: string,
   attr: bool,
 };
 
 Hamburger.defaultProps = {
   handleBlur: () => {},
-  classList: '',
+  classNames: '',
   attr: false,
 };
 

@@ -4,12 +4,14 @@ import Nav from '@client/components/NavBar/Nav';
 import Logo from '@client/components/Logo';
 
 const Header = memo(() => (
-  <header className="header">
-    <Link to="/" className="header__logo" title="Strona główna">
-      <Logo />
-    </Link>
-    <Nav />
-  </header>
+  <div className="header__container">
+    <header className="header mx-auto">
+      <Link to="/" className="header__logo" title="Strona główna">
+        <Logo />
+      </Link>
+      <Nav />
+    </header>
+  </div>
 ));
 
 Header.displayName = 'Header';
