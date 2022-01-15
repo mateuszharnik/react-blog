@@ -1,7 +1,13 @@
 import React, { memo, useState, useRef } from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import SkipNavLink from '@client/components/SkipNavLink';
+import { Outlet } from 'react-router-dom';
+import Loadable from 'react-loadable';
+import Header from '@client/components/NavBar/Header';
 import logo from '@client/assets/images/logo-dark.svg';
+
+const SkipNavLink = Loadable({
+  loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
+  loading: () => null,
+});
 
 const Main = memo(() => {
   const [message, setMessage] = useState('');
@@ -22,41 +28,8 @@ const Main = memo(() => {
   return (
     <>
       <SkipNavLink target={mainRef} />
-      <nav>
-        <ul className="nav">
-          <li className="nav-item">
-            <Link className="nav-link" to="/">
-              Strona główna
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/o-nas">
-              O nas
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/kontakt">
-              Kontakt
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/najczesciej-zadawane-pytania">
-              FAQ
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/zaloguj">
-              Logowanie
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/404">
-              404
-            </Link>
-          </li>
-        </ul>
-      </nav>
-      <main id="tresc" ref={mainRef} className="app-main container text-center mt-3">
+      <Header />
+      <main id="tresc" ref={mainRef} className="main container text-center mt-3">
         <img src={logo} width="100" height="55" className="img-fluid" alt="Logo strony" />
         <h2 className="mt-3 mb-5">Naciśnij przycisk, żeby wyświetlić wiadomość.</h2>
         <button

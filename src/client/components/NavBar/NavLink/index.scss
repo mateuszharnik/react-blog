@@ -1,0 +1,31 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+
+.nav {
+  &__item {
+    padding: 0 0.625rem;
+  }
+
+  &__link {
+    color: $gray-400;
+    display: block;
+    padding: 0.9375rem 0;
+    text-transform: uppercase;
+    width: 100%;
+    @include toRem(font-size, 18);
+    @include toRem(max-width, 400);
+
+    &:hover {
+      color: $white;
+      text-decoration: none;
+    }
+
+    &.active {
+      color: $primary;
+
+      &:hover {
+        color: $link-hover-color;
+      }
+    }
+  }
+}
