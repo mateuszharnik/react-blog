@@ -3,14 +3,15 @@ import { func, string, bool } from 'prop-types';
 
 const Hamburger = memo(
   forwardRef(({
-    onBlur, onClick, title, className, attr,
+    onBlur, onClick, title, className, attr, isExpanded,
   }, ref) => {
-    const classNames = useMemo(() => `hamburger p-1 ${className}`.trim());
+    const classNames = useMemo(() => `hamburger p-1 ${className}`.trim(), [className]);
 
     return (
       <button
         aria-controls="nav"
         aria-label={title}
+        aria-expanded={isExpanded}
         ref={ref}
         data-nav={attr || null}
         type="button"
@@ -31,6 +32,7 @@ Hamburger.displayName = 'Hamburger';
 Hamburger.propTypes = {
   title: string.isRequired,
   onClick: func.isRequired,
+  isExpanded: bool.isRequired,
   onBlur: func,
   className: string,
   attr: bool,
