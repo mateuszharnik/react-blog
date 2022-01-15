@@ -6,7 +6,7 @@ import female from '@client/assets/images/undraw_female_avatar_w3jk 1.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b 1.svg';
 
 const NavImageLink = memo(({
-  handleBlur, to, title, src, gender, classNames,
+  onBlur, to, title, src, gender, className,
 }) => {
   const image = useMemo(() => {
     if (src) return src;
@@ -15,15 +15,17 @@ const NavImageLink = memo(({
   }, [src, gender]);
 
   return (
-    <Link className={classNames} to={to} title={title} onBlur={handleBlur} data-nav>
-      <LazyImage
-        divClassName="nav__link-image"
-        width={36}
-        height={36}
-        alt="Zdjęcie użytkownika"
-        src={image}
-      />
-    </Link>
+    <div className="nav__link-image-wrapper">
+      <Link className={className} to={to} title={title} onBlur={onBlur} data-nav>
+        <LazyImage
+          divClassName="nav__link-image"
+          width={36}
+          height={36}
+          alt="Zdjęcie użytkownika"
+          src={image}
+        />
+      </Link>
+    </div>
   );
 });
 
@@ -31,15 +33,15 @@ NavImageLink.displayName = 'NavImageLink';
 
 NavImageLink.propTypes = {
   gender: string.isRequired,
-  classNames: string.isRequired,
+  className: string.isRequired,
   src: string,
   title: string,
   to: string,
-  handleBlur: func,
+  onBlur: func,
 };
 
 NavImageLink.defaultProps = {
-  handleBlur: () => {},
+  onBlur: () => {},
   title: 'Przejdź do panelu administratora',
   to: '/admin',
   src: '',

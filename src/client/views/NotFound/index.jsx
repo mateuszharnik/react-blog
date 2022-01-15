@@ -31,7 +31,7 @@ const NotFound = memo(() => {
   }, []);
 
   return (
-    <MaxViewHeight classNames="position-relative bg-white">
+    <MaxViewHeight className="position-relative bg-white">
       <div className="w-100 position-center">
         <div className="not-found m-auto">
           <LazyImage
