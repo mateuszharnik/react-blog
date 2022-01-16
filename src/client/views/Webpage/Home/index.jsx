@@ -1,9 +1,10 @@
 import React, { useEffect, memo } from 'react';
-import { setTitle } from '@client/helpers/documentMeta';
+import { setTitle, setMeta } from '@client/helpers/documentMeta';
 
 const Home = memo(() => {
   useEffect(() => {
-    setTitle('Strona główna');
+    setTitle('Mateusz Harnik | Blog o kodowaniu');
+    setMeta();
   }, []);
 
   return (

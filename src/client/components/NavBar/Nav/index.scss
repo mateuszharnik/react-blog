@@ -29,13 +29,20 @@
       position: fixed;
       right: -100%;
       top: 0;
+      transition: right 0.3s ease-in-out;
       width: 100%;
       z-index: 1;
+
+      &.open {
+        right: 0%;
+        transition: right 0.3s ease-in-out;
+      }
 
       @include media-breakpoint-up(lg) {
         position: initial;
         right: initial;
         top: initial;
+        transition: none;
       }
     }
 

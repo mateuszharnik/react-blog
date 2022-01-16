@@ -3,13 +3,13 @@ import { thunk, action } from 'easy-peasy';
 
 const nav = {
   isOpen: false,
-  isDisabled: false,
+  isAnimated: false,
   toggleNav: thunk((actions, payload, { getState }) => {
-    if (!getState().isDisabled) {
+    if (!getState().isAnimated) {
       actions.toggleState(payload);
 
       setTimeout(() => {
-        actions.setDisabled();
+        actions.setAnimated();
       }, 350);
     }
   }),
@@ -17,7 +17,7 @@ const nav = {
     if (state.isOpen) state.isOpen = false;
   }),
   toggleState: action((state, payload) => {
-    state.isDisabled = true;
+    state.isAnimated = true;
 
     if (payload !== undefined) {
       state.isOpen = payload;
@@ -25,8 +25,8 @@ const nav = {
       state.isOpen = !state.isOpen;
     }
   }),
-  setDisabled: action((state) => {
-    if (state.isDisabled) state.isDisabled = false;
+  setAnimated: action((state) => {
+    if (state.isAnimated) state.isAnimated = false;
   }),
 };
 

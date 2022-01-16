@@ -1,9 +1,10 @@
 import React, { useEffect, memo } from 'react';
-import { setTitle } from '@client/helpers/documentMeta';
+import { setTitle, setMeta, signInMeta } from '@client/helpers/documentMeta';
 
 const SignIn = memo(() => {
   useEffect(() => {
     setTitle('Zaloguj się');
+    setMeta(signInMeta());
   }, []);
 
   return (

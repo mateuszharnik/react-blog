@@ -2,8 +2,8 @@ import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { string, func } from 'prop-types';
 import LazyImage from '@client/components/LazyImage';
-import female from '@client/assets/images/undraw_female_avatar_w3jk 1.svg';
-import male from '@client/assets/images/undraw_male_avatar_323b 1.svg';
+import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
+import male from '@client/assets/images/undraw_male_avatar_323b.svg';
 
 const NavImageLink = memo(({
   onBlur, to, title, src, gender, className,

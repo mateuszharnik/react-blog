@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import LazyComponentWrapper from '@client/components/LazyComponent/LazyComponentWrapper';
 import LazyImage from '@client/components/LazyImage';
-import bug from '@client/assets/images/undraw_fixing_bugs_w7gi 1.svg';
+import bug from '@client/assets/images/undraw_fixing_bugs_w7gi.svg';
 
 const LazyComponentError = memo(() => {
   const [isLoading, setIsLoading] = useState(false);

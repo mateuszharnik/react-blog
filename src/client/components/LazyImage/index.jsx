@@ -15,7 +15,7 @@ const LazyImage = memo(
     const [isLoaded, setIsLoaded] = useState(false);
 
     const className = useMemo(
-      () => `lazy-load-image ${isLoaded ? '' : 'lazy-load-image--hidden'} ${imgClassName}`.trim(),
+      () => `lazy-load-image${isLoaded ? '' : ' lazy-load-image--hidden'} ${imgClassName}`.trim(),
       [isLoaded, imgClassName],
     );
 
