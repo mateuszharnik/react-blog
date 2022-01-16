@@ -1,0 +1,61 @@
+/*** Imports ***/
+@import "../../assets/scss/variables";
+
+.welcome-banner {
+  background-color: #030303;
+  background-image: url("assets/images/pexels-sathesh-d-698808.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  @include toRem(padding-top, 84);
+  @include toRem(max-height, 900);
+
+  &__title {
+    color: $primary;
+
+    @supports (background-clip: text) {
+      background-clip: text;
+      background-image: linear-gradient(0deg, $primary 30%, $white);
+      color: transparent;
+    }
+  }
+
+  &__header {
+    @include toRem(margin-top, -48);
+  }
+
+  &__text {
+    font-weight: 300;
+    @include toRem(font-size, 18);
+    @include toRem(max-width, 540);
+  }
+
+  &-arrow {
+    border: 1px solid $text-muted;
+    border-radius: 50%;
+    left: 50%;
+    overflow: hidden;
+    position: absolute;
+    transform: translateX(-50%);
+    @include toRem(bottom, 20);
+    @include toRem(width, 30);
+    @include toRem(height, 30);
+
+    &__icon {
+      animation: arrow-slide 0.8s ease-in-out infinite;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes arrow-slide {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}

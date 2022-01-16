@@ -16,8 +16,16 @@
   }
 
   &__container {
-    background-color: #282828;
+    background-color: fade-out(#030303, 0.6);
     color: $white;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+
+    &.black {
+      background-color: #030303;
+    }
   }
 
   &__logo {

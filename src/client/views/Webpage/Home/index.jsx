@@ -1,4 +1,5 @@
 import React, { useEffect, memo } from 'react';
+import WelcomeBanner from '@client/components/WelcomeBanner';
 import { setTitle, setMeta } from '@client/helpers/documentMeta';
 
 const Home = memo(() => {
@@ -8,8 +9,9 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div>
-      Strona główna
+    <div className="home">
+      <WelcomeBanner />
+      <div className="vh-100" />
     </div>
   );
 });
