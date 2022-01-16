@@ -1,9 +1,10 @@
 import React, { useEffect, memo } from 'react';
-import { setTitle } from '@client/helpers/documentMeta';
+import { setTitle, setMeta, faqMeta } from '@client/helpers/documentMeta';
 
 const FAQs = memo(() => {
   useEffect(() => {
     setTitle('Najczęściej zadawane pytania');
+    setMeta(faqMeta());
   }, []);
 
   return (

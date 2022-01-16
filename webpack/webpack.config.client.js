@@ -54,7 +54,10 @@ module.exports = (webpackEnv, { mode }) => {
     },
     optimization: {
       splitChunks: {
-        name: (_, chunks) => `${chunks.map((item) => item.name).sort().join('~')}`,
+        name: (_, chunks) => `${chunks
+          .map((item) => item.name)
+          .sort()
+          .join('~')}`,
         cacheGroups: {
           libs: {
             test: /[\\/]node_modules[\\/].+\.(?!(css|scss|sass)).*$/,
@@ -134,12 +137,20 @@ module.exports = (webpackEnv, { mode }) => {
         'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL),
       }),
       new CleanWebpackPlugin(),
-      new FriendlyErrorsWebpackPlugin({
-        compilationSuccessInfo: {
-          messages: [`Your application is running here ${colors.red(`http://localhost:${process.env.CLIENT_PORT}`)}`],
-        },
-        clearConsole: true,
-      }),
+      ...(mode !== 'production'
+        ? [
+          new FriendlyErrorsWebpackPlugin({
+            compilationSuccessInfo: {
+              messages: [
+                `Your application is running here ${colors.red(
+                  `http://localhost:${process.env.CLIENT_PORT}`,
+                )}`,
+              ],
+            },
+            clearConsole: true,
+          }),
+        ]
+        : []),
       new FixStyleOnlyEntriesPlugin(),
       new HTMLWebpackPlugin({
         template: './public/index.html',

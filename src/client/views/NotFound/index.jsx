@@ -4,8 +4,8 @@ import React, {
 import { useNavigate, Link } from 'react-router-dom';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import LazyImage from '@client/components/LazyImage';
-import { setTitle } from '@client/helpers/documentMeta';
-import notFound from '@client/assets/images/undraw_page_not_found_su7k 1.svg';
+import { setTitle, setMeta, notFoundMeta } from '@client/helpers/documentMeta';
+import notFound from '@client/assets/images/undraw_page_not_found_su7k.svg';
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
@@ -28,6 +28,7 @@ const NotFound = memo(() => {
 
   useEffect(() => {
     setTitle('404');
+    setMeta(notFoundMeta());
   }, []);
 
   return (

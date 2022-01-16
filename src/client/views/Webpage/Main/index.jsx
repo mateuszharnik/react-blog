@@ -16,7 +16,7 @@ const Main = memo(() => {
   const [message, setMessage] = useState('');
   const mainRef = useRef(null);
   const { pathname } = useLocation();
-  const { closeNav } = useStoreActions((actions) => actions.nav);
+  const { toggleNav } = useStoreActions((actions) => actions.nav);
 
   const handleClick = async () => {
     try {
@@ -30,7 +30,7 @@ const Main = memo(() => {
     }
   };
 
-  useEffect(() => () => closeNav(), [pathname, closeNav]);
+  useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
 
   return (
     <>
