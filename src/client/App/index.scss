@@ -9,6 +9,12 @@
 a {
   text-decoration: none;
 
+  &.btn {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
   &:hover {
     text-decoration: underline;
   }

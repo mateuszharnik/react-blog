@@ -23,7 +23,7 @@
     }
 
     &-wrapper {
-      background-color: #282828;
+      background-color: #030303;
       margin: 0;
       overflow: hidden;
       position: fixed;
@@ -39,6 +39,7 @@
       }
 
       @include media-breakpoint-up(lg) {
+        background-color: transparent;
         position: initial;
         right: initial;
         top: initial;
