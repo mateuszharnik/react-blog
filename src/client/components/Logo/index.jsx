@@ -3,7 +3,13 @@ import logo from '@client/assets/images/logo-light.svg';
 import { number } from 'prop-types';
 
 const Logo = memo(({ width, height }) => (
-  <img src={logo} width={width} height={height} alt="Logo strony" className="logo" />
+  <img
+    src={logo}
+    width={width}
+    height={height}
+    alt="Logo strony"
+    className="logo"
+  />
 ));
 
 Logo.displayName = 'Logo';

@@ -6,7 +6,11 @@ import LazyComponentWrapper from '@client/components/LazyComponent/LazyComponent
 const LazyComponentSpinner = memo(() => (
   <LazyComponentWrapper>
     <div className="text-primary text-center">
-      <FontAwesomeIcon icon={faCircleNotch} spin size="3x" />
+      <FontAwesomeIcon
+        icon={faCircleNotch}
+        spin
+        size="3x"
+      />
     </div>
   </LazyComponentWrapper>
 ));

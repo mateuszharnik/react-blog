@@ -38,7 +38,11 @@ const LazyComponentError = memo(() => {
           Spróbuj odświeżyć stronę
           {isLoading && (
             <span className="ms-1">
-              <FontAwesomeIcon icon={faCircleNotch} spin fixedWidth />
+              <FontAwesomeIcon
+                icon={faCircleNotch}
+                spin
+                fixedWidth
+              />
             </span>
           )}
         </button>

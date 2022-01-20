@@ -1,6 +1,4 @@
-import React, {
-  memo, useRef, useEffect,
-} from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import { useStoreActions } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
 import Loadable from 'react-loadable';

@@ -16,7 +16,13 @@ const NavImageLink = memo(({
 
   return (
     <div className="nav__link-image-wrapper">
-      <Link className={className} to={to} title={title} onBlur={onBlur} data-nav>
+      <Link
+        className={className}
+        to={to}
+        title={title}
+        onBlur={onBlur}
+        data-nav
+      >
         <LazyImage
           divClassName="nav__link-image"
           width={36}
