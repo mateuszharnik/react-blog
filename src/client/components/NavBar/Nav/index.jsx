@@ -1,5 +1,5 @@
 import React, {
-  memo, useCallback, useRef, useEffect, useMemo,
+  memo, useCallback, useRef, useEffect, useMemo, useState,
 } from 'react';
 import Loadable from 'react-loadable';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -21,6 +21,7 @@ const Nav = memo(() => {
   const { isOpen, isAnimated } = useStoreState((store) => store.nav);
   const { isDesktop } = useStoreState((store) => store.matchMedia);
   const { toggleNav, closeNav } = useStoreActions((actions) => actions.nav);
+  const [isVisible, setIsVisible] = useState(isDesktop);
 
   const navItemClassName = useMemo(
     () => `nav__item text-center mb-3 mb-lg-0${user ? '' : ' nav__link-image-wrapper'}`,
@@ -28,10 +29,15 @@ const Nav = memo(() => {
   );
 
   const navListClassName = useMemo(
-    () => `nav__list-wrapper${isOpen ? ' open' : ''}${isOpen || isDesktop ? ' visible' : ''}${
-      !isAnimated && !isOpen && !isDesktop ? ' invisible' : ''
+    () => `nav__list-wrapper${isOpen ? ' open' : ''}${
+      !isAnimated && !isOpen && !isDesktop && !isVisible ? ' d-none' : ''
     }`,
-    [isOpen, isDesktop, isAnimated],
+    [isOpen, isDesktop, isAnimated, isVisible],
+  );
+
+  const navClassName = useMemo(
+    () => `nav${isAnimated ? ' nav--pointer-none' : ''}`,
+    [isAnimated],
   );
 
   const divClassName = useMemo(
@@ -60,9 +66,14 @@ const Nav = memo(() => {
   }, [toggleNav, setFocus]);
 
   const handleOpenNav = useCallback(() => {
-    toggleNav(true);
+    setIsVisible(true);
 
-    setFocus(true);
+    setTimeout(() => {
+      toggleNav(true);
+
+      setFocus(true);
+      setIsVisible(false);
+    }, 50);
   }, [toggleNav, setFocus]);
 
   useEffect(() => {
@@ -70,7 +81,7 @@ const Nav = memo(() => {
   }, [isDesktop, closeNav]);
 
   return (
-    <nav className="nav">
+    <nav className={navClassName}>
       <h2 className="visually-hidden">Nawigacja</h2>
       {!isDesktop && !isOpen && (
         <Hamburger
@@ -94,65 +105,85 @@ const Nav = memo(() => {
                 onBlur={handleCloseNavOnBlur}
               />
               {user && (
-              <div className="order-0 order-lg-1">
-                <NavImageLink
-                  className="d-block p-1"
-                  onBlur={handleCloseNavOnBlur}
-                  gender={gender}
-                />
-              </div>
+                <div className="order-0 order-lg-1">
+                  <NavImageLink
+                    className="d-block p-1"
+                    onBlur={handleCloseNavOnBlur}
+                    gender={gender}
+                  />
+                </div>
               )}
             </div>
           )}
           <ul className="nav__list pt-4 pt-lg-0" id="nav">
-            {!isDesktop && (
+            <div>
+              {!isDesktop && (
+                <li className="nav__item text-center mb-3 mb-lg-0">
+                  <NavLink
+                    to="/"
+                    title="Wróć do strony głównej"
+                    onBlur={handleCloseNavOnBlur}
+                  >
+                    Strona główna
+                  </NavLink>
+                </li>
+              )}
+            </div>
+            <div>
               <li className="nav__item text-center mb-3 mb-lg-0">
-                <NavLink to="/" title="Wróć do strony głównej" onBlur={handleCloseNavOnBlur}>
-                  Strona główna
+                <NavLink
+                  to="/posty"
+                  title="Zobacz najnowsze wpisy"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  Posty
                 </NavLink>
               </li>
-            )}
-            <li className="nav__item text-center mb-3 mb-lg-0">
-              <NavLink
-                to="/posty"
-                title="Zobacz najnowsze wpisy"
-                onBlur={handleCloseNavOnBlur}
-              >
-                Posty
-              </NavLink>
-            </li>
-            <li className="nav__item text-center mb-3 mb-lg-0">
-              <NavLink
-                to="/o-blogu"
-                title="Dowiedz się trochę o blogu"
-                onBlur={handleCloseNavOnBlur}
-              >
-                O blogu
-              </NavLink>
-            </li>
-            <li className="nav__item text-center mb-3 mb-lg-0">
-              <NavLink
-                to="/najczesciej-zadawane-pytania"
-                title="Zobacz najczęściej zadawane pytania"
-                onBlur={handleCloseNavOnBlur}
-              >
-                FAQ
-              </NavLink>
-            </li>
-            <li className={navItemClassName}>
-              <NavLink to="/kontakt" title="Skontaktuj się" onBlur={handleCloseNavOnBlur}>
-                Kontakt
-              </NavLink>
-            </li>
-            {isDesktop && user && (
+            </div>
+            <div>
               <li className="nav__item text-center mb-3 mb-lg-0">
-                <NavImageLink
-                  className="nav__link mx-auto"
+                <NavLink
+                  to="/o-blogu"
+                  title="Dowiedz się trochę o blogu"
                   onBlur={handleCloseNavOnBlur}
-                  gender={gender}
-                />
+                >
+                  O blogu
+                </NavLink>
               </li>
-            )}
+            </div>
+            <div>
+              <li className="nav__item text-center mb-3 mb-lg-0">
+                <NavLink
+                  to="/najczesciej-zadawane-pytania"
+                  title="Zobacz najczęściej zadawane pytania"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  FAQ
+                </NavLink>
+              </li>
+            </div>
+            <div>
+              <li className={navItemClassName}>
+                <NavLink
+                  to="/kontakt"
+                  title="Skontaktuj się"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  Kontakt
+                </NavLink>
+              </li>
+            </div>
+            <div>
+              {isDesktop && user && (
+                <li className="nav__item text-center mb-3 mb-lg-0">
+                  <NavImageLink
+                    className="nav__link mx-auto"
+                    onBlur={handleCloseNavOnBlur}
+                    gender={gender}
+                  />
+                </li>
+              )}
+            </div>
           </ul>
         </MaxViewHeight>
       </div>

@@ -3,7 +3,7 @@ import { setTitle, setMeta, aboutMeta } from '@client/helpers/documentMeta';
 
 const About = memo(() => {
   useEffect(() => {
-    setTitle('O nas');
+    setTitle('O blogu');
     setMeta(aboutMeta());
   }, []);
 

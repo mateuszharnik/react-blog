@@ -4,9 +4,10 @@
 .welcome-banner {
   background-color: #030303;
   background-image: url("assets/images/pexels-sathesh-d-698808.jpg");
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100vh;
   position: relative;
   @include toRem(padding-top, 84);
   @include toRem(max-height, 900);
@@ -34,10 +35,9 @@
   &-arrow {
     border: 1px solid $text-muted;
     border-radius: 50%;
-    left: 50%;
+    left: calc(50% - 0.9375rem);
     overflow: hidden;
     position: absolute;
-    transform: translateX(-50%);
     @include toRem(bottom, 20);
     @include toRem(width, 30);
     @include toRem(height, 30);

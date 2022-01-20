@@ -1,5 +1,7 @@
 {
-  "name": "React Blog",
+  "name": "Mateusz Harnik | Blog o kodowaniu",
+  "theme_color": "#030303",
+  "lang": "pl-PL",
   "icons": [
     {
       "src": "/favicon-16x16.png",

@@ -4,6 +4,12 @@
 .nav {
   height: 100%;
 
+  &--pointer-none {
+    a {
+      pointer-events: none;
+    }
+  }
+
   @include media-breakpoint-up(lg) {
     overflow: hidden;
     width: 100%;

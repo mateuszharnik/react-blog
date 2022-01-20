@@ -46,8 +46,12 @@ const NotFound = memo(() => {
           <div>Nie znaleziono strony.</div>
           <div>
             Powrót do{' '}
-            <Link to="/" title="Wróć do strony głównej" onClick={handleClick}>
-              strony głównej
+            <Link
+              to="/"
+              title="Wróć do strony głównej"
+              onClick={handleClick}
+            >
+              <span>strony głównej</span>
             </Link>{' '}
             za {seconds}.
           </div>
