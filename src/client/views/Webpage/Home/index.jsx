@@ -12,6 +12,8 @@ const Home = memo(() => {
     <div className="home">
       <WelcomeBanner />
       <div className="vh-100" />
+      <div className="vh-100" />
+      <div className="vh-100" />
     </div>
   );
 });

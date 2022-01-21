@@ -9,7 +9,10 @@ const About = memo(() => {
 
   return (
     <div>
-      O nas
+      O blogu
+      <div className="vh-100" />
+      <div className="vh-100" />
+      <div className="vh-100" />
     </div>
   );
 });

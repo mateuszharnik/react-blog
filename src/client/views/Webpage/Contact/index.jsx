@@ -10,6 +10,9 @@ const Contact = memo(() => {
   return (
     <div>
       Strona kontaktowa
+      <div className="vh-100" />
+      <div className="vh-100" />
+      <div className="vh-100" />
     </div>
   );
 });

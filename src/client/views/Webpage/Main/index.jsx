@@ -9,32 +9,34 @@ const SkipNavLink = Loadable({
   loading: () => null,
 });
 
+const ScrollToTopButton = Loadable({
+  loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/ScrollToTopButton'),
+  loading: () => null,
+});
+
 const Main = memo(() => {
   const mainRef = useRef(null);
   const { pathname } = useLocation();
   const { toggleNav } = useStoreActions((actions) => actions.nav);
 
-  // const handleClick = async () => {
-  //   try {
-  //     const { default: axios } = await import(/* webpackChunkName: 'axios' */ 'axios');
-
-  //     const { data } = await axios('/api');
-
-  //     setMessage(data.message);
-  //   } catch (error) {
-  //     setMessage('Wystąpił błąd.');
-  //   }
-  // };
-
   useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
 
   return (
     <>
-      <SkipNavLink target={mainRef} />
+      <SkipNavLink
+        target={mainRef}
+      />
       <Header />
-      <main id="tresc" ref={mainRef} className="main">
+      <main
+        id="tresc"
+        ref={mainRef}
+        className="main"
+      >
         <Outlet />
       </main>
+      <ScrollToTopButton
+        target={mainRef}
+      />
     </>
   );
 });

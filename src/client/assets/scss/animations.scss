@@ -1,24 +1,24 @@
 /*** Imports ***/
 @import "./variables";
 
-.slide-right-nav-enter,
-.slide-right-nav-appear,
-.slide-right-nav-exit-done {
-  right: -100%;
+.fade-enter,
+.fade-appear,
+.fade-exit-done {
+  opacity: 0;
 }
 
-.slide-right-nav-enter-done,
-.slide-right-nav-exit {
-  right: 0;
+.fade-enter-done,
+.fade-exit {
+  opacity: 1;
 }
 
-.slide-right-nav-appear-active,
-.slide-right-nav-enter-active {
-  right: 0;
-  transition: right 0.3s ease-in-out;
+.fade-appear-active,
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.slide-right-nav-exit-active {
-  right: -100%;
-  transition: right 0.3s ease-in-out;
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
