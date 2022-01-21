@@ -10,6 +10,9 @@ const FAQs = memo(() => {
   return (
     <div>
       Najczęściej zadawane pytania
+      <div className="vh-100" />
+      <div className="vh-100" />
+      <div className="vh-100" />
     </div>
   );
 });

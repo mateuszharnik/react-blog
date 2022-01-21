@@ -11,9 +11,9 @@ const SkipNavLink = memo(({ target }) => {
     if (!target?.current) return;
 
     try {
-      const { default: jump } = await import(/* webpackChunkName: 'jump' */ 'jump.js');
+      const jump = (await import(/* webpackChunkName: 'jump' */ 'jump.js')).default;
 
-      jump(target.current, { a11y: true, duration: 0 });
+      jump(target?.current, { a11y: true, duration: 0 });
     } catch (error) {
       return null;
     }
@@ -35,7 +35,7 @@ const SkipNavLink = memo(({ target }) => {
 SkipNavLink.displayName = 'SkipNavLink';
 
 SkipNavLink.propTypes = {
-  target: oneOfType([func, shape({ current: instanceOf(Element) })]).isRequired,
+  target: oneOfType([func, shape({ current: instanceOf(Object) })]).isRequired,
 };
 
 export default SkipNavLink;
