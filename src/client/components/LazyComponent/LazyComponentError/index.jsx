@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import LazyComponentWrapper from '@client/components/LazyComponent/LazyComponentWrapper';
@@ -8,11 +8,11 @@ import bug from '@client/assets/images/undraw_fixing_bugs_w7gi.svg';
 const LazyComponentError = memo(() => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsLoading(true);
 
     window.location.reload(true);
-  };
+  }, []);
 
   return (
     <LazyComponentWrapper>

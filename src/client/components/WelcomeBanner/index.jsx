@@ -16,6 +16,7 @@ const WelcomeBanner = memo(() => {
         <header
           className="welcome-banner__header mb-5"
           data-aos="fade-down"
+          data-aos-offset="-99999"
           data-aos-duration="1000"
           data-aos-delay="100"
         >
@@ -29,6 +30,7 @@ const WelcomeBanner = memo(() => {
         <p
           className="welcome-banner__text mx-auto mb-4 mb-lg-5"
           data-aos="fade"
+          data-aos-offset="-99999"
           data-aos-duration="1000"
           data-aos-delay="500"
         >
@@ -38,6 +40,7 @@ const WelcomeBanner = memo(() => {
         </p>
         <div
           data-aos="fade"
+          data-aos-offset="-99999"
           data-aos-duration="1000"
           data-aos-delay="900"
         >
@@ -53,9 +56,9 @@ const WelcomeBanner = memo(() => {
       <div
         className="welcome-banner-arrow text-muted"
         data-aos="fade"
+        data-aos-offset="-99999"
         data-aos-duration="1000"
         data-aos-delay="1300"
-        data-aos-offset="0"
       >
         <div className="welcome-banner-arrow__icon d-flex justify-content-center align-items-center">
           <FontAwesomeIcon icon={faAngleDoubleDown} />

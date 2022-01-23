@@ -1,2 +1,6 @@
 /*** Imports ***/
 @import "../../../assets/scss/variables";
+
+.lazy-component-wrapper {
+  @include toRem(min-height, 400);
+}

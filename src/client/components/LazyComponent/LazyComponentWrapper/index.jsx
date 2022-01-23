@@ -3,7 +3,7 @@ import { oneOfType, arrayOf, node } from 'prop-types';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 
 const LazyComponentWrapper = memo(({ children }) => (
-  <MaxViewHeight className="position-relative bg-white">
+  <MaxViewHeight className="lazy-component-wrapper position-relative bg-white">
     <div className="position-center w-100">
       {children}
     </div>
