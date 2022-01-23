@@ -17,15 +17,37 @@
   }
 
   &__list {
+    height: calc(100vh - 5.5rem);
     list-style-type: none;
     margin: 0;
+    overflow-y: auto;
     padding: 0;
+
+    &::-webkit-scrollbar {
+      @include toRem(width, 8);
+      @include toRem(border-radius, 50);
+    }
+
+    &::-webkit-scrollbar-track {
+      @include toRem(border-radius, 50);
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include toRem(border-radius, 50);
+      background: #272727;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #383838;
+    }
 
     @include media-breakpoint-up(lg) {
       align-items: center;
       display: flex;
       height: 100%;
       justify-content: flex-end;
+      overflow-y: initial;
     }
 
     &-wrapper {

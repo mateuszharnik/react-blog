@@ -14,7 +14,7 @@ import debounce from 'lodash/debounce';
 const ScrollToTopButton = memo(({ target }) => {
   const [isVisible, setIsVisible] = useState(window.pageYOffset >= 800);
 
-  const handleScroll = async (e) => {
+  const handleScroll = useCallback(async (e) => {
     e.preventDefault();
 
     if (!target?.current) return;
@@ -26,7 +26,7 @@ const ScrollToTopButton = memo(({ target }) => {
     } catch (error) {
       return null;
     }
-  };
+  }, [target]);
 
   const toggleIsVisible = useCallback(() => {
     setIsVisible(window.pageYOffset >= 800);
@@ -75,7 +75,7 @@ const ScrollToTopButton = memo(({ target }) => {
 ScrollToTopButton.displayName = 'ScrollToTopButton';
 
 ScrollToTopButton.propTypes = {
-  target: oneOfType([func, shape({ current: instanceOf(Object) })]).isRequired,
+  target: oneOfType([func, shape({ current: instanceOf(Element) })]).isRequired,
 };
 
 export default ScrollToTopButton;

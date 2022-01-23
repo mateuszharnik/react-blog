@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React, { useCallback, memo } from 'react';
 import { createPortal } from 'react-dom';
 import {
   oneOfType, func, instanceOf, shape,
 } from 'prop-types';
 
 const SkipNavLink = memo(({ target }) => {
-  const handleScroll = async (e) => {
+  const handleScroll = useCallback(async (e) => {
     e.preventDefault();
 
     if (!target?.current) return;
@@ -17,7 +17,7 @@ const SkipNavLink = memo(({ target }) => {
     } catch (error) {
       return null;
     }
-  };
+  }, [target]);
 
   return createPortal(
     <a
@@ -35,7 +35,7 @@ const SkipNavLink = memo(({ target }) => {
 SkipNavLink.displayName = 'SkipNavLink';
 
 SkipNavLink.propTypes = {
-  target: oneOfType([func, shape({ current: instanceOf(Object) })]).isRequired,
+  target: oneOfType([func, shape({ current: instanceOf(Element) })]).isRequired,
 };
 
 export default SkipNavLink;

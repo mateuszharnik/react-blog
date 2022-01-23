@@ -1,4 +1,6 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, {
+  useState, useMemo, useCallback, memo,
+} from 'react';
 import { string, number } from 'prop-types';
 import lazySizes from 'lazysizes';
 import Spinner from '@client/components/Spinner';
@@ -19,9 +21,9 @@ const LazyImage = memo(
       [isLoaded, imgClassName],
     );
 
-    const handleLoad = () => {
+    const handleLoad = useCallback(() => {
       setIsLoaded(true);
-    };
+    }, []);
 
     return (
       <div className={divClassName || null}>
