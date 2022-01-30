@@ -9,6 +9,7 @@ const NavLink = memo(({
 }) => (
   <Link
     to={to}
+    end
     title={title}
     className={({ isActive }) => (isActive ? 'nav__link mx-auto active' : 'nav__link mx-auto')}
     onBlur={onBlur}

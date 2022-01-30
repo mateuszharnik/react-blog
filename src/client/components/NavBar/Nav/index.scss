@@ -20,27 +20,7 @@
     height: calc(100vh - 5.5rem);
     list-style-type: none;
     margin: 0;
-    overflow-y: auto;
     padding: 0;
-
-    &::-webkit-scrollbar {
-      @include toRem(width, 8);
-      @include toRem(border-radius, 50);
-    }
-
-    &::-webkit-scrollbar-track {
-      @include toRem(border-radius, 50);
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @include toRem(border-radius, 50);
-      background: #272727;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #383838;
-    }
 
     @include media-breakpoint-up(lg) {
       align-items: center;
@@ -79,8 +59,13 @@
       @include toRem(padding, 20);
 
       @include media-breakpoint-up(lg) {
-        height: 100% !important;
         padding: 0;
+      }
+    }
+
+    &-max-height {
+      @include media-breakpoint-up(lg) {
+        height: 100% !important;
       }
     }
   }
@@ -91,6 +76,12 @@
     @include media-breakpoint-up(lg) {
       padding: 0;
       @include toRem(margin-left, 20);
+    }
+  }
+
+  .os-host {
+    @include media-breakpoint-up(lg) {
+      height: 100%;
     }
   }
 }
