@@ -120,12 +120,22 @@ module.exports = (webpackEnv, { mode }) => {
         },
         {
           test: /\.(png|jpe?g|gif|svg)$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /(node_modules|bower_components|fonts)/,
           loader: 'url-loader',
           options: {
             limit: 8192,
             name: '[name].[ext]',
             outputPath: 'images/',
+          },
+        },
+        {
+          test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+          exclude: /(images)/,
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+            name: '[name].[ext]',
+            outputPath: 'fonts/',
           },
         },
       ],

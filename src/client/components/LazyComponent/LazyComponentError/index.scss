@@ -1,8 +1,2 @@
 /*** Imports ***/
 @import "../../../assets/scss/variables";
-
-.lazy-component-error {
-  @include toRem(max-width, 400);
-  @include toRem(padding, 16);
-  text-align: center;
-}
