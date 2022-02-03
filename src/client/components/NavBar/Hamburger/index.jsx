@@ -3,7 +3,7 @@ import { func, string, bool } from 'prop-types';
 
 const Hamburger = memo(
   forwardRef(({
-    onBlur, onClick, title, className, attr, isExpanded,
+    onBlur, onClick, title, className, attr, isExpanded, text,
   }, ref) => {
     const classNames = useMemo(() => `hamburger p-1 ${className}`.trim(), [className]);
 
@@ -20,7 +20,7 @@ const Hamburger = memo(
         onBlur={onBlur}
         onClick={onClick}
       >
-        <span className="visually-hidden">Menu</span>
+        <span className="visually-hidden">{text}</span>
         <div className="hamburger__bar" />
       </button>
     );
@@ -33,13 +33,15 @@ Hamburger.propTypes = {
   title: string.isRequired,
   onClick: func.isRequired,
   isExpanded: bool.isRequired,
+  text: string,
   onBlur: func,
   className: string,
   attr: bool,
 };
 
 Hamburger.defaultProps = {
-  onBlur: () => {},
+  onBlur: () => { },
+  text: 'Menu',
   className: '',
   attr: false,
 };

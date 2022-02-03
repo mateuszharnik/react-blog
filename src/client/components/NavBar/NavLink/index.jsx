@@ -17,7 +17,7 @@ const NavLink = memo(({
   >
     {({ isActive }) => (
       <>
-        {children}
+        {children}{' '}
         {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
       </>
     )}

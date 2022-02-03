@@ -23,6 +23,7 @@ const NavImageLink = memo(({
         onBlur={onBlur}
         data-nav
       >
+        <span className="visually-hidden">Panel administratora</span>
         <LazyImage
           divClassName="nav__link-image"
           width={36}
