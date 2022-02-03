@@ -8,7 +8,6 @@ import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
 import Hamburger from '@client/components/NavBar/Hamburger';
 import NavLink from '@client/components/NavBar/NavLink';
-import MaxViewHeight from '@client/components/MaxViewHeight';
 
 const NavImageLink = Loadable({
   loader: () => import(/* webpackChunkName: 'nav-image-link' */ '@client/components/NavBar/NavImageLink'),
@@ -132,7 +131,7 @@ const Nav = memo(() => {
         />
       )}
       <div className={navListClassName}>
-        <MaxViewHeight className="nav__list-max-height">
+        <div className="nav__list-max-height">
           {!isDesktop && (
             <div className={divClassName}>
               {isOpen && (
@@ -236,7 +235,7 @@ const Nav = memo(() => {
               </li>
             </ul>
           </OverlayScrollbarsComponent>
-        </MaxViewHeight>
+        </div>
       </div>
     </nav>
   );
