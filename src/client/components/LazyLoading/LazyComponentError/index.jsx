@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import Error from '@client/components/Error';
-import LazyComponentWrapper from '@client/components/LazyComponent/LazyComponentWrapper';
+import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 
 const LazyComponentError = memo(() => (
-  <LazyComponentWrapper>
+  <LazyLoadingWrapper>
     <Error />
-  </LazyComponentWrapper>
+  </LazyLoadingWrapper>
 ));
 
 LazyComponentError.displayName = 'LazyComponentError';

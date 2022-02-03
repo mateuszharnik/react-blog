@@ -13,6 +13,7 @@ import MaxViewHeight from '@client/components/MaxViewHeight';
 const NavImageLink = Loadable({
   loader: () => import(/* webpackChunkName: 'nav-image-link' */ '@client/components/NavBar/NavImageLink'),
   loading: () => null,
+  delay: 0,
 });
 
 const options = {
@@ -125,6 +126,7 @@ const Nav = memo(() => {
         <Hamburger
           ref={openNavButtonRef}
           title="Otwórz menu"
+          text="Otwórz menu"
           onClick={handleOpenNav}
           isExpanded={isOpen}
         />
@@ -133,15 +135,18 @@ const Nav = memo(() => {
         <MaxViewHeight className="nav__list-max-height">
           {!isDesktop && (
             <div className={divClassName}>
-              <Hamburger
-                attr
-                isExpanded={isOpen}
-                ref={closeNavButtonRef}
-                title="Zamknij menu"
-                className="open order-1 order-lg-0"
-                onClick={handleCloseNav}
-                onBlur={handleCloseNavOnBlur}
-              />
+              {isOpen && (
+                <Hamburger
+                  attr
+                  isExpanded={isOpen}
+                  ref={closeNavButtonRef}
+                  title="Zamknij menu"
+                  text="Zamknij menu"
+                  className="open order-1 order-lg-0"
+                  onClick={handleCloseNav}
+                  onBlur={handleCloseNavOnBlur}
+                />
+              )}
               {user && (
                 <div className="order-0 order-lg-1">
                   <NavImageLink
@@ -161,9 +166,9 @@ const Nav = memo(() => {
               id="nav"
               className="nav__list nav__list-container pt-4 pt-lg-0"
             >
-              <div>
+              <li>
                 {!isDesktop && (
-                  <li className="nav__item text-center mb-3 mb-lg-0">
+                  <div className="nav__item text-center mb-3 mb-lg-0">
                     <NavLink
                       to="/"
                       title="Wróć do strony głównej"
@@ -171,11 +176,11 @@ const Nav = memo(() => {
                     >
                       Strona główna
                     </NavLink>
-                  </li>
+                  </div>
                 )}
-              </div>
-              <div>
-                <li className="nav__item text-center mb-3 mb-lg-0">
+              </li>
+              <li>
+                <div className="nav__item text-center mb-3 mb-lg-0">
                   <NavLink
                     to="/posty"
                     title="Zobacz najnowsze wpisy"
@@ -183,10 +188,10 @@ const Nav = memo(() => {
                   >
                     Posty
                   </NavLink>
-                </li>
-              </div>
-              <div>
-                <li className="nav__item text-center mb-3 mb-lg-0">
+                </div>
+              </li>
+              <li>
+                <div className="nav__item text-center mb-3 mb-lg-0">
                   <NavLink
                     to="/o-blogu"
                     title="Dowiedz się trochę o blogu"
@@ -194,10 +199,10 @@ const Nav = memo(() => {
                   >
                     O blogu
                   </NavLink>
-                </li>
-              </div>
-              <div>
-                <li className="nav__item text-center mb-3 mb-lg-0">
+                </div>
+              </li>
+              <li>
+                <div className="nav__item text-center mb-3 mb-lg-0">
                   <NavLink
                     to="/najczesciej-zadawane-pytania"
                     title="Zobacz najczęściej zadawane pytania"
@@ -205,10 +210,10 @@ const Nav = memo(() => {
                   >
                     FAQ
                   </NavLink>
-                </li>
-              </div>
-              <div>
-                <li className={navItemClassName}>
+                </div>
+              </li>
+              <li>
+                <div className={navItemClassName}>
                   <NavLink
                     to="/kontakt"
                     title="Skontaktuj się"
@@ -216,19 +221,19 @@ const Nav = memo(() => {
                   >
                     Kontakt
                   </NavLink>
-                </li>
-              </div>
-              <div>
+                </div>
+              </li>
+              <li>
                 {isDesktop && user && (
-                  <li className="nav__item text-center mb-3 mb-lg-0">
+                  <div className="nav__item text-center mb-3 mb-lg-0">
                     <NavImageLink
                       className="nav__link mx-auto overflow-hidden"
                       onBlur={handleCloseNavOnBlur}
                       gender={gender}
                     />
-                  </li>
+                  </div>
                 )}
-              </div>
+              </li>
             </ul>
           </OverlayScrollbarsComponent>
         </MaxViewHeight>

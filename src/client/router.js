@@ -1,40 +1,37 @@
 import React, { memo } from 'react';
-import Loadable from 'react-loadable';
 import { Routes, Route } from 'react-router-dom';
-import LazyComponentError from '@client/components/LazyComponent/LazyComponentError';
-import LazyComponentSpinner from '@client/components/LazyComponent/LazyComponentSpinner';
+import LazyComponentError from '@client/components/LazyLoading/LazyComponentError';
+import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
+import lazyLoadView from '@client/helpers/lazyLoadView';
 
-const Main = Loadable({
+const Main = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'main' */ '@client/views/Webpage/Main'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const SignIn = Loadable({
+const SignIn = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const NotFound = Loadable({
+const NotFound = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'not-found' */ '@client/views/NotFound'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const Home = Loadable({
+const Home = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'home' */ '@client/views/Webpage/Home'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const About = Loadable({
+const About = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'about' */ '@client/views/Webpage/About'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const Contact = Loadable({
+const Contact = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'contact' */ '@client/views/Webpage/Contact'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const FAQs = Loadable({
+const FAQs = lazyLoadView({
   loader: () => import(/* webpackChunkName: 'faqs' */ '@client/views/Webpage/FAQs'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });

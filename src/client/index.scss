@@ -18,9 +18,11 @@
 @import "./components/NavBar/NavLink/index";
 @import "./components/NavBar/NavImageLink/index";
 @import "./components/SkipNavLink/index";
-@import "./components/LazyComponent/LazyComponentError/index";
-@import "./components/LazyComponent/LazyComponentSpinner/index";
-@import "./components/LazyComponent/LazyComponentWrapper/index";
+@import "./components/LazyLoading/LazyComponentError/index";
+@import "./components/LazyLoading/LazyComponentSpinner/index";
+@import "./components/LazyLoading/LazyPageError/index";
+@import "./components/LazyLoading/LazyPageSpinner/index";
+@import "./components/LazyLoading/LazyLoadingWrapper/index";
 @import "./components/WelcomeBanner/index";
 
 /*** Views ***/

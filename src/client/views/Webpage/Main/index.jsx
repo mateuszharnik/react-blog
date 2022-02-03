@@ -7,11 +7,13 @@ import Header from '@client/components/NavBar/Header';
 const SkipNavLink = Loadable({
   loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
   loading: () => null,
+  delay: 0,
 });
 
 const ScrollToTopButton = Loadable({
   loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/ScrollToTopButton'),
   loading: () => null,
+  delay: 0,
 });
 
 const Main = memo(() => {

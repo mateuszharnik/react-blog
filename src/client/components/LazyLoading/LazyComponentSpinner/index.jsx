@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import Spinner from '@client/components/Spinner';
-import LazyComponentWrapper from '@client/components/LazyComponent/LazyComponentWrapper';
+import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 
 const LazyComponentSpinner = memo(() => (
-  <LazyComponentWrapper>
+  <LazyLoadingWrapper>
     <Spinner />
-  </LazyComponentWrapper>
+  </LazyLoadingWrapper>
 ));
 
 LazyComponentSpinner.displayName = 'LazyComponentSpinner';
