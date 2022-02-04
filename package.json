@@ -28,7 +28,9 @@
     "lint:server": "eslint ./src/server/ --ext .js",
     "lint:client": "eslint ./src/client/ --ext .js,.jsx",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
-    "lint:eslint": "eslint .eslintrc.js --no-ignore .eslintrc.js"
+    "lint:eslint": "eslint .eslintrc.js --no-ignore .eslintrc.js",
+    "seed": "babel-node ./src/server/seeds/index.js",
+    "seed:example": "babel-node ./src/server/seeds/example.js"
   },
   "engines": {
     "node": "14.15.0",
