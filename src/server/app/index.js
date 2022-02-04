@@ -1,6 +1,4 @@
 import '@server/db';
-import api from '@server/api';
-import config from '@server/config';
 import compression from 'compression';
 import express from 'express';
 import helmet from 'helmet';
@@ -8,6 +6,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { serve, setup } from 'swagger-ui-express';
 import { join } from 'path';
+import api from '@server/api';
+import config from '@server/config';
 import swaggerDocument from '@server/docs/API.json';
 import { notFound, errorHandler } from '@server/middlewares/errors';
 
