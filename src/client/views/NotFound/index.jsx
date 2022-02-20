@@ -18,10 +18,13 @@ const NotFound = memo(() => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(
-      () => (seconds <= 0 ? navigate('/') : setSeconds((state) => state - 1)),
-      1000,
-    );
+    const interval = setInterval(() => {
+      if (seconds <= 0) {
+        navigate('/');
+      } else {
+        setSeconds((state) => state - 1);
+      }
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [seconds]);

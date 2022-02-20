@@ -1,4 +1,5 @@
 import React, { useEffect, memo } from 'react';
+import PageWrapper from '@client/components/PageWrapper';
 import { setTitle, setMeta, contactMeta } from '@client/helpers/documentMeta';
 
 const Contact = memo(() => {
@@ -8,12 +9,9 @@ const Contact = memo(() => {
   }, []);
 
   return (
-    <div>
+    <PageWrapper>
       Strona kontaktowa
-      <div className="vh-100" />
-      <div className="vh-100" />
-      <div className="vh-100" />
-    </div>
+    </PageWrapper>
   );
 });
 

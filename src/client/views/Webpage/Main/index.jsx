@@ -1,19 +1,17 @@
 import React, { memo, useRef, useEffect } from 'react';
 import { useStoreActions } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
-import Loadable from 'react-loadable';
+import lazyLoad from '@client/helpers/lazyLoad';
 import Header from '@client/components/NavBar/Header';
 
-const SkipNavLink = Loadable({
+const SkipNavLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
   loading: () => null,
-  delay: 0,
 });
 
-const ScrollToTopButton = Loadable({
+const ScrollToTopButton = lazyLoad({
   loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/ScrollToTopButton'),
   loading: () => null,
-  delay: 0,
 });
 
 const Main = memo(() => {

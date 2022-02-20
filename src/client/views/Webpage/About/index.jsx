@@ -1,4 +1,5 @@
 import React, { useEffect, memo } from 'react';
+import PageWrapper from '@client/components/PageWrapper';
 import { setTitle, setMeta, aboutMeta } from '@client/helpers/documentMeta';
 
 const About = memo(() => {
@@ -8,12 +9,9 @@ const About = memo(() => {
   }, []);
 
   return (
-    <div>
+    <PageWrapper>
       O blogu
-      <div className="vh-100" />
-      <div className="vh-100" />
-      <div className="vh-100" />
-    </div>
+    </PageWrapper>
   );
 });
 
