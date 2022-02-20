@@ -145,6 +145,7 @@ module.exports = (webpackEnv, { mode }) => {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
         'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL),
+        'process.env.CLIENT_URL': JSON.stringify(process.env.CLIENT_URL),
       }),
       new CleanWebpackPlugin(),
       ...(mode !== 'production'
@@ -163,6 +164,7 @@ module.exports = (webpackEnv, { mode }) => {
         : []),
       new FixStyleOnlyEntriesPlugin(),
       new HTMLWebpackPlugin({
+        inject: true,
         template: './public/index.html',
         filename: './index.html',
         minify: {
@@ -174,7 +176,7 @@ module.exports = (webpackEnv, { mode }) => {
           conservativeCollapse: false,
           removeScriptTypeAttributes: true,
           removeStyleLinkTypeAttributes: true,
-          removeAttributeQuotes: true,
+          removeAttributeQuotes: false,
         },
       }),
       new PreloadWebpackPlugin({
@@ -209,57 +211,13 @@ module.exports = (webpackEnv, { mode }) => {
       new CopyPlugin({
         patterns: [
           {
-            from: './public/favicon-16x16.png',
-            to: 'favicon-16x16.png',
+            from: './public/favicon-*.png',
+            to: '[name].png',
           },
-          {
-            from: './public/favicon-32x32.png',
-            to: 'favicon-32x32.png',
-          },
-          {
-            from: './public/favicon-57x57.png',
-            to: 'favicon-57x57.png',
-          },
-          {
-            from: './public/favicon-60x60.png',
-            to: 'favicon-60x60.png',
-          },
-          {
-            from: './public/favicon-72x72.png',
-            to: 'favicon-72x72.png',
-          },
-          {
-            from: './public/favicon-76x76.png',
-            to: 'favicon-76x76.png',
-          },
-          {
-            from: './public/favicon-96x96.png',
-            to: 'favicon-96x96.png',
-          },
-          {
-            from: './public/favicon-114x114.png',
-            to: 'favicon-114x114.png',
-          },
-          {
-            from: './public/favicon-120x120.png',
-            to: 'favicon-120x120.png',
-          },
-          {
-            from: './public/favicon-144x144.png',
-            to: 'favicon-144x144.png',
-          },
-          {
-            from: './public/favicon-152x152.png',
-            to: 'favicon-152x152.png',
-          },
-          {
-            from: './public/favicon-180x180.png',
-            to: 'favicon-180x180.png',
-          },
-          {
-            from: './public/favicon-192x192.png',
-            to: 'favicon-192x192.png',
-          },
+          ...(mode === 'production' ? [{
+            from: './public/app.png',
+            to: 'app.png',
+          }] : []),
           {
             from: './public/manifest.json',
             to: 'manifest.json',

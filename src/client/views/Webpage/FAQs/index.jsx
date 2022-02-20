@@ -1,4 +1,5 @@
 import React, { useEffect, memo } from 'react';
+import PageWrapper from '@client/components/PageWrapper';
 import { setTitle, setMeta, faqMeta } from '@client/helpers/documentMeta';
 
 const FAQs = memo(() => {
@@ -8,12 +9,9 @@ const FAQs = memo(() => {
   }, []);
 
   return (
-    <div>
+    <PageWrapper>
       Najczęściej zadawane pytania
-      <div className="vh-100" />
-      <div className="vh-100" />
-      <div className="vh-100" />
-    </div>
+    </PageWrapper>
   );
 });
 

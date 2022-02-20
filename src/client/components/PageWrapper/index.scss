@@ -1,0 +1,12 @@
+/*** Imports ***/
+@import "../../assets/scss/variables";
+
+.page {
+  &-wrapper {
+    padding: 5.875rem 0.625rem 0.625rem;
+  }
+
+  &-container {
+    @include toRem(max-width, 800);
+  }
+}

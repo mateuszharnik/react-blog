@@ -1,37 +1,37 @@
 import React, { memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import lazyLoad from '@client/helpers/lazyLoad';
 import LazyComponentError from '@client/components/LazyLoading/LazyComponentError';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
-import lazyLoadView from '@client/helpers/lazyLoadView';
 
-const Main = lazyLoadView({
+const Main = lazyLoad({
   loader: () => import(/* webpackChunkName: 'main' */ '@client/views/Webpage/Main'),
 });
 
-const SignIn = lazyLoadView({
+const SignIn = lazyLoad({
   loader: () => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn'),
 });
 
-const NotFound = lazyLoadView({
+const NotFound = lazyLoad({
   loader: () => import(/* webpackChunkName: 'not-found' */ '@client/views/NotFound'),
 });
 
-const Home = lazyLoadView({
+const Home = lazyLoad({
   loader: () => import(/* webpackChunkName: 'home' */ '@client/views/Webpage/Home'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const About = lazyLoadView({
+const About = lazyLoad({
   loader: () => import(/* webpackChunkName: 'about' */ '@client/views/Webpage/About'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const Contact = lazyLoadView({
+const Contact = lazyLoad({
   loader: () => import(/* webpackChunkName: 'contact' */ '@client/views/Webpage/Contact'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
-const FAQs = lazyLoadView({
+const FAQs = lazyLoad({
   loader: () => import(/* webpackChunkName: 'faqs' */ '@client/views/Webpage/FAQs'),
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });

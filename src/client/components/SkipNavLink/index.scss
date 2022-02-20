@@ -4,18 +4,22 @@
 .skip-nav-link {
   background-color: $primary;
   color: $white;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
   position: absolute;
   text-align: center;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease-in-out;
+  z-index: $zindex-tooltip;
   @include toRem(border-radius, 8);
-  @include toRem(left, -99999);
-  @include toRem(top, -99999);
   @include toRem(width, 180);
+  @include toRem(top, 10);
 
   &:focus {
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: $zindex-tooltip;
-    @include toRem(top, 10);
+    opacity: 1;
+    pointer-events: all;
+    transition: opacity 0.3s ease-in-out;
   }
 
   &:focus-visible {

@@ -6,6 +6,7 @@
   "main": "./src/server/index.js",
   "private": true,
   "scripts": {
+    "restart": "rimraf dist && rimraf yarn.lock && rimraf node_modules",
     "clean": "rimraf dist",
     "start": "cross-env NODE_ENV=production node ./dist/server/server.js",
     "start:client": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.client.js --mode=development",

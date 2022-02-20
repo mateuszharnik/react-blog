@@ -2,17 +2,16 @@ import React, {
   memo, useCallback, useRef, useEffect, useMemo, useState,
 } from 'react';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import Loadable from 'react-loadable';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
+import lazyLoad from '@client/helpers/lazyLoad';
 import Hamburger from '@client/components/NavBar/Hamburger';
 import NavLink from '@client/components/NavBar/NavLink';
 
-const NavImageLink = Loadable({
+const NavImageLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'nav-image-link' */ '@client/components/NavBar/NavImageLink'),
   loading: () => null,
-  delay: 0,
 });
 
 const options = {
@@ -165,9 +164,9 @@ const Nav = memo(() => {
               id="nav"
               className="nav__list nav__list-container pt-4 pt-lg-0"
             >
-              <li>
+              <>
                 {!isDesktop && (
-                  <div className="nav__item text-center mb-3 mb-lg-0">
+                  <li className="nav__item text-center mb-3 mb-lg-0">
                     <NavLink
                       to="/"
                       title="Wróć do strony głównej"
@@ -175,64 +174,56 @@ const Nav = memo(() => {
                     >
                       Strona główna
                     </NavLink>
-                  </div>
+                  </li>
                 )}
+              </>
+              <li className="nav__item text-center mb-3 mb-lg-0">
+                <NavLink
+                  to="/posty"
+                  title="Zobacz najnowsze wpisy"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  Posty
+                </NavLink>
               </li>
-              <li>
-                <div className="nav__item text-center mb-3 mb-lg-0">
-                  <NavLink
-                    to="/posty"
-                    title="Zobacz najnowsze wpisy"
-                    onBlur={handleCloseNavOnBlur}
-                  >
-                    Posty
-                  </NavLink>
-                </div>
+              <li className="nav__item text-center mb-3 mb-lg-0">
+                <NavLink
+                  to="/o-blogu"
+                  title="Dowiedz się trochę o blogu i jego autorach"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  O blogu
+                </NavLink>
               </li>
-              <li>
-                <div className="nav__item text-center mb-3 mb-lg-0">
-                  <NavLink
-                    to="/o-blogu"
-                    title="Dowiedz się trochę o blogu"
-                    onBlur={handleCloseNavOnBlur}
-                  >
-                    O blogu
-                  </NavLink>
-                </div>
+              <li className="nav__item text-center mb-3 mb-lg-0">
+                <NavLink
+                  to="/najczesciej-zadawane-pytania"
+                  title="Zobacz najczęściej zadawane pytania"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  FAQ
+                </NavLink>
               </li>
-              <li>
-                <div className="nav__item text-center mb-3 mb-lg-0">
-                  <NavLink
-                    to="/najczesciej-zadawane-pytania"
-                    title="Zobacz najczęściej zadawane pytania"
-                    onBlur={handleCloseNavOnBlur}
-                  >
-                    FAQ
-                  </NavLink>
-                </div>
+              <li className={navItemClassName}>
+                <NavLink
+                  to="/kontakt"
+                  title="Skontaktuj się"
+                  onBlur={handleCloseNavOnBlur}
+                >
+                  Kontakt
+                </NavLink>
               </li>
-              <li>
-                <div className={navItemClassName}>
-                  <NavLink
-                    to="/kontakt"
-                    title="Skontaktuj się"
-                    onBlur={handleCloseNavOnBlur}
-                  >
-                    Kontakt
-                  </NavLink>
-                </div>
-              </li>
-              <li>
+              <>
                 {isDesktop && user && (
-                  <div className="nav__item text-center mb-3 mb-lg-0">
+                  <li className="nav__item text-center mb-3 mb-lg-0">
                     <NavImageLink
                       className="nav__link mx-auto overflow-hidden"
                       onBlur={handleCloseNavOnBlur}
                       gender={gender}
                     />
-                  </div>
+                  </li>
                 )}
-              </li>
+              </>
             </ul>
           </OverlayScrollbarsComponent>
         </div>
