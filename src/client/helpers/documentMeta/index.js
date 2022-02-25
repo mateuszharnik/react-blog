@@ -53,9 +53,64 @@ export const faqMeta = ({
   'twitter:description': description,
 });
 
+export const postsMeta = ({
+  title = 'Wszystkie posty',
+  description = 'Zobacz wszystkie posty.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const dashboardMeta = ({
+  title = 'Panel administratora',
+  description = 'Zarządzaj blogiem.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const profileMeta = ({
+  title = 'Profil użytkownika',
+  description = 'Podgląd profilu.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const settingsMeta = ({
+  title = 'Ustawienia',
+  description = 'Ustawienia profilu.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
 export const signInMeta = ({
   title = 'Zaloguj się',
   description = 'Zaloguj się do konta.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const signUpMeta = ({
+  title = 'Zarejestruj się',
+  description = 'Utwórz nowe konto.',
 } = {}) => ({
   description,
   'og:title': title,
