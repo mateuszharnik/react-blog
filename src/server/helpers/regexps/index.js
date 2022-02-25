@@ -7,3 +7,11 @@ export const passwordRegExp = /^(?=.*[0-9])(?=.*[!@#$%^&*~`])(?=.*[a-ząćęłń
 export const nameRegExp = /^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚźŹżŻ]{2,32}$/;
 
 export const dbIdRegExp = /^[a-f\d]{24}$/i;
+
+export const instagramRegExp = /^https?:\/\/(www.)?instagram.com\/.*$/;
+
+export const facebookRegExp = /^https?:\/\/(www.)?facebook.com\/.*$/;
+
+export const twitterRegExp = /^https?:\/\/(www.)?twitter.com\/.*$/;
+
+export const githubRegExp = /^https?:\/\/(www.)?github.com\/.*$/;
