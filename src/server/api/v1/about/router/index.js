@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getAbout, updateAbout } from '../controller';
+import { getAbout } from '../controller';
 
 const router = Router();
 
 router.get('/', getAbout);
-router.put('/', updateAbout);
+// router.put('/', updateAbout);
 
 export default router;

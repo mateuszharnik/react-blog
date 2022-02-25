@@ -1,7 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import { Router } from 'express';
 import {
-  getMessages, getMessage, createMessage, deleteMessages, deleteMessage,
+  createMessage,
 } from '../controller';
 
 const router = Router();
@@ -12,10 +12,10 @@ const messageLimiter = rateLimit({
   message: 'Przekroczono limit, Spróbuj ponownie później.',
 });
 
-router.get('/', getMessages);
-router.get('/:id', getMessage);
+// router.get('/', getMessages);
+// router.get('/:id', getMessage);
 router.post('/', messageLimiter, createMessage);
-router.delete('/', deleteMessages);
-router.delete('/:id', deleteMessage);
+// router.delete('/', deleteMessages);
+// router.delete('/:id', deleteMessage);
 
 export default router;

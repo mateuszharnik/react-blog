@@ -34,13 +34,11 @@ const options = {
   },
 };
 
-const user = true;
-const gender = 'female';
-
 const Nav = memo(() => {
   const openNavButtonRef = useRef(null);
   const closeNavButtonRef = useRef(null);
   const scrollbarRef = useRef(null);
+  const { user } = useStoreState((store) => store.user);
   const { isOpen, isAnimated } = useStoreState((store) => store.nav);
   const { isDesktop } = useStoreState((store) => store.matchMedia);
   const { toggleNav, closeNav } = useStoreActions((actions) => actions.nav);
@@ -157,7 +155,7 @@ const Nav = memo(() => {
                   <NavImageLink
                     className="d-block p-1"
                     onBlur={handleCloseNavOnBlur}
-                    gender={gender}
+                    gender={user?.gender}
                   />
                 </div>
               )}
@@ -244,7 +242,7 @@ const Nav = memo(() => {
                   <li className="nav__item text-center mb-3 mb-lg-0">
                     <NavImageButton
                       className="nav__link nav__link-button mx-auto overflow-hidden"
-                      gender={gender}
+                      gender={user?.gender}
                     />
                   </li>
                 )}
