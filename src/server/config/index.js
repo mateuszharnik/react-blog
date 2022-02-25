@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 config();
 
 const schema = Joi.object({
-  NODE_ENV: Joi.string().trim().default('development').valid('development', 'production'),
+  NODE_ENV: Joi.string().trim().default('development').valid('development', 'production', 'test'),
   PORT: Joi.string().trim().default('3000'),
   CLIENT_URL: Joi.string().trim().default('http://localhost:8080'),
   DB_URL: Joi.string().trim().default('mongodb://localhost/db'),
