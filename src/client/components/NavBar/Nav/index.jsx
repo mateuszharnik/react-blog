@@ -11,12 +11,14 @@ import NavLink from '@client/components/NavBar/NavLink';
 
 const NavImageLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'nav-image-link' */ '@client/components/NavBar/NavImageLink'),
-  loading: () => null,
+  loading: null,
+  error: null,
 });
 
 const NavImageButton = lazyLoad({
   loader: () => import(/* webpackChunkName: 'nav-image-button' */ '@client/components/NavBar/NavImageButton'),
-  loading: () => null,
+  loading: null,
+  error: null,
 });
 
 const options = {
