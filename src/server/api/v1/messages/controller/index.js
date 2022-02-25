@@ -76,7 +76,7 @@ export const createMessage = async (req, res, next) => {
       return responseWithError(409, 'Nie udało się wysłać wiadomości.');
     }
 
-    return res.status(200).json(createdMessage);
+    return res.status(201).json(createdMessage);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));
