@@ -1,0 +1,52 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+
+.nav {
+  .dropdown-nav {
+    padding: 0;
+    position: absolute;
+    @include toRem(right, 20);
+    @include toRem(top, 74);
+
+    &::before {
+      border-bottom: 10px solid #222222;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      content: "";
+      position: absolute;
+      @include toRem(top, -10);
+      @include toRem(right, 10);
+    }
+
+    &__list {
+      background-color: #222222;
+      border-radius: 4px;
+      list-style-type: none;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .nav__text {
+      display: block;
+      padding: 0.25rem;
+    }
+
+    .nav__link {
+      display: block;
+      padding: 0.625rem 1.25rem;
+
+      &:hover {
+        background-color: #181818;
+      }
+
+      &:focus-visible {
+        outline: none;
+
+        .nav__text {
+          outline: white auto 1px;
+          outline: -webkit-focus-ring-color auto 1px;
+        }
+      }
+    }
+  }
+}

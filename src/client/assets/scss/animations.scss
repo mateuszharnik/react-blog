@@ -22,3 +22,29 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
+.dropdown-fade-enter,
+.dropdown-fade-appear,
+.dropdown-fade-exit-done {
+  opacity: 0;
+  transform: translateY(-1.25rem);
+}
+
+.dropdown-fade-enter-done,
+.dropdown-fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-fade-appear-active,
+.dropdown-fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.dropdown-fade-exit-active {
+  opacity: 0;
+  transform: translateY(-1.25rem);
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}

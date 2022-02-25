@@ -7,13 +7,14 @@
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
+  max-height: 100vh;
   position: relative;
   @include toRem(padding-top, 84);
   @include toRem(min-height, 600);
-  @include toRem(max-height, 900);
 
   @include media-breakpoint-up(lg) {
     height: 100vh !important;
+    @include toRem(max-height, 900);
   }
 
   &__title {

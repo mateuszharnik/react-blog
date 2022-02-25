@@ -7,6 +7,6 @@
   }
 
   &-container {
-    @include toRem(max-width, 800);
+    @include toRem(max-width, 1000);
   }
 }

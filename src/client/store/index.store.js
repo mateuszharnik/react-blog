@@ -1,11 +1,13 @@
 import { createStore } from 'easy-peasy';
 import app from './app.store';
 import nav from './nav.store';
+import navDropdown from './navDropdown.store';
 import matchMedia from './matchMedia.store';
 
 const model = {
   app,
   nav,
+  navDropdown,
   matchMedia,
 };
 

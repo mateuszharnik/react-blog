@@ -5,7 +5,7 @@ import {
 } from 'prop-types';
 
 const NavLink = memo(({
-  onBlur, to, title, children,
+  onBlur, to, title, children, dataNav, dataDropdownNav,
 }) => (
   <Link
     to={to}
@@ -13,11 +13,12 @@ const NavLink = memo(({
     title={title}
     className={({ isActive }) => (isActive ? 'nav__link mx-auto active' : 'nav__link mx-auto')}
     onBlur={onBlur}
-    data-nav
+    data-nav={dataNav}
+    data-dropdown-nav={dataDropdownNav}
   >
     {({ isActive }) => (
       <>
-        {children}{' '}
+        <span className="nav__text">{children}</span>{' '}
         {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
       </>
     )}
@@ -31,10 +32,14 @@ NavLink.propTypes = {
   title: string.isRequired,
   to: string.isRequired,
   onBlur: func,
+  dataNav: string,
+  dataDropdownNav: string,
 };
 
 NavLink.defaultProps = {
   onBlur: () => {},
+  dataNav: null,
+  dataDropdownNav: null,
 };
 
 export default NavLink;
