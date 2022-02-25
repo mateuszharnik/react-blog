@@ -1,6 +1,7 @@
 import React, {
   useCallback, useEffect, useState, memo,
 } from 'react';
+import { useStoreActions } from 'easy-peasy';
 import { useNavigate, Link } from 'react-router-dom';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import LazyImage from '@client/components/LazyImage';
@@ -9,6 +10,7 @@ import notFound from '@client/assets/images/undraw_page_not_found_su7k.svg';
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
+  const { removeLayer, addLayer } = useStoreActions((actions) => actions.layer);
   const navigate = useNavigate();
 
   const handleClick = useCallback((e) => {
@@ -30,8 +32,12 @@ const NotFound = memo(() => {
   }, [seconds]);
 
   useEffect(() => {
+    addLayer();
+
     setTitle('404');
     setMeta(notFoundMeta());
+
+    removeLayer();
   }, []);
 
   return (

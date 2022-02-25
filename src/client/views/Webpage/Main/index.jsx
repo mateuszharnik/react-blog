@@ -1,7 +1,10 @@
-import React, { memo, useRef, useEffect } from 'react';
+import React, {
+  memo, useRef, useState, useEffect,
+} from 'react';
 import { useStoreActions } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
 import lazyLoad from '@client/helpers/lazyLoad';
+import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 import Header from '@client/components/NavBar/Header';
 
 const SkipNavLink = lazyLoad({
@@ -17,28 +20,40 @@ const ScrollToTopButton = lazyLoad({
 });
 
 const Main = memo(() => {
+  const [isLoading, setIsLoading] = useState(true);
   const mainRef = useRef(null);
   const { pathname } = useLocation();
   const { toggleNav } = useStoreActions((actions) => actions.nav);
+  const { addLayer } = useStoreActions((actions) => actions.layer);
+
+  useEffect(async () => {
+    addLayer();
+
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
 
   return (
     <>
-      <SkipNavLink
-        target={mainRef}
-      />
-      <Header />
-      <main
-        id="tresc"
-        ref={mainRef}
-        className="main"
-      >
-        <Outlet />
-      </main>
-      <ScrollToTopButton
-        target={mainRef}
-      />
+      {isLoading ? <LazyPageSpinner /> : (
+        <>
+          <SkipNavLink
+            target={mainRef}
+          />
+          <Header />
+          <main
+            id="tresc"
+            ref={mainRef}
+            className="main"
+          >
+            <Outlet />
+          </main>
+          <ScrollToTopButton
+            target={mainRef}
+          />
+        </>
+      )}
     </>
   );
 });
