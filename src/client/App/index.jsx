@@ -13,6 +13,8 @@ const App = memo(() => {
   const { isOpen } = useStoreState((actions) => actions.nav);
   const { isDesktop } = useStoreState((actions) => actions.matchMedia);
   const { setIsDesktop } = useStoreActions((actions) => actions.matchMedia);
+  const { fetchConfig } = useStoreActions((actions) => actions.config);
+  const { fetchCSRFToken } = useStoreActions((actions) => actions.csrf);
 
   useEffect(async () => {
     setIsDesktop(window.innerWidth >= 992);
@@ -22,10 +24,8 @@ const App = memo(() => {
 
     media.addEventListener('change', setMedia);
 
-    const axios = (await import('@client/helpers/libs/axios')).default;
-    const { data } = await axios.get('/getCSRFToken');
-
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = data.CSRFToken;
+    fetchCSRFToken();
+    fetchConfig();
 
     setIsLoading(false);
 

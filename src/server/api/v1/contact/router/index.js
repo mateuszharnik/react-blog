@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getContact, updateContact } from '../controller';
+import { getContact } from '../controller';
 
 const router = Router();
 
 router.get('/', getContact);
-router.put('/', updateContact);
+// router.put('/', updateContact);
 
 export default router;
