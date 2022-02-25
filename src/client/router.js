@@ -4,12 +4,20 @@ import lazyLoad from '@client/helpers/lazyLoad';
 import LazyComponentError from '@client/components/LazyLoading/LazyComponentError';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
-const Main = lazyLoad({
-  loader: () => import(/* webpackChunkName: 'main' */ '@client/views/Webpage/Main'),
+const Webpage = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'webpage-main' */ '@client/views/Webpage/Main'),
+});
+
+const Admin = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'admin-main' */ '@client/views/Admin/Main'),
 });
 
 const SignIn = lazyLoad({
   loader: () => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn'),
+});
+
+const SignUp = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'sign-up' */ '@client/views/Auth/SignUp'),
 });
 
 const NotFound = lazyLoad({
@@ -36,15 +44,42 @@ const FAQs = lazyLoad({
   loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
 });
 
+const Posts = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'posts' */ '@client/views/Webpage/Posts'),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+});
+
+const Profile = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'profile' */ '@client/views/Webpage/Profile'),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+});
+
+const Settings = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'settings' */ '@client/views/Webpage/Settings'),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+});
+
+const Dashboard = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'dashboard' */ '@client/views/Admin/Dashboard'),
+  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+});
+
 const Router = memo(() => (
   <Routes>
-    <Route path="/" element={<Main />}>
+    <Route path="/" element={<Webpage />}>
       <Route index element={<Home />} />
       <Route path="o-blogu" element={<About />} />
       <Route path="kontakt" element={<Contact />} />
+      <Route path="posty" element={<Posts />} />
       <Route path="najczesciej-zadawane-pytania" element={<FAQs />} />
+      <Route path="profil" element={<Profile />} />
+      <Route path="profil/ustawienia" element={<Settings />} />
     </Route>
-    <Route path="zaloguj" element={<SignIn />} />
+    <Route path="/admin" element={<Admin />}>
+      <Route index element={<Dashboard />} />
+    </Route>
+    <Route path="/zaloguj" element={<SignIn />} />
+    <Route path="/rejestracja" element={<SignUp />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 ));
