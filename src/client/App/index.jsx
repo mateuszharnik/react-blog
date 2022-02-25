@@ -14,13 +14,18 @@ const App = memo(() => {
   const { isDesktop } = useStoreState((actions) => actions.matchMedia);
   const { setIsDesktop } = useStoreActions((actions) => actions.matchMedia);
 
-  useEffect(() => {
+  useEffect(async () => {
     setIsDesktop(window.innerWidth >= 992);
 
     const media = window.matchMedia('(min-width: 992px)');
     const setMedia = createSetMedia(setIsDesktop);
 
     media.addEventListener('change', setMedia);
+
+    const axios = (await import('@client/helpers/libs/axios')).default;
+    const { data } = await axios.get('/getCSRFToken');
+
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = data.CSRFToken;
 
     setIsLoading(false);
 

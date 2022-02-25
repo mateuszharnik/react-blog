@@ -8,6 +8,16 @@ export const notFound = (req, res, next) => {
   next(error);
 };
 
+export const CSRFErrorHandler = (error, req, res, next) => {
+  if (error.code !== 'EBADCSRFTOKEN') {
+    return next(error);
+  }
+
+  res.status(403).json({
+    message: 'Wystąpił błąd. Odśwież stronę i spróbuj ponownie.',
+  });
+};
+
 // eslint-disable-next-line no-unused-vars
 export const errorHandler = ({ message, stack }, req, res, next) => {
   const status = res.statusCode === 200 ? 500 : res.statusCode;

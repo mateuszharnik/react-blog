@@ -4,6 +4,9 @@ import about from '@server/api/v1/about/router';
 
 const router = Router();
 
+router.get('/', (req, res) => res.json({ message: '🖤' }));
+router.get('/getCSRFToken', (req, res) => res.json({ CSRFToken: req.csrfToken() }));
+
 router.use('/messages', messages);
 router.use('/about', about);
 
