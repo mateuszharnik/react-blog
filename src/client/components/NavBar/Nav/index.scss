@@ -57,8 +57,10 @@
 
     &-container {
       @include toRem(padding, 20);
+      @include toRem(min-height, 84);
 
       @include media-breakpoint-up(lg) {
+        min-height: auto;
         padding: 0;
       }
     }
@@ -81,15 +83,52 @@
     }
   }
 
+  &__link {
+    &-button {
+      position: relative;
+      z-index: 100;
+    }
+
+    &-image {
+      @include toRem(width, 36);
+      @include toRem(height, 36);
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      svg {
+        max-width: 100%;
+      }
+
+      @include media-breakpoint-up(lg) {
+        @include toRem(width, 31);
+        @include toRem(height, 31);
+      }
+
+      &-wrapper {
+        @include media-breakpoint-up(lg) {
+          @include toRem(margin-right, 20);
+        }
+      }
+    }
+  }
+
   .os-host {
     @include media-breakpoint-up(lg) {
       height: 100%;
+      position: static;
     }
-  }
-}
 
-.nav__link-image-wrapper {
-  @include media-breakpoint-up(lg) {
-    @include toRem(margin-right, 20);
+    .os-content {
+      @include media-breakpoint-up(lg) {
+        position: static;
+      }
+    }
+
+    .os-viewport {
+      @include media-breakpoint-up(lg) {
+        overflow: visible !important;
+      }
+    }
   }
 }

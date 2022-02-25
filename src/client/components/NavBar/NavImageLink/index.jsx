@@ -6,7 +6,7 @@ import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
 
 const NavImageLink = memo(({
-  onBlur, to, title, src, gender, className,
+  onBlur, src, gender, className,
 }) => {
   const image = useMemo(() => {
     if (src) return src;
@@ -18,12 +18,12 @@ const NavImageLink = memo(({
     <div className="nav__link-image-wrapper">
       <Link
         className={className}
-        to={to}
-        title={title}
+        to="/profil"
+        title="Wyświetl swój profil"
         onBlur={onBlur}
         data-nav
       >
-        <span className="visually-hidden">Panel administratora</span>
+        <span className="visually-hidden">Profil</span>
         <LazyImage
           divClassName="nav__link-image"
           width={36}
@@ -42,15 +42,11 @@ NavImageLink.propTypes = {
   gender: string.isRequired,
   className: string.isRequired,
   src: string,
-  title: string,
-  to: string,
   onBlur: func,
 };
 
 NavImageLink.defaultProps = {
   onBlur: () => {},
-  title: 'Przejdź do panelu administratora',
-  to: '/admin',
   src: '',
 };
 

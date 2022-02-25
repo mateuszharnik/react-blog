@@ -14,6 +14,11 @@ const NavImageLink = lazyLoad({
   loading: () => null,
 });
 
+const NavImageButton = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'nav-image-button' */ '@client/components/NavBar/NavImageButton'),
+  loading: () => null,
+});
+
 const options = {
   className: 'os-theme-light',
   autoUpdate: true,
@@ -170,6 +175,7 @@ const Nav = memo(() => {
                     <NavLink
                       to="/"
                       title="Wróć do strony głównej"
+                      dataNav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
                       Strona główna
@@ -181,6 +187,7 @@ const Nav = memo(() => {
                 <NavLink
                   to="/posty"
                   title="Zobacz najnowsze wpisy"
+                  dataNav="true"
                   onBlur={handleCloseNavOnBlur}
                 >
                   Posty
@@ -190,6 +197,7 @@ const Nav = memo(() => {
                 <NavLink
                   to="/o-blogu"
                   title="Dowiedz się trochę o blogu i jego autorach"
+                  dataNav="true"
                   onBlur={handleCloseNavOnBlur}
                 >
                   O blogu
@@ -199,26 +207,41 @@ const Nav = memo(() => {
                 <NavLink
                   to="/najczesciej-zadawane-pytania"
                   title="Zobacz najczęściej zadawane pytania"
+                  dataNav="true"
                   onBlur={handleCloseNavOnBlur}
                 >
                   FAQ
                 </NavLink>
               </li>
-              <li className={navItemClassName}>
+              <li className="nav__item text-center mb-3 mb-lg-0">
                 <NavLink
                   to="/kontakt"
                   title="Skontaktuj się"
+                  dataNav="true"
                   onBlur={handleCloseNavOnBlur}
                 >
                   Kontakt
                 </NavLink>
               </li>
               <>
+                {!user && (
+                  <li className={navItemClassName}>
+                    <NavLink
+                      to="/zaloguj"
+                      title="Zaloguj się"
+                      dataNav="true"
+                      onBlur={handleCloseNavOnBlur}
+                    >
+                      Zaloguj się
+                    </NavLink>
+                  </li>
+                )}
+              </>
+              <>
                 {isDesktop && user && (
                   <li className="nav__item text-center mb-3 mb-lg-0">
-                    <NavImageLink
-                      className="nav__link mx-auto overflow-hidden"
-                      onBlur={handleCloseNavOnBlur}
+                    <NavImageButton
+                      className="nav__link nav__link-button mx-auto overflow-hidden"
                       gender={gender}
                     />
                   </li>

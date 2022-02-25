@@ -32,6 +32,8 @@
 
     @include media-breakpoint-up(lg) {
       @include toRem(margin-right, 20);
+      position: relative;
+      z-index: 100;
     }
   }
 }
