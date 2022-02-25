@@ -1,6 +1,12 @@
 {
   "name": "Mateusz Harnik | Blog o kodowaniu",
+  "short_name": "Mateusz Harnik Blog",
+  "description": "Blog o kodowaniu założony przez Mateusza Harnik. Znajdziesz tutaj informacje, porady oraz wiedzę o kodowaniu stron internetowych.",
   "theme_color": "#030303",
+  "background_color": "#ffffff",
+  "orientation": "any",
+  "display": "standalone",
+  "start_url": "/",
   "lang": "pl-PL",
   "icons": [
     {
