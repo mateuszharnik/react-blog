@@ -17,6 +17,9 @@
     "build:client": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:client:analyze": "cross-env NODE_ENV=production ANALYZE=true webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:server": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.server.js",
+    "test": "yarn run test:client && yarn run test:server",
+    "test:client": "jest ./src/client --passWithNoTests",
+    "test:server": "jest ./src/server --env=node --passWithNoTests",
     "purgecss": "purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css",
     "lint-fix": "yarn run lint:js-fix && yarn run lint:style-fix",
     "lint:js-fix": "eslint ./src/ --ext .js,.jsx --fix",
@@ -42,8 +45,14 @@
     "src/server/**/*.js": [
       "yarn run lint:server"
     ],
+    "src/server/**/*.test.js": [
+      "yarn run test:server"
+    ],
     "src/client/**/*.{js,jsx}": [
       "yarn run lint:client"
+    ],
+    "src/client/**/*.test.js": [
+      "yarn run test:client"
     ],
     "src/client/**/*.{scss,css}": [
       "yarn run lint:style"
@@ -104,6 +113,8 @@
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^11.2.7",
     "@vue/preload-webpack-plugin": "^2.0.0",
     "autoprefixer": "^9.8.6",
     "babel-loader": "^8.2.2",
@@ -128,6 +139,7 @@
     "html-webpack-plugin": "^4.5.1",
     "husky": "^4.3.8",
     "imagemin-webpack-plugin": "^2.4.2",
+    "jest": "^26.6.3",
     "lint-staged": "^11.1.2",
     "mini-css-extract-plugin": "^1.6.2",
     "node-sass": "^6.0.1",
@@ -143,6 +155,7 @@
     "stylelint-order": "^4.1.0",
     "stylelint-prettier": "^1.2.0",
     "stylelint-webpack-plugin": "^2.2.2",
+    "supertest": "^6.1.6",
     "url-loader": "^4.1.1",
     "webpack": "^4.46.0",
     "webpack-bundle-analyzer": "^3.9.0",
