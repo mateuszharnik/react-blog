@@ -26,42 +26,50 @@ const NotFound = lazyLoad({
 
 const Home = lazyLoad({
   loader: () => import(/* webpackChunkName: 'home' */ '@client/views/Webpage/Home'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const About = lazyLoad({
   loader: () => import(/* webpackChunkName: 'about' */ '@client/views/Webpage/About'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Contact = lazyLoad({
   loader: () => import(/* webpackChunkName: 'contact' */ '@client/views/Webpage/Contact'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const FAQs = lazyLoad({
   loader: () => import(/* webpackChunkName: 'faqs' */ '@client/views/Webpage/FAQs'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Posts = lazyLoad({
   loader: () => import(/* webpackChunkName: 'posts' */ '@client/views/Webpage/Posts'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Profile = lazyLoad({
   loader: () => import(/* webpackChunkName: 'profile' */ '@client/views/Webpage/Profile'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Settings = lazyLoad({
   loader: () => import(/* webpackChunkName: 'settings' */ '@client/views/Webpage/Settings'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Dashboard = lazyLoad({
   loader: () => import(/* webpackChunkName: 'dashboard' */ '@client/views/Admin/Dashboard'),
-  loading: ({ error }) => (error ? <LazyComponentError /> : <LazyComponentSpinner />),
+  loading: LazyComponentSpinner,
+  error: LazyComponentError,
 });
 
 const Router = memo(() => (

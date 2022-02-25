@@ -6,12 +6,14 @@ import Header from '@client/components/NavBar/Header';
 
 const SkipNavLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
-  loading: () => null,
+  loading: null,
+  error: null,
 });
 
 const ScrollToTopButton = lazyLoad({
   loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/ScrollToTopButton'),
-  loading: () => null,
+  loading: null,
+  error: null,
 });
 
 const Main = memo(() => {
