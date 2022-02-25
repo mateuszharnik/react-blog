@@ -1,12 +1,15 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import Router from '@client/router.js';
+import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
+import Router from '@client/router';
 
 const createSetMedia = (setIsDesktop) => (media) => {
   setIsDesktop(media.matches);
 };
 
 const App = memo(() => {
+  const [isLoading, setIsLoading] = useState(true);
+  const { isLayerActive } = useStoreState((store) => store.layer);
   const { isOpen } = useStoreState((actions) => actions.nav);
   const { isDesktop } = useStoreState((actions) => actions.matchMedia);
   const { setIsDesktop } = useStoreActions((actions) => actions.matchMedia);
@@ -19,19 +22,28 @@ const App = memo(() => {
 
     media.addEventListener('change', setMedia);
 
+    setIsLoading(false);
+
     return () => media.removeEventListener('change', setMedia);
-  }, [setIsDesktop]);
+  }, []);
 
   useEffect(() => {
-    if (isOpen && !isDesktop) {
+    if ((isOpen && !isDesktop) || isLayerActive) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
     }
-  }, [isDesktop, isOpen]);
+  }, [isDesktop, isOpen, isLayerActive]);
 
   return (
-    <Router />
+    <>
+      {isLayerActive && (
+        <div className="layer">
+          <LazyPageSpinner />
+        </div>
+      )}
+      {isLoading ? <LazyPageSpinner /> : <Router />}
+    </>
   );
 });
 
