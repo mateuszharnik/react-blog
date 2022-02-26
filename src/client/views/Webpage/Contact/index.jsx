@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, contactMeta } from '@client/helpers/documentMeta';
 
 const Contact = memo(() => {
@@ -14,9 +14,9 @@ const Contact = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       Strona kontaktowa
-    </PageWrapper>
+    </PageContainer>
   );
 });
 

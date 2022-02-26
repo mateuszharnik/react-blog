@@ -3,10 +3,7 @@
 
 .page {
   &-wrapper {
-    padding: 5.875rem 0.625rem 0.625rem;
-  }
-
-  &-container {
-    @include toRem(max-width, 1000);
+    min-height: 100vh;
+    padding-top: 5.25rem;
   }
 }

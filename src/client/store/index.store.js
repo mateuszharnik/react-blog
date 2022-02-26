@@ -2,6 +2,7 @@ import { createStore } from 'easy-peasy';
 import config from './config.store';
 import csrf from './csrf.store';
 import user from './user.store';
+import contact from './contact.store';
 import nav from './nav.store';
 import navDropdown from './navDropdown.store';
 import layer from './layer.store';
@@ -11,6 +12,7 @@ const model = {
   config,
   csrf,
   user,
+  contact,
   nav,
   navDropdown,
   layer,

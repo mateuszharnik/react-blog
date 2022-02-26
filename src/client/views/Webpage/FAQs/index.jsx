@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, faqMeta } from '@client/helpers/documentMeta';
 
 const FAQs = memo(() => {
@@ -14,9 +14,9 @@ const FAQs = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       Najczęściej zadawane pytania
-    </PageWrapper>
+    </PageContainer>
   );
 });
 

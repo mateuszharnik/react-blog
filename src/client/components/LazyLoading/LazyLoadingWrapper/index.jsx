@@ -5,6 +5,8 @@ import {
 import MaxViewHeight from '@client/components/MaxViewHeight';
 
 const LazyLoadingWrapper = memo(({ children, page }) => {
+  const offsetHeight = useMemo(() => (page ? 0 : 84), [page]);
+
   const className = useMemo(
     () => `lazy-loading-wrapper position-relative bg-white${
       page ? '' : ' lazy-loading-wrapper__component'
@@ -13,7 +15,10 @@ const LazyLoadingWrapper = memo(({ children, page }) => {
   );
 
   return (
-    <MaxViewHeight className={className}>
+    <MaxViewHeight
+      offsetHeight={offsetHeight}
+      className={className}
+    >
       <div className="position-center w-100">
         {children}
       </div>
