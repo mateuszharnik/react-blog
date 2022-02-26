@@ -16,9 +16,7 @@ const Home = memo(() => {
   return (
     <div className="home">
       <WelcomeBanner />
-      <div className="vh-100" />
-      <div className="vh-100" />
-      <div className="vh-100" />
+      <div style={{ height: '600px' }} />
     </div>
   );
 });

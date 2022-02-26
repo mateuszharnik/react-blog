@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, settingsMeta } from '@client/helpers/documentMeta';
 
 const Settings = memo(() => {
@@ -14,9 +14,9 @@ const Settings = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       Ustawienia
-    </PageWrapper>
+    </PageContainer>
   );
 });
 

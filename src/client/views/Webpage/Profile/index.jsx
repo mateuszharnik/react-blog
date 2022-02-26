@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, profileMeta } from '@client/helpers/documentMeta';
 
 const Profile = memo(() => {
@@ -14,9 +14,9 @@ const Profile = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       Profil użytkownika
-    </PageWrapper>
+    </PageContainer>
   );
 });
 

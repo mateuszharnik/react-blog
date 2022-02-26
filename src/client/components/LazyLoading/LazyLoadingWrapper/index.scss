@@ -5,6 +5,6 @@
   @include toRem(min-height, 400);
 
   &__component {
-    @include toRem(padding-top, 84);
+    max-height: calc(100vh - 84px);
   }
 }

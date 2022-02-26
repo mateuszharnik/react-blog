@@ -24,8 +24,8 @@ const App = memo(() => {
 
     media.addEventListener('change', setMedia);
 
-    fetchCSRFToken();
-    fetchConfig();
+    await fetchCSRFToken();
+    await fetchConfig();
 
     setIsLoading(false);
 

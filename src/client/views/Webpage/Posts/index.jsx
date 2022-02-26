@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, postsMeta } from '@client/helpers/documentMeta';
 
 const Posts = memo(() => {
@@ -14,9 +14,9 @@ const Posts = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       Wszystkie posty
-    </PageWrapper>
+    </PageContainer>
   );
 });
 

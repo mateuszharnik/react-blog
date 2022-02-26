@@ -3,9 +3,7 @@ import { oneOfType, arrayOf, node } from 'prop-types';
 
 const PageWrapper = memo(({ children }) => (
   <div className="page-wrapper">
-    <div className="page-container mx-auto">
-      {children}
-    </div>
+    {children}
   </div>
 ));
 

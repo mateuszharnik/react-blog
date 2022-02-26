@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageWrapper from '@client/components/PageWrapper';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta, aboutMeta } from '@client/helpers/documentMeta';
 
 const About = memo(() => {
@@ -14,9 +14,9 @@ const About = memo(() => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       O blogu
-    </PageWrapper>
+    </PageContainer>
   );
 });
 
