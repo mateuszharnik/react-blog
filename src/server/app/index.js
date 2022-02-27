@@ -34,7 +34,7 @@ if (NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '../client')));
 }
 
-app.use('/docs', serve, setup(swaggerDocument, { explorer: true }));
+app.use('/api/v1/docs', serve, setup(swaggerDocument, { explorer: true }));
 app.use('/api', api);
 
 if (NODE_ENV === 'production') {
