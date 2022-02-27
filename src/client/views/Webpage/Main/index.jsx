@@ -1,7 +1,7 @@
 import React, {
   memo, useRef, useState, useEffect,
 } from 'react';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
 import lazyLoad from '@client/helpers/lazyLoad';
 import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
@@ -25,6 +25,7 @@ const Main = memo(() => {
   const [isLoading, setIsLoading] = useState(true);
   const mainRef = useRef(null);
   const { pathname } = useLocation();
+  const { contact } = useStoreState((state) => state.contact);
   const { toggleNav } = useStoreActions((actions) => actions.nav);
   const { addLayer } = useStoreActions((actions) => actions.layer);
   const { fetchContact } = useStoreActions((actions) => actions.contact);
@@ -32,7 +33,9 @@ const Main = memo(() => {
   useEffect(async () => {
     addLayer();
 
-    await fetchContact();
+    if (!contact) {
+      await fetchContact();
+    }
 
     setIsLoading(false);
   }, []);

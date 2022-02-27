@@ -3,5 +3,5 @@ export const exampleAbout = {
 };
 
 export const defaultAbout = {
-  contents: 'O blogu',
+  contents: '',
 };
