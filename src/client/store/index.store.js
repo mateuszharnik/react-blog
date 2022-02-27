@@ -3,6 +3,7 @@ import config from './config.store';
 import csrf from './csrf.store';
 import user from './user.store';
 import contact from './contact.store';
+import about from './about.store';
 import nav from './nav.store';
 import navDropdown from './navDropdown.store';
 import layer from './layer.store';
@@ -13,6 +14,7 @@ const model = {
   csrf,
   user,
   contact,
+  about,
   nav,
   navDropdown,
   layer,

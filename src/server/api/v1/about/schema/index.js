@@ -5,6 +5,7 @@ const validateAbout = (about = {}, options = {}) => {
   const schema = Joi.object().keys({
     contents: Joi.string()
       .trim()
+      .allow('')
       .required()
       .messages(contentsMessages),
   });

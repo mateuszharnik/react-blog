@@ -4,7 +4,7 @@ const AboutSchema = new Schema(
   {
     contents: {
       type: String,
-      required: true,
+      default: '',
     },
     deleted_at: {
       type: Date,
