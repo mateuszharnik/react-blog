@@ -3,14 +3,17 @@ import '@server/db';
 import { defaultAbout } from '@server/helpers/seeds/data/about';
 import { defaultConfig } from '@server/helpers/seeds/data/config';
 import { defaultContact } from '@server/helpers/seeds/data/contact';
+import { defaultRoles } from '@server/helpers/seeds/data/roles';
 import removeAndSeedMessages from './messages';
 import removeAndSeedAbout from './about';
 import removeAndSeedConfig from './config';
 import removeAndSeedContact from './contact';
+import removeAndSeedRoles from './roles';
 
 const seed = async () => {
   try {
     await removeAndSeedMessages();
+    await removeAndSeedRoles(defaultRoles);
     await removeAndSeedConfig(defaultConfig);
     await removeAndSeedAbout(defaultAbout);
     await removeAndSeedContact(defaultContact);
