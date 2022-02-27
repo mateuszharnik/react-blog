@@ -9,7 +9,7 @@ const csrf = {
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
 
-      const response = await axios.get('getCSRFToken');
+      const response = await axios.get('csrf-token');
 
       axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.CSRFToken;
 

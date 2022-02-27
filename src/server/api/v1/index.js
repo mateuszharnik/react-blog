@@ -8,7 +8,7 @@ import contact from '@server/api/v1/contact/router';
 const router = Router();
 
 router.get('/', (req, res) => res.json({ message: '🖤' }));
-router.get('/getCSRFToken', (req, res) => res.json({ CSRFToken: req.csrfToken() }));
+router.get('/csrf-token', (req, res) => res.json({ CSRFToken: req.csrfToken() }));
 
 router.use('/config', config);
 router.use('/messages', messages);
