@@ -14,7 +14,7 @@ export const CSRFErrorHandler = (error, req, res, next) => {
   }
 
   res.status(403).json({
-    message: 'Wystąpił błąd. Odśwież stronę i spróbuj ponownie.',
+    message: 'Wystąpił błąd.',
   });
 };
 

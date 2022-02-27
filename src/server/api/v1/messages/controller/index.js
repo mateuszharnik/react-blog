@@ -6,6 +6,48 @@ import purify from '@server/helpers/purify';
 import Message from '../model';
 import validateMessage from '../schema';
 
+export const countMessages = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const messages = await Message.count({ deleted_at: null });
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const countReadMessages = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const messages = await Message.count({ deleted_at: null, is_read: true });
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const countNewMessages = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const messages = await Message.count({ deleted_at: null, is_read: false });
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
 export const getMessages = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
@@ -41,7 +83,11 @@ export const getMessage = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const updatedMessage = await Message.findByIdAndUpdate(id, { is_read: true }, { new: true });
+    const updatedMessage = await Message.findOneAndUpdate(
+      { _id: id, deleted_at: null },
+      { is_read: true },
+      { new: true },
+    );
 
     if (!updatedMessage) {
       return responseWithError(409, 'Nie udało się zaktualizować wiadomości.');
@@ -149,8 +195,8 @@ export const deleteMessage = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const deletedMessage = await Message.findByIdAndUpdate(
-      id,
+    const deletedMessage = await Message.findOneAndUpdate(
+      { _id: id, deleted_at: null },
       { deleted_at: Date.now() },
       { new: true },
     );

@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import contentsMessages from '@server/helpers/messages/contents';
 
-const validateAbout = (about = {}) => {
+const validateAbout = (about = {}, options = {}) => {
   const schema = Joi.object().keys({
     contents: Joi.string()
       .trim()
@@ -9,7 +9,7 @@ const validateAbout = (about = {}) => {
       .messages(contentsMessages),
   });
 
-  const { error: validationError, value: data } = schema.validate(about);
+  const { error: validationError, value: data } = schema.validate(about, options);
 
   return { validationError, data };
 };

@@ -6,7 +6,7 @@ import subjectMessages from '@server/helpers/messages/subject';
 import messageContentsMessages from '@server/helpers/messages/messageContents';
 import { nameRegExp, emailRegExp } from '@server/helpers/regexps';
 
-const validateMessage = (message = {}) => {
+const validateMessage = (message = {}, options = {}) => {
   const schema = Joi.object().keys({
     first_name: Joi.string()
       .trim()
@@ -39,7 +39,7 @@ const validateMessage = (message = {}) => {
       .messages(messageContentsMessages),
   });
 
-  const { error: validationError, value: data } = schema.validate(message);
+  const { error: validationError, value: data } = schema.validate(message, options);
 
   return { validationError, data };
 };

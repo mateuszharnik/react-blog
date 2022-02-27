@@ -1,6 +1,9 @@
 import rateLimit from 'express-rate-limit';
 import { Router } from 'express';
 import {
+  countMessages,
+  countReadMessages,
+  countNewMessages,
   createMessage,
 } from '../controller';
 
@@ -13,6 +16,9 @@ const messageLimiter = rateLimit({
 });
 
 // router.get('/', getMessages);
+router.get('/count', countMessages);
+router.get('/count/read', countReadMessages);
+router.get('/count/new', countNewMessages);
 // router.get('/:id', getMessage);
 router.post('/', messageLimiter, createMessage);
 // router.delete('/', deleteMessages);
