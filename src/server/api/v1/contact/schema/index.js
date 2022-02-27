@@ -8,7 +8,7 @@ import {
   emailRegExp, githubRegExp, twitterRegExp, facebookRegExp, instagramRegExp,
 } from '@server/helpers/regexps';
 
-const validateContact = (contact = {}) => {
+const validateContact = (contact = {}, options = {}) => {
   const schema = Joi.object().keys({
     email: Joi.string()
       .trim()
@@ -42,7 +42,7 @@ const validateContact = (contact = {}) => {
       .messages(githubMessages),
   });
 
-  const { error: validationError, value: data } = schema.validate(contact);
+  const { error: validationError, value: data } = schema.validate(contact, options);
 
   return { validationError, data };
 };

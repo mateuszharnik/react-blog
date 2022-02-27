@@ -6,6 +6,10 @@ const ConfigSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    show_email: {
+      type: Boolean,
+      required: true,
+    },
     show_social_media: {
       type: Boolean,
       required: true,
