@@ -7,12 +7,12 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(100vh - 80px);
+  max-height: calc(100vh - 84px);
   position: relative;
-  @include toRem(margin-top, -4);
   @include toRem(min-height, 500);
 
   @include media-breakpoint-up(lg) {
+    height: calc(100vh - 84px) !important;
     @include toRem(max-height, 900);
   }
 

@@ -14,10 +14,12 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div className="home">
+    <>
       <WelcomeBanner />
-      <div style={{ height: '600px' }} />
-    </div>
+      <div className="home container-fluid px-4">
+        <div className="pt-5" />
+      </div>
+    </>
   );
 });
 
