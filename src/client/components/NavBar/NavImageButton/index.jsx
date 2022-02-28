@@ -42,8 +42,20 @@ const NavImageButton = memo(({ src, gender, className }) => {
   }, [toggleNav, setFocus]);
 
   const handleCloseNavOnBlur = useCallback((e) => {
-    if (!e?.relatedTarget?.getAttribute('data-dropdown-nav')) toggleNav(false);
-  }, [toggleNav]);
+    if (!e?.relatedTarget) return;
+
+    if (!e?.relatedTarget?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
+  }, [toggleNav, isOpen]);
+
+  const closeNavOnClick = useCallback((e) => {
+    if (!e?.target?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
+  }, [toggleNav, isOpen]);
+
+  useEffect(() => {
+    document.addEventListener('click', closeNavOnClick);
+
+    return () => document.removeEventListener('click', closeNavOnClick);
+  }, [closeNavOnClick]);
 
   useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
 
@@ -79,8 +91,14 @@ const NavImageButton = memo(({ src, gender, className }) => {
         >
           <>
             {isOpen && (
-              <div className="dropdown-nav">
-                <ul className="dropdown-nav__list">
+              <div
+                className="dropdown-nav"
+                data-dropdown-nav="true"
+              >
+                <ul
+                  className="dropdown-nav__list py-2"
+                  data-dropdown-nav="true"
+                >
                   <li className="dropdown-nav__item">
                     <NavLink
                       to="/profil"

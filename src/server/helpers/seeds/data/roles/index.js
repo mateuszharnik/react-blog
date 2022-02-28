@@ -23,7 +23,7 @@ const adminRole = {
 const moderatorRole = {
   name: 'moderator',
   description: 'Moderator bloga. Może zarządzać zadaniami związanymi z wpisami.',
-  type: 'ADMIN',
+  type: 'SUPERUSER',
   can_manage_posts: true,
   can_manage_categories: true,
   can_manage_tags: true,

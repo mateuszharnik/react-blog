@@ -69,8 +69,8 @@ const Nav = memo(() => {
   const handleCloseNavOnBlur = useCallback((e) => {
     if (!e?.relatedTarget || isDesktop) return;
 
-    if (!e?.relatedTarget?.getAttribute('data-nav')) toggleNav(false);
-  }, [toggleNav, isDesktop]);
+    if (!e?.relatedTarget?.getAttribute('data-nav') && isOpen) toggleNav(false);
+  }, [toggleNav, isDesktop, isOpen]);
 
   const setFocus = useCallback((navOpen = false) => {
     setTimeout(() => {
