@@ -2,6 +2,7 @@ import { Router } from 'express';
 import messages from '@server/api/v1/messages/router';
 import about from '@server/api/v1/about/router';
 import config from '@server/api/v1/config/router';
+import termsOfUse from '@server/api/v1/termsOfUse/router';
 import contact from '@server/api/v1/contact/router';
 // import roles from '@server/api/v1/roles/router';
 
@@ -15,5 +16,6 @@ router.use('/messages', messages);
 router.use('/about', about);
 router.use('/contact', contact);
 // router.use('/roles', roles);
+router.use('/terms-of-use', termsOfUse);
 
 export default router;
