@@ -1,4 +1,3 @@
-import '@server/db';
 import csrf from 'csurf';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -23,18 +22,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(cookieParser());
 app.use(csrf({
-  cookie: true,
+  cookie: {
+    httpOnly: true,
+  },
 }));
 
 if (NODE_ENV === 'development') {
   app.use(cors({ origin: CLIENT_URL }));
+  app.use('/api/v1/docs', serve, setup(swaggerDocument, { explorer: true }));
 }
 
 if (NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '../client')));
 }
 
-app.use('/api/v1/docs', serve, setup(swaggerDocument, { explorer: true }));
 app.use('/api', api);
 
 if (NODE_ENV === 'production') {

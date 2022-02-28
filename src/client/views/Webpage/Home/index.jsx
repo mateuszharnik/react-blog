@@ -17,7 +17,7 @@ const Home = memo(() => {
     <>
       <WelcomeBanner />
       <div className="home container-fluid px-4">
-        <div className="pt-5" />
+        <div className="py-5" />
       </div>
     </>
   );

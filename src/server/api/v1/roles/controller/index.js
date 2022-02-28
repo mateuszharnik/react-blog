@@ -9,7 +9,7 @@ export const countRoles = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
   try {
-    const roles = await Role.count({ deleted_at: null, can_be_modified: true });
+    const roles = await Role.count({ deleted_at: null });
 
     return res.status(200).json({ roles });
   } catch (error) {
@@ -24,7 +24,7 @@ export const getRoles = async (req, res, next) => {
 
   try {
     const roles = await Role
-      .find({ deleted_at: null, can_be_modified: true })
+      .find({ deleted_at: null })
       .sort({ created_at: -1 });
 
     if (!roles?.length) {
@@ -50,7 +50,7 @@ export const getRole = async (req, res, next) => {
       return responseWithError(409, validationError.details[0].message);
     }
 
-    const role = await Role.findOne({ _id: id, deleted_at: null, can_be_modified: true });
+    const role = await Role.findOne({ _id: id, deleted_at: null });
 
     if (!role) {
       return responseWithError(404, 'Nie znaleziono roli użytkownika.');
@@ -69,9 +69,10 @@ export const createRole = async (req, res, next) => {
 
   try {
     const role = await Role.findOne({
-      name: req.body.name,
+      name: req.body.name.toLowerCase(),
       deleted_at: null,
       can_be_modified: true,
+      type: 'SUPERUSER',
     });
 
     if (role) {
@@ -89,7 +90,7 @@ export const createRole = async (req, res, next) => {
 
     const createdRole = await Role.create({
       ...data,
-      type: 'ADMIN',
+      type: 'SUPERUSER',
       can_be_banned: true,
       can_be_modified: true,
     });
@@ -123,7 +124,7 @@ export const updateRole = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono roli użytkownika.');
     }
 
-    if (!role?.can_be_modified) {
+    if (role?.type !== 'SUPERUSER') {
       return responseWithError(409, 'Nie można zaktualizować tej roli użytkownika.');
     }
 
@@ -137,7 +138,9 @@ export const updateRole = async (req, res, next) => {
     }
 
     const updatedRole = await Role.findOneAndUpdate(
-      { _id: id, deleted_at: null, can_be_modified: true },
+      {
+        _id: id, deleted_at: null, type: 'SUPERUSER', can_be_modified: true,
+      },
       { ...data },
       { new: true },
     );
@@ -158,14 +161,14 @@ export const deleteRoles = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
   try {
-    const roles = await Role.find({ deleted_at: null, can_be_modified: true });
+    const roles = await Role.find({ deleted_at: null, can_be_modified: true, type: 'SUPERUSER' });
 
     if (!roles?.length) {
       return responseWithError(404, 'Nie znaleziono żadnej roli użytkownika.');
     }
 
     const updatedRoles = await Role.updateMany(
-      { deleted_at: null, can_be_modified: true },
+      { deleted_at: null, can_be_modified: true, type: 'SUPERUSER' },
       { deleted_at: Date.now() },
       { new: true },
     );
@@ -211,12 +214,14 @@ export const deleteRole = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono roli użytkownika.');
     }
 
-    if (!role?.can_be_modified) {
+    if (role?.type !== 'SUPERUSER') {
       return responseWithError(409, 'Nie można usunąć tej roli użytkownika.');
     }
 
     const deletedRole = await Role.findOneAndUpdate(
-      { _id: id, deleted_at: null, can_be_modified: true },
+      {
+        _id: id, deleted_at: null, can_be_modified: true, type: 'SUPERUSER',
+      },
       { deleted_at: Date.now() },
       { new: true },
     );
