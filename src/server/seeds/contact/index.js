@@ -1,6 +1,9 @@
 import colors from 'colors/safe';
+import config from '@server/config';
 import validateContact from '@server/api/v1/contact/schema';
 import Contact from '@server/api/v1/contact/model';
+
+const { NODE_ENV } = config;
 
 const removeAndSeedContact = async (contact = {}) => {
   const { validationError, data } = validateContact(contact);
@@ -15,12 +18,12 @@ const removeAndSeedContact = async (contact = {}) => {
     await Contact.deleteMany({});
 
     // eslint-disable-next-line no-console
-    console.log(colors.green('Contact information removed from DB.'));
+    if (NODE_ENV !== 'test') console.log(colors.green('Contact information removed from DB.'));
 
     await Contact.create(data);
 
     // eslint-disable-next-line no-console
-    console.log(colors.green('DB seeded with contact information.'));
+    if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with contact information.'));
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));

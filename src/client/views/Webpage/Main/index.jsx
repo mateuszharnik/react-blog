@@ -40,7 +40,7 @@ const Main = memo(() => {
     setIsLoading(false);
   }, []);
 
-  useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
+  useEffect(() => () => toggleNav(false), [pathname]);
 
   return (
     <>

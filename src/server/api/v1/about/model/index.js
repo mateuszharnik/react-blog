@@ -4,6 +4,7 @@ const AboutSchema = new Schema(
   {
     contents: {
       type: String,
+      maxlength: 20000,
       default: '',
     },
     deleted_at: {

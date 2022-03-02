@@ -39,17 +39,17 @@ const NavImageButton = memo(({ src, gender, className }) => {
     toggleNav();
 
     setFocus();
-  }, [toggleNav, setFocus]);
+  }, [setFocus]);
 
   const handleCloseNavOnBlur = useCallback((e) => {
     if (!e?.relatedTarget) return;
 
     if (!e?.relatedTarget?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
-  }, [toggleNav, isOpen]);
+  }, [isOpen]);
 
   const closeNavOnClick = useCallback((e) => {
     if (!e?.target?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
-  }, [toggleNav, isOpen]);
+  }, [isOpen]);
 
   useEffect(() => {
     document.addEventListener('click', closeNavOnClick);
@@ -57,9 +57,7 @@ const NavImageButton = memo(({ src, gender, className }) => {
     return () => document.removeEventListener('click', closeNavOnClick);
   }, [closeNavOnClick]);
 
-  useEffect(() => () => toggleNav(false), [pathname, toggleNav]);
-
-  useEffect(() => () => toggleNav(false), [isDesktop, toggleNav]);
+  useEffect(() => () => toggleNav(false), [pathname, isDesktop]);
 
   return (
     <div className="nav__link-image-wrapper">

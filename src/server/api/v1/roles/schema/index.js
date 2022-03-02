@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import invalidUsernames from '@server/helpers/validation/invalidUsernames';
 import nameMessages from '@server/helpers/messages/roles/name';
 import descriptionMessages from '@server/helpers/messages/roles/description';
 import managePostsMessages from '@server/helpers/messages/roles/managePosts';
@@ -17,7 +18,7 @@ import manageConfigMessages from '@server/helpers/messages/roles/manageConfig';
 import manageFAQsMessages from '@server/helpers/messages/roles/manageFAQs';
 
 const validateRole = (role = {}, options = {}, useInvalid = true) => {
-  const invalid = useInvalid ? ['admin', 'admins', 'administrator', 'użytkownik', 'user', 'users', 'uzytkownik'] : [];
+  const invalid = useInvalid ? invalidUsernames : [];
 
   const schema = Joi.object().keys({
     name: Joi.string()
