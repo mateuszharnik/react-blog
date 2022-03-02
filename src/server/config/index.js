@@ -1,14 +1,45 @@
 import Joi from 'joi';
 import colors from 'colors/safe';
 import { config } from 'dotenv';
+import { emailRegExp } from '@server/helpers/regexps';
 
 config();
 
 const schema = Joi.object({
-  NODE_ENV: Joi.string().trim().default('development').valid('development', 'production', 'test'),
-  PORT: Joi.string().trim().default('3000'),
-  CLIENT_URL: Joi.string().trim().default('http://localhost:8080'),
-  DB_URL: Joi.string().trim().default('mongodb://localhost/db'),
+  NODE_ENV: Joi.string()
+    .trim()
+    .default('development')
+    .valid('development', 'production', 'test'),
+  PORT: Joi.string()
+    .trim()
+    .default('3000'),
+  ACCESS_TOKEN_SECRET: Joi.string()
+    .trim()
+    .required(),
+  REFRESH_TOKEN_SECRET: Joi.string()
+    .trim()
+    .required(),
+  ADMIN_USERNAME: Joi.string()
+    .trim()
+    .alphanum()
+    .min(3)
+    .max(32)
+    .required(),
+  ADMIN_PASSWORD: Joi.string()
+    .trim()
+    .min(8)
+    .max(32)
+    .required(),
+  ADMIN_EMAIL: Joi.string()
+    .trim()
+    .regex(emailRegExp)
+    .required(),
+  CLIENT_URL: Joi.string()
+    .trim()
+    .default('http://localhost:8080'),
+  DB_URL: Joi.string()
+    .trim()
+    .default('mongodb://localhost/db'),
 }).unknown(true);
 
 const { error, value } = schema.validate(process.env);
