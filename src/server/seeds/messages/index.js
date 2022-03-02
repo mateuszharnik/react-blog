@@ -1,7 +1,10 @@
 import colors from 'colors/safe';
+import config from '@server/config';
 import validateMessage from '@server/api/v1/messages/schema';
 import Message from '@server/api/v1/messages/model';
 import purify from '@server/helpers/purify';
+
+const { NODE_ENV } = config;
 
 const removeAndSeedMessages = async (messages = []) => {
   const createdMessages = [];
@@ -27,13 +30,13 @@ const removeAndSeedMessages = async (messages = []) => {
     await Message.deleteMany({});
 
     // eslint-disable-next-line no-console
-    console.log(colors.green('Messages removed from DB.'));
+    if (NODE_ENV !== 'test') console.log(colors.green('Messages removed from DB.'));
 
     if (createdMessages.length) {
       await Message.create(createdMessages);
 
       // eslint-disable-next-line no-console
-      console.log(colors.green('DB seeded with messages.'));
+      if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with messages.'));
     }
   } catch (error) {
     // eslint-disable-next-line no-console

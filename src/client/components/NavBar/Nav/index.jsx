@@ -70,7 +70,7 @@ const Nav = memo(() => {
     if (!e?.relatedTarget || isDesktop) return;
 
     if (!e?.relatedTarget?.getAttribute('data-nav') && isOpen) toggleNav(false);
-  }, [toggleNav, isDesktop, isOpen]);
+  }, [isDesktop, isOpen]);
 
   const setFocus = useCallback((navOpen = false) => {
     setTimeout(() => {
@@ -84,7 +84,7 @@ const Nav = memo(() => {
     toggleNav(false);
 
     setFocus(false);
-  }, [toggleNav, setFocus]);
+  }, [setFocus]);
 
   const handleOpenNav = useCallback(() => {
     setIsVisible(true);
@@ -95,7 +95,7 @@ const Nav = memo(() => {
       setFocus(true);
       setIsVisible(false);
     }, 50);
-  }, [toggleNav, setFocus]);
+  }, [setFocus]);
 
   const updateScrollbar = useCallback(() => {
     if (scrollbarRef?.current) {
@@ -105,7 +105,7 @@ const Nav = memo(() => {
 
   useEffect(() => {
     if (isDesktop) closeNav();
-  }, [isDesktop, closeNav]);
+  }, [isDesktop]);
 
   useEffect(() => {
     const throttledUpdateScrollbar = throttle(updateScrollbar, 50);

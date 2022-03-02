@@ -4,6 +4,6 @@
 .page {
   &-container {
     padding: 0.625rem 0.75rem;
-    @include toRem(max-width, 1000);
+    @include toRem(max-width, 1320);
   }
 }

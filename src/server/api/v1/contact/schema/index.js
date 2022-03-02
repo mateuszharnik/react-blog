@@ -5,7 +5,11 @@ import githubMessages from '@server/helpers/messages/githubUrl';
 import twitterMessages from '@server/helpers/messages/twitterUrl';
 import instagramMessages from '@server/helpers/messages/instagramUrl';
 import {
-  emailRegExp, githubRegExp, twitterRegExp, facebookRegExp, instagramRegExp,
+  emailRegExp,
+  githubRegExp,
+  twitterRegExp,
+  facebookRegExp,
+  instagramRegExp,
 } from '@server/helpers/regexps';
 
 const validateContact = (contact = {}, options = {}) => {

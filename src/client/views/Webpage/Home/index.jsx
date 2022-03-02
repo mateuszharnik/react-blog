@@ -1,6 +1,7 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
 import WelcomeBanner from '@client/components/WelcomeBanner';
+import PageContainer from '@client/components/PageContainer';
 import { setTitle, setMeta } from '@client/helpers/documentMeta';
 
 const Home = memo(() => {
@@ -16,9 +17,11 @@ const Home = memo(() => {
   return (
     <>
       <WelcomeBanner />
-      <div className="home container-fluid px-4">
-        <div className="py-5" />
-      </div>
+      <PageContainer>
+        <div className="home">
+          <div className="py-5" />
+        </div>
+      </PageContainer>
     </>
   );
 });

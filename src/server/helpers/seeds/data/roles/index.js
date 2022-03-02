@@ -1,7 +1,13 @@
+export const roleTypes = {
+  ADMIN: 'ADMIN',
+  SUPERUSER: 'SUPERUSER',
+  USER: 'USER',
+};
+
 const adminRole = {
   name: 'administrator',
   description: 'Administrator bloga. Tej roli nie można usunąć.',
-  type: 'ADMIN',
+  type: roleTypes.ADMIN,
   can_manage_posts: true,
   can_manage_categories: true,
   can_manage_tags: true,
@@ -23,7 +29,7 @@ const adminRole = {
 const moderatorRole = {
   name: 'moderator',
   description: 'Moderator bloga. Może zarządzać zadaniami związanymi z wpisami.',
-  type: 'SUPERUSER',
+  type: roleTypes.SUPERUSER,
   can_manage_posts: true,
   can_manage_categories: true,
   can_manage_tags: true,
@@ -45,7 +51,7 @@ const moderatorRole = {
 const userRole = {
   name: 'użytkownik',
   description: 'Konto zarejestrowanego użytkownika. Tej roli nie można usunąć.',
-  type: 'USER',
+  type: roleTypes.USER,
   can_manage_posts: false,
   can_manage_categories: false,
   can_manage_tags: false,

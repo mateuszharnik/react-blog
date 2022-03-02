@@ -14,12 +14,12 @@ const Footer = memo(() => {
   const { contact } = useStoreState((state) => state.contact);
   const { config } = useStoreState((state) => state.config);
 
-  const mailTo = useMemo(() => `mailto:${contact.email}`, [contact.email]);
+  const mailTo = useMemo(() => `mailto:${contact?.email}`, [contact]);
 
   const shouldRender = useMemo(() => {
-    const contactExist = Object.keys(contact)
+    const contactExist = contact ? Object.keys(contact)
       .filter((key) => key === 'email' || key.includes('_url'))
-      .filter((key) => contact[key]).length;
+      .filter((key) => contact[key]).length : null;
 
     return !!contactExist && (config?.show_email || config?.show_social_media);
   }, [contact, config]);

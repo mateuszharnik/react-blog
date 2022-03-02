@@ -1,7 +1,10 @@
 import colors from 'colors/safe';
+import config from '@server/config';
 import validateAbout from '@server/api/v1/about/schema';
 import About from '@server/api/v1/about/model';
 import purify from '@server/helpers/purify';
+
+const { NODE_ENV } = config;
 
 const removeAndSeedAbout = async (about = {}) => {
   const { validationError, data } = validateAbout(about);
@@ -18,12 +21,12 @@ const removeAndSeedAbout = async (about = {}) => {
     await About.deleteMany({});
 
     // eslint-disable-next-line no-console
-    console.log(colors.green('Information about us removed from DB.'));
+    if (NODE_ENV !== 'test') console.log(colors.green('Information about us removed from DB.'));
 
     await About.create(data);
 
     // eslint-disable-next-line no-console
-    console.log(colors.green('DB seeded with information about us.'));
+    if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with information about us.'));
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));
