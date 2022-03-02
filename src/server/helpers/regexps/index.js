@@ -8,6 +8,20 @@ export const nameRegExp = /^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚźŹżŻ]{2,32}$/
 
 export const dbIdRegExp = /^[a-f\d]{24}$/i;
 
+export const websiteRegExp = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)$/i;
+
+export const imageRegExp = /^(https?:\/\/.*\.(?:png|jpg|jpeg))$/i;
+
+export const dribbbleRegExp = /^https?:\/\/(www.)?dribbble.com\/.*$/;
+
+export const youtubeRegExp = /^https?:\/\/(www.)?youtube.com\/c\/.*$/;
+
+export const twitchRegExp = /^https?:\/\/(www.)?twitch.tv\/.*$/;
+
+export const stackOverflowRegExp = /^https?:\/\/(www.)?stackoverflow.com\/users\/.*$/;
+
+export const linkedinRegExp = /^https?:\/\/(www.)?linkedin.com\/in\/.*$/;
+
 export const instagramRegExp = /^https?:\/\/(www.)?instagram.com\/.*$/;
 
 export const facebookRegExp = /^https?:\/\/(www.)?facebook.com\/.*$/;
