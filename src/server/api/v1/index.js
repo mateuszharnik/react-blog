@@ -5,7 +5,7 @@ import config from '@server/api/v1/config/router';
 import termsOfUse from '@server/api/v1/termsOfUse/router';
 import contact from '@server/api/v1/contact/router';
 import auth from '@server/api/v1/auth/router';
-// import roles from '@server/api/v1/roles/router';
+import roles from '@server/api/v1/roles/router';
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.use('/messages', messages);
 router.use('/about', about);
 router.use('/auth', auth);
 router.use('/contact', contact);
-// router.use('/roles', roles);
+router.use('/roles', roles);
 router.use('/terms-of-use', termsOfUse);
 
 export default router;

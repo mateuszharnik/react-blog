@@ -4,7 +4,7 @@ import config from '@server/config';
 import validateUser from '@server/api/v1/users/schema';
 import Role from '@server/api/v1/roles/model';
 import User from '@server/api/v1/users/model';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
@@ -20,7 +20,7 @@ const removeAndSeedUsers = async (users = []) => {
       process.exit(0);
     }
 
-    data.description = purify(data.description);
+    data.description = sanitize(data.description);
     data.display_name = data.username;
     data.username = data.username.toLowerCase();
 

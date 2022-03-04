@@ -46,6 +46,7 @@ module.exports = {
     'react/jsx-indent': ['error', 2],
     'no-underscore-dangle': 0,
     camelcase: 0,
+    'no-param-reassign': 0,
     'consistent-return': 0,
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

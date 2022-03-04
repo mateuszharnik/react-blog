@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import config from '@server/config';
 import validateTermsOfUse from '@server/api/v1/termsOfUse/schema';
 import TermsOfUse from '@server/api/v1/termsOfUse/model';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
@@ -15,7 +15,7 @@ const removeAndSeedTermsOfUse = async (termsOfUse = {}) => {
     process.exit(0);
   }
 
-  data.contents = purify(data.contents);
+  data.contents = sanitize(data.contents);
 
   try {
     await TermsOfUse.deleteMany({});

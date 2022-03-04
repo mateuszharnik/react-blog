@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import config from '@server/config';
 import validateRole from '@server/api/v1/roles/schema';
 import Role from '@server/api/v1/roles/model';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
@@ -18,8 +18,8 @@ const removeAndSeedRoles = async (roles = []) => {
       process.exit(0);
     }
 
-    data.name = purify(data.name);
-    data.description = purify(data.description);
+    data.name = sanitize(data.name);
+    data.description = sanitize(data.description);
 
     createdRoles.push(data);
   });

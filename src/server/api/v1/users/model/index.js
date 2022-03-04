@@ -95,6 +95,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    token_version: {
+      type: Number,
+      default: 1,
+    },
     deleted_at: {
       type: Date,
       default: null,
