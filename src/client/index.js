@@ -8,15 +8,17 @@ import App from '@client/App';
 import store from '@client/store/index.store';
 import './index.scss';
 
-init({
-  once: true,
-});
+(async () => {
+  init({
+    once: true,
+  });
 
-render(
-  <StoreProvider store={store}>
-    <Router basename={process.env.BASE_URL}>
-      <App />
-    </Router>
-  </StoreProvider>,
-  document.getElementById('app'),
-);
+  render(
+    <StoreProvider store={store}>
+      <Router basename={process.env.BASE_URL}>
+        <App />
+      </Router>
+    </StoreProvider>,
+    document.getElementById('app'),
+  );
+})();
