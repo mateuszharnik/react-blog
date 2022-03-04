@@ -7,6 +7,10 @@ const AboutSchema = new Schema(
       maxlength: 20000,
       default: '',
     },
+    html_contents: {
+      type: String,
+      default: '',
+    },
     deleted_at: {
       type: Date,
       default: null,
