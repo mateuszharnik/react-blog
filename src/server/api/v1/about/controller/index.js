@@ -1,6 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
-import purify from '@server/helpers/purify';
+import markdownToHTML from '@server/helpers/markdownToHTML';
 import About from '../model';
 import validateAbout from '../schema';
 
@@ -26,13 +26,13 @@ export const updateAbout = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
   try {
-    req.body.contents = purify(req.body.contents);
-
     const { validationError, data } = validateAbout(req.body);
 
     if (validationError) {
       return responseWithError(409, validationError.details[0].message);
     }
+
+    data.html_contents = markdownToHTML(data.contents);
 
     const updatedAbout = await About.findOneAndUpdate({}, { ...data }, { new: true });
 

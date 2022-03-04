@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import config from '@server/config';
 import validateAbout from '@server/api/v1/about/schema';
 import About from '@server/api/v1/about/model';
-import purify from '@server/helpers/purify';
+import markdownToHTML from '@server/helpers/markdownToHTML';
 
 const { NODE_ENV } = config;
 
@@ -15,7 +15,7 @@ const removeAndSeedAbout = async (about = {}) => {
     process.exit(0);
   }
 
-  data.contents = purify(data.contents);
+  data.html_contents = markdownToHTML(data.contents);
 
   try {
     await About.deleteMany({});
