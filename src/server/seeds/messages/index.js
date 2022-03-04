@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import config from '@server/config';
 import validateMessage from '@server/api/v1/messages/schema';
 import Message from '@server/api/v1/messages/model';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
@@ -18,7 +18,7 @@ const removeAndSeedMessages = async (messages = []) => {
       process.exit(0);
     }
 
-    data.contents = purify(data.contents);
+    data.contents = sanitize(data.contents);
 
     createdMessages.push({
       ...data,

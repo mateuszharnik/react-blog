@@ -1,7 +1,7 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import validateId from '@server/helpers/validation/validateId';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 import TermsOfUse from '../model';
 import validateTermsOfUse from '../schema';
 
@@ -59,7 +59,7 @@ export const updateTermsOfUse = async (req, res, next) => {
       return responseWithError(409, validationIdError.details[0].message);
     }
 
-    req.body.contents = purify(req.body.contents);
+    req.body.contents = sanitize(req.body.contents);
 
     const { validationError, data } = validateTermsOfUse(req.body);
 

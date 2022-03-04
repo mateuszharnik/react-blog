@@ -1,10 +1,9 @@
 import createDOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+import window from '@server/helpers/jsdom';
 
-const { window } = new JSDOM('');
 const DOMPurify = createDOMPurify(window);
 
-const purify = (text = '') => DOMPurify.sanitize(text, {
+const sanitize = (text = '') => DOMPurify.sanitize(text, {
   FORBID_TAGS: [
     'style',
     'script',
@@ -24,4 +23,4 @@ const purify = (text = '') => DOMPurify.sanitize(text, {
   ],
 });
 
-export default purify;
+export default sanitize;

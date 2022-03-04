@@ -1,6 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 import validateId from '@server/helpers/validation/validateId';
 import validateRole from '../schema';
 import Role from '../model';
@@ -79,8 +79,8 @@ export const createRole = async (req, res, next) => {
       return responseWithError(409, 'Rola o takiej nazwie już istnieje.');
     }
 
-    req.body.name = purify(req.body.name);
-    req.body.description = purify(req.body.description);
+    req.body.name = sanitize(req.body.name);
+    req.body.description = sanitize(req.body.description);
 
     const { validationError, data } = validateRole(req.body);
 
@@ -128,8 +128,8 @@ export const updateRole = async (req, res, next) => {
       return responseWithError(409, 'Nie można zaktualizować tej roli użytkownika.');
     }
 
-    req.body.name = purify(req.body.name);
-    req.body.description = purify(req.body.description);
+    req.body.name = sanitize(req.body.name);
+    req.body.description = sanitize(req.body.description);
 
     const { validationError, data } = validateRole(req.body);
 

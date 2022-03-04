@@ -10,6 +10,7 @@ import { join } from 'path';
 import api from '@server/api';
 import config from '@server/config';
 import swaggerDocument from '@server/docs/API.json';
+import { checkToken } from '@server/middlewares/auth';
 import { notFound, CSRFErrorHandler, errorHandler } from '@server/middlewares/errors';
 
 const { NODE_ENV, CLIENT_URL } = config;
@@ -30,6 +31,7 @@ app.use(csrf({
     sameSite: 'strict',
   },
 }));
+app.use(checkToken);
 
 if (NODE_ENV === 'development') {
   app.use(cors({ origin: CLIENT_URL }));

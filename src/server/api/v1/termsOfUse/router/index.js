@@ -1,10 +1,21 @@
 import { Router } from 'express';
-import { getTermsOfUse, getOneTermsOfUse } from '../controller';
+import manage from '@server/helpers/roles';
+import { isLoggedIn, canManage } from '@server/middlewares/auth';
+import {
+  getTermsOfUse,
+  getOneTermsOfUse,
+  updateTermsOfUse,
+} from '../controller';
 
 const router = Router();
 
 router.get('/', getTermsOfUse);
 router.get('/:id', getOneTermsOfUse);
-// router.put('/:id', updateTermsOfUse);
+router.put(
+  '/:id',
+  isLoggedIn,
+  canManage(manage.termsOfUse),
+  updateTermsOfUse,
+);
 
 export default router;

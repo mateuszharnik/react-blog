@@ -1,10 +1,16 @@
 import rateLimit from 'express-rate-limit';
 import { Router } from 'express';
+import manage from '@server/helpers/roles';
+import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   countMessages,
   countReadMessages,
   countNewMessages,
+  getMessages,
+  getMessage,
   createMessage,
+  deleteMessages,
+  deleteMessage,
 } from '../controller';
 
 const router = Router();
@@ -15,13 +21,52 @@ const messageLimiter = rateLimit({
   message: 'Przekroczono limit, Spróbuj ponownie później.',
 });
 
-// router.get('/', getMessages);
-router.get('/count', countMessages);
-router.get('/count/read', countReadMessages);
-router.get('/count/new', countNewMessages);
-// router.get('/:id', getMessage);
-router.post('/', messageLimiter, createMessage);
-// router.delete('/', deleteMessages);
-// router.delete('/:id', deleteMessage);
+router.get(
+  '/',
+  isLoggedIn,
+  canManage(manage.roles),
+  getMessages,
+);
+router.get(
+  '/count',
+  isLoggedIn,
+  canManage(manage.roles),
+  countMessages,
+);
+router.get(
+  '/count/read',
+  isLoggedIn,
+  canManage(manage.roles),
+  countReadMessages,
+);
+router.get(
+  '/count/new',
+  isLoggedIn,
+  canManage(manage.roles),
+  countNewMessages,
+);
+router.get(
+  '/:id',
+  isLoggedIn,
+  canManage(manage.roles),
+  getMessage,
+);
+router.post(
+  '/',
+  messageLimiter,
+  createMessage,
+);
+router.delete(
+  '/',
+  isLoggedIn,
+  canManage(manage.roles),
+  deleteMessages,
+);
+router.delete(
+  '/:id',
+  isLoggedIn,
+  canManage(manage.roles),
+  deleteMessage,
+);
 
 export default router;
