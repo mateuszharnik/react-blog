@@ -6,7 +6,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import lazyLoad from '@client/helpers/lazyLoad';
 import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 import PageWrapper from '@client/components/PageWrapper';
-import Header from '@client/components/NavBar/Header';
+import Header from '@client/components/Header';
 import Footer from '@client/components/Footer';
 
 const SkipNavLink = lazyLoad({
@@ -33,11 +33,15 @@ const Main = memo(() => {
   useEffect(async () => {
     addLayer();
 
-    if (!contact) {
-      await fetchContact();
-    }
+    try {
+      if (!contact) {
+        await fetchContact();
+      }
 
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => () => toggleNav(false), [pathname]);

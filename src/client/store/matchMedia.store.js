@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action } from 'easy-peasy';
 
 const matchMedia = {

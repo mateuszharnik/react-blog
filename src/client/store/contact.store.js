@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { thunk, action } from 'easy-peasy';
 
 const contact = {

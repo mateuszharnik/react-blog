@@ -24,10 +24,14 @@ const App = memo(() => {
 
     media.addEventListener('change', setMedia);
 
-    await fetchCSRFToken();
-    await fetchConfig();
+    try {
+      await fetchCSRFToken();
+      await fetchConfig();
 
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
 
     return () => media.removeEventListener('change', setMedia);
   }, []);
