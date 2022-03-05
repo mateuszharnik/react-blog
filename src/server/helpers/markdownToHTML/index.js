@@ -19,17 +19,17 @@ const markdownToHTML = (markdown = '') => {
 
     codeElement.innerHTML = highlightAuto(decode(codeElement.innerHTML)).value;
 
-    const rows = codeElement.innerHTML.trim().split('\n');
+    const lines = codeElement.innerHTML.trim().split('\n');
 
-    let lines = '<span class="language-lines">';
+    let linesWrapper = '<span class="language-lines">';
 
-    rows.forEach((line, index) => {
-      lines += `<span>${index + 1}</span>`;
+    lines.forEach((_, index) => {
+      linesWrapper += `<span>${index + 1}</span>`;
     });
 
-    lines += '</span>';
+    linesWrapper += '</span>';
 
-    codeElement.innerHTML += lines;
+    codeElement.innerHTML += linesWrapper;
 
     return codeElement;
   });

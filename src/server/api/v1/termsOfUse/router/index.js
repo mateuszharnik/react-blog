@@ -9,8 +9,14 @@ import {
 
 const router = Router();
 
-router.get('/', getTermsOfUse);
-router.get('/:id', getOneTermsOfUse);
+router.get(
+  '/',
+  getTermsOfUse,
+);
+router.get(
+  '/:id',
+  getOneTermsOfUse,
+);
 router.put(
   '/:id',
   isLoggedIn,

@@ -5,7 +5,10 @@ import { getConfig, updateConfig } from '../controller';
 
 const router = Router();
 
-router.get('/', getConfig);
+router.get(
+  '/',
+  getConfig,
+);
 router.put(
   '/',
   isLoggedIn,
