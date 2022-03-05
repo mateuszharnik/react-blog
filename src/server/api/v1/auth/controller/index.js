@@ -1,6 +1,6 @@
 import colors from 'colors/safe';
 import { hash, compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import User from '@server/api/v1/users/model';
@@ -37,8 +37,6 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       return responseWithError(409, 'Hasło jest nieprawidłowe.');
     }
 
-    const { password, ...rest } = user.toJSON();
-
     const payload = {
       id: user.id,
       email: user.email,
@@ -46,7 +44,10 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
     };
 
     const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-    const refreshToken = sign({ id: user.id }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const refreshToken = sign({
+      id: user.id,
+      token_version: user.token_version,
+    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -54,6 +55,8 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       path: '/api/v1/auth/refresh-token',
       maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
     });
+
+    const { token_version, password, ...rest } = user.toJSON();
 
     return res.status(200).json({
       user: rest,
@@ -66,7 +69,6 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
   }
 };
 
-// Rejestracja
 export const signUp = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
@@ -127,7 +129,10 @@ export const signUp = async (req, res, next) => {
     };
 
     const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-    const refreshToken = sign({ id: user.id }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const refreshToken = sign({
+      id: user.id,
+      token_version: user.token_version,
+    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -136,10 +141,105 @@ export const signUp = async (req, res, next) => {
       maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
     });
 
+    const { token_version, ...rest } = user.toJSON();
+
     return res.status(200).json({
-      user,
+      user: rest,
       accessToken,
     });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const getRefreshToken = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const token = req.cookies?._refresh;
+
+    if (!token) {
+      return res.end();
+    }
+
+    const decodedToken = await verify(token, REFRESH_TOKEN_SECRET);
+
+    const user = await User.findOne({
+      _id: decodedToken?.id,
+      deleted_at: null,
+    }).populate('role', '-description -name').select('-password');
+
+    if (!user) {
+      return responseWithError(404, 'Użytkownik nie istnieje.');
+    }
+
+    if (user?.token_version !== decodedToken?.token_version) {
+      return res.end();
+    }
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const refreshToken = sign({
+      id: user.id,
+      token_version: user.token_version,
+    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+
+    res.cookie('_refresh', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth/refresh-token',
+      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+    });
+
+    return res.status(200).json(accessToken);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+
+    res.clearCookie('_refresh', {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth/refresh-token',
+    });
+
+    responseWithError(400, 'Błędny token.');
+  }
+};
+
+export const revokeRefreshToken = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.user?.id, deleted_at: null },
+      { $inc: { token_version: 1 } },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return responseWithError(409, 'Wystąpił błąd.');
+    }
+
+    const refreshToken = sign({
+      id: updatedUser.id,
+      token_version: updatedUser.token_version,
+    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+
+    res.cookie('_refresh', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth/refresh-token',
+      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+    });
+
+    return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));

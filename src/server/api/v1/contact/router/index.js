@@ -5,7 +5,10 @@ import { getContact, updateContact } from '../controller';
 
 const router = Router();
 
-router.get('/', getContact);
+router.get(
+  '/',
+  getContact,
+);
 router.put(
   '/',
   isLoggedIn,

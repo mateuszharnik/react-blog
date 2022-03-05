@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { isNotLoggedIn } from '@server/middlewares/auth';
+import { isNotLoggedIn, isLoggedIn } from '@server/middlewares/auth';
 import {
   signIn,
   signUp,
+  getRefreshToken,
+  revokeRefreshToken,
 } from '../controller';
 
 const router = Router();
@@ -22,9 +24,14 @@ router.post(
   isNotLoggedIn,
   signUp,
 );
-router.get('/refresh-token', (req, res) => {
-  console.log(req.cookies);
-  res.status(200).json({});
-});
+router.post(
+  '/refresh-token',
+  getRefreshToken,
+);
+router.post(
+  '/revoke-refresh-token',
+  isLoggedIn,
+  revokeRefreshToken,
+);
 
 export default router;
