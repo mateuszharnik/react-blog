@@ -2,7 +2,9 @@ import { createStore } from 'easy-peasy';
 import config from './config.store';
 import csrf from './csrf.store';
 import user from './user.store';
+import auth from './auth.store';
 import contact from './contact.store';
+import tokens from './tokens.store';
 import about from './about.store';
 import nav from './nav.store';
 import navDropdown from './navDropdown.store';
@@ -14,6 +16,8 @@ const model = {
   csrf,
   user,
   contact,
+  auth,
+  tokens,
   about,
   nav,
   navDropdown,
