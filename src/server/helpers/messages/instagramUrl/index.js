@@ -1,5 +1,5 @@
 export const instagramRequired = {
-  'any.required': 'Link do profilu Instagram jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const instagramString = {

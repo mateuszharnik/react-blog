@@ -1,5 +1,5 @@
 export const manageCategoriesRequired = {
-  'any.required': 'Opcja zarządzania kategoriami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageCategoriesBoolean = {

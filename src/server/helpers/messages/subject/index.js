@@ -1,9 +1,9 @@
 export const subjectRequired = {
-  'any.required': 'Temat jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const subjectNotEmpty = {
-  'string.empty': 'Temat nie może być pusty.',
+  'string.empty': 'Musisz podać temat wiadomości.',
 };
 
 export const subjectString = {

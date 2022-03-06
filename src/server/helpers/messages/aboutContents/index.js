@@ -1,5 +1,5 @@
 export const aboutContentsRequired = {
-  'any.required': 'Treść strony jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const aboutContentsString = {

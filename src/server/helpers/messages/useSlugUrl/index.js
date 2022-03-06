@@ -1,5 +1,5 @@
 export const slugRequired = {
-  'any.required': 'Opcja wyglądu adresu url do postu jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const slugBoolean = {

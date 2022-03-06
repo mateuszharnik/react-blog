@@ -1,5 +1,5 @@
 export const imageRequired = {
-  'any.required': 'Link do awatara jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const imageString = {

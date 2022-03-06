@@ -1,9 +1,9 @@
 export const nameRequired = {
-  'any.required': 'Nazwa roli użytkownika jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const nameNotEmpty = {
-  'string.empty': 'Nazwa roli użytkownika nie może być pusta.',
+  'string.empty': 'Musisz podać nazwę roli użytkownika.',
 };
 
 export const nameString = {
@@ -11,7 +11,7 @@ export const nameString = {
 };
 
 export const nameInvalid = {
-  'any.invalid': 'Nie można utworzyć roli o takiej nazwie.',
+  'any.invalid': 'Nie można utworzyć roli użytkownika o takiej nazwie.',
 };
 
 export const nameMin = {

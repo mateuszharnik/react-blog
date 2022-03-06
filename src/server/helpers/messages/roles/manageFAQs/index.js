@@ -1,5 +1,5 @@
 export const manageFAQsRequired = {
-  'any.required': 'Opcja zarządzania najczęściej zadawanymi pytaniami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageFAQsBoolean = {

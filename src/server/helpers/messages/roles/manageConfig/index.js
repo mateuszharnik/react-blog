@@ -1,5 +1,5 @@
 export const manageConfigRequired = {
-  'any.required': 'Opcja edytowania konfiguracji strony jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageConfigBoolean = {

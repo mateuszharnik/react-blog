@@ -1,5 +1,5 @@
 export const showEmailRequired = {
-  'any.required': 'Opcja pokaż adres email jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const showEmailBoolean = {

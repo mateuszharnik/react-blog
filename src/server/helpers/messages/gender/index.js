@@ -1,9 +1,9 @@
 export const genderRequired = {
-  'any.required': 'Płeć jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const genderNotEmpty = {
-  'string.empty': 'Płeć nie może być pusta.',
+  'string.empty': 'Musisz podać płeć.',
 };
 
 export const genderString = {

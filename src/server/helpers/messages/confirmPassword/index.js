@@ -1,5 +1,5 @@
 export const confirmPasswordRequired = {
-  'any.required': 'Powtórzone hasło jest wymagane.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const confirmPasswordNotEmpty = {

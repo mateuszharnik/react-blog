@@ -1,5 +1,5 @@
 export const manageContactRequired = {
-  'any.required': 'Opcja edytowania informacji kontaktowych jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageContactBoolean = {

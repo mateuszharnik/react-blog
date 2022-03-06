@@ -1,5 +1,5 @@
 export const manageAdminUsersRequired = {
-  'any.required': 'Opcja zarządzania użytkownikami administracyjnymi jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageAdminUsersBoolean = {

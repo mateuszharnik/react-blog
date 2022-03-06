@@ -1,5 +1,5 @@
 export const descriptionRequired = {
-  'any.required': 'Opis jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const descriptionString = {

@@ -1,5 +1,5 @@
 export const dribbbleRequired = {
-  'any.required': 'Link do profilu Dribbble jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const dribbbleString = {

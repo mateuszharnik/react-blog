@@ -1,5 +1,5 @@
 export const twitchRequired = {
-  'any.required': 'Link do kanału Twitch jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const twitchString = {

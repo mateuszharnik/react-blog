@@ -55,7 +55,7 @@ const validateUser = (user = {}, options = {}, useInvalid = true) => {
       .messages(descriptionMessages),
     gender: Joi.string()
       .trim()
-      .valid('female', 'male')
+      .valid('kobieta', 'mężczyzna')
       .lowercase()
       .required()
       .messages(genderMessages),

@@ -1,5 +1,5 @@
 export const isEmailPublicRequired = {
-  'any.required': 'Opcja publiczny email użytkownika jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const isEmailPublicBoolean = {

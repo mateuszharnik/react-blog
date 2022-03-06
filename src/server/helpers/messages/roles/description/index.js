@@ -1,9 +1,9 @@
 export const descriptionRequired = {
-  'any.required': 'Opis roli użytkownika jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const descriptionNotEmpty = {
-  'string.empty': 'Opis roli użytkownika nie może być pusty.',
+  'string.empty': 'Musisz podać opis roli użytkownika.',
 };
 
 export const descriptionString = {

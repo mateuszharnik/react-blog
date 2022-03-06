@@ -1,5 +1,5 @@
 export const manageAboutUsRequired = {
-  'any.required': 'Opcja edytowania informacji o blogu jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageAboutUsBoolean = {

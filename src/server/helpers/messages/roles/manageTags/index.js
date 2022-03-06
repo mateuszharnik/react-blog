@@ -1,5 +1,5 @@
 export const manageTagsRequired = {
-  'any.required': 'Opcja zarządzania tagami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageTagsBoolean = {
