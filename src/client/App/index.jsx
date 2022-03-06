@@ -14,6 +14,7 @@ const App = memo(() => {
   const { isDesktop } = useStoreState((actions) => actions.matchMedia);
   const { setIsDesktop } = useStoreActions((actions) => actions.matchMedia);
   const { fetchConfig } = useStoreActions((actions) => actions.config);
+  const { fetchRefreshToken } = useStoreActions((actions) => actions.tokens);
   const { fetchCSRFToken } = useStoreActions((actions) => actions.csrf);
 
   useEffect(async () => {
@@ -26,6 +27,7 @@ const App = memo(() => {
 
     try {
       await fetchCSRFToken();
+      await fetchRefreshToken();
       await fetchConfig();
 
       setIsLoading(false);

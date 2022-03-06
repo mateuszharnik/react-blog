@@ -25,3 +25,25 @@
   top: 0;
   z-index: 99999;
 }
+
+.invalid-feedback {
+  display: block;
+}
+
+.valid {
+  border-color: $primary;
+}
+
+.link {
+  background-color: transparent;
+  border: 0;
+  color: $link-color;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: underline;
+  }
+}

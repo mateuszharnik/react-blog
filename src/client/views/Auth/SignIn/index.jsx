@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import AuthWrapper from '@client/components/Layouts/AuthWrapper';
 import AuthContainer from '@client/components/Layouts/AuthContainer';
+import SignInForm from '@client/components/Forms/SignInForm';
 import { setTitle, setMeta, signInMeta } from '@client/helpers/documentMeta';
 
 const SignIn = memo(() => {
@@ -34,6 +35,7 @@ const SignIn = memo(() => {
             <span>Wróć</span>
           </Link>
         </div>
+        <SignInForm />
         <div className="mt-3 text-center">
           Nie masz konta?{' '}
           <Link

@@ -9,16 +9,30 @@ import store from '@client/store/index.store';
 import './index.scss';
 
 (async () => {
-  init({
-    once: true,
-  });
+  try {
+    const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
 
-  render(
-    <StoreProvider store={store}>
-      <Router basename={process.env.BASE_URL}>
-        <App />
-      </Router>
-    </StoreProvider>,
-    document.getElementById('app'),
-  );
+    axios.interceptors.request.use((config) => {
+      const accessToken = store.getState().tokens?.accessToken;
+
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+
+      return config;
+    });
+  } finally {
+    init({
+      once: true,
+    });
+
+    render(
+      <StoreProvider store={store}>
+        <Router basename={process.env.BASE_URL}>
+          <App />
+        </Router>
+      </StoreProvider>,
+      document.getElementById('app'),
+    );
+  }
 })();
