@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import PageContainer from '@client/components/PageContainer';
+import PageContainer from '@client/components/Layouts/PageContainer';
 import { setTitle, setMeta, aboutMeta } from '@client/helpers/documentMeta';
 
 const About = memo(() => {

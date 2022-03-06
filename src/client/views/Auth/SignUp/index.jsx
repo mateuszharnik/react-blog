@@ -1,5 +1,10 @@
 import React, { useEffect, memo } from 'react';
+import { Link } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
+import AuthWrapper from '@client/components/Layouts/AuthWrapper';
+import AuthContainer from '@client/components/Layouts/AuthContainer';
 import { setTitle, setMeta, signUpMeta } from '@client/helpers/documentMeta';
 
 const SignUp = memo(() => {
@@ -15,9 +20,31 @@ const SignUp = memo(() => {
   }, []);
 
   return (
-    <div>
-      Zarejestruj się
-    </div>
+    <AuthWrapper>
+      <AuthContainer>
+        <h2 className="text-center fw-bold mb-3">
+          Zarejestruj się
+        </h2>
+        <div className="mb-3">
+          <FontAwesomeIcon icon={faArrowLeft} />{' '}
+          <Link
+            to="/"
+            title="Wróć do strony głównej"
+          >
+            <span>Wróć</span>
+          </Link>
+        </div>
+        <div className="mt-3 text-center">
+          Masz już konto?{' '}
+          <Link
+            to="/zaloguj"
+            title="Przejdź do logowania"
+          >
+            <span>Zaloguj się</span>
+          </Link>.
+        </div>
+      </AuthContainer>
+    </AuthWrapper>
   );
 });
 

@@ -14,9 +14,11 @@ const about = {
 
       actions.setAbout(response.data);
       actions.setIsSubmit(false);
+
       return response;
     } catch (error) {
       actions.setIsSubmit(false);
+
       return error.response;
     }
   }),
@@ -30,9 +32,11 @@ const about = {
 
       actions.setAbout(response.data);
       actions.setIsLoading(false);
+
       return response;
     } catch (error) {
       actions.setIsLoading(false);
+
       return error.response;
     }
   }),

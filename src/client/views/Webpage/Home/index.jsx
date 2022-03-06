@@ -1,7 +1,7 @@
 import React, { useEffect, memo } from 'react';
 import { useStoreActions } from 'easy-peasy';
 import WelcomeBanner from '@client/components/WelcomeBanner';
-import PageContainer from '@client/components/PageContainer';
+import PageContainer from '@client/components/Layouts/PageContainer';
 import { setTitle, setMeta } from '@client/helpers/documentMeta';
 
 const Home = memo(() => {

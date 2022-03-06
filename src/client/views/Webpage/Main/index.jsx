@@ -5,7 +5,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
 import lazyLoad from '@client/helpers/lazyLoad';
 import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
-import PageWrapper from '@client/components/PageWrapper';
+import PageWrapper from '@client/components/Layouts/PageWrapper';
 import Header from '@client/components/Header';
 import Footer from '@client/components/Footer';
 

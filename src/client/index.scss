@@ -9,8 +9,10 @@
 @import "./components/Logo/index";
 @import "./components/Spinner/index";
 @import "./components/Error/index";
-@import "./components/PageWrapper/index";
-@import "./components/PageContainer/index";
+@import "./components/Layouts/PageWrapper/index";
+@import "./components/Layouts/PageContainer/index";
+@import "./components/Layouts/AuthWrapper/index";
+@import "./components/Layouts/AuthContainer/index";
 @import "./components/ScrollToTopButton/index";
 @import "./components/MaxViewHeight/index";
 @import "./components/LazyImage/index";

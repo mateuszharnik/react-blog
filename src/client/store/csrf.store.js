@@ -13,9 +13,11 @@ const csrf = {
       axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.CSRFToken;
 
       actions.setIsLoading(false);
+
       return response;
     } catch (error) {
       actions.setIsLoading(false);
+
       return error.response;
     }
   }),
