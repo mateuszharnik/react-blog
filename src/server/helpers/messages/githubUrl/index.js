@@ -1,5 +1,5 @@
 export const githubRequired = {
-  'any.required': 'Link do profilu Github jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const githubString = {

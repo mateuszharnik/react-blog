@@ -1,5 +1,5 @@
 export const manageNewsletterRequired = {
-  'any.required': 'Opcja zarządzania newsletterem jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageNewsletterBoolean = {

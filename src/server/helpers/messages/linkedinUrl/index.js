@@ -1,5 +1,5 @@
 export const linkedinRequired = {
-  'any.required': 'Link do profilu LinkedIn jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const linkedinString = {

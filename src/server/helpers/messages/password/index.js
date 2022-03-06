@@ -1,9 +1,9 @@
 export const passwordRequired = {
-  'any.required': 'Hasło jest wymagane.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const passwordNotEmpty = {
-  'string.empty': 'Hasło nie może być puste.',
+  'string.empty': 'Musisz podać hasło.',
 };
 
 export const passwordString = {

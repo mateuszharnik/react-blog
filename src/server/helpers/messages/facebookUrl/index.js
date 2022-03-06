@@ -1,5 +1,5 @@
 export const facebookRequired = {
-  'any.required': 'Link do profilu Facebook jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const facebookString = {

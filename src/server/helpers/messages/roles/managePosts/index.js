@@ -1,5 +1,5 @@
 export const managePostsRequired = {
-  'any.required': 'Opcja zarządzania postami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const managePostsBoolean = {

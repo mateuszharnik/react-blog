@@ -1,9 +1,9 @@
 export const usernameRequired = {
-  'any.required': 'Nazwa użytkownika jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const usernameNotEmpty = {
-  'string.empty': 'Nazwa użytkownika nie może być pusta.',
+  'string.empty': 'Musisz podać nazwę użytkownika.',
 };
 
 export const usernameString = {

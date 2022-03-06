@@ -25,7 +25,7 @@ export const validateSignUp = (newUser = {}, options = {}, useInvalid = true) =>
       .messages(usernameMessages),
     gender: Joi.string()
       .trim()
-      .valid('female', 'male')
+      .valid('kobieta', 'mężczyzna')
       .lowercase()
       .required()
       .messages(genderMessages),

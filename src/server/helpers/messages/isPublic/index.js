@@ -1,5 +1,5 @@
 export const isPublicRequired = {
-  'any.required': 'Opcja profil publiczny jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const isPublicBoolean = {

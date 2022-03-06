@@ -1,9 +1,9 @@
 export const messageContentsRequired = {
-  'any.required': 'Treść wiadomości jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const messageContentsNotEmpty = {
-  'string.empty': 'Treść wiadomości nie może być pusta.',
+  'string.empty': 'Musisz podać treść wiadomości.',
 };
 
 export const messageContentsString = {

@@ -1,5 +1,5 @@
 export const websiteRequired = {
-  'any.required': 'Link do strony internetowej jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const websiteString = {

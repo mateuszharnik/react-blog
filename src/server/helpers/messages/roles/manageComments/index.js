@@ -1,5 +1,5 @@
 export const manageCommentsRequired = {
-  'any.required': 'Opcja zarządzania komentarzami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageCommentsBoolean = {

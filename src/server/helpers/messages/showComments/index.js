@@ -1,5 +1,5 @@
 export const showCommentsRequired = {
-  'any.required': 'Opcja pokaż komentarze jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const showCommentsBoolean = {

@@ -1,5 +1,5 @@
 export const manageMessagesRequired = {
-  'any.required': 'Opcja zarządzania wiadomościami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageMessagesBoolean = {

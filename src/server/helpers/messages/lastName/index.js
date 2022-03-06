@@ -1,9 +1,9 @@
 export const lastNameRequired = {
-  'any.required': 'Nazwisko jest wymagane.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const lastNameNotEmpty = {
-  'string.empty': 'Nazwisko nie może być puste.',
+  'string.empty': 'Musisz podać nazwisko.',
 };
 
 export const lastNameString = {

@@ -1,9 +1,9 @@
 export const termsOfUseContentsRequired = {
-  'any.required': 'Treść regulaminu jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const termsOfUseContentsNotEmpty = {
-  'string.empty': 'Treść regulaminu nie może być pusta.',
+  'string.empty': 'Musisz podać treść regulaminu.',
 };
 
 export const termsOfUseContentsString = {

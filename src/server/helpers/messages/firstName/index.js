@@ -1,9 +1,9 @@
 export const firstNameRequired = {
-  'any.required': 'Imię jest wymagane.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const firstNameNotEmpty = {
-  'string.empty': 'Imię nie może być puste.',
+  'string.empty': 'Musisz podać imię.',
 };
 
 export const firstNameString = {

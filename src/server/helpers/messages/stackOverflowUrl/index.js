@@ -1,5 +1,5 @@
 export const stackOverflowRequired = {
-  'any.required': 'Link do profilu Stack Overflow jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const stackOverflowString = {

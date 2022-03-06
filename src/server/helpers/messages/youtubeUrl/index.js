@@ -1,5 +1,5 @@
 export const youtubeRequired = {
-  'any.required': 'Link do kanału Youtube jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const youtubeString = {

@@ -198,7 +198,12 @@ export const getRefreshToken = async (req, res, next) => {
       maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
     });
 
-    return res.status(200).json(accessToken);
+    const { token_version, ...rest } = user.toJSON();
+
+    return res.status(200).json({
+      user: rest,
+      accessToken,
+    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));

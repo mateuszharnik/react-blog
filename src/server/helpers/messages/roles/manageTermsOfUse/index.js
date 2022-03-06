@@ -1,5 +1,5 @@
 export const manageTermsOfUseRequired = {
-  'any.required': 'Opcja zarządzania regulaminami jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const manageTermsOfUseBoolean = {

@@ -1,5 +1,5 @@
 export const twitterRequired = {
-  'any.required': 'Link do profilu Twitter jest wymagany.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const twitterString = {

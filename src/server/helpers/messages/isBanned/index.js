@@ -1,5 +1,5 @@
 export const isBannedRequired = {
-  'any.required': 'Opcja profil zablokowany jest wymagana.',
+  'any.required': 'Właściwość {#label} jest wymagana.',
 };
 
 export const isBannedBoolean = {

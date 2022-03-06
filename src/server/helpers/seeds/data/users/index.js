@@ -8,7 +8,7 @@ const admin = {
   email: ADMIN_EMAIL,
   description: '',
   password: ADMIN_PASSWORD,
-  gender: 'male',
+  gender: 'mężczyzna',
   facebook_url: '',
   dribbble_url: '',
   youtube_url: '',
