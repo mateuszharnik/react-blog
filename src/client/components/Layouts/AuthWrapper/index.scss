@@ -1,0 +1,11 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+
+.auth {
+  &-wrapper {
+    background-color: #fcfcfc;
+    min-height: 100%;
+    padding: 5rem 0.625rem 2.5rem;
+    width: 100%;
+  }
+}
