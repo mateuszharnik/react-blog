@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
 import { string, func } from 'prop-types';
 import LazyImage from '@client/components/LazyImage';
 import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
@@ -11,7 +11,7 @@ const NavImageLink = memo(({
   const image = useMemo(() => {
     if (src) return src;
 
-    return gender === 'female' ? female : male;
+    return gender === 'kobieta' ? female : male;
   }, [src, gender]);
 
   return (
@@ -19,18 +19,24 @@ const NavImageLink = memo(({
       <Link
         className={className}
         to="/profil"
+        end
         title="Wyświetl swój profil"
         onBlur={onBlur}
         data-nav
       >
-        <span className="visually-hidden">Profil</span>
-        <LazyImage
-          divClassName="nav__link-image"
-          width={36}
-          height={36}
-          alt="Zdjęcie użytkownika"
-          src={image}
-        />
+        {({ isActive }) => (
+          <>
+            <span className="visually-hidden">Profil</span>{' '}
+            {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
+            <LazyImage
+              divClassName="nav__link-image"
+              width={36}
+              height={36}
+              alt="Zdjęcie użytkownika"
+              src={image}
+            />
+          </>
+        )}
       </Link>
     </div>
   );

@@ -8,6 +8,6 @@
     border-radius: 8px;
     margin: 0 auto;
     padding: 2rem 0.75rem;
-    @include toRem(max-width, 400);
+    @include toRem(max-width, 500);
   }
 }

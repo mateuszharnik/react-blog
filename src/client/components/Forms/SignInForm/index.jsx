@@ -1,6 +1,6 @@
 import React, { memo, useState, useMemo } from 'react';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -9,8 +9,9 @@ import validationSchema from '@client/helpers/schemas/signIn';
 const SignInForm = memo(() => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { isSubmit } = useStoreState((store) => store.auth);
+  const { isSubmit, isError, message } = useStoreState((store) => store.auth);
   const { signIn } = useStoreActions((actions) => actions.auth);
+  const navigate = useNavigate();
 
   const title = useMemo(() => (isSubmit ? 'Logowanie' : 'Zaloguj się'), [isSubmit]);
 
@@ -31,6 +32,7 @@ const SignInForm = memo(() => {
       if (status === 200) {
         setSuccess('Pomyślnie zalogowano.');
         resetForm();
+        navigate('/profil');
       } else {
         setError(data.message);
       }
@@ -117,20 +119,20 @@ const SignInForm = memo(() => {
         </div>
       </form>
       <div className="text-center mt-3">
-        {error && (
+        {(error || (isError && message)) && (
           <div
             className="alert alert-danger mb-0 d-inline-block"
             role="alert"
           >
-            {error}
+            {error || message}
           </div>
         )}
-        {success && (
+        {(success || (!isError && message)) && (
           <div
             className="alert alert-success mb-0 d-inline-block"
             role="alert"
           >
-            {success}
+            {success || message}
           </div>
         )}
       </div>

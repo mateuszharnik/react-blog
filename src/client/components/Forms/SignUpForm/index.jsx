@@ -1,5 +1,6 @@
 import React, { memo, useState, useMemo } from 'react';
 import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -10,6 +11,7 @@ const SignUpForm = memo(() => {
   const [success, setSuccess] = useState('');
   const { isSubmit } = useStoreState((store) => store.auth);
   const { signUp } = useStoreActions((actions) => actions.auth);
+  const navigate = useNavigate();
 
   const title = useMemo(() => (isSubmit ? 'Rejestrowanie' : 'Zarejestruj się'), [isSubmit]);
 
@@ -34,6 +36,7 @@ const SignUpForm = memo(() => {
       if (status === 200) {
         setSuccess('Pomyślnie zarejestrowano.');
         resetForm();
+        navigate('/profil');
       } else {
         setError(data.message);
       }

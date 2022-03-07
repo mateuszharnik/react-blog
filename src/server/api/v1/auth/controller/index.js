@@ -251,3 +251,21 @@ export const revokeRefreshToken = async (req, res, next) => {
     responseWithError();
   }
 };
+
+export const signOut = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    res.clearCookie('_refresh', {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth/refresh-token',
+    });
+
+    return res.status(200).json({ message: 'Pomyślnie wylogowano.' });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
