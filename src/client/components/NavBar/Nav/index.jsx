@@ -1,6 +1,7 @@
 import React, {
   memo, useCallback, useRef, useEffect, useMemo, useState,
 } from 'react';
+import { Link } from 'react-router-dom';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import throttle from 'lodash/throttle';
@@ -226,14 +227,17 @@ const Nav = memo(() => {
               <>
                 {!user && (
                   <li className={navItemClassName}>
-                    <NavLink
+                    <Link
+                      className="nav__link mx-auto"
                       to="/zaloguj"
                       title="Zaloguj się"
-                      dataNav="true"
+                      data-nav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
-                      Zaloguj się
-                    </NavLink>
+                      <span className="nav__text">
+                        Zaloguj się
+                      </span>
+                    </Link>
                   </li>
                 )}
               </>

@@ -1,7 +1,7 @@
 import React, {
   memo, useMemo, useCallback, useRef, useEffect,
 } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,11 +20,13 @@ const NavImageButton = memo(({ src, gender, className }) => {
   const { isDesktop } = useStoreState((store) => store.matchMedia);
   const { isOpen, isAnimated } = useStoreState((store) => store.navDropdown);
   const { toggleNav } = useStoreActions((actions) => actions.navDropdown);
+  const { signOut } = useStoreActions((actions) => actions.auth);
+  const navigate = useNavigate();
 
   const image = useMemo(() => {
     if (src) return src;
 
-    return gender === 'female' ? female : male;
+    return gender === 'kobieta' ? female : male;
   }, [src, gender]);
 
   const setFocus = useCallback(() => {
@@ -34,6 +36,14 @@ const NavImageButton = memo(({ src, gender, className }) => {
       if (element) element.focus();
     }, 200);
   }, [buttonRef]);
+
+  const handleSignOut = useCallback(async (e) => {
+    e.preventDefault();
+
+    await signOut();
+
+    navigate('/zaloguj');
+  }, []);
 
   const handleToggleNav = useCallback(() => {
     toggleNav();
@@ -126,18 +136,22 @@ const NavImageButton = memo(({ src, gender, className }) => {
                     </NavLink>
                   </li>
                   <li className="dropdown-nav__item">
-                    <NavLink
+                    <Link
+                      className="nav__link mx-auto"
                       to="/zaloguj"
                       title="Wyloguj się"
-                      dataDropdownNav="true"
+                      data-dropdown-nav="true"
+                      onClick={handleSignOut}
                       onBlur={handleCloseNavOnBlur}
                     >
-                      <FontAwesomeIcon
-                        icon={faSignOutAlt}
-                        fixedWidth
-                      />{' '}
-                      <span className="ms-2">Wyloguj</span>
-                    </NavLink>
+                      <span className="nav__text">
+                        <FontAwesomeIcon
+                          icon={faSignOutAlt}
+                          fixedWidth
+                        />{' '}
+                        <span className="ms-2">Wyloguj</span>
+                      </span>
+                    </Link>
                   </li>
                 </ul>
               </div>

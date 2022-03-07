@@ -1,8 +1,12 @@
 import { thunk, action } from 'easy-peasy';
 
 const auth = {
+  message: '',
+  isError: false,
   isSubmit: false,
   signIn: thunk(async (actions, payload, { getStoreActions }) => {
+    actions.setMessage();
+    actions.setIsError();
     actions.setIsSubmit(true);
 
     try {
@@ -12,7 +16,7 @@ const auth = {
 
       if (response.data) {
         getStoreActions().user.setUser(response.data?.user);
-        getStoreActions().tokens.setAccessToken(response.data?.token);
+        getStoreActions().tokens.setAccessToken(response.data?.accessToken);
       }
 
       actions.setIsSubmit(false);
@@ -24,7 +28,39 @@ const auth = {
       return error.response;
     }
   }),
+  signOut: thunk(async (actions, payload, { getStoreActions }) => {
+    actions.setMessage();
+    actions.setIsError();
+    actions.setIsSubmit(true);
+
+    try {
+      const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
+
+      const response = await axios.post('auth/sign-out', payload);
+
+      if (response.status === 200) {
+        getStoreActions().user.setUser(null);
+        getStoreActions().tokens.setAccessToken('');
+        actions.setMessage(response?.data?.message);
+      } else {
+        actions.setMessage(response?.data?.message || 'Wystąpił błąd.');
+        actions.setIsError(true);
+      }
+
+      actions.setIsSubmit(false);
+
+      return response;
+    } catch (error) {
+      actions.setMessage(error?.response?.data?.message || 'Wystąpił błąd.');
+      actions.setIsError(true);
+      actions.setIsSubmit(false);
+
+      return error.response;
+    }
+  }),
   signUp: thunk(async (actions, payload, { getStoreActions }) => {
+    actions.setMessage();
+    actions.setIsError();
     actions.setIsSubmit(true);
 
     try {
@@ -34,7 +70,7 @@ const auth = {
 
       if (response.data) {
         getStoreActions().user.setUser(response.data?.user);
-        getStoreActions().tokens.setAccessToken(response.data?.token);
+        getStoreActions().tokens.setAccessToken(response.data?.accessToken);
       }
 
       actions.setIsSubmit(false);
@@ -48,6 +84,12 @@ const auth = {
   }),
   setIsSubmit: action((state, payload) => {
     state.isSubmit = payload;
+  }),
+  setMessage: action((state, payload = '') => {
+    state.message = payload;
+  }),
+  setIsError: action((state, payload = false) => {
+    state.isError = payload;
   }),
 };
 
