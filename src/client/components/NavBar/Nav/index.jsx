@@ -157,6 +157,7 @@ const Nav = memo(() => {
                     className="d-block p-1"
                     onBlur={handleCloseNavOnBlur}
                     gender={user?.gender}
+                    type={user?.role?.type}
                   />
                 </div>
               )}
@@ -247,6 +248,7 @@ const Nav = memo(() => {
                     <NavImageButton
                       className="nav__link nav__link-button mx-auto overflow-hidden"
                       gender={user?.gender}
+                      type={user?.role?.type}
                     />
                   </li>
                 )}

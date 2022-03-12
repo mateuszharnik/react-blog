@@ -153,7 +153,7 @@ module.exports = (webpackEnv, { mode }) => {
           new FriendlyErrorsWebpackPlugin({
             compilationSuccessInfo: {
               messages: [
-                `Your application is running here ${colors.red(
+                `Your application is running here ${colors.cyan(
                   `http://localhost:${process.env.CLIENT_PORT}`,
                 )}`,
               ],

@@ -23,9 +23,12 @@ const SignUp = memo(() => {
   return (
     <AuthWrapper>
       <AuthContainer>
-        <h2 className="text-center fw-bold mb-3">
+        <h2 className="text-center fw-bold">
           Zarejestruj się
         </h2>
+        <p className="text-center text-muted">
+          Utwórz darmowe konto.
+        </p>
         <div className="mb-3">
           <FontAwesomeIcon icon={faArrowLeft} />{' '}
           <Link

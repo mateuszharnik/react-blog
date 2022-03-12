@@ -1,9 +1,7 @@
 import React, {
   memo, useState, useEffect, useCallback,
 } from 'react';
-import {
-  oneOfType, func, instanceOf, shape,
-} from 'prop-types';
+import { shape, instanceOf } from 'prop-types';
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -46,28 +44,30 @@ const ScrollToTopButton = memo(({ target }) => {
   }, [toggleIsVisible]);
 
   return createPortal(
-    <TransitionGroup component={null}>
-      <CSSTransition
-        appear
-        key={isVisible}
-        classNames="fade"
-        timeout={500}
-      >
-        <>
-          {isVisible && (
-            <a
-              href="#tresc"
-              title="Przewiń do góry"
-              className="btn btn-primary scroll-top-button"
-              onClick={handleScroll}
-            >
-              <span className="visually-hidden">Do góry</span>
-              <FontAwesomeIcon icon={faChevronUp} />
-            </a>
-          )}
-        </>
-      </CSSTransition>
-    </TransitionGroup>,
+    <div className="react-portal-target">
+      <TransitionGroup component={null}>
+        <CSSTransition
+          appear
+          key={isVisible}
+          classNames="fade"
+          timeout={500}
+        >
+          <>
+            {isVisible && (
+              <a
+                href="#tresc"
+                title="Przewiń do góry"
+                className="btn btn-primary scroll-top-button"
+                onClick={handleScroll}
+              >
+                <span className="visually-hidden">Do góry</span>{' '}
+                <FontAwesomeIcon icon={faChevronUp} />
+              </a>
+            )}
+          </>
+        </CSSTransition>
+      </TransitionGroup>
+    </div>,
     document.getElementById('scroll-button'),
   );
 });
@@ -75,7 +75,11 @@ const ScrollToTopButton = memo(({ target }) => {
 ScrollToTopButton.displayName = 'ScrollToTopButton';
 
 ScrollToTopButton.propTypes = {
-  target: oneOfType([func, shape({ current: instanceOf(Element) })]).isRequired,
+  target: shape({ current: instanceOf(Element) }),
+};
+
+ScrollToTopButton.defaultProps = {
+  target: null,
 };
 
 export default ScrollToTopButton;

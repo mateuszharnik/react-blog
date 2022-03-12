@@ -28,7 +28,10 @@ const MaxViewHeight = memo(({ children, offsetHeight, className }) => {
   }, [setHeightOnResize]);
 
   return (
-    <div className={classNames} style={{ height: `${height}px` }}>
+    <div
+      className={classNames}
+      style={{ height: `${height}px` }}
+    >
       {children}
     </div>
   );
@@ -37,12 +40,13 @@ const MaxViewHeight = memo(({ children, offsetHeight, className }) => {
 MaxViewHeight.displayName = 'MaxViewHeight';
 
 MaxViewHeight.propTypes = {
-  children: oneOfType([arrayOf(node), node]).isRequired,
+  children: oneOfType([arrayOf(node), node]),
   offsetHeight: number,
   className: string,
 };
 
 MaxViewHeight.defaultProps = {
+  children: null,
   offsetHeight: 0,
   className: '',
 };

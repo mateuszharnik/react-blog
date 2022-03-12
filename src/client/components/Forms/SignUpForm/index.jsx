@@ -80,7 +80,7 @@ const SignUpForm = memo(() => {
             Adres email{' '}
           </label>
           <input
-            type="email"
+            type="text"
             className={`form-control${!formik.errors.email && formik.touched.email ? ' valid' : ''}`}
             id="email"
             name="email"
@@ -209,7 +209,7 @@ const SignUpForm = memo(() => {
             <button
               type="button"
               title="Pokaż regulamin"
-              className="link"
+              className="button-link"
             >
               regulamin
             </button>
