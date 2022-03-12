@@ -65,10 +65,10 @@
   }
 
   pre {
-    background-color: #fcfcfc;
-    border: 2px solid #ebebeb;
+    background-color: #1c1e26;
+    border: 2px solid transparent;
     border-radius: 8px;
-    color: #000000;
+    color: #cbced0;
     padding: 0.75rem 0.75rem 0.75rem 3.125rem;
     position: relative;
     @include toRem(padding-left, 52);
@@ -96,7 +96,7 @@
     @include toRem(width, 28);
 
     > span {
-      color: #808080;
+      color: #6f6f70;
       display: block;
       pointer-events: none;
     }
