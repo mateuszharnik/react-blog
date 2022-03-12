@@ -31,7 +31,9 @@
 @import "./components/LazyLoading/LazyLoadingWrapper/index";
 @import "./components/Forms/SignInForm/index";
 @import "./components/Forms/SignUpForm/index";
+@import "./components/Forms/DocsSignInForm/index";
 @import "./components/WelcomeBanner/index";
+@import "./components/ProtectedRoute/index";
 
 /*** Views ***/
 @import "./views/Webpage/Main/index";
@@ -42,10 +44,13 @@
 @import "./views/Webpage/Posts/index";
 @import "./views/Webpage/Profile/index";
 @import "./views/Webpage/Settings/index";
-@import "./views/Auth/SignIn/index";
-@import "./views/Auth/SignUp/index";
 @import "./views/Admin/Main/index";
 @import "./views/Admin/Dashboard/index";
+@import "./views/Auth/AdminSignIn/index";
+@import "./views/Auth/SignIn/index";
+@import "./views/Auth/SignUp/index";
+@import "./views/Docs/Main/index";
+@import "./views/Docs/SignIn/index";
 @import "./views/NotFound/index";
 
 /*** Animations ***/

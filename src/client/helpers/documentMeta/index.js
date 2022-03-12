@@ -64,17 +64,6 @@ export const postsMeta = ({
   'twitter:description': description,
 });
 
-export const dashboardMeta = ({
-  title = 'Panel administratora',
-  description = 'Zarządzaj blogiem.',
-} = {}) => ({
-  description,
-  'og:title': title,
-  'og:description': description,
-  'twitter:title': title,
-  'twitter:description': description,
-});
-
 export const profileMeta = ({
   title = 'Profil użytkownika',
   description = 'Podgląd profilu.',
@@ -89,6 +78,28 @@ export const profileMeta = ({
 export const settingsMeta = ({
   title = 'Ustawienia',
   description = 'Ustawienia profilu.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const dashboardMeta = ({
+  title = 'Panel administratora',
+  description = 'Zarządzaj blogiem.',
+} = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const adminSignInMeta = ({
+  title = 'Zaloguj się',
+  description = 'Zaloguj się do konta administratora.',
 } = {}) => ({
   description,
   'og:title': title,
@@ -120,6 +131,14 @@ export const signUpMeta = ({
 });
 
 export const notFoundMeta = ({ title = '404', description = 'Nie znaleziono strony.' } = {}) => ({
+  description,
+  'og:title': title,
+  'og:description': description,
+  'twitter:title': title,
+  'twitter:description': description,
+});
+
+export const docsMeta = ({ title = 'Dokumentacja', description = 'Zaloguj się do dokumentacji API.' } = {}) => ({
   description,
   'og:title': title,
   'og:description': description,
