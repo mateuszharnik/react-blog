@@ -12,7 +12,7 @@ const Main = memo(({ children }) => {
     addLayer();
 
     try {
-      if (!config.use_docs_password) {
+      if (!config?.use_docs_password) {
         document.location.href = `${process.env.CLIENT_URL}/api/v1/docs`;
       } else {
         const response = await fetchRefreshToken();
