@@ -1,16 +1,16 @@
 import React, { memo, useState, useMemo } from 'react';
+import { string, func } from 'prop-types';
 import { useFormik } from 'formik';
 import { useNavigate, Link } from 'react-router-dom';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreState } from 'easy-peasy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import validationSchema from '@client/helpers/schemas/signIn';
 
-const SignInForm = memo(() => {
+const SignInForm = memo(({ signIn, path }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { isSubmit, isError, message } = useStoreState((store) => store.auth);
-  const { signIn } = useStoreActions((actions) => actions.auth);
   const navigate = useNavigate();
 
   const title = useMemo(() => (isSubmit ? 'Logowanie' : 'Zaloguj się'), [isSubmit]);
@@ -32,7 +32,7 @@ const SignInForm = memo(() => {
       if (status === 200) {
         setSuccess('Pomyślnie zalogowano.');
         resetForm();
-        navigate('/profil');
+        navigate(path);
       } else {
         setError(data.message);
       }
@@ -141,5 +141,10 @@ const SignInForm = memo(() => {
 });
 
 SignInForm.displayName = 'SignInForm';
+
+SignInForm.propTypes = {
+  signIn: func.isRequired,
+  path: string.isRequired,
+};
 
 export default SignInForm;

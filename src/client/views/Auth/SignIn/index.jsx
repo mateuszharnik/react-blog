@@ -9,7 +9,7 @@ import SignInForm from '@client/components/Forms/SignInForm';
 import { setTitle, setMeta, signInMeta } from '@client/helpers/documentMeta';
 
 const SignIn = memo(() => {
-  const { setMessage, setIsError } = useStoreActions((actions) => actions.auth);
+  const { signIn, setMessage, setIsError } = useStoreActions((actions) => actions.auth);
   const { removeLayer, addLayer } = useStoreActions((actions) => actions.layer);
 
   useEffect(() => {
@@ -29,9 +29,12 @@ const SignIn = memo(() => {
   return (
     <AuthWrapper>
       <AuthContainer>
-        <h2 className="text-center fw-bold mb-3">
+        <h2 className="text-center fw-bold">
           Zaloguj się
         </h2>
+        <p className="text-center text-muted">
+          Zaloguj się do konta.
+        </p>
         <div className="mb-3">
           <FontAwesomeIcon icon={faArrowLeft} />{' '}
           <Link
@@ -41,7 +44,10 @@ const SignIn = memo(() => {
             <span>Wróć</span>
           </Link>
         </div>
-        <SignInForm />
+        <SignInForm
+          signIn={signIn}
+          path="/profil"
+        />
         <div className="mt-3 text-center">
           Nie masz konta?{' '}
           <Link

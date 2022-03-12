@@ -34,7 +34,7 @@
   border-color: $primary;
 }
 
-.link {
+.button-link {
   background-color: transparent;
   border: 0;
   color: $link-color;
@@ -45,5 +45,60 @@
   &:hover {
     color: $link-hover-color;
     text-decoration: underline;
+  }
+}
+
+.markdown {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @include toRem(margin-bottom, 16);
+  }
+
+  img {
+    display: block;
+    margin: 1rem auto;
+    max-width: 100%;
+  }
+
+  pre {
+    background-color: #fcfcfc;
+    border: 2px solid #ebebeb;
+    border-radius: 8px;
+    color: #000000;
+    padding: 0.75rem 0.75rem 0.75rem 3.125rem;
+    position: relative;
+    @include toRem(padding-left, 52);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .pre {
+    @include toRem(padding-left, 31.7);
+
+    .language-lines {
+      text-align: left;
+      width: auto;
+    }
+  }
+
+  .language-lines {
+    pointer-events: none;
+    position: absolute;
+    text-align: right;
+    @include toRem(top, 12);
+    @include toRem(left, 12);
+    @include toRem(width, 28);
+
+    > span {
+      color: #808080;
+      display: block;
+      pointer-events: none;
+    }
   }
 }

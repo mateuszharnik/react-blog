@@ -6,7 +6,7 @@ import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
 
 const NavImageLink = memo(({
-  onBlur, src, gender, className,
+  onBlur, type, src, gender, className,
 }) => {
   const image = useMemo(() => {
     if (src) return src;
@@ -14,11 +14,13 @@ const NavImageLink = memo(({
     return gender === 'kobieta' ? female : male;
   }, [src, gender]);
 
+  const to = useMemo(() => (type === 'USER' ? '/profil' : '/admin'), [type]);
+
   return (
     <div className="nav__link-image-wrapper">
       <Link
         className={className}
-        to="/profil"
+        to={to}
         end
         title="Wyświetl swój profil"
         onBlur={onBlur}
@@ -45,6 +47,7 @@ const NavImageLink = memo(({
 NavImageLink.displayName = 'NavImageLink';
 
 NavImageLink.propTypes = {
+  type: string.isRequired,
   gender: string.isRequired,
   className: string.isRequired,
   src: string,

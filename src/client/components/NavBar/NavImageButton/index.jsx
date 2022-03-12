@@ -3,18 +3,20 @@ import React, {
 } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { string } from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons/faUserAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
-import { string } from 'prop-types';
 import LazyImage from '@client/components/LazyImage';
 import NavLink from '@client/components/NavBar/NavLink';
 import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
 
-const NavImageButton = memo(({ src, gender, className }) => {
+const NavImageButton = memo(({
+  src, type, gender, className,
+}) => {
   const buttonRef = useRef(null);
   const { pathname } = useLocation();
   const { isDesktop } = useStoreState((store) => store.matchMedia);
@@ -28,6 +30,10 @@ const NavImageButton = memo(({ src, gender, className }) => {
 
     return gender === 'kobieta' ? female : male;
   }, [src, gender]);
+
+  const to = useMemo(() => (type === 'USER' ? '/profil' : '/admin'), [type]);
+
+  const isAdmin = useMemo(() => type !== 'USER', [type]);
 
   const setFocus = useCallback(() => {
     setTimeout(() => {
@@ -109,7 +115,7 @@ const NavImageButton = memo(({ src, gender, className }) => {
                 >
                   <li className="dropdown-nav__item">
                     <NavLink
-                      to="/profil"
+                      to={to}
                       title="Wyświetl swój profil"
                       dataDropdownNav="true"
                       onBlur={handleCloseNavOnBlur}
@@ -121,20 +127,22 @@ const NavImageButton = memo(({ src, gender, className }) => {
                       <span className="ms-2">Profil</span>
                     </NavLink>
                   </li>
-                  <li className="dropdown-nav__item">
-                    <NavLink
-                      to="/profil/ustawienia"
-                      title="Ustawienia konta"
-                      dataDropdownNav="true"
-                      onBlur={handleCloseNavOnBlur}
-                    >
-                      <FontAwesomeIcon
-                        icon={faCog}
-                        fixedWidth
-                      />{' '}
-                      <span className="ms-2">Ustawienia</span>
-                    </NavLink>
-                  </li>
+                  {!isAdmin && (
+                    <li className="dropdown-nav__item">
+                      <NavLink
+                        to="/profil/ustawienia"
+                        title="Ustawienia konta"
+                        dataDropdownNav="true"
+                        onBlur={handleCloseNavOnBlur}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCog}
+                          fixedWidth
+                        />{' '}
+                        <span className="ms-2">Ustawienia</span>
+                      </NavLink>
+                    </li>
+                  )}
                   <li className="dropdown-nav__item">
                     <Link
                       className="nav__link mx-auto"
@@ -166,6 +174,7 @@ const NavImageButton = memo(({ src, gender, className }) => {
 NavImageButton.displayName = 'NavImageButton';
 
 NavImageButton.propTypes = {
+  type: string.isRequired,
   gender: string.isRequired,
   className: string.isRequired,
   src: string,

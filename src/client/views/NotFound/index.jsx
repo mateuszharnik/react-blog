@@ -1,8 +1,6 @@
-import React, {
-  useCallback, useEffect, useState, memo,
-} from 'react';
-import { useStoreActions } from 'easy-peasy';
+import React, { useEffect, useState, memo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useStoreActions } from 'easy-peasy';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import LazyImage from '@client/components/LazyImage';
 import { setTitle, setMeta, notFoundMeta } from '@client/helpers/documentMeta';
@@ -12,12 +10,6 @@ const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
   const { removeLayer, addLayer } = useStoreActions((actions) => actions.layer);
   const navigate = useNavigate();
-
-  const handleClick = useCallback((e) => {
-    e.preventDefault();
-
-    navigate('/');
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,7 +50,6 @@ const NotFound = memo(() => {
             <Link
               to="/"
               title="Wróć do strony głównej"
-              onClick={handleClick}
             >
               <span>strony głównej</span>
             </Link>{' '}

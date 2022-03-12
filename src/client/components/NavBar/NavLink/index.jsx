@@ -28,7 +28,7 @@ const NavLink = memo(({
 NavLink.displayName = 'NavLink';
 
 NavLink.propTypes = {
-  children: oneOfType([arrayOf(node), node]).isRequired,
+  children: oneOfType([arrayOf(node), node]),
   title: string.isRequired,
   to: string.isRequired,
   onBlur: func,
@@ -38,6 +38,7 @@ NavLink.propTypes = {
 
 NavLink.defaultProps = {
   onBlur: () => {},
+  children: null,
   dataNav: null,
   dataDropdownNav: null,
 };
