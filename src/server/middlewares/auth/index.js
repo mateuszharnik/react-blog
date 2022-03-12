@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import decode from 'jwt-decode';
 import { verify } from 'jsonwebtoken';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
@@ -14,6 +15,10 @@ export const checkToken = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
 
     if (!token) return next();
+
+    const { exp } = decode(token);
+
+    if ((Math.floor(Date.now() / 1000)) >= exp) return next();
 
     const user = await verify(token, ACCESS_TOKEN_SECRET);
 

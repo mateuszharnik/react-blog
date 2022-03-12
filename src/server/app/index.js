@@ -5,11 +5,9 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
-import { serve, setup } from 'swagger-ui-express';
 import { join } from 'path';
 import api from '@server/api';
 import config from '@server/config';
-import swaggerDocument from '@server/docs/API.json';
 import { checkToken } from '@server/middlewares/auth';
 import { notFound, CSRFErrorHandler, errorHandler } from '@server/middlewares/errors';
 
@@ -35,7 +33,6 @@ app.use(checkToken);
 
 if (NODE_ENV === 'development') {
   app.use(cors({ origin: CLIENT_URL }));
-  app.use('/api/v1/docs', serve, setup(swaggerDocument, { explorer: true }));
 }
 
 if (NODE_ENV === 'production') {

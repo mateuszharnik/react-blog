@@ -2,7 +2,7 @@ import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import validateId from '@server/helpers/validation/validateId';
 import validateIds from '@server/helpers/validation/validateIds';
-import purify from '@server/helpers/purify';
+import sanitize from '@server/helpers/purify';
 import Message from '../model';
 import validateMessage from '../schema';
 
@@ -105,7 +105,7 @@ export const createMessage = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
   try {
-    req.body.contents = purify(req.body.contents);
+    req.body.contents = sanitize(req.body.contents);
 
     const { validationError, data } = validateMessage(req.body);
 

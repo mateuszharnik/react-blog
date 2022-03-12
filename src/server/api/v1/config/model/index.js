@@ -22,6 +22,10 @@ const ConfigSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    use_docs_password: {
+      type: Boolean,
+      required: true,
+    },
     deleted_at: {
       type: Date,
       default: null,
