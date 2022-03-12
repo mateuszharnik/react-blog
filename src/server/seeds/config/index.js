@@ -1,9 +1,9 @@
 import colors from 'colors/safe';
-import configs from '@server/config';
+import envConfig from '@server/config';
 import validateConfig from '@server/api/v1/config/schema';
 import Config from '@server/api/v1/config/model';
 
-const { NODE_ENV } = configs;
+const { NODE_ENV } = envConfig;
 
 const removeAndSeedConfig = async (config = {}) => {
   const { validationError, data } = validateConfig(config);

@@ -4,6 +4,7 @@ export const exampleConfig = {
   show_social_media: true,
   show_comments: true,
   use_slug_url: true,
+  use_docs_password: false,
 };
 
 export const defaultConfig = {
@@ -12,4 +13,5 @@ export const defaultConfig = {
   show_social_media: true,
   show_comments: true,
   use_slug_url: false,
+  use_docs_password: true,
 };

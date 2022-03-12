@@ -19,17 +19,36 @@ const markdownToHTML = (markdown = '') => {
 
     codeElement.innerHTML = highlightAuto(decode(codeElement.innerHTML)).value;
 
-    const lines = codeElement.innerHTML.trim().split('\n');
+    let sign = '';
 
-    let linesWrapper = '<span class="language-lines">';
+    if (
+      codeElement.className.includes('-sh')
+      || codeElement.className.includes('-bash')
+      || codeElement.className.includes('-shell')
+      || codeElement.className.includes('-zsh')
+    ) {
+      const preElement = codeElement.parentElement;
 
-    lines.forEach((_, index) => {
-      linesWrapper += `<span>${index + 1}</span>`;
-    });
+      if (preElement?.tagName === 'PRE') {
+        preElement.classList.add('pre');
+      }
 
-    linesWrapper += '</span>';
+      sign = '$';
+    }
 
-    codeElement.innerHTML += linesWrapper;
+    if (codeElement.className.includes('language-')) {
+      const lines = codeElement.innerHTML.trim().split('\n');
+
+      let linesWrapper = '<span class="language-lines">';
+
+      lines.forEach((_, index) => {
+        linesWrapper += `<span>${sign || index + 1}</span>`;
+      });
+
+      linesWrapper += '</span>';
+
+      codeElement.innerHTML += linesWrapper;
+    }
 
     return codeElement;
   });

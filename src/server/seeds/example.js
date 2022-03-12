@@ -1,5 +1,5 @@
-import colors from 'colors/safe';
 import '@server/db';
+import colors from 'colors/safe';
 import { exampleAbout } from '@server/helpers/seeds/data/about';
 import { exampleConfig } from '@server/helpers/seeds/data/config';
 import { exampleContact } from '@server/helpers/seeds/data/contact';
@@ -14,9 +14,11 @@ import removeAndSeedConfig from './config';
 import removeAndSeedContact from './contact';
 import removeAndSeedRoles from './roles';
 import removeAndSeedUsers from './users';
+import removeAndSeedDocs from './docs';
 
 const seed = async () => {
   try {
+    await removeAndSeedDocs();
     await removeAndSeedMessages(exampleMessages);
     await removeAndSeedTermsOfUse(exampleTermsOfUse);
     await removeAndSeedRoles(exampleRoles);

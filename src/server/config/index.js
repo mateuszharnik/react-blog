@@ -19,6 +19,14 @@ const schema = Joi.object({
   REFRESH_TOKEN_SECRET: Joi.string()
     .trim()
     .required(),
+  DOCS_TOKEN_SECRET: Joi.string()
+    .trim()
+    .required(),
+  DOCS_PASSWORD: Joi.string()
+    .trim()
+    .min(8)
+    .max(32)
+    .required(),
   ADMIN_USERNAME: Joi.string()
     .trim()
     .alphanum()

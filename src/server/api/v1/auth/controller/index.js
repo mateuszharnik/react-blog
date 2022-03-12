@@ -1,4 +1,6 @@
 import colors from 'colors/safe';
+import ms from 'ms';
+import decode from 'jwt-decode';
 import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
@@ -53,7 +55,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
     });
 
     const { token_version, password, ...rest } = user.toJSON();
@@ -138,7 +140,7 @@ export const signUp = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
     });
 
     const { token_version, ...rest } = user.toJSON();
@@ -161,7 +163,19 @@ export const getRefreshToken = async (req, res, next) => {
     const token = req.cookies?._refresh;
 
     if (!token) {
-      return res.end();
+      return res.status(200).json();
+    }
+
+    const { exp } = decode(token);
+
+    if ((Math.floor(Date.now() / 1000)) >= exp) {
+      res.clearCookie('_refresh', {
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/api/v1/auth/refresh-token',
+      });
+
+      return res.status(200).json();
     }
 
     const decodedToken = await verify(token, REFRESH_TOKEN_SECRET);
@@ -172,11 +186,17 @@ export const getRefreshToken = async (req, res, next) => {
     }).populate('role', '-description -name').select('-password');
 
     if (!user) {
+      res.clearCookie('_refresh', {
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/api/v1/auth/refresh-token',
+      });
+
       return responseWithError(404, 'Użytkownik nie istnieje.');
     }
 
     if (user?.token_version !== decodedToken?.token_version) {
-      return res.end();
+      return res.status(200).json();
     }
 
     const payload = {
@@ -195,7 +215,7 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
     });
 
     const { token_version, ...rest } = user.toJSON();
@@ -241,7 +261,7 @@ export const revokeRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7d
+      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
