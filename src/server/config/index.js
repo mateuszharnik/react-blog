@@ -1,9 +1,19 @@
 import Joi from 'joi';
 import colors from 'colors/safe';
+import fs from 'fs';
+import { resolve } from 'path';
 import { config } from 'dotenv';
 import { emailRegExp } from '@server/helpers/regexps';
 
 config();
+
+if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
+  const path = resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+
+  if (fs.existsSync(path)) {
+    config({ path });
+  }
+}
 
 const schema = Joi.object({
   NODE_ENV: Joi.string()
