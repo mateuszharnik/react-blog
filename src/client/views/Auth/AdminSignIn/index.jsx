@@ -9,7 +9,7 @@ import SignInForm from '@client/components/Forms/SignInForm';
 import { setTitle, setMeta, adminSignInMeta } from '@client/helpers/documentMeta';
 
 const AdminSignIn = memo(() => {
-  const { adminSignIn, setMessage, setIsError } = useStoreActions((actions) => actions.auth);
+  const { adminSignIn } = useStoreActions((actions) => actions.auth);
   const { removeLayer, addLayer } = useStoreActions((actions) => actions.layer);
 
   useEffect(() => {
@@ -19,11 +19,6 @@ const AdminSignIn = memo(() => {
     setMeta(adminSignInMeta());
 
     removeLayer();
-
-    return () => {
-      setMessage();
-      setIsError();
-    };
   }, []);
 
   return (

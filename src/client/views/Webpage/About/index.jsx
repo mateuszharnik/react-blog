@@ -48,38 +48,42 @@ const About = memo(() => {
         </div>
       ) : (
         <>
-          {error ? (
-            <div
-              className="alert alert-danger"
-              role="alert"
-            >
-              {error}
+          {isAdmin && (
+            <div className="text-end my-2">
+              <Link
+                to="/o-blogu/edytuj"
+                title="Przejdź do edycji"
+              >
+                Edytuj tę stronę
+              </Link>
             </div>
-          ) : (
-            <>
-              {about?.html_contents ? (
-                <div
-                  className="markdown mt-2"
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={{ __html: contents }}
-                />
-              ) : (
-                <div className="position-component-center">
-                  Brak treści.
-                </div>
-              )}
-              {isAdmin && (
-                <div className="text-end my-2">
-                  <Link
-                    to="/o-blogu/edytuj"
-                    title="Przejdź do edycji"
-                  >
-                    Edytuj tę stronę
-                  </Link>
-                </div>
-              )}
-            </>
           )}
+          <div className="py-4">
+            {error ? (
+              <div className="text-center">
+                <div
+                  className="alert alert-danger mb-0 d-inline-block"
+                  role="alert"
+                >
+                  {error}
+                </div>
+              </div>
+            ) : (
+              <>
+                {about?.html_contents ? (
+                  <div
+                    className="markdown mt-2"
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{ __html: contents }}
+                  />
+                ) : (
+                  <div className="position-component-center">
+                    Brak treści.
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </>
       )}
     </PageContainer>

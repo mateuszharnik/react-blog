@@ -2,7 +2,7 @@ import { action } from 'easy-peasy';
 
 const user = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   isSubmit: false,
   setIsLoading: action((state, payload) => {
     state.isLoading = payload;

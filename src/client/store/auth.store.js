@@ -1,13 +1,11 @@
 import { thunk, action } from 'easy-peasy';
 
 const auth = {
-  message: '',
-  isError: false,
   isSubmit: false,
   adminSignIn: thunk(async (actions, payload, { getStoreActions }) => {
-    actions.setMessage();
-    actions.setIsError();
     actions.setIsSubmit(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -19,19 +17,19 @@ const auth = {
         getStoreActions().tokens.setAccessToken(response.data?.accessToken);
       }
 
-      actions.setIsSubmit(false);
-
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsSubmit(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   signIn: thunk(async (actions, payload, { getStoreActions }) => {
-    actions.setMessage();
-    actions.setIsError();
     actions.setIsSubmit(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -43,19 +41,19 @@ const auth = {
         getStoreActions().tokens.setAccessToken(response.data?.accessToken);
       }
 
-      actions.setIsSubmit(false);
-
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsSubmit(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   signOut: thunk(async (actions, payload, { getStoreActions }) => {
-    actions.setMessage();
-    actions.setIsError();
     actions.setIsSubmit(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -65,27 +63,35 @@ const auth = {
       if (response.status === 200) {
         getStoreActions().user.setUser(null);
         getStoreActions().tokens.setAccessToken('');
-        actions.setMessage(response?.data?.message);
+        getStoreActions().toasts.addToast({
+          message: response?.data?.message,
+          type: 'success',
+        });
       } else {
-        actions.setMessage(response?.data?.message || 'Wystąpił błąd.');
-        actions.setIsError(true);
+        getStoreActions().toasts.addToast({
+          message: response?.data?.message || 'Wystąpił błąd.',
+          type: 'danger',
+        });
       }
 
-      actions.setIsSubmit(false);
-
-      return response;
+      res = response;
     } catch (error) {
-      actions.setMessage(error?.response?.data?.message || 'Wystąpił błąd.');
-      actions.setIsError(true);
-      actions.setIsSubmit(false);
+      getStoreActions().toasts.addToast({
+        message: error?.response?.data?.message || 'Wystąpił błąd.',
+        type: 'danger',
+      });
 
-      return error.response;
+      res = error.response;
+    } finally {
+      actions.setIsSubmit(false);
     }
+
+    return res;
   }),
   signUp: thunk(async (actions, payload, { getStoreActions }) => {
-    actions.setMessage();
-    actions.setIsError();
     actions.setIsSubmit(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -97,23 +103,17 @@ const auth = {
         getStoreActions().tokens.setAccessToken(response.data?.accessToken);
       }
 
-      actions.setIsSubmit(false);
-
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsSubmit(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   setIsSubmit: action((state, payload) => {
     state.isSubmit = payload;
-  }),
-  setMessage: action((state, payload = '') => {
-    state.message = payload;
-  }),
-  setIsError: action((state, payload = false) => {
-    state.isError = payload;
   }),
 };
 

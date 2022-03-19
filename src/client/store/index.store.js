@@ -10,6 +10,7 @@ import matchMedia from './matchMedia.store';
 import user from './user.store';
 import contact from './contact.store';
 import config from './config.store';
+import toasts from './toasts.store';
 import docs from './docs.store';
 
 const model = {
@@ -24,6 +25,7 @@ const model = {
   config,
   user,
   matchMedia,
+  toasts,
   docs,
 };
 
