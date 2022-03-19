@@ -27,6 +27,7 @@ app.use(csrf({
   cookie: {
     httpOnly: true,
     sameSite: 'strict',
+    secure: NODE_ENV === 'production',
   },
 }));
 app.use(checkToken);

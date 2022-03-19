@@ -6,39 +6,17 @@ import sanitize from '@server/helpers/purify';
 import Message from '../model';
 import validateMessage from '../schema';
 
-export const countMessages = async (req, res, next) => {
+export const countMessages = (isRead = null) => async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
-  try {
-    const messages = await Message.count({ deleted_at: null });
+  const query = { deleted_at: null };
 
-    return res.status(200).json({ messages });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    responseWithError();
+  if (isRead !== null) {
+    query.is_read = !!isRead;
   }
-};
-
-export const countReadMessages = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
 
   try {
-    const messages = await Message.count({ deleted_at: null, is_read: true });
-
-    return res.status(200).json({ messages });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    responseWithError();
-  }
-};
-
-export const countNewMessages = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
-  try {
-    const messages = await Message.count({ deleted_at: null, is_read: false });
+    const messages = await Message.count(query);
 
     return res.status(200).json({ messages });
   } catch (error) {
@@ -53,10 +31,6 @@ export const getMessages = async (req, res, next) => {
 
   try {
     const messages = await Message.find({ deleted_at: null }).sort({ created_at: -1 });
-
-    if (!messages?.length) {
-      return responseWithError(404, 'Nie znaleziono wiadomości.');
-    }
 
     return res.status(200).json(messages);
   } catch (error) {

@@ -11,10 +11,6 @@ export const getTermsOfUse = async (req, res, next) => {
   try {
     const termsOfUse = await TermsOfUse.find({ deleted_at: null }).sort({ created_at: -1 });
 
-    if (!termsOfUse?.length) {
-      return responseWithError(404, 'Nie znaleziono regulaminów.');
-    }
-
     return res.status(200).json(termsOfUse);
   } catch (error) {
     // eslint-disable-next-line no-console
