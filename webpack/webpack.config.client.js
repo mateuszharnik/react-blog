@@ -1,4 +1,6 @@
 const { join, resolve } = require('path');
+const { config } = require('dotenv');
+const fs = require('fs');
 const colors = require('colors/safe');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -14,10 +16,17 @@ const CopyPlugin = require('copy-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const webpack = require('webpack');
-const dotenv = require('dotenv');
 
 module.exports = (webpackEnv, { mode }) => {
-  dotenv.config();
+  config();
+
+  if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
+    const path = resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+
+    if (fs.existsSync(path)) {
+      config({ path });
+    }
+  }
 
   return {
     entry: {

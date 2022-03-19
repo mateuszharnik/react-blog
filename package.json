@@ -18,8 +18,8 @@
     "build:client:analyze": "cross-env NODE_ENV=production ANALYZE=true webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:server": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.server.js",
     "test": "yarn run test:client && yarn run test:server",
-    "test:client": "jest ./src/client --passWithNoTests",
-    "test:server": "jest ./src/server --env=node --passWithNoTests",
+    "test:client": "cross-env NODE_ENV=test jest ./src/client --passWithNoTests",
+    "test:server": "cross-env NODE_ENV=test jest ./src/server --env=node --passWithNoTests",
     "purgecss": "purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css",
     "lint-fix": "yarn run lint:js-fix && yarn run lint:style-fix",
     "lint:js-fix": "eslint ./src/ --ext .js,.jsx --fix",
@@ -33,8 +33,9 @@
     "lint:client": "eslint ./src/client/ --ext .js,.jsx",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
     "lint:eslint": "eslint .eslintrc.js --no-ignore .eslintrc.js",
-    "seed": "babel-node ./src/server/seeds/index.js",
-    "seed:example": "babel-node ./src/server/seeds/example.js"
+    "seed:prod": "cross-env NODE_ENV=production babel-node ./src/server/seeds/index.js",
+    "seed:dev": "cross-env NODE_ENV=development babel-node ./src/server/seeds/index.js",
+    "seed:example": "cross-env NODE_ENV=development babel-node ./src/server/seeds/example.js"
   },
   "engines": {
     "node": "14.15.0",
@@ -74,6 +75,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "csurf": "^1.11.0",
     "dompurify": "^2.3.5",
     "dotenv": "^10.0.0",
@@ -110,6 +112,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -133,7 +136,6 @@
     "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^6.2.1",
     "copy-webpack-plugin": "^6.4.1",
-    "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
