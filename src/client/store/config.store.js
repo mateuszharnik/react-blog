@@ -2,10 +2,12 @@ import { thunk, action } from 'easy-peasy';
 
 const config = {
   config: null,
-  isLoading: false,
+  isLoading: true,
   isSubmit: false,
   updateConfig: thunk(async (actions, payload) => {
     actions.setIsSubmit(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -13,17 +15,20 @@ const config = {
       const response = await axios.put('config', payload);
 
       actions.setConfig(response.data);
-      actions.setIsSubmit(false);
 
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsSubmit(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   fetchConfig: thunk(async (actions) => {
     actions.setIsLoading(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -31,14 +36,15 @@ const config = {
       const response = await axios.get('config');
 
       actions.setConfig(response.data);
-      actions.setIsLoading(false);
 
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsLoading(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   setIsLoading: action((state, payload) => {
     state.isLoading = payload;

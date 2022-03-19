@@ -2,9 +2,11 @@ import { thunk, action } from 'easy-peasy';
 
 const tokens = {
   accessToken: '',
-  isLoading: false,
+  isLoading: true,
   fetchRefreshToken: thunk(async (actions, payload, { getStoreActions }) => {
     actions.setIsLoading(true);
+
+    let res = null;
 
     try {
       const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
@@ -16,14 +18,14 @@ const tokens = {
         getStoreActions().user.setUser(response.data?.user);
       }
 
-      actions.setIsLoading(false);
-
-      return response;
+      res = response;
     } catch (error) {
+      res = error.response;
+    } finally {
       actions.setIsLoading(false);
-
-      return error.response;
     }
+
+    return res;
   }),
   setIsLoading: action((state, payload) => {
     state.isLoading = payload;
