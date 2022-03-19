@@ -1,0 +1,296 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+
+div[class^="toast toast-color"],
+div[class^="toast toast-dark"] {
+  .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+  }
+}
+
+div[class^="toast toast-color-default"] {
+  .btn-close {
+    filter: none;
+  }
+}
+
+.toast {
+  .toast-header {
+    border: none;
+  }
+
+  &-icon {
+    @include toRem(font-size, 18);
+    display: flex;
+  }
+
+  .toast-progress__wrapper {
+    border-bottom-left-radius: calc(0.25rem - 1px);
+    border-bottom-right-radius: calc(0.25rem - 1px);
+  }
+  .toast-body__wrapper {
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+    display: flex;
+    overflow: hidden;
+  }
+
+  &-progress {
+    background-color: transparent;
+    border-radius: 4px;
+    margin-bottom: 1px;
+    overflow: hidden;
+    width: 100%;
+    @include toRem(height, 5);
+
+    &__bar {
+      animation: progress linear forwards;
+      background-color: $primary;
+      height: 100%;
+    }
+  }
+
+  &-color {
+    &-success {
+      div {
+        background-color: $green-600;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+
+    &-danger {
+      div {
+        background-color: $red-700;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+
+    &-info {
+      div {
+        background-color: $blue-600;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+
+    &-warning {
+      div {
+        background-color: $yellow-500;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+
+    &-primary {
+      div {
+        background-color: $primary;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+
+    &-default {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-progress__bar {
+        background-color: $body-color;
+      }
+    }
+  }
+
+  &-light {
+    &-success {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-icon {
+        color: $green-600;
+      }
+
+      .toast-progress__bar {
+        background-color: $green-600;
+      }
+    }
+
+    &-danger {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-icon {
+        color: $red-700;
+      }
+
+      .toast-progress__bar {
+        background-color: $red-700;
+      }
+    }
+
+    &-info {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-icon {
+        color: $blue-600;
+      }
+
+      .toast-progress__bar {
+        background-color: $blue-600;
+      }
+    }
+
+    &-warning {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-icon {
+        color: $yellow-500;
+      }
+
+      .toast-progress__bar {
+        background-color: $yellow-500;
+      }
+    }
+
+    &-primary {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-icon {
+        color: $primary;
+      }
+
+      .toast-progress__bar {
+        background-color: $primary;
+      }
+    }
+
+    &-default {
+      div {
+        background-color: $light;
+        color: $body-color;
+      }
+
+      .toast-progress__bar {
+        background-color: $body-color;
+      }
+    }
+  }
+
+  &-dark {
+    &-success {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-icon {
+        color: $green-600;
+      }
+
+      .toast-progress__bar {
+        background-color: $green-600;
+      }
+    }
+
+    &-danger {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-icon {
+        color: $red-700;
+      }
+
+      .toast-progress__bar {
+        background-color: $red-700;
+      }
+    }
+
+    &-info {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-icon {
+        color: $blue-600;
+      }
+
+      .toast-progress__bar {
+        background-color: $blue-600;
+      }
+    }
+
+    &-warning {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-icon {
+        color: $yellow-500;
+      }
+
+      .toast-progress__bar {
+        background-color: $yellow-500;
+      }
+    }
+
+    &-primary {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-icon {
+        color: $primary;
+      }
+
+      .toast-progress__bar {
+        background-color: $primary;
+      }
+    }
+
+    &-default {
+      div {
+        background-color: $body-color;
+        color: $light;
+      }
+
+      .toast-progress__bar {
+        background-color: $light;
+      }
+    }
+  }
+}

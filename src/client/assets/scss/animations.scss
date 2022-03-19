@@ -1,6 +1,36 @@
 /*** Imports ***/
 @import "./variables";
 
+@keyframes progress {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
+
+.toast-fade-enter,
+.toast-fade-exit-done {
+  opacity: 0;
+}
+
+.toast-fade-enter-done,
+.toast-fade-exit {
+  opacity: 1;
+}
+
+.toast-fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.toast-fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out, height 0.15s 0.3s ease-in-out;
+}
+
 .fade-enter,
 .fade-appear,
 .fade-exit-done {

@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -7,10 +7,9 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import validationSchema from '@client/helpers/schemas/signUp';
 
 const SignUpForm = memo(() => {
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const { isSubmit } = useStoreState((store) => store.auth);
   const { signUp } = useStoreActions((actions) => actions.auth);
+  const { addToast } = useStoreActions((actions) => actions.toasts);
   const navigate = useNavigate();
 
   const title = useMemo(() => (isSubmit ? 'Rejestrowanie' : 'Zarejestruj się'), [isSubmit]);
@@ -26,19 +25,22 @@ const SignUpForm = memo(() => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      setSuccess('');
-      setError('');
-
       const newValues = validationSchema.cast(values);
 
       const { status, data } = await signUp(newValues);
 
       if (status === 200) {
-        setSuccess('Pomyślnie zarejestrowano.');
+        addToast({
+          message: 'Pomyślnie zarejestrowano.',
+          type: 'success',
+        });
         resetForm();
         navigate('/profil');
       } else {
-        setError(data.message);
+        addToast({
+          message: data.message,
+          type: 'danger',
+        });
       }
     },
   });
@@ -239,24 +241,6 @@ const SignUpForm = memo(() => {
           </button>
         </div>
       </form>
-      <div className="text-center mt-3">
-        {error && (
-          <div
-            className="alert alert-danger mb-0 d-inline-block"
-            role="alert"
-          >
-            {error}
-          </div>
-        )}
-        {success && (
-          <div
-            className="alert alert-success mb-0 d-inline-block"
-            role="alert"
-          >
-            {success}
-          </div>
-        )}
-      </div>
     </>
   );
 });
