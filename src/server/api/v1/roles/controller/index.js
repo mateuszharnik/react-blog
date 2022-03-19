@@ -23,13 +23,7 @@ export const getRoles = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
   try {
-    const roles = await Role
-      .find({ deleted_at: null })
-      .sort({ created_at: -1 });
-
-    if (!roles?.length) {
-      return responseWithError(404, 'Nie znaleziono żadnej roli użytkownika.');
-    }
+    const roles = await Role.find({ deleted_at: null }).sort({ created_at: -1 });
 
     return res.status(200).json(roles);
   } catch (error) {

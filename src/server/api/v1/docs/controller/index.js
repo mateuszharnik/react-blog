@@ -8,7 +8,7 @@ import createResponseWithError from '@server/helpers/createResponseWithError';
 import Docs from '../model';
 import validateSignIn from '../schema';
 
-const { DOCS_TOKEN_SECRET } = config;
+const { DOCS_TOKEN_SECRET, NODE_ENV } = config;
 
 export const signIn = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
@@ -40,7 +40,8 @@ export const signIn = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
-      maxAge: Math.floor((Date.now() + ms('3d')) / 1000),
+      secure: NODE_ENV === 'production',
+      maxAge: ms('3d'),
     });
 
     return res.status(200).json({ docsToken });
@@ -68,6 +69,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/docs',
+        secure: NODE_ENV === 'production',
       });
 
       return res.status(200).json();
@@ -85,9 +87,10 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/docs',
+        secure: NODE_ENV === 'production',
       });
 
-      return responseWithError(404, 'Konfiguracja dokumentacji nie istnieje.');
+      return responseWithError(404, 'Nie znaleziono konfiguracji dokumentacji.');
     }
 
     const payload = {
@@ -100,7 +103,8 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
-      maxAge: Math.floor((Date.now() + ms('3d')) / 1000),
+      maxAge: ms('3d'),
+      secure: NODE_ENV === 'production',
     });
 
     return res.status(200).json({ docsToken });
@@ -112,6 +116,7 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
+      secure: NODE_ENV === 'production',
     });
 
     responseWithError(400, 'Błędny token.');

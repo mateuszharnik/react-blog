@@ -9,7 +9,7 @@ import User from '@server/api/v1/users/model';
 import Role from '@server/api/v1/roles/model';
 import { validateSignUp, validateSignIn } from '../schema';
 
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = config;
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, NODE_ENV } = config;
 
 export const signIn = (isAdmin = false) => async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
@@ -45,7 +45,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
@@ -55,7 +55,8 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
+      secure: NODE_ENV === 'production',
+      maxAge: ms('7d'),
     });
 
     const { token_version, password, ...rest } = user.toJSON();
@@ -130,7 +131,7 @@ export const signUp = async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
@@ -140,7 +141,8 @@ export const signUp = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
+      secure: NODE_ENV === 'production',
+      maxAge: ms('7d'),
     });
 
     const { token_version, ...rest } = user.toJSON();
@@ -173,6 +175,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
+        secure: NODE_ENV === 'production',
       });
 
       return res.status(200).json();
@@ -190,6 +193,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
+        secure: NODE_ENV === 'production',
       });
 
       return responseWithError(404, 'Użytkownik nie istnieje.');
@@ -205,7 +209,7 @@ export const getRefreshToken = async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
@@ -215,7 +219,8 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
+      secure: NODE_ENV === 'production',
+      maxAge: ms('7d'),
     });
 
     const { token_version, ...rest } = user.toJSON();
@@ -232,6 +237,7 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
+      secure: NODE_ENV === 'production',
     });
 
     responseWithError(400, 'Błędny token.');
@@ -261,7 +267,8 @@ export const revokeRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      maxAge: Math.floor((Date.now() + ms('7d')) / 1000),
+      secure: NODE_ENV === 'production',
+      maxAge: ms('7d'),
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
@@ -280,6 +287,7 @@ export const signOut = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
+      secure: NODE_ENV === 'production',
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano.' });

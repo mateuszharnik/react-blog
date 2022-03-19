@@ -4,8 +4,6 @@ import manage from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   countMessages,
-  countReadMessages,
-  countNewMessages,
   getMessages,
   getMessage,
   createMessage,
@@ -31,19 +29,19 @@ router.get(
   '/count',
   isLoggedIn,
   canManage(manage.roles),
-  countMessages,
+  countMessages(),
 );
 router.get(
   '/count/read',
   isLoggedIn,
   canManage(manage.roles),
-  countReadMessages,
+  countMessages(true),
 );
 router.get(
   '/count/new',
   isLoggedIn,
   canManage(manage.roles),
-  countNewMessages,
+  countMessages(false),
 );
 router.get(
   '/:id',
