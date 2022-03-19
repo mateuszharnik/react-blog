@@ -1,0 +1,46 @@
+/*** Imports ***/
+@import "../../../assets/scss/variables";
+@import "../../../assets/scss/animations";
+
+.toast {
+  border: none;
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 99999;
+
+    &__top-left {
+      @include toRem(top, 8);
+      @include toRem(left, 8);
+    }
+
+    &__top-center {
+      left: 50%;
+      transform: translateX(-50%);
+      @include toRem(top, 8);
+    }
+
+    &__top-right {
+      @include toRem(right, 8);
+      @include toRem(top, 8);
+    }
+
+    &__bottom-left {
+      @include toRem(left, 8);
+      @include toRem(bottom, 8);
+    }
+
+    &__bottom-center {
+      @include toRem(bottom, 8);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &__bottom-right {
+      @include toRem(bottom, 8);
+      @include toRem(right, 8);
+    }
+  }
+}

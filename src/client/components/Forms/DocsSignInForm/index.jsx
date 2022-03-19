@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,9 +6,9 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import validationSchema from '@client/helpers/schemas/docsSignIn';
 
 const DocsSignInForm = memo(() => {
-  const [error, setError] = useState('');
   const { isSubmit } = useStoreState((store) => store.docs);
   const { signIn } = useStoreActions((actions) => actions.docs);
+  const { addToast } = useStoreActions((actions) => actions.toasts);
 
   const title = useMemo(() => (isSubmit ? 'Logowanie' : 'Zaloguj się'), [isSubmit]);
 
@@ -18,8 +18,6 @@ const DocsSignInForm = memo(() => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setError('');
-
       const newValues = validationSchema.cast(values);
 
       const { status, data } = await signIn(newValues);
@@ -27,7 +25,10 @@ const DocsSignInForm = memo(() => {
       if (status === 200) {
         document.location.href = `${process.env.CLIENT_URL}/api/v1/docs`;
       } else {
-        setError(data.message);
+        addToast({
+          message: data.message,
+          type: 'danger',
+        });
       }
     },
   });
@@ -80,16 +81,6 @@ const DocsSignInForm = memo(() => {
           </button>
         </div>
       </form>
-      <div className="text-center mt-3">
-        {error && (
-          <div
-            className="alert alert-danger mb-0 d-inline-block"
-            role="alert"
-          >
-            {error }
-          </div>
-        )}
-      </div>
     </>
   );
 });
