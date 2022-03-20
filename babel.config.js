@@ -10,5 +10,8 @@ module.exports = {
     development: {
       plugins: [['babel-plugin-webpack-alias', { config: './webpack/webpack.config.server.js' }]],
     },
+    production: {
+      plugins: [['babel-plugin-webpack-alias', { config: './webpack/webpack.config.server.js' }]],
+    },
   },
 };
