@@ -5,16 +5,40 @@ div[class^="toast toast-color"],
 div[class^="toast toast-dark"] {
   .btn-close {
     filter: invert(1) grayscale(100%) brightness(200%);
+
+    &:focus,
+    &:focus-visible {
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: white auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
   }
 }
 
+div[class^="toast toast-light"],
 div[class^="toast toast-color-default"] {
   .btn-close {
     filter: none;
+
+    &:focus,
+    &:focus-visible {
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: black auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
   }
 }
 
 .toast {
+  background-color: transparent;
+  display: block !important;
+
   .toast-header {
     border: none;
   }
@@ -25,12 +49,12 @@ div[class^="toast toast-color-default"] {
   }
 
   .toast-progress__wrapper {
-    border-bottom-left-radius: calc(0.25rem - 1px);
-    border-bottom-right-radius: calc(0.25rem - 1px);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
   }
   .toast-body__wrapper {
-    border-top-left-radius: calc(0.25rem - 1px);
-    border-top-right-radius: calc(0.25rem - 1px);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     display: flex;
     overflow: hidden;
   }
@@ -38,10 +62,9 @@ div[class^="toast toast-color-default"] {
   &-progress {
     background-color: transparent;
     border-radius: 4px;
-    margin-bottom: 1px;
+    height: 4px;
     overflow: hidden;
     width: 100%;
-    @include toRem(height, 5);
 
     &__bar {
       animation: progress linear forwards;

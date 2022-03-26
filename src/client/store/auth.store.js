@@ -66,11 +66,13 @@ const auth = {
         getStoreActions().toasts.addToast({
           message: response?.data?.message,
           type: 'success',
+          module: 'signIn',
         });
       } else {
         getStoreActions().toasts.addToast({
           message: response?.data?.message || 'Wystąpił błąd.',
           type: 'danger',
+          module: 'signIn',
         });
       }
 
@@ -79,6 +81,7 @@ const auth = {
       getStoreActions().toasts.addToast({
         message: error?.response?.data?.message || 'Wystąpił błąd.',
         type: 'danger',
+        module: 'signIn',
       });
 
       res = error.response;

@@ -2,13 +2,6 @@ import React, { memo, useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 import Router from '@client/router';
-import lazyLoad from '@client/helpers/lazyLoad';
-
-const ToastsContainer = lazyLoad({
-  loader: () => import(/* webpackChunkName: 'toasts' */ '@client/components/Toasts/ToastsContainer'),
-  loading: null,
-  error: null,
-});
 
 const createSetMedia = (setIsDesktop) => (media) => {
   setIsDesktop(media.matches);
@@ -61,7 +54,6 @@ const App = memo(() => {
         </div>
       )}
       {isLoading ? <LazyPageSpinner /> : <Router />}
-      <ToastsContainer />
     </>
   );
 });

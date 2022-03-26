@@ -2,13 +2,13 @@ import React, {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { string, number } from 'prop-types';
+import { string, number, oneOf } from 'prop-types';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Toast from '@client/components/Toasts/Toast';
 
-const ToastsContainer = memo(({ limit, position }) => {
-  const { toasts } = useStoreState((state) => state.toasts);
+const ToastsContainer = memo(({ module, limit, position }) => {
+  const toasts = useStoreState((state) => state.toasts?.[`${module}Toasts`]);
   const { setPosition, setLimit, removeToasts } = useStoreActions((actions) => actions.toasts);
 
   const divClass = useMemo(() => `toast-wrapper toast-wrapper__${position}`, [position]);
@@ -33,7 +33,7 @@ const ToastsContainer = memo(({ limit, position }) => {
     setLimit(limit);
   }, [limit]);
 
-  useEffect(() => () => removeToasts(), []);
+  useEffect(() => () => removeToasts(module), []);
 
   return createPortal(
     <div className="react-portal-target">
@@ -67,12 +67,13 @@ const ToastsContainer = memo(({ limit, position }) => {
 ToastsContainer.displayName = 'ToastsContainer';
 
 ToastsContainer.propTypes = {
+  module: oneOf(['signIn', 'signUp', 'admin', 'webpage', 'docs']).isRequired,
   limit: number,
   position: string,
 };
 
 ToastsContainer.defaultProps = {
-  limit: 3,
+  limit: 5,
   position: 'bottom-right',
 };
 

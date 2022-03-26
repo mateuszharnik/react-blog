@@ -6,7 +6,14 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import AuthWrapper from '@client/components/Layouts/AuthWrapper';
 import AuthContainer from '@client/components/Layouts/AuthContainer';
 import DocsSignInForm from '@client/components/Forms/DocsSignInForm';
+import lazyLoad from '@client/helpers/lazyLoad';
 import { setTitle, setMeta, docsMeta } from '@client/helpers/documentMeta';
+
+const ToastsContainer = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'toasts' */ '@client/components/Toasts/ToastsContainer'),
+  loading: null,
+  error: null,
+});
 
 const SignIn = memo(() => {
   const { removeLayer } = useStoreActions((actions) => actions.layer);
@@ -38,6 +45,7 @@ const SignIn = memo(() => {
         </div>
         <DocsSignInForm />
       </AuthContainer>
+      <ToastsContainer module="docs" />
     </AuthWrapper>
   );
 });

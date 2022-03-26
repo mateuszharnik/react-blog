@@ -26,8 +26,9 @@ const DocsSignInForm = memo(() => {
         document.location.href = `${process.env.CLIENT_URL}/api/v1/docs`;
       } else {
         addToast({
-          message: data.message,
+          message: data.message || data,
           type: 'danger',
+          module: 'docs',
         });
       }
     },
