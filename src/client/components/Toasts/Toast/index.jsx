@@ -2,7 +2,7 @@ import React, {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
 import {
-  string, number, bool, shape, oneOfType, object,
+  string, number, bool, shape, oneOfType, object, oneOf,
 } from 'prop-types';
 import { useStoreActions } from 'easy-peasy';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ const Toast = memo(({ marginBottom, toast }) => {
 
   const divClass = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
 
-  const toastClass = useMemo(() => `toast toast-${toast.theme}-${toast.type} show align-items-center ${marginBottom ? 'mt-2' : 'mb-2'}`, [toast, marginBottom]);
+  const toastClass = useMemo(() => `toast toast-${toast.theme} toast-${toast.theme}-${toast.type} ${marginBottom ? 'mt-2' : 'mb-2'}`, [toast, marginBottom]);
 
   const icon = useMemo(() => {
     if (!toast.icon) {
@@ -123,6 +123,7 @@ Toast.propTypes = {
     theme: string.isRequired,
     type: string.isRequired,
     icon: oneOfType([string, object]).isRequired,
+    module: oneOf(['signIn', 'signUp', 'admin', 'webpage', 'docs']).isRequired,
   }).isRequired,
 };
 

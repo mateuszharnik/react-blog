@@ -3,11 +3,17 @@ import React, {
 } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Outlet, useLocation } from 'react-router-dom';
-import lazyLoad from '@client/helpers/lazyLoad';
 import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 import PageWrapper from '@client/components/Layouts/PageWrapper';
 import Header from '@client/components/Header';
 import Footer from '@client/components/Footer';
+import lazyLoad from '@client/helpers/lazyLoad';
+
+const ToastsContainer = lazyLoad({
+  loader: () => import(/* webpackChunkName: 'toasts' */ '@client/components/Toasts/ToastsContainer'),
+  loading: null,
+  error: null,
+});
 
 const SkipNavLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
@@ -69,6 +75,7 @@ const Main = memo(() => {
           />
         </>
       )}
+      <ToastsContainer module="webpage" />
     </>
   );
 });

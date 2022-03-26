@@ -33,13 +33,15 @@ const SignUpForm = memo(() => {
         addToast({
           message: 'Pomyślnie zarejestrowano.',
           type: 'success',
+          module: 'webpage',
         });
         resetForm();
         navigate('/profil');
       } else {
         addToast({
-          message: data.message,
+          message: data.message || data,
           type: 'danger',
+          module: 'signUp',
         });
       }
     },

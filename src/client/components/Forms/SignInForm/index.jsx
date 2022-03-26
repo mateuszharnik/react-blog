@@ -29,13 +29,15 @@ const SignInForm = memo(({ signIn, path }) => {
         addToast({
           message: 'Pomyślnie zalogowano.',
           type: 'success',
+          module: path === '/admin' ? 'admin' : 'webpage',
         });
         resetForm();
         navigate(path);
       } else {
         addToast({
-          message: data.message,
+          message: data.message || data,
           type: 'danger',
+          module: 'signIn',
         });
       }
     },

@@ -12,6 +12,7 @@
 }
 
 .toast-fade-enter,
+.toast-fade-appear,
 .toast-fade-exit-done {
   opacity: 0;
 }
@@ -21,6 +22,7 @@
   opacity: 1;
 }
 
+.toast-fade-appear-active,
 .toast-fade-enter-active {
   opacity: 1;
   transition: opacity 0.25s ease-in-out;
