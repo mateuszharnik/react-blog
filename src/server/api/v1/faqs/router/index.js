@@ -2,12 +2,24 @@ import { Router } from 'express';
 import manage from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
+  getFAQ,
+  getFAQs,
   createFAQ,
   updateFAQ,
   toggleIsPublishedFAQ,
 } from '../controller';
 
 const router = Router();
+
+router.get(
+  '/',
+  getFAQs,
+);
+
+router.get(
+  '/:id',
+  getFAQ,
+);
 
 router.post(
   '/',
