@@ -7,10 +7,19 @@ import FAQ from '../model';
 import validateFAQ from '../schema';
 
 export const getFAQs = async (req, res, next) => {
+  const { asAdmin = false } = req.query;
   const responseWithError = createResponseWithError(res, next);
+  const select = {};
+
+  if (!asAdmin) {
+    select.user = asAdmin;
+  }
 
   try {
-    const faqs = await FAQ.find({ deleted_at: null }).sort({ created_at: -1 });
+    const faqs = await FAQ.find({ deleted_at: null })
+      .populate({ path: 'user', select: 'display_name username' })
+      .select(select)
+      .sort({ created_at: -1 });
 
     return res.status(200).json(faqs);
   } catch (error) {
@@ -21,8 +30,14 @@ export const getFAQs = async (req, res, next) => {
 };
 
 export const getFAQ = async (req, res, next) => {
+  const { asAdmin = false } = req.query;
   const { id } = req.params;
   const responseWithError = createResponseWithError(res, next);
+  const select = {};
+
+  if (!asAdmin) {
+    select.user = asAdmin;
+  }
 
   try {
     const { validationError } = validateId(id);
@@ -31,7 +46,9 @@ export const getFAQ = async (req, res, next) => {
       return responseWithError(409, validationError.details[0].message);
     }
 
-    const faq = await FAQ.findOne({ _id: id, deleted_at: null });
+    const faq = await FAQ.findOne({ _id: id, deleted_at: null })
+      .populate({ path: 'user', select: 'display_name username' })
+      .select(select);
 
     if (!faq) {
       return responseWithError(404, 'Nie znaleziono pytania.');
