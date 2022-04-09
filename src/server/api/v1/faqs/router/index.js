@@ -7,6 +7,8 @@ import {
   createFAQ,
   updateFAQ,
   toggleIsPublishedFAQ,
+  deleteFAQ,
+  deleteFAQs,
 } from '../controller';
 
 const router = Router();
@@ -40,6 +42,20 @@ router.patch(
   isLoggedIn,
   canManage(manage.faqs),
   updateFAQ,
+);
+
+router.delete(
+  '/',
+  isLoggedIn,
+  canManage(manage.faqs),
+  deleteFAQs,
+);
+
+router.delete(
+  '/:id',
+  isLoggedIn,
+  canManage(manage.faqs),
+  deleteFAQ,
 );
 
 export default router;
