@@ -1,6 +1,7 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import validateId from '@server/helpers/validation/validateId';
+import validateIds from '@server/helpers/validation/validateIds';
 import sanitize from '@server/helpers/purify';
 import FAQ from '../model';
 import validateFAQ from '../schema';
@@ -159,7 +160,7 @@ export const toggleIsPublishedFAQ = async (req, res, next) => {
     const faq = await FAQ.findOne({ _id: id, deleted_at: null });
 
     if (!faq) {
-      return responseWithError(409, 'Pytanie nie istnieje.');
+      return responseWithError(404, 'Pytanie nie istnieje.');
     }
 
     const updatedFAQ = await FAQ.findOneAndUpdate({
@@ -171,6 +172,89 @@ export const toggleIsPublishedFAQ = async (req, res, next) => {
     }
 
     return res.status(200).json(updatedFAQ);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const deleteFAQs = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const query = { deleted_at: null };
+
+    if (req.body?.length) {
+      const { validationError, data } = validateIds(req.body);
+
+      if (validationError) {
+        return responseWithError(409, validationError.details[0].message);
+      }
+
+      query._id = { $in: data };
+    }
+
+    const faqs = await FAQ.find(query);
+
+    if (!faqs?.length) {
+      return responseWithError(404, 'Nie znaleziono pytań.');
+    }
+
+    const updatedFAQs = await FAQ.updateMany(
+      query,
+      { deleted_at: Date.now() },
+      { new: true },
+    );
+
+    if (!updatedFAQs) {
+      return responseWithError(409, 'Nie udało się usunąć pytań.');
+    }
+
+    const ids = faqs.map(({ _id }) => _id.toString());
+
+    const deletedFAQs = await FAQ.find({ _id: { $in: ids }, deleted_at: { $ne: null } });
+
+    if (!deletedFAQs?.length) {
+      return responseWithError(404, 'Nie znaleziono pytań.');
+    }
+
+    return res.status(200).json(deletedFAQs);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const deleteFAQ = async (req, res, next) => {
+  const { id } = req.params;
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const { validationError } = validateId(id);
+
+    if (validationError) {
+      return responseWithError(409, validationError.details[0].message);
+    }
+
+    const faq = await FAQ.findOne({ _id: id, deleted_at: null });
+
+    if (!faq) {
+      return responseWithError(404, 'Nie znaleziono pytania.');
+    }
+
+    const deletedFAQ = await FAQ.findOneAndUpdate(
+      { _id: id, deleted_at: null },
+      { deleted_at: Date.now() },
+      { new: true },
+    );
+
+    if (!deletedFAQ) {
+      return responseWithError(409, 'Nie udało się usunąć pytania.');
+    }
+
+    return res.status(200).json(deletedFAQ);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));
