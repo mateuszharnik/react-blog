@@ -5,6 +5,45 @@ import sanitize from '@server/helpers/purify';
 import FAQ from '../model';
 import validateFAQ from '../schema';
 
+export const getFAQs = async (req, res, next) => {
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const faqs = await FAQ.find({ deleted_at: null }).sort({ created_at: -1 });
+
+    return res.status(200).json(faqs);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
+export const getFAQ = async (req, res, next) => {
+  const { id } = req.params;
+  const responseWithError = createResponseWithError(res, next);
+
+  try {
+    const { validationError } = validateId(id);
+
+    if (validationError) {
+      return responseWithError(409, validationError.details[0].message);
+    }
+
+    const faq = await FAQ.findOne({ _id: id, deleted_at: null });
+
+    if (!faq) {
+      return responseWithError(404, 'Nie znaleziono pytania.');
+    }
+
+    return res.status(200).json(faq);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(colors.red(error));
+    responseWithError();
+  }
+};
+
 export const createFAQ = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
