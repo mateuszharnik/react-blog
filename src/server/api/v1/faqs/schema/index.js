@@ -2,7 +2,7 @@ import Joi from 'joi';
 import faqTitleMessages from '@server/helpers/messages/faqTitle';
 import faqContentsMessages from '@server/helpers/messages/faqContents';
 
-export const validateFAQ = (faq = {}, options = {}) => {
+const validateFAQ = (faq = {}, options = {}) => {
   const schema = Joi.object().keys({
     title: Joi.string()
       .trim()
