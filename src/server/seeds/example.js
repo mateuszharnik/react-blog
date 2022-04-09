@@ -6,8 +6,10 @@ import { exampleContact } from '@server/helpers/seeds/data/contact';
 import { exampleRoles } from '@server/helpers/seeds/data/roles';
 import { exampleTermsOfUse } from '@server/helpers/seeds/data/termsOfUse';
 import { exampleUsers } from '@server/helpers/seeds/data/users';
+import exampleFAQs from '@server/helpers/seeds/data/faqs';
 import exampleMessages from '@server/helpers/seeds/data/messages';
 import removeAndSeedMessages from './messages';
+import removeAndSeedFAQs from './faqs';
 import removeAndSeedTermsOfUse from './termsOfUse';
 import removeAndSeedAbout from './about';
 import removeAndSeedConfig from './config';
@@ -26,6 +28,7 @@ const seed = async () => {
     await removeAndSeedAbout(exampleAbout);
     await removeAndSeedContact(exampleContact);
     await removeAndSeedUsers(exampleUsers);
+    await removeAndSeedFAQs(await exampleFAQs);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));

@@ -7,6 +7,7 @@ import { defaultRoles } from '@server/helpers/seeds/data/roles';
 import { defaultTermsOfUse } from '@server/helpers/seeds/data/termsOfUse';
 import { defaultUsers } from '@server/helpers/seeds/data/users';
 import removeAndSeedMessages from './messages';
+import removeAndSeedFAQs from './faqs';
 import removeAndSeedTermsOfUse from './termsOfUse';
 import removeAndSeedAbout from './about';
 import removeAndSeedConfig from './config';
@@ -19,6 +20,7 @@ const seed = async () => {
   try {
     await removeAndSeedDocs();
     await removeAndSeedMessages();
+    await removeAndSeedFAQs();
     await removeAndSeedTermsOfUse(defaultTermsOfUse);
     await removeAndSeedRoles(defaultRoles);
     await removeAndSeedConfig(defaultConfig);
