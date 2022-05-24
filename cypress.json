@@ -1,0 +1,11 @@
+{
+  "ignoreTestFiles": "**/examples/*",
+  "supportFile": "e2e/data/support.js",
+  "pluginsFile": "e2e/data/plugins.js",
+  "fixturesFolder": "e2e/data/fixtures",
+  "downloadsFolder": "e2e/tests/downloads",
+  "integrationFolder": "e2e/tests/integration",
+  "screenshotsFolder": "e2e/tests/screenshots",
+  "videosFolder": "e2e/tests/videos",
+  "video": false
+}

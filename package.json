@@ -12,35 +12,38 @@
     "start:client": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.client.js --mode=development",
     "start:server": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/server",
     "start:dev": "concurrently -n \"@backend,@frontend\" -c \"blue,red\" \"yarn run start:server\" \"yarn run start:client\"",
+    "start:e2e:client": "cross-env NODE_ENV=test webpack-dev-server --config ./webpack/webpack.config.client.js --mode=development",
+    "start:e2e:server": "cross-env NODE_ENV=test nodemon --exec babel-node ./src/server",
+    "start:e2e": "concurrently -n \"@backend,@frontend,@e2e\" -c \"blue,red,green\" \"yarn run start:e2e:server\" \"yarn run start:e2e:client\" \"yarn run test:e2e:open\"",
+    "start:test": "concurrently -n \"@backend,@frontend\" -c \"blue,red\" \"yarn run start:e2e:server\" \"yarn run start:e2e:client\"",
     "build": "yarn run build:client && yarn run purgecss && yarn run build:server",
     "build:analyze": "yarn run build:client:analyze && yarn run build:server",
     "build:client": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:client:analyze": "cross-env NODE_ENV=production ANALYZE=true webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:server": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.server.js",
-    "test": "yarn run test:client && yarn run test:server",
+    "test": "yarn run test:client && yarn run test:server && yarn run test:e2e",
     "test:client": "cross-env NODE_ENV=test jest ./src/client --passWithNoTests",
     "test:server": "cross-env NODE_ENV=test jest ./src/server --env=node --passWithNoTests",
+    "test:e2e": "cross-env NODE_ENV=test cypress run",
+    "test:e2e:open": "cross-env NODE_ENV=test cypress open",
     "purgecss": "purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css",
-    "lint-fix": "yarn run lint:js-fix && yarn run lint:style-fix",
+    "lint-fix": "yarn run lint:js-fix && yarn run lint:e2e-fix && yarn run lint:style-fix",
     "lint:js-fix": "eslint ./src/ --ext .js,.jsx --fix",
     "lint:server-fix": "eslint ./src/server/ --ext .js --fix",
     "lint:client-fix": "eslint ./src/client/ --ext .js,.jsx --fix",
+    "lint:e2e-fix": "eslint ./e2e/ --ext .js --fix",
     "lint:style-fix": "stylelint ./src/client/**/*.{css,scss} --fix",
     "lint:eslint-fix": "eslint .eslintrc.js --no-ignore .eslintrc.js --fix",
-    "lint": "yarn run lint:js && yarn run lint:style",
+    "lint": "yarn run lint:js && yarn run lint:e2e && yarn run lint:style",
     "lint:js": "eslint ./src/ --ext .js,.jsx",
     "lint:server": "eslint ./src/server/ --ext .js",
     "lint:client": "eslint ./src/client/ --ext .js,.jsx",
+    "lint:e2e": "eslint ./e2e/ --ext .js",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
     "lint:eslint": "eslint .eslintrc.js --no-ignore .eslintrc.js",
     "seed:prod": "cross-env NODE_ENV=production babel-node ./src/server/seeds/index.js",
     "seed:dev": "cross-env NODE_ENV=development babel-node ./src/server/seeds/index.js",
     "seed:example": "cross-env NODE_ENV=development babel-node ./src/server/seeds/example.js"
-  },
-  "engines": {
-    "node": "14.15.0",
-    "npm": "6.14.8",
-    "yarn": "1.22.17"
   },
   "lint-staged": {
     "src/server/**/*.js": [
@@ -57,7 +60,18 @@
     ],
     "src/client/**/*.{scss,css}": [
       "yarn run lint:style"
+    ],
+    "e2e/tests/**/*.js": [
+      "yarn run lint:e2e"
+    ],
+    "e2e/tests/**/*.test.js": [
+      "yarn run test:e2e"
     ]
+  },
+  "engines": {
+    "node": "14.15.0",
+    "npm": "6.14.8",
+    "yarn": "1.22.17"
   },
   "dependencies": {
     "@babel/runtime": "^7.16.5",
@@ -125,6 +139,7 @@
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
+    "@babel/register": "^7.17.7",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@vue/preload-webpack-plugin": "^2.0.0",
@@ -137,9 +152,11 @@
     "concurrently": "^6.2.1",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.7",
+    "cypress": "^9.5.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-import-resolver-webpack": "^0.13.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.0",

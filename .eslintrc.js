@@ -87,4 +87,14 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['e2e/**/*.js'],
+      env: { 'cypress/globals': true },
+      plugins: ['cypress'],
+      rules: {
+        'no-unused-expressions': 0,
+      },
+    },
+  ],
 };
