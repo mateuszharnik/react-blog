@@ -6,6 +6,8 @@ const babelConfig = require('../../babel.config');
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('@babel/register')(babelConfig);
 
+const { clean, loadData } = require('./fixtures/db');
+
 module.exports = (on, cypressConfig) => {
   config();
 
@@ -20,8 +22,16 @@ module.exports = (on, cypressConfig) => {
   cypressConfig.baseUrl = process.env.CLIENT_URL;
 
   on('task', {
-    'db:clean': async () => null,
-    'db:load': async () => null,
+    'db:clean': async () => {
+      await clean();
+
+      return null;
+    },
+    'db:load': async (fixture = 'default') => {
+      const data = await loadData(fixture);
+
+      return data;
+    },
   });
 
   return cypressConfig;
