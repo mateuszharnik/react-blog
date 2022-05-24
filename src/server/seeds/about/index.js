@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import colors from 'colors/safe';
 import config from '@server/config';
 import validateAbout from '@server/api/v1/about/schema';
@@ -6,11 +7,10 @@ import markdownToHTML from '@server/helpers/markdownToHTML';
 
 const { NODE_ENV } = config;
 
-const removeAndSeedAbout = async (about = {}) => {
+const seedAbout = async (about = {}) => {
   const { validationError, data } = validateAbout(about);
 
   if (validationError) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(validationError.details[0].message));
     process.exit(0);
   }
@@ -18,20 +18,15 @@ const removeAndSeedAbout = async (about = {}) => {
   data.html_contents = markdownToHTML(data.contents);
 
   try {
-    await About.deleteMany({});
+    const newAbout = await About.create(data);
 
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Information about us removed from DB.'));
-
-    await About.create(data);
-
-    // eslint-disable-next-line no-console
     if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with information about us.'));
+
+    return newAbout;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }
 };
 
-export default removeAndSeedAbout;
+export default seedAbout;
