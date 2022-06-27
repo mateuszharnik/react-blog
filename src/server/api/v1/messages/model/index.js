@@ -32,10 +32,6 @@ const MessageSchema = new Schema(
       type: Boolean,
       required: true,
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -44,17 +40,5 @@ const MessageSchema = new Schema(
     },
   },
 );
-
-MessageSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('Message', MessageSchema);

@@ -218,17 +218,16 @@ export const deleteFAQs = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono pytań.');
     }
 
-    const updatedFAQs = await FAQ.updateMany(
-      query,
-      { deleted_at: Date.now() },
+    const ids = faqs.map(({ _id }) => _id.toString());
+
+    const updatedFAQs = await FAQ.softDeleteMany(
+      { _id: { $in: ids }, deleted_at: null },
       { new: true },
     );
 
     if (!updatedFAQs) {
       return responseWithError(409, 'Nie udało się usunąć pytań.');
     }
-
-    const ids = faqs.map(({ _id }) => _id.toString());
 
     const deletedFAQs = await FAQ.find({ _id: { $in: ids }, deleted_at: { $ne: null } });
 
@@ -261,9 +260,8 @@ export const deleteFAQ = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono pytania.');
     }
 
-    const deletedFAQ = await FAQ.findOneAndUpdate(
+    const deletedFAQ = await FAQ.findOneAndSoftDelete(
       { _id: id, deleted_at: null },
-      { deleted_at: Date.now() },
       { new: true },
     );
 

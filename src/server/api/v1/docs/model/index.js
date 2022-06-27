@@ -6,10 +6,6 @@ const DocsSchema = new Schema(
       type: String,
       required: true,
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -18,17 +14,5 @@ const DocsSchema = new Schema(
     },
   },
 );
-
-DocsSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('Docs', DocsSchema);

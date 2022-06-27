@@ -126,17 +126,16 @@ export const deleteMessages = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const updatedMessages = await Message.updateMany(
-      query,
-      { deleted_at: Date.now() },
+    const ids = messages.map(({ _id }) => _id.toString());
+
+    const updatedMessages = await Message.softDeleteMany(
+      { _id: { $in: ids }, deleted_at: null },
       { new: true },
     );
 
     if (!updatedMessages) {
       return responseWithError(409, 'Nie udało się usunąć wiadomości.');
     }
-
-    const ids = messages.map(({ _id }) => _id.toString());
 
     const deletedMessages = await Message.find({ _id: { $in: ids }, deleted_at: { $ne: null } });
 
@@ -169,9 +168,8 @@ export const deleteMessage = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const deletedMessage = await Message.findOneAndUpdate(
+    const deletedMessage = await Message.findOneAndSoftDelete(
       { _id: id, deleted_at: null },
-      { deleted_at: Date.now() },
       { new: true },
     );
 
