@@ -22,10 +22,6 @@ const ContactSchema = new Schema(
       type: String,
       default: '',
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -34,17 +30,5 @@ const ContactSchema = new Schema(
     },
   },
 );
-
-ContactSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('Contact', ContactSchema);

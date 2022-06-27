@@ -99,10 +99,6 @@ const UserSchema = new Schema(
       type: Number,
       default: 1,
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -111,17 +107,5 @@ const UserSchema = new Schema(
     },
   },
 );
-
-UserSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('User', UserSchema);
