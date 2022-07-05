@@ -12,33 +12,33 @@ const { NODE_ENV } = config;
 const seedUsers = async (users = []) => {
   const createdUsers = [];
 
-  await Promise.all(users.map(async (user) => {
-    const { validationError, data } = validateUser(user, { allowUnknown: true }, false);
-
-    if (validationError) {
-      console.log(colors.red(validationError.details[0].message));
-      process.exit(0);
-    }
-
-    data.description = sanitize(data.description);
-    data.display_name = data.username;
-    data.username = data.username.toLowerCase();
-
-    const role = await Role.findOne({ type: data?.role, deleted_at: null });
-
-    if (!role) {
-      console.log(colors.red('Role not found.'));
-      process.exit(0);
-    }
-
-    data.role = role.id;
-
-    data.password = await hash(data.password, 8);
-
-    createdUsers.push(data);
-  }));
-
   try {
+    await Promise.all(users.map(async (user) => {
+      const { validationError, data } = validateUser(user, { allowUnknown: true }, false);
+
+      if (validationError) {
+        console.log(colors.red(validationError.details[0].message));
+        process.exit(0);
+      }
+
+      data.description = sanitize(data.description);
+      data.display_name = data.username;
+      data.username = data.username.toLowerCase();
+
+      const role = await Role.findOne({ type: data?.role, deleted_at: null });
+
+      if (!role) {
+        console.log(colors.red('Role not found.'));
+        process.exit(0);
+      }
+
+      data.role = role.id;
+
+      data.password = await hash(data.password, 8);
+
+      createdUsers.push(data);
+    }));
+
     if (createdUsers.length) {
       const newUsers = await User.create(createdUsers);
 

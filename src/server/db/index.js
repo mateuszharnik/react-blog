@@ -8,10 +8,12 @@ mongoose.plugin(softDelete);
 
 const { DB_URL } = config;
 
-mongoose.connect(DB_URL, {
+export const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+};
+
+mongoose.connect(DB_URL, options);
 
 const db = mongoose.connection;
 

@@ -1,4 +1,5 @@
 // eslint-disable no-console
+import { Schema, model } from 'mongoose';
 import colors from 'colors/safe';
 import config from '@server/config';
 import TermsOfUse from '@server/api/v1/termsOfUse/model';
@@ -13,8 +14,32 @@ import Message from '@server/api/v1/messages/model';
 
 const { NODE_ENV } = config;
 
-const cleanDB = async () => {
+const migrationSchema = new Schema(
+  {
+    filename: {
+      type: String,
+    },
+    appliedAt: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+);
+
+const Migration = model('migration', migrationSchema);
+
+const cleanDB = async (cleanMigrations = false) => {
   try {
+    if (cleanMigrations) {
+      await Migration.deleteMany({});
+      if (NODE_ENV !== 'test') console.log(colors.green('Migrations removed from DB.'));
+    }
+
     await User.deleteMany({});
     if (NODE_ENV !== 'test') console.log(colors.green('Users removed from DB.'));
 
