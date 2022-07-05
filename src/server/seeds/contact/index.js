@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import colors from 'colors/safe';
 import config from '@server/config';
 import validateContact from '@server/api/v1/contact/schema';
@@ -5,30 +6,24 @@ import Contact from '@server/api/v1/contact/model';
 
 const { NODE_ENV } = config;
 
-const removeAndSeedContact = async (contact = {}) => {
+const seedContact = async (contact = {}) => {
   const { validationError, data } = validateContact(contact);
 
   if (validationError) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(validationError.details[0].message));
     process.exit(0);
   }
 
   try {
-    await Contact.deleteMany({});
+    const newContact = await Contact.create(data);
 
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Contact information removed from DB.'));
-
-    await Contact.create(data);
-
-    // eslint-disable-next-line no-console
     if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with contact information.'));
+
+    return newContact;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }
 };
 
-export default removeAndSeedContact;
+export default seedContact;

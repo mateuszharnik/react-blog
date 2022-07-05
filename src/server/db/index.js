@@ -1,6 +1,10 @@
 import colors from 'colors/safe';
 import mongoose from 'mongoose';
 import config from '@server/config';
+import { removeVersionKey, softDelete } from './plugins';
+
+mongoose.plugin(removeVersionKey);
+mongoose.plugin(softDelete);
 
 const { DB_URL } = config;
 

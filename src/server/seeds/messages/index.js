@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import colors from 'colors/safe';
 import config from '@server/config';
 import validateMessage from '@server/api/v1/messages/schema';
@@ -6,14 +7,13 @@ import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
-const removeAndSeedMessages = async (messages = []) => {
+const seedMessages = async (messages = []) => {
   const createdMessages = [];
 
   messages.forEach((message) => {
     const { validationError, data } = validateMessage(message);
 
     if (validationError) {
-      // eslint-disable-next-line no-console
       console.log(colors.red(validationError.details[0].message));
       process.exit(0);
     }
@@ -27,22 +27,17 @@ const removeAndSeedMessages = async (messages = []) => {
   });
 
   try {
-    await Message.deleteMany({});
-
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Messages removed from DB.'));
-
     if (createdMessages.length) {
-      await Message.create(createdMessages);
+      const newMessages = await Message.create(createdMessages);
 
-      // eslint-disable-next-line no-console
       if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with messages.'));
+
+      return newMessages;
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }
 };
 
-export default removeAndSeedMessages;
+export default seedMessages;

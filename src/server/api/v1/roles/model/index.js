@@ -82,10 +82,6 @@ const RoleSchema = new Schema(
       type: Boolean,
       required: true,
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -94,17 +90,5 @@ const RoleSchema = new Schema(
     },
   },
 );
-
-RoleSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('Role', RoleSchema);

@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import colors from 'colors/safe';
 import { hash } from 'bcryptjs';
 import config from '@server/config';
@@ -8,14 +9,13 @@ import sanitize from '@server/helpers/purify';
 
 const { NODE_ENV } = config;
 
-const removeAndSeedUsers = async (users = []) => {
+const seedUsers = async (users = []) => {
   const createdUsers = [];
 
   await Promise.all(users.map(async (user) => {
     const { validationError, data } = validateUser(user, { allowUnknown: true }, false);
 
     if (validationError) {
-      // eslint-disable-next-line no-console
       console.log(colors.red(validationError.details[0].message));
       process.exit(0);
     }
@@ -27,7 +27,6 @@ const removeAndSeedUsers = async (users = []) => {
     const role = await Role.findOne({ type: data?.role, deleted_at: null });
 
     if (!role) {
-      // eslint-disable-next-line no-console
       console.log(colors.red('Role not found.'));
       process.exit(0);
     }
@@ -40,22 +39,17 @@ const removeAndSeedUsers = async (users = []) => {
   }));
 
   try {
-    await User.deleteMany({});
-
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Users removed from DB.'));
-
     if (createdUsers.length) {
-      await User.create(createdUsers);
+      const newUsers = await User.create(createdUsers);
 
-      // eslint-disable-next-line no-console
       if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with users.'));
+
+      return newUsers;
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }
 };
 
-export default removeAndSeedUsers;
+export default seedUsers;

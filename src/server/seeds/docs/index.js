@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import colors from 'colors/safe';
 import { hash } from 'bcryptjs';
 import config from '@server/config';
@@ -6,13 +7,12 @@ import Docs from '@server/api/v1/docs/model';
 
 const { NODE_ENV, DOCS_PASSWORD } = config;
 
-const removeAndSeedDocs = async () => {
+const seedDocs = async () => {
   const password = { password: DOCS_PASSWORD };
 
   const { validationError, data } = validateSignIn(password, { allowUnknown: true });
 
   if (validationError) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(validationError.details[0].message));
     process.exit(0);
   }
@@ -20,20 +20,15 @@ const removeAndSeedDocs = async () => {
   try {
     data.password = await hash(data.password, 8);
 
-    await Docs.deleteMany({});
+    const newDocs = await Docs.create(data);
 
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Docs password removed from DB.'));
-
-    await Docs.create(data);
-
-    // eslint-disable-next-line no-console
     if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with docs password.'));
+
+    return newDocs;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }
 };
 
-export default removeAndSeedDocs;
+export default seedDocs;
