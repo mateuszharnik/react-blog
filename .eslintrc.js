@@ -32,6 +32,8 @@ module.exports = {
             alias: {
               '@client': resolve(__dirname, './src/client'),
               '@server': resolve(__dirname, './src/server'),
+              '@shared': resolve(__dirname, './src/shared'),
+              '@e2e': resolve(__dirname, './src/e2e'),
             },
           },
         },
@@ -89,7 +91,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['e2e/**/*.js'],
+      files: ['src/e2e/**/*.js'],
       env: { 'cypress/globals': true },
       plugins: ['cypress'],
       rules: {

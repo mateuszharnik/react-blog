@@ -32,14 +32,14 @@
     "lint:js-fix": "eslint ./src/ --ext .js,.jsx --fix",
     "lint:server-fix": "eslint ./src/server/ --ext .js --fix",
     "lint:client-fix": "eslint ./src/client/ --ext .js,.jsx --fix",
-    "lint:e2e-fix": "eslint ./e2e/ --ext .js --fix",
+    "lint:e2e-fix": "eslint ./src/e2e/ --ext .js --fix",
     "lint:style-fix": "stylelint ./src/client/**/*.{css,scss} --fix",
     "lint:eslint-fix": "eslint .eslintrc.js --no-ignore .eslintrc.js --fix",
     "lint": "yarn run lint:js && yarn run lint:e2e && yarn run lint:style",
     "lint:js": "eslint ./src/ --ext .js,.jsx",
     "lint:server": "eslint ./src/server/ --ext .js",
     "lint:client": "eslint ./src/client/ --ext .js,.jsx",
-    "lint:e2e": "eslint ./e2e/ --ext .js",
+    "lint:e2e": "eslint ./src/e2e/ --ext .js",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
     "lint:eslint": "eslint .eslintrc.js --no-ignore .eslintrc.js",
     "seed": "cross-env NODE_ENV=development babel-node ./src/server/seeds/index.js",
@@ -73,7 +73,7 @@
     "src/client/**/*.{scss,css}": [
       "yarn run lint:style"
     ],
-    "e2e/**/*.js": [
+    "src/e2e/**/*.js": [
       "yarn run lint:e2e"
     ]
   },
@@ -150,6 +150,7 @@
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
+    "@cypress/browserify-preprocessor": "^3.0.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@vue/preload-webpack-plugin": "^2.0.0",
