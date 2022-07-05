@@ -1,10 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const fs = require('fs');
 const { config } = require('dotenv');
 const { resolve } = require('path');
-const babelConfig = require('../../babel.config');
+const browserify = require('@cypress/browserify-preprocessor');
+const register = require('@babel/register');
+const babelConfig = require('../../../babel.config');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-require('@babel/register')(babelConfig);
+register(babelConfig);
 
 const { clean, loadData } = require('./fixtures/db');
 
@@ -33,6 +35,11 @@ module.exports = (on, cypressConfig) => {
       return data;
     },
   });
+
+  const browserifyOptions = browserify.defaultOptions;
+  browserifyOptions.browserifyOptions.transform[1][1].babelrc = true;
+
+  on('file:preprocessor', browserify(browserifyOptions));
 
   return cypressConfig;
 };

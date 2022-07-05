@@ -9,6 +9,8 @@ module.exports = {
     '\\.(css|scss|sass)$': '<rootDir>/__mocks__/styleMock.js',
     '^@server(.*)$': '<rootDir>/src/server$1',
     '^@client/(.*)$': '<rootDir>/src/client$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared$1',
+    '^@e2e/(.*)$': '<rootDir>/src/e2e$1',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/'],
