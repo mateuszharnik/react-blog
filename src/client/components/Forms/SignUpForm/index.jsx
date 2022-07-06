@@ -39,7 +39,7 @@ const SignUpForm = memo(() => {
         navigate('/profil');
       } else {
         addToast({
-          message: data.message || data,
+          message: data.messages ? data.messages[0].message : data,
           type: 'danger',
           module: 'signUp',
         });
