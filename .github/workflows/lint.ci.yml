@@ -1,5 +1,5 @@
 ---
-name: Eslint
+name: Lint
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
       - hotfix/*
 
 jobs:
-  Lint:
+  Eslint:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,6 +34,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Change version for eslint-plugin-react
+        run: yarn add eslint-plugin-react@7.26.0 --dev
 
       - name: Run eslint
         run: yarn lint
