@@ -1,5 +1,5 @@
 ---
-name: Lint
+name: Tests
 
 on:
   push:
@@ -16,9 +16,19 @@ on:
       - bugfix/*
       - hotfix/*
 
+defaults:
+  run:
+    working-directory: ./mongodb
+
 jobs:
-  Eslint:
+  Jest:
     runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017/tcp
 
     steps:
       - name: Checkout branch 🌿
@@ -38,5 +48,8 @@ jobs:
       - name: Change version for eslint-plugin-react 📜
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
-      - name: Run eslint 🔎
-        run: yarn lint
+      - name: Run jest 🧪
+        run: yarn test
+        env:
+          MONGODB_HOST: localhost
+          MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
