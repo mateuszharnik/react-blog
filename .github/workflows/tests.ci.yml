@@ -45,7 +45,7 @@ jobs:
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
       - name: Copy environment variables 💾
-        run: cp .env .env.test
+        run: cp .env.example .env.test
 
       - name: Run Jest 🧪
         run: yarn test
