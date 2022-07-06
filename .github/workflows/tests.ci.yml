@@ -16,10 +16,6 @@ on:
       - bugfix/*
       - hotfix/*
 
-defaults:
-  run:
-    working-directory: ./mongodb
-
 jobs:
   Jest:
     runs-on: ubuntu-latest
