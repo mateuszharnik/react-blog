@@ -17,16 +17,18 @@ const DocsSignInForm = memo(() => {
       password: '',
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const newValues = validationSchema.cast(values);
 
       const { status, data } = await signIn(newValues);
 
       if (status === 200) {
+        resetForm();
+        document.body.focus();
         document.location.href = `${process.env.CLIENT_URL}/api/v1/docs`;
       } else {
         addToast({
-          message: data.message || data,
+          message: data.messages ? data.messages[0].message : data,
           type: 'danger',
           module: 'docs',
         });
