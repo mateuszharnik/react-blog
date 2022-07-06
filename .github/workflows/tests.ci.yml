@@ -44,7 +44,10 @@ jobs:
       - name: Change version for eslint-plugin-react 📜
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
-      - name: Run jest 🧪
+      - name: Copy environment variables 💾
+        run: cp .env .env.test
+
+      - name: Run Jest 🧪
         run: yarn test
         env:
           MONGODB_HOST: localhost

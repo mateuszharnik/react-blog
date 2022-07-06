@@ -38,5 +38,5 @@ jobs:
       - name: Change version for eslint-plugin-react 📜
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
-      - name: Run eslint 🔎
+      - name: Run Eslint 🔎
         run: yarn lint
