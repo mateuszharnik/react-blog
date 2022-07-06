@@ -5,6 +5,7 @@ import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import User from '@server/api/v1/users/model';
 import Role from '@server/api/v1/roles/model';
 import { validateSignUp, validateSignIn } from '../schema';
@@ -18,7 +19,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
     const { validationError, data } = validateSignIn(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const user = await User.findOne({
@@ -79,7 +80,7 @@ export const signUp = async (req, res, next) => {
     const { validationError, data } = validateSignUp(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     delete data.confirm_password;

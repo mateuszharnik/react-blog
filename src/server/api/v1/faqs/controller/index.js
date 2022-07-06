@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
 import validateIds from '@server/helpers/validation/validateIds';
 import sanitize from '@server/helpers/purify';
@@ -72,7 +73,7 @@ export const createFAQ = async (req, res, next) => {
     const { validationError, data } = validateFAQ(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const faq = await FAQ.findOne({ title: data.title, deleted_at: null });
@@ -116,7 +117,7 @@ export const updateFAQ = async (req, res, next) => {
     const { validationError, data } = validateFAQ(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const faqs = await FAQ.find({
@@ -206,7 +207,7 @@ export const deleteFAQs = async (req, res, next) => {
       const { validationError, data } = validateIds(req.body);
 
       if (validationError) {
-        return responseWithError(409, validationError.details[0].message);
+        return responseWithError(409, mapValidationMessages(validationError));
       }
 
       query._id = { $in: data };

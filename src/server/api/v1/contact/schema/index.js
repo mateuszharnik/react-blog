@@ -12,7 +12,7 @@ import {
   instagramRegExp,
 } from '@server/helpers/regexps';
 
-const validateContact = (contact = {}, options = {}) => {
+const validateContact = (contact = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     email: Joi.string()
       .trim()

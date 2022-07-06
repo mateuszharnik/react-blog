@@ -6,7 +6,7 @@ import subjectMessages from '@server/helpers/messages/subject';
 import messageContentsMessages from '@server/helpers/messages/messageContents';
 import { nameRegExp, emailRegExp } from '@server/helpers/regexps';
 
-const validateMessage = (message = {}, options = {}) => {
+const validateMessage = (message = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     first_name: Joi.string()
       .trim()

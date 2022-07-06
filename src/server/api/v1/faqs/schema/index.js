@@ -2,7 +2,7 @@ import Joi from 'joi';
 import faqTitleMessages from '@server/helpers/messages/faqTitle';
 import faqContentsMessages from '@server/helpers/messages/faqContents';
 
-const validateFAQ = (faq = {}, options = {}) => {
+const validateFAQ = (faq = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     title: Joi.string()
       .trim()

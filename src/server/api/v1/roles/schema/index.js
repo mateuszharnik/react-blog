@@ -17,7 +17,7 @@ import manageTermsOfUseMessages from '@server/helpers/messages/roles/manageTerms
 import manageConfigMessages from '@server/helpers/messages/roles/manageConfig';
 import manageFAQsMessages from '@server/helpers/messages/roles/manageFAQs';
 
-const validateRole = (role = {}, options = {}, useInvalid = true) => {
+const validateRole = (role = {}, options = { abortEarly: false }, useInvalid = true) => {
   const invalid = useInvalid ? invalidUsernames : [];
 
   const schema = Joi.object().keys({
