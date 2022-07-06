@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import Contact from '../model';
 import validateContact from '../schema';
 
@@ -28,7 +29,7 @@ export const updateContact = async (req, res, next) => {
     const { validationError, data } = validateContact(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const updatedContact = await Contact.findOneAndUpdate({}, { ...data }, { new: true });

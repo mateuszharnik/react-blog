@@ -1,6 +1,7 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import markdownToHTML from '@server/helpers/markdownToHTML';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import About from '../model';
 import validateAbout from '../schema';
 
@@ -29,7 +30,7 @@ export const updateAbout = async (req, res, next) => {
     const { validationError, data } = validateAbout(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     data.html_contents = markdownToHTML(data.contents);

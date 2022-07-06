@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import sanitize from '@server/helpers/purify';
 import validateId from '@server/helpers/validation/validateId';
 import validateRole from '../schema';
@@ -79,7 +80,7 @@ export const createRole = async (req, res, next) => {
     const { validationError, data } = validateRole(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const createdRole = await Role.create({
@@ -128,7 +129,7 @@ export const updateRole = async (req, res, next) => {
     const { validationError, data } = validateRole(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const updatedRole = await Role.findOneAndUpdate(

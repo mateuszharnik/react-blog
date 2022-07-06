@@ -11,7 +11,7 @@ export const genderString = {
 };
 
 export const genderInvalid = {
-  'any.invalid': 'Musisz wybrać między kobietą a mężczyzną.',
+  'any.only': 'Musisz wybrać między kobietą a mężczyzną.',
 };
 
 const genderMessages = {

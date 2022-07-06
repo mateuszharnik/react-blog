@@ -35,7 +35,7 @@ import {
   linkedinRegExp,
 } from '@server/helpers/regexps';
 
-const validateUser = (user = {}, options = {}, useInvalid = true) => {
+const validateUser = (user = {}, options = { abortEarly: false }, useInvalid = true) => {
   const invalid = useInvalid ? invalidUsernames : [];
 
   const schema = Joi.object().keys({

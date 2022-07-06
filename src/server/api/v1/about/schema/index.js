@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import aboutContentsMessages from '@server/helpers/messages/aboutContents';
 
-const validateAbout = (about = {}, options = {}) => {
+const validateAbout = (about = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     contents: Joi.string()
       .trim()
