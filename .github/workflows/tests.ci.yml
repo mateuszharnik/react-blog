@@ -45,10 +45,10 @@ jobs:
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
       - name: Copy environment variables 💾
-        run: cp .env.example .env.test
+        run: cp .env.example .env.test && cp .env.example .env
 
       - name: Run Jest 🧪
-        run: yarn test
+        run: yarn test:client && yarn test:server
         env:
           MONGODB_HOST: localhost
           MONGODB_PORT: ${{ job.services.mongodb.ports[27017] }}
