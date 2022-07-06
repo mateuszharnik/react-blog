@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import termsOfUseContentsMessages from '@server/helpers/messages/termsOfUseContents';
 
-const validateTermsOfUse = (termsOfUse = {}, options = {}) => {
+const validateTermsOfUse = (termsOfUse = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     contents: Joi.string()
       .trim()

@@ -6,7 +6,7 @@ import showCommentsMessages from '@server/helpers/messages/showComments';
 import showEmailMessages from '@server/helpers/messages/showEmail';
 import docsPasswordMessages from '@server/helpers/messages/docsPassword';
 
-const validateConfig = (config = {}, options = {}) => {
+const validateConfig = (config = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     show_authors: Joi.boolean()
       .required()

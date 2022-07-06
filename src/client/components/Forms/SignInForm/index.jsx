@@ -35,7 +35,7 @@ const SignInForm = memo(({ signIn, path }) => {
         navigate(path);
       } else {
         addToast({
-          message: data.message || data,
+          message: data.messages ? data.messages[0].message : data,
           type: 'danger',
           module: 'signIn',
         });
