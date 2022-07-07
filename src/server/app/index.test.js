@@ -8,8 +8,6 @@ describe('App', () => {
   });
 
   it('should response with status code 200', async () => {
-    console.log(process.env.DB_URL);
-    console.log(process.env.NODE_ENV);
     const response = await request(app).get('/api/v1/about');
 
     expect(response.statusCode).toEqual(200);

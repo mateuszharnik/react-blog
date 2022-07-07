@@ -5,6 +5,7 @@ const { default: markdownToHTML } = require('../helpers/markdownToHTML');
 
 module.exports = {
   async up(db) {
+    console.log(process.env.NODE_ENV);
     const about = {
       ...defaultAbout,
       html_contents: markdownToHTML(defaultAbout.contents),
