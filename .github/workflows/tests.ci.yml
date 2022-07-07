@@ -45,7 +45,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run Jest 🧪
-        run: yarn test:client && yarn test:server
+        run: yarn migration:up:test && yarn test:client && yarn test:server
 
       - name: Stop Docker 🐳
         run: docker-compose down
