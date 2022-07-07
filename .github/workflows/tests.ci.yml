@@ -42,7 +42,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Start Docker 🐳
-        run: docker-compose up
+        run: docker-compose up -d
 
       - name: Run Jest 🧪
         run: yarn test:client && yarn test:server
