@@ -51,19 +51,22 @@ jobs:
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
-      - name: Build project 🔨
-        run: yarn build
+      - name: Start client 🔨
+        run: yarn start:e2e:client
 
       - name: Start Docker 🐳
         run: docker-compose up -d
+
+      - name: Start server 🔨
+        run: yarn start:e2e:server
 
       - name: Run Cypress 🧪
         uses: cypress-io/github-action@v4
         with:
           install: false
           browser: chrome
-          start: npm start
-          wait-on: "http://localhost:3000"
+          command: yarn test:e2e
+          wait-on: "http://localhost:8080"
           wait-on-timeout: 120
 
       - name: Stop Docker 🐳
