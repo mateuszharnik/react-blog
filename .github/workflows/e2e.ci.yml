@@ -51,14 +51,11 @@ jobs:
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
-      - name: Add
-        run: sudo chmod -R 755 node_modules
+      - name: Run Cypress 🧪
+        run: yarn build:client
 
       - name: Start Docker 🐳
         run: docker-compose up -d
-
-      - name: Run Cypress 🧪
-        run: yarn build:client
 
       - name: Stop Docker 🐳
         run: docker-compose down
