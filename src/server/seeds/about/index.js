@@ -19,7 +19,7 @@ const seedAbout = async (about = {}) => {
 
   try {
     const newAbout = await About.create(data);
-
+    console.log(process.env.NODE_ENV);
     if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with information about us.'));
 
     return newAbout;
