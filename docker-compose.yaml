@@ -1,7 +1,5 @@
 version: '3'
 services:
-  cypress:
-    image: cypress/browsers:node16.5.0-chrome94-ff93
   mongo:
     image: mongo:4.4
     restart: always

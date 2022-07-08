@@ -63,7 +63,7 @@ jobs:
           install: false
           browser: chrome
           start: yarn start:e2e
-          command: yarn test:e2e --browser chrome
+          command: yarn cross-env NODE_ENV=e2e cypress run --browser chrome
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
 
