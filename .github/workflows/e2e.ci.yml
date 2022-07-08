@@ -54,9 +54,6 @@ jobs:
       - name: Start Docker 🐳
         run: docker-compose up -d
 
-      - name: Add
-        run: sudo chmod -R 755 docker-data
-
       - name: Run Cypress 🧪
         run: yarn build
 
