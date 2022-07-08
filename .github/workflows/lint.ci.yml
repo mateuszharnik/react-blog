@@ -42,7 +42,7 @@ jobs:
       - name: Yarn cache 📷
         uses: actions/cache@v2
         env:
-          cache-name: lint-yarn-cache
+          cache-name: yarn-cache
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-build-${{ env.cache-name }}
