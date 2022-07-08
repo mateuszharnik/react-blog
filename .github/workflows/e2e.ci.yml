@@ -55,7 +55,14 @@ jobs:
         run: docker-compose up -d
 
       - name: Run Cypress 🧪
-        run: yarn start:ci
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          install: false
+          start: yarn start:test
+          command: yarn test:e2e
+          wait-on-timeout: 480
+          wait-on: "http://localhost:8080"
 
       - name: Stop Docker 🐳
         run: docker-compose down
