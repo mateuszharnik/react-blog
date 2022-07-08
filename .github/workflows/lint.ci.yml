@@ -34,7 +34,7 @@ jobs:
       - name: Use Node.js ✨
         uses: actions/setup-node@v2
         with:
-          node-version: "14.15.0"
+          node-version-file: ".nvmrc"
 
       - name: Install yarn 🧶
         run: npm install -g yarn@1.22.17
@@ -42,7 +42,7 @@ jobs:
       - name: Yarn cache 📷
         uses: actions/cache@v2
         env:
-          cache-name: yarn-cache
+          cache-name: lint-yarn-cache
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
