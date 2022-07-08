@@ -36,13 +36,13 @@ if (NODE_ENV === 'development') {
   app.use(cors({ origin: CLIENT_URL }));
 }
 
-if (NODE_ENV === 'production') {
+if (NODE_ENV === 'production' || NODE_ENV === 'e2e') {
   app.use(express.static(join(__dirname, '../client')));
 }
 
 app.use('/api', api);
 
-if (NODE_ENV === 'production') {
+if (NODE_ENV === 'production' || NODE_ENV === 'e2e') {
   app.get('(/*)?', (req, res) => res.sendFile('dist/client/index.html', { root: '.' }));
 }
 

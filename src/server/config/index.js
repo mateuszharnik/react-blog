@@ -19,7 +19,7 @@ const schema = Joi.object({
   NODE_ENV: Joi.string()
     .trim()
     .default('development')
-    .valid('development', 'production', 'test'),
+    .valid('development', 'production', 'test', 'e2e'),
   PORT: Joi.string()
     .trim()
     .default('3000'),

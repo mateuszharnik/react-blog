@@ -13,9 +13,9 @@
     "start:client": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.client.js --mode=development",
     "start:server": "yarn run migration:up:dev && cross-env NODE_ENV=development nodemon --exec babel-node ./src/server",
     "start:dev": "concurrently -n \"@backend,@frontend\" -c \"blue,red\" \"yarn run start:server\" \"yarn run start:client\"",
+    "start:e2e": "yarn run migration:up:e2e && cross-env NODE_ENV=e2e node ./dist/server/server.js",
     "start:e2e:client": "cross-env NODE_ENV=test webpack-dev-server --config ./webpack/webpack.config.client.js --mode=development",
     "start:e2e:server": "yarn run migration:up:test && cross-env NODE_ENV=test nodemon --exec babel-node ./src/server",
-    "start:e2e": "concurrently -n \"@backend,@frontend,@e2e\" -c \"blue,red,green\" \"yarn run start:e2e:server\" \"yarn run start:e2e:client\" \"yarn run test:e2e:open\"",
     "start:test": "concurrently -n \"@backend,@frontend\" -c \"blue,red\" \"yarn run start:e2e:server\" \"yarn run start:e2e:client\"",
     "start:ci": "concurrently -n \"@backend,@frontend\" -c \"blue,red\" \"yarn run start:e2e:server\" \"start-server-and-test yarn run start:e2e:client http://localhost:8080 test:e2e\"",
     "build": "yarn run build:client && yarn run purgecss && yarn run build:server",
@@ -56,7 +56,10 @@
     "migration:status:dev": "cross-env NODE_ENV=development npx migrate-mongo status -f migrations.config.js",
     "migration:up:test": "cross-env NODE_ENV=test npx migrate-mongo up -f migrations.config.js",
     "migration:down:test": "cross-env NODE_ENV=test npx migrate-mongo down -f migrations.config.js",
-    "migration:status:test": "cross-env NODE_ENV=test npx migrate-mongo status -f migrations.config.js"
+    "migration:status:test": "cross-env NODE_ENV=test npx migrate-mongo status -f migrations.config.js",
+    "migration:up:e2e": "cross-env NODE_ENV=e2e npx migrate-mongo up -f migrations.config.js",
+    "migration:down:e2e": "cross-env NODE_ENV=e2e npx migrate-mongo down -f migrations.config.js",
+    "migration:status:e2e": "cross-env NODE_ENV=e2e npx migrate-mongo status -f migrations.config.js"
   },
   "lint-staged": {
     "src/server/**/*.js": [
