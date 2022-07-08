@@ -4,6 +4,7 @@ import config from '@server/config';
 import app from '@server/app';
 
 const { PORT } = config;
+console.log(process.env.NODE_ENV);
 
 // eslint-disable-next-line
 app.listen(PORT, () => console.log(`App listening on ${colors.cyan(`http://localhost:${PORT}`)}`));
