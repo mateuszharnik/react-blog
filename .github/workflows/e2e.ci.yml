@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   Cypress:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout branch 🌿
@@ -49,7 +49,7 @@ jobs:
         run: yarn add eslint-plugin-react@7.26.0 --dev
 
       - name: Copy environment variables 💾
-        run: cp .env.example .env
+        run: copy .env.example .env
 
       - name: Start Docker 🐳
         run: docker-compose up -d
