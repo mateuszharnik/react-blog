@@ -18,10 +18,6 @@ jobs:
   Cypress:
     runs-on: ubuntu-latest
 
-    container:
-      image: cypress/browsers:node16.5.0-chrome94-ff93
-      options: --user 1001
-
     steps:
       - name: Checkout branch 🌿
         uses: actions/checkout@v2
