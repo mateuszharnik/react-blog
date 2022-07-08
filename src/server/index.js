@@ -4,6 +4,7 @@ import config from '@server/config';
 import app from '@server/app';
 
 const { PORT } = config;
+// eslint-disable-next-line
 console.log(process.env.NODE_ENV);
 
 // eslint-disable-next-line
