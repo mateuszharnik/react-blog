@@ -19,6 +19,10 @@ on:
       - bugfix/*
       - hotfix/*
 
+concurrency:
+  group: test
+  cancel-in-progress: true
+
 jobs:
   Jest:
     runs-on: ubuntu-latest
@@ -31,6 +35,18 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14.15.0"
+
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Install yarn 🧶
         run: npm install -g yarn@1.22.17
