@@ -1,0 +1,62 @@
+---
+name: E2E
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+  pull_request:
+    branches:
+      - master
+      - develop
+
+concurrency:
+  group: e2e
+  cancel-in-progress: true
+
+jobs:
+  Cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch 🌿
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ✨
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install yarn 🧶
+        run: npm install -g yarn@1.22.17
+
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: e2e-yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies 📦
+        run: yarn install
+
+      - name: Change version for eslint-plugin-react 📜
+        run: yarn add eslint-plugin-react@7.26.0 --dev
+
+      - name: Start Docker 🐳
+        run: docker-compose up -d
+
+      - name: Run Cypress 🧪
+        uses: cypress-io/github-action@v4
+        with:
+          start: yarn start:test
+          wait-on-timeout: 240
+          wait-on: "http://localhost:8080"
+
+      - name: Stop Docker 🐳
+        run: docker-compose down
