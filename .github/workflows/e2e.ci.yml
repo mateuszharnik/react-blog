@@ -30,18 +30,6 @@ jobs:
       - name: Install yarn 🧶
         run: npm install -g yarn@1.22.17
 
-      - name: Yarn cache 📷
-        uses: actions/cache@v2
-        env:
-          cache-name: e2e-yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Install dependencies 📦
         run: yarn install
 
