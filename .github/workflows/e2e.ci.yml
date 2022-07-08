@@ -58,6 +58,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           start: yarn start:test
+          command: yarn test:e2e
           wait-on-timeout: 240
           wait-on: "http://localhost:8080"
 
