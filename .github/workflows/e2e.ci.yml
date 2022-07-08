@@ -56,7 +56,6 @@ jobs:
 
       - name: Run Cypress 🧪
         run: yarn start:ci
-        with:
 
       - name: Stop Docker 🐳
         run: docker-compose down
