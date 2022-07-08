@@ -30,6 +30,18 @@ jobs:
       - name: Install yarn 🧶
         run: npm install -g yarn@1.22.17
 
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: e2e-yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install dependencies 📦
         run: yarn install
 
@@ -39,11 +51,11 @@ jobs:
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
+      - name: Add
+        run: sudo chmod -R 755 node_modules
+
       - name: Start Docker 🐳
         run: docker-compose up -d
-
-      - name: Run Cypress 🧪
-        run: yarn build:server
 
       - name: Run Cypress 🧪
         run: yarn build:client
