@@ -51,6 +51,9 @@ jobs:
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
+      - name: Add
+        run: sudo chmod -R 755 *
+
       - name: Start Docker 🐳
         run: docker-compose up -d
 
