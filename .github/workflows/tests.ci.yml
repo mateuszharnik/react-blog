@@ -36,6 +36,9 @@ jobs:
         with:
           node-version: "14.15.0"
 
+      - name: Install yarn 🧶
+        run: npm install -g yarn@1.22.17
+
       - name: Yarn cache 📷
         uses: actions/cache@v2
         env:
@@ -47,9 +50,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
-      - name: Install yarn 🧶
-        run: npm install -g yarn@1.22.17
 
       - name: Install dependencies 📦
         run: yarn install
@@ -64,7 +64,13 @@ jobs:
         run: docker-compose up -d
 
       - name: Run Jest 🧪
-        run: yarn migration:up:test && yarn test:client && yarn test:server
+        run: yarn migration:up:test && yarn test:client --coverage && yarn test:server --coverage
+
+      - name: Archive Jest coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: jest-coverage
+          path: src/*/coverage
 
       - name: Stop Docker 🐳
         run: docker-compose down
