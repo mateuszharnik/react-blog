@@ -16,5 +16,8 @@ module.exports = {
     test: {
       plugins: [['babel-plugin-webpack-alias', { config: './webpack/webpack.config.server.js' }]],
     },
+    e2e: {
+      plugins: [['babel-plugin-webpack-alias', { config: './webpack/webpack.config.server.js' }]],
+    },
   },
 };
