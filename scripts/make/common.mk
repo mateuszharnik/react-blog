@@ -7,8 +7,8 @@ AVAILABLE_ENVS = development production test e2e staging testing
 AVAILABLE_ENVS_LIST = development, production, test, e2e, staging, testing
 
 SUITE = **
-AVAILABLE_SUITES = **
-AVAILABLE_SUITES_LIST = **
+AVAILABLE_SUITES = ** contact
+AVAILABLE_SUITES_LIST = **, contact
 
 DEV_ENV = development
 AVAILABLE_DEV_ENVS = development test e2e
