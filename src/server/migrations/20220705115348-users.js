@@ -1,4 +1,3 @@
-// eslint-disable no-console
 const colors = require('colors/safe');
 const { hash } = require('bcryptjs');
 const { defaultUsers } = require('../helpers/seeds/data/users');
@@ -25,6 +24,7 @@ module.exports = {
         const role = await db.collection('roles').findOne({ type: user?.role, deleted_at: null });
 
         if (!role) {
+          // eslint-disable-next-line no-console
           console.log(colors.red('Role not found.'));
           process.exit(0);
         }
@@ -38,6 +38,7 @@ module.exports = {
         await db.collection('users').insertMany(users);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }
@@ -49,6 +50,7 @@ module.exports = {
 
       await db.collection('users').deleteMany({ username: { $in: usernames } });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }

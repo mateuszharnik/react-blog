@@ -9,12 +9,13 @@ register(babelConfig);
 config();
 
 if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-  const path = resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
   if (fs.existsSync(path)) {
     config({ path });
   }
 }
+
 module.exports = {
   mongodb: {
     url: process.env.DB_URL,

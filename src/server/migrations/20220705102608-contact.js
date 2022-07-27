@@ -1,4 +1,3 @@
-// eslint-disable no-console
 const colors = require('colors/safe');
 const { defaultContact } = require('../helpers/seeds/data/contact');
 
@@ -14,6 +13,7 @@ module.exports = {
     try {
       await db.collection('contacts').insertOne(contact);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }
@@ -23,6 +23,7 @@ module.exports = {
     try {
       await db.collection('contacts').deleteOne({});
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }

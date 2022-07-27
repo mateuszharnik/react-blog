@@ -1,4 +1,3 @@
-// eslint-disable no-console
 const colors = require('colors/safe');
 const { defaultAbout } = require('../helpers/seeds/data/about');
 const { default: markdownToHTML } = require('../helpers/markdownToHTML');
@@ -16,6 +15,7 @@ module.exports = {
     try {
       await db.collection('abouts').insertOne(about);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }
@@ -25,6 +25,7 @@ module.exports = {
     try {
       await db.collection('abouts').deleteOne({});
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }
