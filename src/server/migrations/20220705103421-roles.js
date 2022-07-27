@@ -1,4 +1,3 @@
-// eslint-disable no-console
 const colors = require('colors/safe');
 const { defaultRoles } = require('../helpers/seeds/data/roles');
 const { default: sanitize } = require('../helpers/purify');
@@ -26,6 +25,7 @@ module.exports = {
         await db.collection('roles').insertMany(roles);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }
@@ -37,6 +37,7 @@ module.exports = {
 
       await db.collection('roles').deleteMany({ name: { $in: names } });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(colors.red(error));
       process.exit(0);
     }

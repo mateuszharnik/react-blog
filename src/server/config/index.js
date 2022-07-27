@@ -8,7 +8,7 @@ import { emailRegExp } from '@server/helpers/regexps';
 config();
 
 if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-  const path = resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
   if (fs.existsSync(path)) {
     config({ path });
@@ -20,6 +20,10 @@ const schema = Joi.object({
     .trim()
     .default('development')
     .valid('development', 'production', 'test'),
+  APP_ENV: Joi.string()
+    .trim()
+    .default('development')
+    .valid('development', 'production', 'test', 'e2e', 'staging', 'testing'),
   PORT: Joi.string()
     .trim()
     .default('3000'),

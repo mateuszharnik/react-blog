@@ -1,4 +1,3 @@
-// eslint-disable no-console
 import colors from 'colors/safe';
 import seedAbout from '@server/seeds/about';
 import seedConfig from '@server/seeds/config';
@@ -33,6 +32,7 @@ const defaultData = async () => {
       config,
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(colors.red(error));
     process.exit(0);
   }

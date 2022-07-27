@@ -11,10 +11,10 @@ import config from '@server/config';
 import { checkToken } from '@server/middlewares/auth';
 import { notFound, CSRFErrorHandler, errorHandler } from '@server/middlewares/errors';
 
-const { NODE_ENV, CLIENT_URL } = config;
+const { NODE_ENV, APP_ENV, CLIENT_URL } = config;
 const app = express();
 
-if (NODE_ENV !== 'test') {
+if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') {
   app.use(morgan('dev'));
 }
 
@@ -32,7 +32,7 @@ app.use(csrf({
 }));
 app.use(checkToken);
 
-if (NODE_ENV === 'development') {
+if (NODE_ENV === 'development' || NODE_ENV === 'test') {
   app.use(cors({ origin: CLIENT_URL }));
 }
 

@@ -1,4 +1,9 @@
+const { config } = require('dotenv');
+
+config();
+
 module.exports = {
+  coverageDirectory: `<rootDir>/coverage/${process.env.COVERAGE_DIR || ''}`,
   moduleFileExtensions: ['js', 'jsx', 'json'],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
