@@ -1,0 +1,95 @@
+---
+name: E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        type: choice
+        description: "E2E test suite"
+        default: "all-tests"
+        options:
+          - all-tests
+          - contact
+  schedule:
+    - cron: "0 3 * * *"
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Cypress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout branch 🌿
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ✨
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install make package for Ubuntu 🐧
+        run: sudo apt-get install -y build-essential make
+
+      - name: Install all global dependencies 🌍
+        run: make install@global
+
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: e2e-yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install all local dependencies 📦
+        run: yarn install
+
+      - name: Change version for eslint-plugin-react 📜
+        run: yarn add eslint-plugin-react@7.26.0 --dev
+
+      - name: Change version for bootstrap 📜
+        run: yarn add bootstrap
+
+      - name: Copy environment variables 💾
+        run: cp .env.example .env
+
+      - name: Build project 🔨
+        run: yarn run build
+
+      - name: Start Docker 🐳
+        run: make docker@up-background
+
+      - name: Run migrations 🌱
+        run: make migration@up-e2e
+
+      - name: Run Cypress 🧪
+        uses: cypress-io/github-action@v4
+        with:
+          install: false
+          browser: chrome
+          start: yarn run start:e2e
+          command: make e2e@suite SUITE=${{ (github.event.inputs.suite == '' || github.event.inputs.suite == 'all tests') && '**' || github.event.inputs.suite }}
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 180
+
+      - name: Archive screenshots 💼
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: src/e2e/tests/screenshots
+
+      - name: Stop Docker 🐳
+        run: make docker@down
