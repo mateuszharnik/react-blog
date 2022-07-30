@@ -44,6 +44,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Show branch name
+        run: echo "${{ GITHUB_REF#refs/heads/ }}"
+
       - name: Deploy to Heroku 🚀
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
