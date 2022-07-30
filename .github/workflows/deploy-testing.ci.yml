@@ -1,0 +1,54 @@
+---
+name: Deploy Testing
+
+on:
+  release:
+    types: [prereleased, released]
+  push:
+    tags:
+      - "v*/RB-*.*"
+
+concurrency:
+  group: deploy-testing
+  cancel-in-progress: true
+
+jobs:
+  Testing Release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout branch 🌿
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ✨
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install make package for Ubuntu 🐧
+        run: sudo apt-get install -y build-essential make
+
+      - name: Install all global dependencies 🌍
+        run: make install@global
+
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: deploy-testing-yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Deploy to Heroku 🚀
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_TESTING_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          branch: ${GITHUB_REF#refs/heads/}
+          procfile: "web: yarn run start:testing"
