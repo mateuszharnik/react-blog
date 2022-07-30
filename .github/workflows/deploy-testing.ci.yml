@@ -50,5 +50,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_TESTING_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          branch: ${GITHUB_REF#refs/heads/}
+          branch: ${{ GITHUB_REF#refs/heads/ }}
           procfile: "web: yarn run start:testing"
