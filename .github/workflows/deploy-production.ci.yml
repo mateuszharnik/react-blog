@@ -1,0 +1,42 @@
+---
+name: Deploy Production
+
+on:
+  release:
+    types: [released]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout branch 🌿
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ✨
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install make package for Ubuntu 🐧
+        run: sudo apt-get install -y build-essential make
+
+      - name: Install all global dependencies 🌍
+        run: make install@global
+
+      - name: Get tag version 🔖
+        id: tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Deploy to Heroku 🚀
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_PRODUCTION_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          branch: ${{ steps.tag.outputs.VERSION }}
