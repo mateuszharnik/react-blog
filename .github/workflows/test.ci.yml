@@ -56,12 +56,6 @@ jobs:
       - name: Install all local dependencies 📦
         run: yarn install
 
-      - name: Change version for eslint-plugin-react 📜
-        run: yarn add eslint-plugin-react@7.26.0 --dev
-
-      - name: Change version for bootstrap 📜
-        run: yarn add bootstrap
-
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
