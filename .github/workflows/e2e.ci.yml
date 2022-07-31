@@ -56,12 +56,6 @@ jobs:
       - name: Install all local dependencies 📦
         run: yarn install
 
-      - name: Change version for eslint-plugin-react 📜
-        run: yarn add eslint-plugin-react@7.26.0 --dev
-
-      - name: Change version for bootstrap 📜
-        run: yarn add bootstrap
-
       - name: Copy environment variables 💾
         run: cp .env.example .env
 
@@ -80,7 +74,7 @@ jobs:
           install: false
           browser: chrome
           start: yarn run start:e2e
-          command: make e2e@suite SUITE=${{ (github.event.inputs.suite == '' || github.event.inputs.suite == 'all tests') && '**' || github.event.inputs.suite }}
+          command: make e2e@suite SUITE=${{ (github.event.inputs.suite == '' || github.event.inputs.suite == 'all-tests') && '**' || github.event.inputs.suite }}
           wait-on: "http://localhost:3000"
           wait-on-timeout: 180
 
