@@ -9,7 +9,7 @@ lint:
 	@make lint@style
 
 .ONESHELL:
-lint@js: # Lint all js files
+lint@js: # Lint all js and jsx files
 lint@js:
 	@cross-env NODE_ENV=production npx eslint ./src/ --ext .js,.jsx
 
@@ -19,7 +19,7 @@ lint@server:
 	@cross-env NODE_ENV=production npx eslint ./src/server/ --ext .js
 
 .ONESHELL:
-lint@client: # Lint all js files in client directory
+lint@client: # Lint all js and jsx files in client directory
 lint@client:
 	@cross-env NODE_ENV=production npx eslint ./src/client/ --ext .js,.jsx
 
@@ -27,6 +27,16 @@ lint@client:
 lint@e2e: # Lint all js files in e2e directory
 lint@e2e:
 	@cross-env NODE_ENV=production npx eslint ./src/e2e/ --ext .js
+
+.ONESHELL:
+lint@shared: # Lint all js files in shared directory
+lint@shared:
+	@cross-env NODE_ENV=production npx eslint ./src/shared/ --ext .js
+
+.ONESHELL:
+lint@scripts: # Lint all js files in scripts directory
+lint@scripts:
+	@cross-env NODE_ENV=production npx eslint ./scripts/ --ext .js
 
 .ONESHELL:
 lint@style: # Lint all css and scss files in client directory
@@ -49,7 +59,7 @@ lint-fix:
 	@make lint-fix@style
 
 .ONESHELL:
-lint-fix@js: # Lint and fix all js files
+lint-fix@js: # Lint and fix all js and jsx files
 lint-fix@js:
 	@cross-env NODE_ENV=production npx eslint ./src/ --ext .js,.jsx --fix
 
@@ -59,7 +69,7 @@ lint-fix@server:
 	@cross-env NODE_ENV=production npx eslint ./src/server/ --ext .js --fix
 
 .ONESHELL:
-lint-fix@client: # Lint and fix all js files in client directory
+lint-fix@client: # Lint and fix all js and jsx files in client directory
 lint-fix@client:
 	@cross-env NODE_ENV=production npx eslint ./src/client/ --ext .js,.jsx --fix
 
@@ -67,6 +77,16 @@ lint-fix@client:
 lint-fix@e2e: # Lint and fix all js files in e2e directory
 lint-fix@e2e:
 	@cross-env NODE_ENV=production npx eslint ./src/e2e/ --ext .js --fix
+
+.ONESHELL:
+lint-fix@shared: # Lint and fix all js files in shared directory
+lint-fix@shared:
+	@cross-env NODE_ENV=production npx eslint ./src/shared/ --ext .js --fix
+
+.ONESHELL:
+lint-fix@scripts: # Lint and fix all js files in scripts directory
+lint-fix@scripts:
+	@cross-env NODE_ENV=production npx eslint ./scripts/ --ext .js --fix
 
 .ONESHELL:
 lint-fix@style: # Lint and fix all css and scss files in client directory

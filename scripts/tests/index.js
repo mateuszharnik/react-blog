@@ -1,5 +1,6 @@
 import { format } from 'util';
 
+// eslint-disable-next-line no-console
 console.error = (...args) => {
   const message = format(...args);
 

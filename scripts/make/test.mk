@@ -7,6 +7,7 @@ test: # Test client and server
 test:
 	@make test@client
 	@make test@server
+	@make test@shared
 
 .ONESHELL:
 test@server: # Test server
@@ -17,6 +18,11 @@ test@server:
 test@client: # Test client
 test@client:
 	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client npx jest ./src/client --passWithNoTests --coverage
+
+.ONESHELL:
+test@shared: # Test shared
+test@shared:
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --passWithNoTests --coverage
 
 #############################################
 ############### RUN E2E TESTS ###############

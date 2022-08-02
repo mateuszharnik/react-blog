@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { dbIdRegExp } from '@server/helpers/regexps';
+import { dbIdRegExp } from '@shared/regexps';
 
 const validateIds = (ids = []) => {
   const schema = Joi.array().items(

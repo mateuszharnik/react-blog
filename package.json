@@ -23,9 +23,10 @@
     "build": "yarn run build:client && yarn run purgecss && yarn run build:server",
     "build:client": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:server": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.server.js",
-    "test": "yarn run test:client && yarn run test:server",
+    "test": "yarn run test:client && yarn run test:server && yarn run test:shared",
     "test:client": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client jest ./src/client --passWithNoTests --coverage",
     "test:server": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server jest ./src/server --env=node --passWithNoTests --coverage",
+    "test:shared": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared jest ./src/shared --passWithNoTests --coverage",
     "e2e:chrome": "cross-env NODE_ENV=test APP_ENV=e2e cypress run --browser chrome",
     "e2e:open": "cross-env NODE_ENV=test APP_ENV=e2e cypress open",
     "purgecss": "purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css",
@@ -33,6 +34,7 @@
     "lint:js": "cross-env NODE_ENV=production eslint ./src/ --ext .js,.jsx",
     "lint:server": "cross-env NODE_ENV=production eslint ./src/server/ --ext .js",
     "lint:client": "cross-env NODE_ENV=production eslint ./src/client/ --ext .js,.jsx",
+    "lint:shared": "cross-env NODE_ENV=production eslint ./src/shared/ --ext .js",
     "lint:e2e": "cross-env NODE_ENV=production eslint ./src/e2e/ --ext .js",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
     "migration:up": "migrate-mongo up -f migrations.config.js",
@@ -53,6 +55,12 @@
     ],
     "src/client/**/*.{scss,css}": [
       "yarn run lint:style"
+    ],
+    "src/shared/**/*.js": [
+      "yarn run lint:shared"
+    ],
+    "src/shared/**/*.test.js": [
+      "yarn run test:shared"
     ],
     "src/e2e/**/*.js": [
       "yarn run lint:e2e"

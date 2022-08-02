@@ -1,5 +1,5 @@
 import { object, string } from 'yup';
-import { usernameRegExp } from '@client/helpers/regexps';
+import { usernameRegExp } from '@shared/regexps';
 
 const schema = object({
   username: string()
