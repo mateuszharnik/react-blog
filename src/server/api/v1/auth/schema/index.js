@@ -9,7 +9,7 @@ import isTermsOfUseAcceptedMessages from '@server/helpers/messages/isTermsOfUseA
 import {
   usernameRegExp,
   emailRegExp,
-} from '@server/helpers/regexps';
+} from '@shared/regexps';
 
 export const validateSignUp = (
   newUser = {}, options = { abortEarly: false }, useInvalid = true,

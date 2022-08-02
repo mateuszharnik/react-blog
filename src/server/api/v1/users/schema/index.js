@@ -33,7 +33,7 @@ import {
   twitchRegExp,
   stackOverflowRegExp,
   linkedinRegExp,
-} from '@server/helpers/regexps';
+} from '@shared/regexps';
 
 const validateUser = (user = {}, options = { abortEarly: false }, useInvalid = true) => {
   const invalid = useInvalid ? invalidUsernames : [];

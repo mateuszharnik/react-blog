@@ -1,7 +1,7 @@
 import {
   object, string, boolean, ref,
 } from 'yup';
-import { alphanumRegExp, emailRegExp } from '@client/helpers/regexps';
+import { alphanumRegExp, emailRegExp } from '@shared/regexps';
 
 const schema = object({
   username: string()

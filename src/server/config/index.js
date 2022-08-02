@@ -3,7 +3,7 @@ import colors from 'colors/safe';
 import fs from 'fs';
 import { resolve } from 'path';
 import { config } from 'dotenv';
-import { emailRegExp } from '@server/helpers/regexps';
+import { emailRegExp } from '@shared/regexps';
 
 config();
 
