@@ -5,6 +5,7 @@ import { compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import Docs from '../model';
 import validateSignIn from '../schema';
 
@@ -17,7 +18,7 @@ export const signIn = async (req, res, next) => {
     const { validationError, data } = validateSignIn(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const docs = await Docs.findOne({});

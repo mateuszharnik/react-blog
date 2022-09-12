@@ -4,9 +4,9 @@ import validateAbout from '@server/api/v1/about/schema';
 import About from '@server/api/v1/about/model';
 import markdownToHTML from '@server/helpers/markdownToHTML';
 
-const { NODE_ENV } = config;
+const { NODE_ENV, APP_ENV } = config;
 
-const removeAndSeedAbout = async (about = {}) => {
+const seedAbout = async (about = {}) => {
   const { validationError, data } = validateAbout(about);
 
   if (validationError) {
@@ -18,15 +18,12 @@ const removeAndSeedAbout = async (about = {}) => {
   data.html_contents = markdownToHTML(data.contents);
 
   try {
-    await About.deleteMany({});
+    const newAbout = await About.create(data);
 
     // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Information about us removed from DB.'));
+    if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with information about us.'));
 
-    await About.create(data);
-
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with information about us.'));
+    return newAbout;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));
@@ -34,4 +31,4 @@ const removeAndSeedAbout = async (about = {}) => {
   }
 };
 
-export default removeAndSeedAbout;
+export default seedAbout;

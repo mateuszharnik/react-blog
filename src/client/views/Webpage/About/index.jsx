@@ -33,7 +33,7 @@ const About = memo(() => {
       const { status, data } = await fetchAbout();
 
       if (status !== 200) {
-        setError(data.message);
+        setError(data.messages ? data.messages[0].message : data);
       }
     }
 

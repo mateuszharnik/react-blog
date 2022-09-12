@@ -4,9 +4,9 @@ import validateMessage from '@server/api/v1/messages/schema';
 import Message from '@server/api/v1/messages/model';
 import sanitize from '@server/helpers/purify';
 
-const { NODE_ENV } = config;
+const { NODE_ENV, APP_ENV } = config;
 
-const removeAndSeedMessages = async (messages = []) => {
+const seedMessages = async (messages = []) => {
   const createdMessages = [];
 
   messages.forEach((message) => {
@@ -27,16 +27,13 @@ const removeAndSeedMessages = async (messages = []) => {
   });
 
   try {
-    await Message.deleteMany({});
-
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('Messages removed from DB.'));
-
     if (createdMessages.length) {
-      await Message.create(createdMessages);
+      const newMessages = await Message.create(createdMessages);
 
       // eslint-disable-next-line no-console
-      if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with messages.'));
+      if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with messages.'));
+
+      return newMessages;
     }
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -45,4 +42,4 @@ const removeAndSeedMessages = async (messages = []) => {
   }
 };
 
-export default removeAndSeedMessages;
+export default seedMessages;

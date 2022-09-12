@@ -43,6 +43,9 @@ module.exports = (webpackEnv, { mode }) => {
       extensions: ['.js', '.jsx'],
       alias: {
         '@client': resolve(__dirname, '../src/client'),
+        '@server': resolve(__dirname, '../src/server'),
+        '@shared': resolve(__dirname, '../src/shared'),
+        '@e2e': resolve(__dirname, '../src/e2e'),
       },
     },
     devtool: mode === 'production' ? '' : 'source-map',

@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import sanitize from '@server/helpers/purify';
 import validateId from '@server/helpers/validation/validateId';
 import validateRole from '../schema';
@@ -79,7 +80,7 @@ export const createRole = async (req, res, next) => {
     const { validationError, data } = validateRole(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const createdRole = await Role.create({
@@ -128,7 +129,7 @@ export const updateRole = async (req, res, next) => {
     const { validationError, data } = validateRole(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const updatedRole = await Role.findOneAndUpdate(
@@ -161,17 +162,16 @@ export const deleteRoles = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono żadnej roli użytkownika.');
     }
 
-    const updatedRoles = await Role.updateMany(
-      { deleted_at: null, can_be_modified: true, type: 'SUPERUSER' },
-      { deleted_at: Date.now() },
+    const ids = roles.map(({ _id }) => _id.toString());
+
+    const updatedRoles = await Role.softDeleteMany(
+      { _id: { $in: ids }, deleted_at: null },
       { new: true },
     );
 
     if (!updatedRoles) {
       return responseWithError(409, 'Nie udało się usunąć roli użytkownika.');
     }
-
-    const ids = roles.map(({ _id }) => _id.toString());
 
     const deletedRoles = await Role.find({
       _id: { $in: ids },
@@ -212,11 +212,10 @@ export const deleteRole = async (req, res, next) => {
       return responseWithError(409, 'Nie można usunąć tej roli użytkownika.');
     }
 
-    const deletedRole = await Role.findOneAndUpdate(
+    const deletedRole = await Role.findOneAndSoftDelete(
       {
         _id: id, deleted_at: null, can_be_modified: true, type: 'SUPERUSER',
       },
-      { deleted_at: Date.now() },
       { new: true },
     );
 

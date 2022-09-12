@@ -9,9 +9,11 @@ import isTermsOfUseAcceptedMessages from '@server/helpers/messages/isTermsOfUseA
 import {
   usernameRegExp,
   emailRegExp,
-} from '@server/helpers/regexps';
+} from '@shared/regexps';
 
-export const validateSignUp = (newUser = {}, options = {}, useInvalid = true) => {
+export const validateSignUp = (
+  newUser = {}, options = { abortEarly: false }, useInvalid = true,
+) => {
   const invalid = useInvalid ? invalidUsernames : [];
 
   const schema = Joi.object().keys({
@@ -56,7 +58,7 @@ export const validateSignUp = (newUser = {}, options = {}, useInvalid = true) =>
   return { validationError, data };
 };
 
-export const validateSignIn = (user = {}, options = {}) => {
+export const validateSignIn = (user = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     username: Joi.string()
       .trim()

@@ -1,0 +1,78 @@
+---
+name: Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - develop
+      - feature/*
+      - task/*
+      - improve/*
+      - release/*
+      - bugfix/*
+      - hotfix/*
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Jest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout branch 🌿
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ✨
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install make package for Ubuntu 🐧
+        run: sudo apt-get install -y build-essential make
+
+      - name: Install all global dependencies 🌍
+        run: make install@global
+
+      - name: Yarn cache 📷
+        uses: actions/cache@v2
+        env:
+          cache-name: test-yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install all local dependencies 📦
+        run: yarn install
+
+      - name: Copy environment variables 💾
+        run: cp .env.example .env
+
+      - name: Start Docker 🐳
+        run: make docker@up-background
+
+      - name: Run migrations 🌱
+        run: make migration@up-test
+
+      - name: Run Jest 🧪
+        run: yarn run test
+
+      - name: Archive code coverages 💼
+        uses: actions/upload-artifact@v2
+        with:
+          name: jest-code-coverages
+          path: coverage/*
+
+      - name: Stop Docker 🐳
+        run: make docker@down

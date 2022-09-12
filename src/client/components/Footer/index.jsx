@@ -32,7 +32,11 @@ const Footer = memo(() => {
             {contact?.email && config?.show_email && (
               <li className="footer-links__item">
                 <span className="visually-hidden">Email: </span>
-                <a href={mailTo} title="Napisz do mnie" className="footer-links__link">
+                <a
+                  href={mailTo}
+                  title="Napisz do mnie"
+                  className="footer-links__link"
+                >
                   <span className="visually-hidden">{contact?.email}</span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon

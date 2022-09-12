@@ -1,4 +1,9 @@
+const { config } = require('dotenv');
+
+config();
+
 module.exports = {
+  coverageDirectory: `<rootDir>/coverage/${process.env.COVERAGE_DIR || ''}`,
   moduleFileExtensions: ['js', 'jsx', 'json'],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
@@ -9,6 +14,8 @@ module.exports = {
     '\\.(css|scss|sass)$': '<rootDir>/__mocks__/styleMock.js',
     '^@server(.*)$': '<rootDir>/src/server$1',
     '^@client/(.*)$': '<rootDir>/src/client$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared$1',
+    '^@e2e/(.*)$': '<rootDir>/src/e2e$1',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/'],

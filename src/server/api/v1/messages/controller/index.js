@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import createResponseWithError from '@server/helpers/createResponseWithError';
+import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
 import validateIds from '@server/helpers/validation/validateIds';
 import sanitize from '@server/helpers/purify';
@@ -84,7 +85,7 @@ export const createMessage = async (req, res, next) => {
     const { validationError, data } = validateMessage(req.body);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      return responseWithError(409, mapValidationMessages(validationError));
     }
 
     const createdMessage = await Message.create({
@@ -114,7 +115,7 @@ export const deleteMessages = async (req, res, next) => {
       const { validationError, data } = validateIds(req.body);
 
       if (validationError) {
-        return responseWithError(409, validationError.details[0].message);
+        return responseWithError(409, mapValidationMessages(validationError));
       }
 
       query._id = { $in: data };
@@ -126,17 +127,16 @@ export const deleteMessages = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const updatedMessages = await Message.updateMany(
-      query,
-      { deleted_at: Date.now() },
+    const ids = messages.map(({ _id }) => _id.toString());
+
+    const updatedMessages = await Message.softDeleteMany(
+      { _id: { $in: ids }, deleted_at: null },
       { new: true },
     );
 
     if (!updatedMessages) {
       return responseWithError(409, 'Nie udało się usunąć wiadomości.');
     }
-
-    const ids = messages.map(({ _id }) => _id.toString());
 
     const deletedMessages = await Message.find({ _id: { $in: ids }, deleted_at: { $ne: null } });
 
@@ -169,9 +169,8 @@ export const deleteMessage = async (req, res, next) => {
       return responseWithError(404, 'Nie znaleziono wiadomości.');
     }
 
-    const deletedMessage = await Message.findOneAndUpdate(
+    const deletedMessage = await Message.findOneAndSoftDelete(
       { _id: id, deleted_at: null },
-      { deleted_at: Date.now() },
       { new: true },
     );
 

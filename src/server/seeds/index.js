@@ -1,30 +1,36 @@
 import '@server/db';
 import colors from 'colors/safe';
-import { defaultAbout } from '@server/helpers/seeds/data/about';
-import { defaultConfig } from '@server/helpers/seeds/data/config';
-import { defaultContact } from '@server/helpers/seeds/data/contact';
-import { defaultRoles } from '@server/helpers/seeds/data/roles';
-import { defaultTermsOfUse } from '@server/helpers/seeds/data/termsOfUse';
-import { defaultUsers } from '@server/helpers/seeds/data/users';
-import removeAndSeedMessages from './messages';
-import removeAndSeedTermsOfUse from './termsOfUse';
-import removeAndSeedAbout from './about';
-import removeAndSeedConfig from './config';
-import removeAndSeedContact from './contact';
-import removeAndSeedRoles from './roles';
-import removeAndSeedUsers from './users';
-import removeAndSeedDocs from './docs';
+import { exampleAbout } from '@server/helpers/seeds/data/about';
+import { exampleConfig } from '@server/helpers/seeds/data/config';
+import { exampleContact } from '@server/helpers/seeds/data/contact';
+import { exampleRoles } from '@server/helpers/seeds/data/roles';
+import { exampleTermsOfUse } from '@server/helpers/seeds/data/termsOfUse';
+import { exampleUsers } from '@server/helpers/seeds/data/users';
+import exampleFAQs from '@server/helpers/seeds/data/faqs';
+import exampleMessages from '@server/helpers/seeds/data/messages';
+import cleanDB from './cleanDB';
+import seedMessages from './messages';
+import seedFAQs from './faqs';
+import seedTermsOfUse from './termsOfUse';
+import seedAbout from './about';
+import seedConfig from './config';
+import seedContact from './contact';
+import seedRoles from './roles';
+import seedUsers from './users';
+import seedDocs from './docs';
 
 const seed = async () => {
   try {
-    await removeAndSeedDocs();
-    await removeAndSeedMessages();
-    await removeAndSeedTermsOfUse(defaultTermsOfUse);
-    await removeAndSeedRoles(defaultRoles);
-    await removeAndSeedConfig(defaultConfig);
-    await removeAndSeedAbout(defaultAbout);
-    await removeAndSeedContact(defaultContact);
-    await removeAndSeedUsers(defaultUsers);
+    await cleanDB();
+    await seedDocs();
+    await seedMessages(exampleMessages);
+    await seedTermsOfUse(exampleTermsOfUse);
+    await seedRoles(exampleRoles);
+    await seedConfig(exampleConfig);
+    await seedAbout(exampleAbout);
+    await seedContact(exampleContact);
+    await seedUsers(exampleUsers);
+    await seedFAQs(await exampleFAQs());
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(colors.red(error));

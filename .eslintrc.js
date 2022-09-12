@@ -32,6 +32,8 @@ module.exports = {
             alias: {
               '@client': resolve(__dirname, './src/client'),
               '@server': resolve(__dirname, './src/server'),
+              '@shared': resolve(__dirname, './src/shared'),
+              '@e2e': resolve(__dirname, './src/e2e'),
             },
           },
         },
@@ -40,6 +42,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'react/jsx-max-props-per-line': ['error', { maximum: 1 }],
     'react/jsx-filename-extension': 0,
     'react/jsx-one-expression-per-line': 0,
     'react/jsx-props-no-spreading': 0,
@@ -87,4 +90,14 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['src/e2e/**/*.js'],
+      env: { 'cypress/globals': true },
+      plugins: ['cypress'],
+      rules: {
+        'no-unused-expressions': 0,
+      },
+    },
+  ],
 };

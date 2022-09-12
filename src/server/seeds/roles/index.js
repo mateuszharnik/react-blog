@@ -4,9 +4,9 @@ import validateRole from '@server/api/v1/roles/schema';
 import Role from '@server/api/v1/roles/model';
 import sanitize from '@server/helpers/purify';
 
-const { NODE_ENV } = config;
+const { NODE_ENV, APP_ENV } = config;
 
-const removeAndSeedRoles = async (roles = []) => {
+const seedRoles = async (roles = []) => {
   const createdRoles = [];
 
   roles.forEach((role) => {
@@ -25,16 +25,13 @@ const removeAndSeedRoles = async (roles = []) => {
   });
 
   try {
-    await Role.deleteMany({});
-
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test') console.log(colors.green('User roles removed from DB.'));
-
     if (createdRoles.length) {
-      await Role.create(createdRoles);
+      const newRoles = await Role.create(createdRoles);
 
       // eslint-disable-next-line no-console
-      if (NODE_ENV !== 'test') console.log(colors.green('DB seeded with user roles.'));
+      if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with user roles.'));
+
+      return newRoles;
     }
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -43,4 +40,4 @@ const removeAndSeedRoles = async (roles = []) => {
   }
 };
 
-export default removeAndSeedRoles;
+export default seedRoles;

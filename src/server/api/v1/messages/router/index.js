@@ -1,5 +1,6 @@
 import rateLimit from 'express-rate-limit';
 import { Router } from 'express';
+import config from '@server/config';
 import manage from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
@@ -13,11 +14,13 @@ import {
 
 const router = Router();
 
-const messageLimiter = rateLimit({
+const { NODE_ENV, APP_ENV } = config;
+
+const messageLimiter = NODE_ENV !== 'test' && APP_ENV !== 'e2e' ? rateLimit({
   windowMs: 1000 * 60 * 30,
   max: 5,
   message: 'Przekroczono limit, Spróbuj ponownie później.',
-});
+}) : (req, res, next) => next();
 
 router.get(
   '/',

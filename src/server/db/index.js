@@ -1,13 +1,19 @@
 import colors from 'colors/safe';
 import mongoose from 'mongoose';
 import config from '@server/config';
+import { removeVersionKey, softDelete } from './plugins';
+
+mongoose.plugin(removeVersionKey);
+mongoose.plugin(softDelete);
 
 const { DB_URL } = config;
 
-mongoose.connect(DB_URL, {
+export const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+};
+
+mongoose.connect(DB_URL, options);
 
 const db = mongoose.connection;
 

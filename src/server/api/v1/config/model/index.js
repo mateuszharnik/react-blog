@@ -26,10 +26,6 @@ const ConfigSchema = new Schema(
       type: Boolean,
       required: true,
     },
-    deleted_at: {
-      type: Date,
-      default: null,
-    },
   },
   {
     timestamps: {
@@ -38,17 +34,5 @@ const ConfigSchema = new Schema(
     },
   },
 );
-
-ConfigSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_, obj) => {
-    const updatedObj = { ...obj };
-
-    delete updatedObj._id;
-
-    return updatedObj;
-  },
-});
 
 export default model('Config', ConfigSchema);
