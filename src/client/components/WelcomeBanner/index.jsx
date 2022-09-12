@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
+import testIds from '@shared/testIds';
 import getWindowInnerHeight from '@client/helpers/getWindowInnerHeight';
 
 const WelcomeBanner = memo(() => {
@@ -9,6 +10,7 @@ const WelcomeBanner = memo(() => {
 
   return (
     <div
+      data-testid={testIds.WelcomeBanner}
       className="welcome-banner d-flex flex-wrap justify-content-center align-items-center"
       style={{ height }}
     >

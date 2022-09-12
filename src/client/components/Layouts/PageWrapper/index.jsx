@@ -1,8 +1,12 @@
 import React, { memo } from 'react';
 import { oneOfType, arrayOf, node } from 'prop-types';
+import testIds from '@shared/testIds';
 
 const PageWrapper = memo(({ children }) => (
-  <div className="page-wrapper">
+  <div
+    data-testid={testIds.PageWrapper}
+    className="page-wrapper"
+  >
     {children}
   </div>
 ));

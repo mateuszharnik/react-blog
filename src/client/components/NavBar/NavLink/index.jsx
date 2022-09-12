@@ -3,11 +3,13 @@ import { NavLink as Link } from 'react-router-dom';
 import {
   oneOfType, arrayOf, node, string, func,
 } from 'prop-types';
+import testIds from '@shared/testIds';
 
 const NavLink = memo(({
-  onBlur, to, title, children, dataNav, dataDropdownNav,
+  onBlur, to, title, children, dataNav, dataDropdownNav, id,
 }) => (
   <Link
+    data-testid={`${testIds.NavLink}${id ? `-${id}` : ''}`}
     to={to}
     end
     title={title}
@@ -18,8 +20,20 @@ const NavLink = memo(({
   >
     {({ isActive }) => (
       <>
-        <span className="nav__text">{children}</span>{' '}
-        {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
+        <span
+          data-testid={`${testIds.NavLinkText}${id ? `-${id}` : ''}`}
+          className="nav__text"
+        >
+          {children}
+        </span>{' '}
+        {isActive && (
+          <span
+            data-testid={`${testIds.NavLinkTextHelper}${id ? `-${id}` : ''}`}
+            className="visually-hidden"
+          >
+            (Jesteś tutaj)
+          </span>
+        )}
       </>
     )}
   </Link>
@@ -32,12 +46,14 @@ NavLink.propTypes = {
   title: string.isRequired,
   to: string.isRequired,
   onBlur: func,
+  id: string,
   dataNav: string,
   dataDropdownNav: string,
 };
 
 NavLink.defaultProps = {
   onBlur: () => {},
+  id: '',
   children: null,
   dataNav: null,
   dataDropdownNav: null,

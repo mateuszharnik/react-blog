@@ -6,6 +6,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
+import testIds from '@shared/testIds';
 import lazyLoad from '@client/helpers/lazyLoad';
 import Hamburger from '@client/components/NavBar/Hamburger';
 import NavLink from '@client/components/NavBar/NavLink';
@@ -122,7 +123,10 @@ const Nav = memo(() => {
   }, [updateScrollbar]);
 
   return (
-    <nav className={navClassName}>
+    <nav
+      data-testid={testIds.PageNav}
+      className={navClassName}
+    >
       <h2 className="visually-hidden">
         Nawigacja
       </h2>
