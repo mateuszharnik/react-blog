@@ -24,6 +24,11 @@ test@shared: # Test shared
 test@shared:
 	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --passWithNoTests --coverage
 
+.ONESHELL:
+test@scripts: # Test proptypes scripts
+test@scripts:
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=scripts npx jest ./scripts/tests --passWithNoTests --coverage
+
 #############################################
 ############### RUN E2E TESTS ###############
 #############################################

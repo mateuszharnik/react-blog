@@ -1,8 +1,12 @@
 import React, { memo } from 'react';
 import { oneOfType, arrayOf, node } from 'prop-types';
+import testIds from '@shared/testIds';
 
 const PageContainer = memo(({ children }) => (
-  <div className="page-container mx-auto">
+  <div
+    data-testid={testIds.PageContainer}
+    className="page-container mx-auto"
+  >
     {children}
   </div>
 ));
