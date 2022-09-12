@@ -42,6 +42,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'react/jsx-max-props-per-line': ['error', { maximum: 1 }],
     'react/jsx-filename-extension': 0,
     'react/jsx-one-expression-per-line': 0,
     'react/jsx-props-no-spreading': 0,
