@@ -1,6 +1,7 @@
 const colors = require('colors/safe');
 const { hash } = require('bcryptjs');
 const { default: config } = require('../config');
+const { default: logger } = require('../logger');
 
 const { DOCS_PASSWORD } = config;
 
@@ -18,8 +19,7 @@ module.exports = {
 
       await db.collection('docs').insertOne(doc);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
+      logger.error(colors.red(error));
       process.exit(0);
     }
   },
@@ -28,8 +28,7 @@ module.exports = {
     try {
       await db.collection('docs').deleteOne({});
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
+      logger.error(colors.red(error));
       process.exit(0);
     }
   },

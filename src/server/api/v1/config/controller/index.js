@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import Config from '../model';
@@ -16,8 +17,7 @@ export const getConfig = async (req, res, next) => {
 
     return res.status(200).json(config);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -40,8 +40,7 @@ export const updateConfig = async (req, res, next) => {
 
     return res.status(200).json(updatedConfig);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

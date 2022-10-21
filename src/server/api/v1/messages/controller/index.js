@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
@@ -21,8 +22,7 @@ export const countMessages = (isRead = null) => async (req, res, next) => {
 
     return res.status(200).json({ messages });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -35,8 +35,7 @@ export const getMessages = async (req, res, next) => {
 
     return res.status(200).json(messages);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -70,8 +69,7 @@ export const getMessage = async (req, res, next) => {
 
     return res.status(200).json(updatedMessage);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -99,8 +97,7 @@ export const createMessage = async (req, res, next) => {
 
     return res.status(201).json(createdMessage);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -146,8 +143,7 @@ export const deleteMessages = async (req, res, next) => {
 
     return res.status(200).json(deletedMessages);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -180,8 +176,7 @@ export const deleteMessage = async (req, res, next) => {
 
     return res.status(200).json(deletedMessage);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

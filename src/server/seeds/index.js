@@ -1,5 +1,6 @@
 import '@server/db';
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import { exampleAbout } from '@server/helpers/seeds/data/about';
 import { exampleConfig } from '@server/helpers/seeds/data/config';
 import { exampleContact } from '@server/helpers/seeds/data/contact';
@@ -32,8 +33,7 @@ const seed = async () => {
     await seedUsers(exampleUsers);
     await seedFAQs(await exampleFAQs());
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
   } finally {
     process.exit(0);
   }

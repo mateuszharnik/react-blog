@@ -4,6 +4,7 @@ import decode from 'jwt-decode';
 import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import User from '@server/api/v1/users/model';
@@ -40,6 +41,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       return responseWithError(409, 'Hasło jest nieprawidłowe.');
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
@@ -67,8 +69,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -126,6 +127,7 @@ export const signUp = async (req, res, next) => {
       return responseWithError(404, 'Użytkownik nie istnieje.');
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
@@ -153,8 +155,7 @@ export const signUp = async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -204,6 +205,7 @@ export const getRefreshToken = async (req, res, next) => {
       return res.status(200).json();
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
@@ -231,8 +233,7 @@ export const getRefreshToken = async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
 
     res.clearCookie('_refresh', {
       httpOnly: true,
@@ -274,8 +275,7 @@ export const revokeRefreshToken = async (req, res, next) => {
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -293,8 +293,7 @@ export const signOut = async (req, res, next) => {
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano.' });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

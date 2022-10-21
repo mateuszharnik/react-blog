@@ -1,4 +1,5 @@
 const colors = require('colors/safe');
+const { default: logger } = require('../logger');
 const { defaultTermsOfUse } = require('../helpers/seeds/data/termsOfUse');
 const { default: sanitize } = require('../helpers/purify');
 
@@ -16,8 +17,7 @@ module.exports = {
     try {
       await db.collection('termsofuses').insertOne(termsOfUse);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
+      logger.error(colors.red(error));
       process.exit(0);
     }
   },
@@ -26,8 +26,7 @@ module.exports = {
     try {
       await db.collection('termsofuses').deleteOne({});
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
+      logger.error(colors.red(error));
       process.exit(0);
     }
   },

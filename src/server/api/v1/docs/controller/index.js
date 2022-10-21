@@ -4,6 +4,7 @@ import decode from 'jwt-decode';
 import { compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import Docs from '../model';
@@ -47,8 +48,7 @@ export const signIn = async (req, res, next) => {
 
     return res.status(200).json({ docsToken });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -110,8 +110,7 @@ export const getRefreshToken = async (req, res, next) => {
 
     return res.status(200).json({ docsToken });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
 
     res.clearCookie('_refresh', {
       httpOnly: true,

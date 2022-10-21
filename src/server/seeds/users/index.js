@@ -1,12 +1,10 @@
 import colors from 'colors/safe';
 import { hash } from 'bcryptjs';
-import config from '@server/config';
+import logger from '@server/logger';
 import validateUser from '@server/api/v1/users/schema';
 import Role from '@server/api/v1/roles/model';
 import User from '@server/api/v1/users/model';
 import sanitize from '@server/helpers/purify';
-
-const { NODE_ENV, APP_ENV } = config;
 
 const seedUsers = async (users = []) => {
   const createdUsers = [];
@@ -16,8 +14,7 @@ const seedUsers = async (users = []) => {
       const { validationError, data } = validateUser(user, { allowUnknown: true }, false);
 
       if (validationError) {
-        // eslint-disable-next-line no-console
-        console.log(colors.red(validationError.details[0].message));
+        logger.error(colors.red(validationError.details[0].message));
         process.exit(0);
       }
 
@@ -28,8 +25,7 @@ const seedUsers = async (users = []) => {
       const role = await Role.findOne({ type: data?.role, deleted_at: null });
 
       if (!role) {
-        // eslint-disable-next-line no-console
-        console.log(colors.red('Role not found.'));
+        logger.error(colors.red('Role not found.'));
         process.exit(0);
       }
 
@@ -43,14 +39,12 @@ const seedUsers = async (users = []) => {
     if (createdUsers.length) {
       const newUsers = await User.create(createdUsers);
 
-      // eslint-disable-next-line no-console
-      if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with users.'));
+      logger.debug(colors.green('DB seeded with users.'));
 
       return newUsers;
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     process.exit(0);
   }
 };

@@ -22,6 +22,14 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'img-src': ["'self'", 'https: http: data:'],
+    },
+  }),
+);
 app.use(cookieParser());
 app.use(csrf({
   cookie: {
