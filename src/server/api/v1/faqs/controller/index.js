@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
@@ -24,8 +25,7 @@ export const getFAQs = async (req, res, next) => {
 
     return res.status(200).json(faqs);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -57,8 +57,7 @@ export const getFAQ = async (req, res, next) => {
 
     return res.status(200).json(faq);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -94,8 +93,7 @@ export const createFAQ = async (req, res, next) => {
 
     return res.status(201).json(createdFAQ);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -158,8 +156,7 @@ export const updateFAQ = async (req, res, next) => {
 
     return res.status(200).json(updatedFAQ);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -191,8 +188,7 @@ export const toggleIsPublishedFAQ = async (req, res, next) => {
 
     return res.status(200).json(updatedFAQ);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -238,8 +234,7 @@ export const deleteFAQs = async (req, res, next) => {
 
     return res.status(200).json(deletedFAQs);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -272,8 +267,7 @@ export const deleteFAQ = async (req, res, next) => {
 
     return res.status(200).json(deletedFAQ);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

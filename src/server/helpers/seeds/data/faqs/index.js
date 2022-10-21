@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import Role from '@server/api/v1/roles/model';
 import User from '@server/api/v1/users/model';
 import { roleTypes } from '@server/helpers/seeds/data/roles';
@@ -16,8 +17,7 @@ const createExampleFAQs = async () => {
     });
 
     if (!roles.length) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red('Roles not found.'));
+      logger.error(colors.red('Roles not found.'));
       process.exit(0);
     }
 
@@ -26,8 +26,7 @@ const createExampleFAQs = async () => {
     const users = await User.find({ role: { $in: ids }, deleted_at: null });
 
     if (!users.length) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red('Users not found.'));
+      logger.error(colors.red('Users not found.'));
       process.exit(0);
     }
 
@@ -40,8 +39,7 @@ const createExampleFAQs = async () => {
       });
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     process.exit(0);
   }
 

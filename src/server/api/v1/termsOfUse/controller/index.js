@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
@@ -14,8 +15,7 @@ export const getTermsOfUse = async (req, res, next) => {
 
     return res.status(200).json(termsOfUse);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -39,8 +39,7 @@ export const getOneTermsOfUse = async (req, res, next) => {
 
     return res.status(200).json(termsOfUse);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -74,8 +73,7 @@ export const updateTermsOfUse = async (req, res, next) => {
 
     return res.status(200).json(updatedTermsOfUse);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

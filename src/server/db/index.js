@@ -1,5 +1,6 @@
 import colors from 'colors/safe';
 import mongoose from 'mongoose';
+import logger from '@server/logger';
 import config from '@server/config';
 import { removeVersionKey, softDelete } from './plugins';
 
@@ -18,8 +19,7 @@ mongoose.connect(DB_URL, options);
 const db = mongoose.connection;
 
 db.on('error', (error) => {
-  // eslint-disable-next-line no-console
-  console.log(colors.red(error));
+  logger.error(colors.red(error));
   process.exit(1);
 });
 

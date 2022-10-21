@@ -1,6 +1,7 @@
 import colors from 'colors/safe';
 import decode from 'jwt-decode';
 import { verify } from 'jsonwebtoken';
+import logger from '@server/logger';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 
@@ -26,8 +27,7 @@ export const checkToken = async (req, res, next) => {
 
     req.user = user;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
   }
 
   next();
