@@ -90,6 +90,7 @@ const NavImageButton = memo(({
         <span className="visually-hidden">Menu</span>
         <LazyImage
           divClassName="nav__link-image"
+          imgClassName="rounded-circle"
           width={36}
           height={36}
           alt="Zdjęcie użytkownika"
