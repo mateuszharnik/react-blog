@@ -4,4 +4,5 @@ const axios = create({
   baseURL: '/api/v1/',
 });
 
+// TODO: Create apiClient for axios
 export default axios;
