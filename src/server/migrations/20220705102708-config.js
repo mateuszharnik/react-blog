@@ -1,21 +1,24 @@
 const colors = require('colors/safe');
 const { default: logger } = require('../logger');
-const { defaultConfig } = require('../helpers/seeds/data/config');
 
 module.exports = {
   async up(db) {
-    const config = {
-      ...defaultConfig,
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-    };
-
     try {
+      const config = {
+        show_authors: false,
+        show_email: false,
+        show_social_media: true,
+        show_comments: true,
+        use_slug_url: false,
+        use_docs_password: true,
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
+
       await db.collection('configs').insertOne(config);
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 
@@ -24,7 +27,6 @@ module.exports = {
       await db.collection('configs').deleteOne({});
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 };

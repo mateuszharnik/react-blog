@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import manage from '@server/helpers/roles';
+import { permissions } from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import { getContact, updateContact } from '../controller';
 
@@ -12,7 +12,7 @@ router.get(
 router.put(
   '/',
   isLoggedIn,
-  canManage(manage.contact),
+  canManage(permissions.contact),
   updateContact,
 );
 

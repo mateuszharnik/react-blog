@@ -11,8 +11,8 @@ import docs from '@server/api/v1/docs/router';
 
 const router = Router();
 
-router.get('/', (req, res) => res.json({ message: '🖤' }));
-router.get('/csrf-token', (req, res) => res.json({ CSRFToken: req.csrfToken() }));
+router.get('/', (req, res) => res.status(200).json({ message: '🖤' }));
+router.get('/csrf-token', (req, res) => res.status(200).json({ CSRFToken: req.csrfToken() }));
 
 router.use('/config', config);
 router.use('/messages', messages);
