@@ -16,13 +16,13 @@ describe('getWindowInnerHeight', () => {
       innerHeight: 10,
     }));
 
-    expect(getWindowInnerHeight(NaN)).toEqual(10);
-    expect(getWindowInnerHeight(Infinity)).toEqual(10);
-    expect(getWindowInnerHeight('abc')).toEqual(10);
-    expect(getWindowInnerHeight(undefined)).toEqual(10);
-    expect(getWindowInnerHeight(null)).toEqual(10);
-    expect(getWindowInnerHeight([])).toEqual(10);
-    expect(getWindowInnerHeight({})).toEqual(10);
+    expect(getWindowInnerHeight(NaN)).toStrictEqual(10);
+    expect(getWindowInnerHeight(Infinity)).toStrictEqual(10);
+    expect(getWindowInnerHeight('abc')).toStrictEqual(10);
+    expect(getWindowInnerHeight(undefined)).toStrictEqual(10);
+    expect(getWindowInnerHeight(null)).toStrictEqual(10);
+    expect(getWindowInnerHeight([])).toStrictEqual(10);
+    expect(getWindowInnerHeight({})).toStrictEqual(10);
   });
 
   it('should return window innerHeight value if given param is less than or equal to 0', () => {
@@ -30,8 +30,8 @@ describe('getWindowInnerHeight', () => {
       innerHeight: 200,
     }));
 
-    expect(getWindowInnerHeight(0)).toEqual(200);
-    expect(getWindowInnerHeight(-100)).toEqual(200);
+    expect(getWindowInnerHeight(0)).toStrictEqual(200);
+    expect(getWindowInnerHeight(-100)).toStrictEqual(200);
   });
 
   it('should return correct value if window.innerHeight and offsetHeigh are floating points numbers', () => {
@@ -39,7 +39,7 @@ describe('getWindowInnerHeight', () => {
       innerHeight: 200.65,
     }));
 
-    expect(getWindowInnerHeight(100.22)).toEqual(100.43);
+    expect(getWindowInnerHeight(100.22)).toStrictEqual(100.43);
   });
 
   it('should return the differences between window.innerHeight and offsetHeight', () => {
@@ -47,7 +47,7 @@ describe('getWindowInnerHeight', () => {
       innerHeight: 400,
     }));
 
-    expect(getWindowInnerHeight(200)).toEqual(200);
+    expect(getWindowInnerHeight(200)).toStrictEqual(200);
   });
 
   it('should return window innerHeight value if given param is greater than window.innerHeight', () => {
@@ -55,6 +55,6 @@ describe('getWindowInnerHeight', () => {
       innerHeight: 400,
     }));
 
-    expect(getWindowInnerHeight(401)).toEqual(400);
+    expect(getWindowInnerHeight(401)).toStrictEqual(400);
   });
 });
