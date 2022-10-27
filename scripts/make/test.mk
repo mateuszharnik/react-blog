@@ -12,22 +12,22 @@ test:
 .ONESHELL:
 test@server: # Test server
 test@server:
-	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server npx jest ./src/server --env=node --passWithNoTests --coverage
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server npx jest ./src/server --runInBand --coverage --env=node
 
 .ONESHELL:
 test@client: # Test client
 test@client:
-	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client npx jest ./src/client --passWithNoTests --coverage
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client npx jest ./src/client --runInBand --coverage
 
 .ONESHELL:
 test@shared: # Test shared
 test@shared:
-	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --passWithNoTests --coverage
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --runInBand --coverage
 
 .ONESHELL:
 test@scripts: # Test proptypes scripts
 test@scripts:
-	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=scripts npx jest ./scripts/tests --passWithNoTests --coverage
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=scripts npx jest ./scripts/tests --runInBand --coverage
 
 #############################################
 ############### RUN E2E TESTS ###############
