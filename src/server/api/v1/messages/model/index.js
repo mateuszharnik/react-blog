@@ -30,7 +30,7 @@ const MessageSchema = new Schema(
     },
     is_read: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   {

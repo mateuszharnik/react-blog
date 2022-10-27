@@ -1,7 +1,7 @@
-import rateLimit from 'express-rate-limit';
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import config from '@server/config';
-import manage from '@server/helpers/roles';
+import { permissions } from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   countMessages,
@@ -25,31 +25,31 @@ const messageLimiter = NODE_ENV !== 'test' && APP_ENV !== 'e2e' ? rateLimit({
 router.get(
   '/',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   getMessages,
 );
 router.get(
   '/count',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   countMessages(),
 );
 router.get(
   '/count/read',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   countMessages(true),
 );
 router.get(
   '/count/new',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   countMessages(false),
 );
 router.get(
   '/:id',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   getMessage,
 );
 router.post(
@@ -60,13 +60,13 @@ router.post(
 router.delete(
   '/',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   deleteMessages,
 );
 router.delete(
   '/:id',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   deleteMessage,
 );
 

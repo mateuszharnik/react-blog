@@ -1,24 +1,21 @@
 const colors = require('colors/safe');
 const { default: logger } = require('../logger');
-const { defaultTermsOfUse } = require('../helpers/seeds/data/termsOfUse');
 const { default: sanitize } = require('../helpers/purify');
 
 module.exports = {
   async up(db) {
-    const termsOfUse = {
-      ...defaultTermsOfUse,
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-    };
-
-    termsOfUse.contents = sanitize(termsOfUse.contents);
-
     try {
+      const termsOfUse = {
+        name: sanitize('Regulamin'),
+        contents: '',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
+
       await db.collection('termsofuses').insertOne(termsOfUse);
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 
@@ -27,7 +24,6 @@ module.exports = {
       await db.collection('termsofuses').deleteOne({});
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 };

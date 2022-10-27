@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import manage from '@server/helpers/roles';
+import { permissions } from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   countRoles,
@@ -16,43 +16,43 @@ const router = Router();
 router.get(
   '/',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   getRoles,
 );
 router.get(
   '/count',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   countRoles,
 );
 router.get(
   '/:id',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   getRole,
 );
 router.post(
   '/',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   createRole,
 );
 router.put(
   '/:id',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   updateRole,
 );
 router.delete(
   '/',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   deleteRoles,
 );
 router.delete(
   '/:id',
   isLoggedIn,
-  canManage(manage.roles),
+  canManage(permissions.roles),
   deleteRole,
 );
 

@@ -5,6 +5,7 @@ const FAQSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     title: {
       type: String,
@@ -20,7 +21,7 @@ const FAQSchema = new Schema(
     },
     is_published: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   {

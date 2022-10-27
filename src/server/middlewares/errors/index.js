@@ -25,6 +25,6 @@ export const errorHandler = ({ message, stack }, req, res, next) => {
 
   res.status(status).json({
     messages: Array.isArray(parsedMessage) ? parsedMessage : [parsedMessage],
-    stack: NODE_ENV === 'production' ? '💩' : stack,
+    stack: NODE_ENV === 'development' ? stack : '💩',
   });
 };

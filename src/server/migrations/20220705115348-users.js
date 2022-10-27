@@ -1,56 +1,59 @@
 const colors = require('colors/safe');
 const { hash } = require('bcryptjs');
+const { default: config } = require('../config');
 const { default: logger } = require('../logger');
-const { defaultUsers } = require('../helpers/seeds/data/users');
-const { default: sanitize } = require('../helpers/purify');
+const { roleTypes } = require('../helpers/roles');
 
 module.exports = {
   async up(db) {
-    const users = [];
-
     try {
-      await Promise.all(defaultUsers.map(async (defaultUser) => {
-        const user = {
-          ...defaultUser,
-          created_at: new Date(),
-          updated_at: new Date(),
-          deleted_at: null,
-        };
+      const user = {
+        username: config.ADMIN_USERNAME.toLowerCase(),
+        display_name: config.ADMIN_USERNAME,
+        email: config.ADMIN_EMAIL,
+        description: '',
+        password: await hash(config.ADMIN_PASSWORD, 8),
+        gender: 'mężczyzna',
+        facebook_url: '',
+        dribbble_url: '',
+        youtube_url: '',
+        twitter_url: '',
+        github_url: '',
+        instagram_url: '',
+        linkedin_url: '',
+        stack_overflow_url: '',
+        twitch_url: '',
+        website_url: '',
+        image_url: '',
+        is_terms_of_use_accepted: true,
+        is_email_public: false,
+        is_public: false,
+        is_banned: false,
+        role: roleTypes.ADMIN,
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
 
-        user.description = sanitize(user.description);
-        user.display_name = user.username;
-        user.username = user.username.toLowerCase();
-        user.password = await hash(user.password, 8);
+      const role = await db.collection('roles').findOne({ type: user.role, deleted_at: null });
 
-        const role = await db.collection('roles').findOne({ type: user?.role, deleted_at: null });
-
-        if (!role) {
-          logger.error(colors.red('Role not found.'));
-          process.exit(0);
-        }
-
-        user.role = role._id;
-
-        users.push(user);
-      }));
-
-      if (users.length) {
-        await db.collection('users').insertMany(users);
+      if (!role) {
+        logger.error(colors.red('Role not found.'));
       }
+
+      user.role = role._id;
+
+      await db.collection('users').insertOne(user);
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 
   async down(db) {
     try {
-      const usernames = defaultUsers.map(({ username }) => username);
-
-      await db.collection('users').deleteMany({ username: { $in: usernames } });
+      await db.collection('users').deleteOne({ email: config.ADMIN_EMAIL });
     } catch (error) {
       logger.error(colors.red(error));
-      process.exit(0);
     }
   },
 };
