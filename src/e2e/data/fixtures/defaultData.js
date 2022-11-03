@@ -1,8 +1,8 @@
 import colors from 'colors/safe';
 import logger from '@server/logger';
-import seedAbout from '@server/seeds/about';
-import seedConfig from '@server/seeds/config';
-import seedContact from '@server/seeds/contact';
+import { seedAbout } from '@server/seeds/about';
+import { seedConfig } from '@server/seeds/config';
+import { seedContact } from '@server/seeds/contact';
 
 const defaultData = async () => {
   try {
@@ -34,7 +34,6 @@ const defaultData = async () => {
     };
   } catch (error) {
     logger.error(colors.red(error));
-    process.exit(0);
   }
 };
 

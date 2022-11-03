@@ -1,7 +1,8 @@
 import request from 'supertest';
 import db from '@server/db';
 import cleanDB from '@server/seeds/cleanDB';
-import seedAbout from '@server/seeds/about';
+import { seedAbout } from '@server/seeds/about';
+import { mockedAbout } from '@server/mocks/about';
 import app from './index';
 
 describe('App', () => {
@@ -12,9 +13,7 @@ describe('App', () => {
   beforeAll(async () => {
     await cleanDB();
 
-    await seedAbout({
-      contents: 'Przykładowa strona o blogu.',
-    });
+    await seedAbout(mockedAbout);
   });
 
   it('should response with status code 200', async () => {
