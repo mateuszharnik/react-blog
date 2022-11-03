@@ -5,8 +5,6 @@ import logger from '@server/logger';
 import Config from '@server/api/v1/config/model';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 
-const { DOCS_TOKEN_SECRET } = envConfig;
-
 export const isLoggedIn = async (req, res, next) => {
   try {
     const config = await Config.findOne({});
@@ -19,7 +17,7 @@ export const isLoggedIn = async (req, res, next) => {
 
     if (!token) return res.redirect('/dokumentacja');
 
-    const decodedToken = await verify(token, DOCS_TOKEN_SECRET);
+    const decodedToken = await verify(token, envConfig.DOCS_TOKEN_SECRET);
 
     if (!decodedToken) return res.redirect('/dokumentacja');
   } catch (error) {

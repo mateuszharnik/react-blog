@@ -7,14 +7,12 @@ import { removeVersionKey, softDelete } from './plugins';
 mongoose.plugin(removeVersionKey);
 mongoose.plugin(softDelete);
 
-const { DB_URL } = config;
-
 export const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
 
-mongoose.connect(DB_URL, options);
+mongoose.connect(config.DB_URL, options);
 
 const db = mongoose.connection;
 
