@@ -11,8 +11,6 @@ import User from '@server/api/v1/users/model';
 import Role from '@server/api/v1/roles/model';
 import { validateSignUp, validateSignIn } from '../schema';
 
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, NODE_ENV } = config;
-
 export const signIn = (isAdmin = false) => async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
 
@@ -48,17 +46,17 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -134,17 +132,17 @@ export const signUp = async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -177,13 +175,13 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return res.status(200).json();
     }
 
-    const decodedToken = await verify(token, REFRESH_TOKEN_SECRET);
+    const decodedToken = await verify(token, config.REFRESH_TOKEN_SECRET);
 
     const user = await User.findOne({
       _id: decodedToken?.id,
@@ -195,7 +193,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return responseWithError(404, 'Użytkownik nie istnieje.');
@@ -212,17 +210,17 @@ export const getRefreshToken = async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -239,7 +237,7 @@ export const getRefreshToken = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     responseWithError(400, 'Błędny token.');
@@ -263,13 +261,13 @@ export const revokeRefreshToken = async (req, res, next) => {
     const refreshToken = sign({
       id: updatedUser.id,
       token_version: updatedUser.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -288,7 +286,7 @@ export const signOut = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano.' });

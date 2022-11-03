@@ -5,8 +5,6 @@ import logger from '@server/logger';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 
-const { ACCESS_TOKEN_SECRET } = config;
-
 export const checkToken = async (req, res, next) => {
   try {
     const authHeader = req.get('Authorization');
@@ -21,7 +19,7 @@ export const checkToken = async (req, res, next) => {
 
     if ((Math.floor(Date.now() / 1000)) >= exp) return next();
 
-    const user = await verify(token, ACCESS_TOKEN_SECRET);
+    const user = await verify(token, config.ACCESS_TOKEN_SECRET);
 
     if (!user) return next();
 
