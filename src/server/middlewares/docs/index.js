@@ -19,7 +19,7 @@ export const isLoggedIn = async (req, res, next) => {
 
     const decodedToken = await verify(token, envConfig.DOCS_TOKEN_SECRET);
 
-    if (!decodedToken) return res.redirect('/dokumentacja');
+    if (!decodedToken?.id) return res.redirect('/dokumentacja');
   } catch (error) {
     logger.error(colors.red(error));
     return res.redirect('/dokumentacja');
@@ -43,7 +43,7 @@ export const isNotLoggedIn = async (req, res, next) => {
     }
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    return responseWithError();
   }
 
   next();
@@ -60,7 +60,7 @@ export const isNotUseDocsPassword = async (req, res, next) => {
     }
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    return responseWithError();
   }
 
   next();

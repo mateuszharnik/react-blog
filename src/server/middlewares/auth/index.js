@@ -21,7 +21,7 @@ export const checkToken = async (req, res, next) => {
 
     const user = await verify(token, config.ACCESS_TOKEN_SECRET);
 
-    if (!user) return next();
+    if (!user?.id) return next();
 
     req.user = user;
   } catch (error) {
