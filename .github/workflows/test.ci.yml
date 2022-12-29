@@ -6,9 +6,11 @@ on:
   push:
     branches:
       - master
+      - stage
   pull_request:
     branches:
       - master
+      - stage
       - develop
       - feature/*
       - task/*
@@ -66,7 +68,7 @@ jobs:
         run: make migration@up-test
 
       - name: Run Jest 🧪
-        run: yarn run test
+        run: yarn run test:ci
 
       - name: Archive code coverages 💼
         uses: actions/upload-artifact@v2

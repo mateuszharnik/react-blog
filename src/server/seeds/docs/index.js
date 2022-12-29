@@ -1,36 +1,34 @@
 import colors from 'colors/safe';
 import { hash } from 'bcryptjs';
-import config from '@server/config';
+import logger from '@server/logger';
 import validateSignIn from '@server/api/v1/docs/schema';
 import Docs from '@server/api/v1/docs/model';
 
-const { NODE_ENV, APP_ENV, DOCS_PASSWORD } = config;
-
-const seedDocs = async () => {
-  const password = { password: DOCS_PASSWORD };
-
-  const { validationError, data } = validateSignIn(password, { allowUnknown: true });
-
-  if (validationError) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(validationError.details[0].message));
-    process.exit(0);
-  }
-
+export const seedDocs = async (docs = {}) => {
   try {
+    const { validationError, data } = validateSignIn(docs, { allowUnknown: true });
+
+    if (validationError) {
+      logger.error(colors.red(validationError.details[0].message));
+    }
+
     data.password = await hash(data.password, 8);
 
     const newDocs = await Docs.create(data);
 
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with docs password.'));
+    logger.debug(colors.green('DB seeded with docs password.'));
 
-    return newDocs;
+    return JSON.parse(JSON.stringify(newDocs.toJSON()));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    process.exit(0);
+    logger.error(colors.red(error));
   }
 };
 
-export default seedDocs;
+export const removeDocs = async () => {
+  try {
+    await Docs.deleteMany({});
+    logger.debug(colors.green('Docs password removed from DB.'));
+  } catch (error) {
+    logger.error(colors.red(error));
+  }
+};

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import manage from '@server/helpers/roles';
+import { permissions } from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   getFAQ,
@@ -26,35 +26,35 @@ router.get(
 router.post(
   '/',
   isLoggedIn,
-  canManage(manage.faqs),
+  canManage(permissions.faqs),
   createFAQ,
 );
 
 router.patch(
   '/:id/publish',
   isLoggedIn,
-  canManage(manage.faqs),
+  canManage(permissions.faqs),
   toggleIsPublishedFAQ,
 );
 
 router.patch(
   '/:id',
   isLoggedIn,
-  canManage(manage.faqs),
+  canManage(permissions.faqs),
   updateFAQ,
 );
 
 router.delete(
   '/',
   isLoggedIn,
-  canManage(manage.faqs),
+  canManage(permissions.faqs),
   deleteFAQs,
 );
 
 router.delete(
   '/:id',
   isLoggedIn,
-  canManage(manage.faqs),
+  canManage(permissions.faqs),
   deleteFAQ,
 );
 

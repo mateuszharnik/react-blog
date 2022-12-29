@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema(
   {
+    role: {
+      type: Schema.Types.ObjectId,
+      ref: 'Role',
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -16,6 +21,7 @@ const UserSchema = new Schema(
     },
     description: {
       type: String,
+      maxlength: 3000,
       default: '',
     },
     email: {
@@ -30,10 +36,6 @@ const UserSchema = new Schema(
       type: String,
       enum: ['kobieta', 'mężczyzna'],
       required: true,
-    },
-    role: {
-      type: Schema.Types.ObjectId,
-      ref: 'Role',
     },
     facebook_url: {
       type: String,

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import manage from '@server/helpers/roles';
+import { permissions } from '@server/helpers/roles';
 import { isLoggedIn, canManage } from '@server/middlewares/auth';
 import {
   getTermsOfUse,
@@ -20,7 +20,7 @@ router.get(
 router.put(
   '/:id',
   isLoggedIn,
-  canManage(manage.termsOfUse),
+  canManage(permissions.termsOfUse),
   updateTermsOfUse,
 );
 

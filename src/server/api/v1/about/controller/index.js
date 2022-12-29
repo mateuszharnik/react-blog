@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import markdownToHTML from '@server/helpers/markdownToHTML';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
@@ -17,8 +18,7 @@ export const getAbout = async (req, res, next) => {
 
     return res.status(200).json(about);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -43,8 +43,7 @@ export const updateAbout = async (req, res, next) => {
 
     return res.status(200).json(updatedAbout);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

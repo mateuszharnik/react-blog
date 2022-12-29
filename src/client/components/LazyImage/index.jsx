@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { string, number } from 'prop-types';
 import lazySizes from 'lazysizes';
+import testIds from '@shared/testIds';
 import Spinner from '@client/components/Spinner';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
@@ -26,8 +27,12 @@ const LazyImage = memo(
     }, []);
 
     return (
-      <div className={divClassName || null}>
+      <div
+        data-testid={testIds.LazyLoadImageWrapper}
+        className={divClassName || null}
+      >
         <img
+          data-testid={testIds.LazyLoadImage}
           alt={alt}
           data-src={src}
           height={height}
@@ -36,7 +41,10 @@ const LazyImage = memo(
           onLoad={handleLoad}
         />
         {!isLoaded && (
-          <div className={spinnerClassName || null}>
+          <div
+            data-testid={testIds.LazyLoadImageSpinner}
+            className={spinnerClassName || null}
+          >
             <Spinner />
           </div>
         )}

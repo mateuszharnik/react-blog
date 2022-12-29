@@ -1,21 +1,23 @@
 const colors = require('colors/safe');
-const { defaultContact } = require('../helpers/seeds/data/contact');
+const { default: logger } = require('../logger');
 
 module.exports = {
   async up(db) {
-    const contact = {
-      ...defaultContact,
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-    };
-
     try {
+      const contact = {
+        email: '',
+        facebook_url: '',
+        github_url: '',
+        instagram_url: '',
+        twitter_url: '',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
+
       await db.collection('contacts').insertOne(contact);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 
@@ -23,9 +25,7 @@ module.exports = {
     try {
       await db.collection('contacts').deleteOne({});
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 };

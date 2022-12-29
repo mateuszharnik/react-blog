@@ -5,10 +5,14 @@ const TermsOfUseSchema = new Schema(
     name: {
       type: String,
       required: true,
+      minlength: 3,
+      maxlength: 100,
     },
     contents: {
       type: String,
       required: true,
+      minlength: 3,
+      maxlength: 20000,
     },
   },
   {

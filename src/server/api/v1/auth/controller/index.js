@@ -4,13 +4,12 @@ import decode from 'jwt-decode';
 import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import User from '@server/api/v1/users/model';
 import Role from '@server/api/v1/roles/model';
 import { validateSignUp, validateSignIn } from '../schema';
-
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, NODE_ENV } = config;
 
 export const signIn = (isAdmin = false) => async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
@@ -40,23 +39,24 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       return responseWithError(409, 'Hasło jest nieprawidłowe.');
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -67,8 +67,7 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -126,23 +125,24 @@ export const signUp = async (req, res, next) => {
       return responseWithError(404, 'Użytkownik nie istnieje.');
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -153,8 +153,7 @@ export const signUp = async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -176,13 +175,13 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return res.status(200).json();
     }
 
-    const decodedToken = await verify(token, REFRESH_TOKEN_SECRET);
+    const decodedToken = await verify(token, config.REFRESH_TOKEN_SECRET);
 
     const user = await User.findOne({
       _id: decodedToken?.id,
@@ -194,7 +193,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/auth/refresh-token',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return responseWithError(404, 'Użytkownik nie istnieje.');
@@ -204,23 +203,24 @@ export const getRefreshToken = async (req, res, next) => {
       return res.status(200).json();
     }
 
+    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
       email: user.email,
       role: user.role,
     };
 
-    const accessToken = sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
     const refreshToken = sign({
       id: user.id,
       token_version: user.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
@@ -231,14 +231,13 @@ export const getRefreshToken = async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
 
     res.clearCookie('_refresh', {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     responseWithError(400, 'Błędny token.');
@@ -262,20 +261,19 @@ export const revokeRefreshToken = async (req, res, next) => {
     const refreshToken = sign({
       id: updatedUser.id,
       token_version: updatedUser.token_version,
-    }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('7d'),
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -288,13 +286,12 @@ export const signOut = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/auth/refresh-token',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     return res.status(200).json({ message: 'Pomyślnie wylogowano.' });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };

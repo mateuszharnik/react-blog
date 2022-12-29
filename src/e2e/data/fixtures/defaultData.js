@@ -1,7 +1,8 @@
 import colors from 'colors/safe';
-import seedAbout from '@server/seeds/about';
-import seedConfig from '@server/seeds/config';
-import seedContact from '@server/seeds/contact';
+import logger from '@server/logger';
+import { seedAbout } from '@server/seeds/about';
+import { seedConfig } from '@server/seeds/config';
+import { seedContact } from '@server/seeds/contact';
 
 const defaultData = async () => {
   try {
@@ -32,9 +33,7 @@ const defaultData = async () => {
       config,
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    process.exit(0);
+    logger.error(colors.red(error));
   }
 };
 

@@ -1,10 +1,9 @@
 import colors from 'colors/safe';
 import decode from 'jwt-decode';
 import { verify } from 'jsonwebtoken';
+import logger from '@server/logger';
 import config from '@server/config';
 import createResponseWithError from '@server/helpers/createResponseWithError';
-
-const { ACCESS_TOKEN_SECRET } = config;
 
 export const checkToken = async (req, res, next) => {
   try {
@@ -20,14 +19,13 @@ export const checkToken = async (req, res, next) => {
 
     if ((Math.floor(Date.now() / 1000)) >= exp) return next();
 
-    const user = await verify(token, ACCESS_TOKEN_SECRET);
+    const user = await verify(token, config.ACCESS_TOKEN_SECRET);
 
-    if (!user) return next();
+    if (!user?.id) return next();
 
     req.user = user;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
   }
 
   next();

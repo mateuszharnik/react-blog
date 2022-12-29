@@ -1,4 +1,10 @@
-const manage = {
+export const roleTypes = {
+  ADMIN: 'ADMIN',
+  SUPERUSER: 'SUPERUSER',
+  USER: 'USER',
+};
+
+export const permissions = {
   posts: 'can_manage_posts',
   categories: 'can_manage_categories',
   tags: 'can_manage_tags',
@@ -14,5 +20,3 @@ const manage = {
   config: 'can_manage_config',
   faqs: 'can_manage_faqs',
 };
-
-export default manage;

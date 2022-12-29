@@ -1,23 +1,21 @@
 const colors = require('colors/safe');
-const { defaultAbout } = require('../helpers/seeds/data/about');
+const { default: logger } = require('../logger');
 const { default: markdownToHTML } = require('../helpers/markdownToHTML');
 
 module.exports = {
   async up(db) {
-    const about = {
-      ...defaultAbout,
-      html_contents: markdownToHTML(defaultAbout.contents),
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-    };
-
     try {
+      const about = {
+        contents: '',
+        html_contents: markdownToHTML(''),
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
+
       await db.collection('abouts').insertOne(about);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 
@@ -25,9 +23,7 @@ module.exports = {
     try {
       await db.collection('abouts').deleteOne({});
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 };

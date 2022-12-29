@@ -1,4 +1,5 @@
 import colors from 'colors/safe';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import sanitize from '@server/helpers/purify';
@@ -14,8 +15,7 @@ export const countRoles = async (req, res, next) => {
 
     return res.status(200).json({ roles });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -28,8 +28,7 @@ export const getRoles = async (req, res, next) => {
 
     return res.status(200).json(roles);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -53,8 +52,7 @@ export const getRole = async (req, res, next) => {
 
     return res.status(200).json(role);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -96,8 +94,7 @@ export const createRole = async (req, res, next) => {
 
     return res.status(201).json(createdRole);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -146,8 +143,7 @@ export const updateRole = async (req, res, next) => {
 
     return res.status(200).json(updatedRole);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -185,8 +181,7 @@ export const deleteRoles = async (req, res, next) => {
 
     return res.status(200).json(deletedRoles);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -225,8 +220,7 @@ export const deleteRole = async (req, res, next) => {
 
     return res.status(200).json(deletedRole);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
