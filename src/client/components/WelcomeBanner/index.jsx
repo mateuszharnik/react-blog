@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
@@ -6,6 +7,8 @@ import testIds from '@shared/testIds';
 import getWindowInnerHeight from '@client/helpers/getWindowInnerHeight';
 
 const WelcomeBanner = memo(() => {
+  const { t } = useTranslation();
+
   const height = useMemo(() => `${getWindowInnerHeight() - 84}px`, []);
 
   return (
@@ -24,8 +27,10 @@ const WelcomeBanner = memo(() => {
         >
           <h2 className="display-1 fw-bolder text-uppercase mb-0">
             <div>
-              <span className="welcome-banner__title d-block d-lg-inline">Blog o</span>{' '}
-              <span className="welcome-banner__title d-block d-lg-inline">kodowaniu</span>
+              <Trans
+                i18nKey="home.banner.HEADER"
+                components={{ span: <span className="welcome-banner__title d-block d-lg-inline" /> }}
+              />
             </div>
           </h2>
         </header>
@@ -36,9 +41,7 @@ const WelcomeBanner = memo(() => {
           data-aos-duration="1000"
           data-aos-delay="500"
         >
-          Witaj 👋🏼 Jesteś tutaj ponieważ szukasz informacji o tworzeniu stron internetowych. Może
-          żaden ze mnie ekspert, ale kilka rzeczy potrafię. Tak więc śmiało rozejrzyj się, może
-          znajdziesz coś przydatnego.
+          {t('home.banner.DESCRIPTION')}
         </p>
         <div
           data-aos="fade"
