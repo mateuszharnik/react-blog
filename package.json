@@ -24,6 +24,7 @@
     "build:client": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.client.js",
     "build:server": "cross-env NODE_ENV=production webpack -p --mode=production --config ./webpack/webpack.config.server.js",
     "test": "yarn run test:client && yarn run test:server && yarn run test:shared",
+    "test:ci": "yarn run test:client --ci && yarn run test:server --ci && yarn run test:shared --ci",
     "test:client": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client jest ./src/client --runInBand --coverage",
     "test:server": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server jest ./src/server --runInBand --coverage --env=node",
     "test:shared": "cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared jest ./src/shared --runInBand --coverage",
