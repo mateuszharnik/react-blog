@@ -1,8 +1,12 @@
 import React, { memo } from 'react';
 import { oneOfType, arrayOf, node } from 'prop-types';
+import testIds from '@shared/testIds';
 
 const AuthContainer = memo(({ children }) => (
-  <div className="auth-container">
+  <div
+    data-testid={testIds.AuthContainer}
+    className="auth-container"
+  >
     {children}
   </div>
 ));

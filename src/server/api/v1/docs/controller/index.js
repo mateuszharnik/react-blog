@@ -4,12 +4,11 @@ import decode from 'jwt-decode';
 import { compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
+import logger from '@server/logger';
 import createResponseWithError from '@server/helpers/createResponseWithError';
 import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import Docs from '../model';
 import validateSignIn from '../schema';
-
-const { DOCS_TOKEN_SECRET, NODE_ENV } = config;
 
 export const signIn = async (req, res, next) => {
   const responseWithError = createResponseWithError(res, next);
@@ -35,20 +34,19 @@ export const signIn = async (req, res, next) => {
       id: docs.id,
     };
 
-    const docsToken = sign(payload, DOCS_TOKEN_SECRET, { expiresIn: '3d' });
+    const docsToken = sign(payload, config.DOCS_TOKEN_SECRET, { expiresIn: '3d' });
 
     res.cookie('_docs', docsToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
       maxAge: ms('3d'),
     });
 
     return res.status(200).json({ docsToken });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     responseWithError();
   }
 };
@@ -70,13 +68,13 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/docs',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return res.status(200).json();
     }
 
-    const decodedToken = await verify(token, DOCS_TOKEN_SECRET);
+    const decodedToken = await verify(token, config.DOCS_TOKEN_SECRET);
 
     const docs = await Docs.findOne({
       _id: decodedToken?.id,
@@ -88,7 +86,7 @@ export const getRefreshToken = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'strict',
         path: '/api/v1/docs',
-        secure: NODE_ENV === 'production',
+        secure: config.NODE_ENV === 'production',
       });
 
       return responseWithError(404, 'Nie znaleziono konfiguracji dokumentacji.');
@@ -98,26 +96,25 @@ export const getRefreshToken = async (req, res, next) => {
       id: docs.id,
     };
 
-    const docsToken = sign(payload, DOCS_TOKEN_SECRET, { expiresIn: '3d' });
+    const docsToken = sign(payload, config.DOCS_TOKEN_SECRET, { expiresIn: '3d' });
 
     res.cookie('_docs', docsToken, {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
       maxAge: ms('3d'),
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     return res.status(200).json({ docsToken });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
 
     res.clearCookie('_refresh', {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
-      secure: NODE_ENV === 'production',
+      secure: config.NODE_ENV === 'production',
     });
 
     responseWithError(400, 'Błędny token.');

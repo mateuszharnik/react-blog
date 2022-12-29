@@ -6,9 +6,11 @@ on:
   push:
     branches:
       - master
+      - stage
   pull_request:
     branches:
       - master
+      - stage
       - develop
       - feature/*
       - task/*

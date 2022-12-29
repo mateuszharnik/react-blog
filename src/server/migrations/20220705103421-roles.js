@@ -1,45 +1,80 @@
 const colors = require('colors/safe');
-const { defaultRoles } = require('../helpers/seeds/data/roles');
+const { default: logger } = require('../logger');
 const { default: sanitize } = require('../helpers/purify');
+const { roleTypes } = require('../helpers/roles');
+
+const adminName = sanitize('administrator');
+const adminDescription = sanitize('Administrator bloga. Tej roli nie można usunąć.');
+
+const userName = sanitize('użytkownik');
+const userDescription = sanitize('Konto zarejestrowanego użytkownika. Tej roli nie można usunąć.');
 
 module.exports = {
   async up(db) {
-    const roles = [];
-
-    defaultRoles.forEach((defaultRole) => {
-      const role = {
-        ...defaultRole,
+    try {
+      const adminRole = {
+        name: adminName,
+        description: adminDescription,
+        type: roleTypes.ADMIN,
+        can_manage_posts: true,
+        can_manage_categories: true,
+        can_manage_tags: true,
+        can_manage_comments: true,
+        can_manage_messages: true,
+        can_manage_contact: true,
+        can_manage_about_us: true,
+        can_manage_newsletter: true,
+        can_manage_users: true,
+        can_manage_admin_users: true,
+        can_manage_roles: true,
+        can_manage_terms_of_use: true,
+        can_manage_config: true,
+        can_manage_faqs: true,
+        can_be_banned: false,
+        can_be_modified: false,
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null,
       };
 
-      role.name = sanitize(role.name);
-      role.description = sanitize(role.description);
+      const userRole = {
+        name: userName,
+        description: userDescription,
+        type: roleTypes.USER,
+        can_manage_posts: false,
+        can_manage_categories: false,
+        can_manage_tags: false,
+        can_manage_comments: false,
+        can_manage_messages: false,
+        can_manage_contact: false,
+        can_manage_about_us: false,
+        can_manage_newsletter: false,
+        can_manage_users: false,
+        can_manage_admin_users: false,
+        can_manage_roles: false,
+        can_manage_terms_of_use: false,
+        can_manage_config: false,
+        can_manage_faqs: false,
+        can_be_banned: true,
+        can_be_modified: false,
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+      };
 
-      roles.push(role);
-    });
-
-    try {
-      if (roles.length) {
-        await db.collection('roles').insertMany(roles);
-      }
+      await db.collection('roles').insertMany([adminRole, userRole]);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 
   async down(db) {
     try {
-      const names = defaultRoles.map(({ name }) => name);
+      const names = [adminName, userName].map((name) => name);
 
       await db.collection('roles').deleteMany({ name: { $in: names } });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(error));
-      process.exit(0);
+      logger.error(colors.red(error));
     }
   },
 };

@@ -5,8 +5,8 @@
 .ONESHELL:
 build: # Build client and server
 build:
-	@make build@server
 	@make build@client
+	@make build@server
 	@make build@purgecss
 
 .ONESHELL:
@@ -17,7 +17,7 @@ build@server:
 .ONESHELL:
 build@client: # Build client
 build@client:
-	@cross-env NODE_ENV=production npx webpack -p --mode=production --config ./webpack/webpack.config.client.js
+	@cross-env NODE_ENV=production npx webpack -p --mode=production --config ./webpack/webpack.config.client.js && rimraf dist/client/js/*.js.map
 
 .ONESHELL:
 build@purgecss: # Purge unused styles

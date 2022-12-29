@@ -32,6 +32,7 @@ const NavImageLink = memo(({
             {isActive && <span className="visually-hidden">(Jesteś tutaj)</span>}
             <LazyImage
               divClassName="nav__link-image"
+              imgClassName="rounded-circle"
               width={36}
               height={36}
               alt="Zdjęcie użytkownika"

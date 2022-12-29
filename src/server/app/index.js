@@ -11,10 +11,9 @@ import config from '@server/config';
 import { checkToken } from '@server/middlewares/auth';
 import { notFound, CSRFErrorHandler, errorHandler } from '@server/middlewares/errors';
 
-const { NODE_ENV, APP_ENV, CLIENT_URL } = config;
 const app = express();
 
-if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') {
+if (config.NODE_ENV !== 'test' && config.APP_ENV !== 'e2e') {
   app.use(morgan('dev'));
 }
 
@@ -22,27 +21,36 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'img-src': ["'self'", 'https: http: data:'],
+      'default-src': ["'self'", '*.ingest.sentry.io'],
+    },
+  }),
+);
 app.use(cookieParser());
 app.use(csrf({
   cookie: {
     httpOnly: true,
     sameSite: 'strict',
-    secure: NODE_ENV === 'production',
+    secure: config.NODE_ENV === 'production',
   },
 }));
 app.use(checkToken);
 
-if (NODE_ENV === 'development' || NODE_ENV === 'test') {
-  app.use(cors({ origin: CLIENT_URL }));
+if (config.NODE_ENV === 'development' || config.NODE_ENV === 'test') {
+  app.use(cors({ origin: config.CLIENT_URL }));
 }
 
-if (NODE_ENV === 'production') {
+if (config.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '../client')));
 }
 
 app.use('/api', api);
 
-if (NODE_ENV === 'production') {
+if (config.NODE_ENV === 'production') {
   app.get('(/*)?', (req, res) => res.sendFile('dist/client/index.html', { root: '.' }));
 }
 

@@ -1,10 +1,9 @@
 import colors from 'colors/safe';
 import { verify } from 'jsonwebtoken';
 import envConfig from '@server/config';
+import logger from '@server/logger';
 import Config from '@server/api/v1/config/model';
 import createResponseWithError from '@server/helpers/createResponseWithError';
-
-const { DOCS_TOKEN_SECRET } = envConfig;
 
 export const isLoggedIn = async (req, res, next) => {
   try {
@@ -18,12 +17,11 @@ export const isLoggedIn = async (req, res, next) => {
 
     if (!token) return res.redirect('/dokumentacja');
 
-    const decodedToken = await verify(token, DOCS_TOKEN_SECRET);
+    const decodedToken = await verify(token, envConfig.DOCS_TOKEN_SECRET);
 
-    if (!decodedToken) return res.redirect('/dokumentacja');
+    if (!decodedToken?.id) return res.redirect('/dokumentacja');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
+    logger.error(colors.red(error));
     return res.redirect('/dokumentacja');
   }
 
@@ -44,9 +42,8 @@ export const isNotLoggedIn = async (req, res, next) => {
       return responseWithError(403, 'Nie możesz być zalogowany.');
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    responseWithError();
+    logger.error(colors.red(error));
+    return responseWithError();
   }
 
   next();
@@ -62,9 +59,8 @@ export const isNotUseDocsPassword = async (req, res, next) => {
       return res.status(200).json();
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    responseWithError();
+    logger.error(colors.red(error));
+    return responseWithError();
   }
 
   next();

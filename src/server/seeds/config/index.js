@@ -1,31 +1,31 @@
 import colors from 'colors/safe';
-import envConfig from '@server/config';
+import logger from '@server/logger';
 import validateConfig from '@server/api/v1/config/schema';
 import Config from '@server/api/v1/config/model';
 
-const { NODE_ENV, APP_ENV } = envConfig;
-
-const seedConfig = async (config = {}) => {
-  const { validationError, data } = validateConfig(config);
-
-  if (validationError) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(validationError.details[0].message));
-    process.exit(0);
-  }
-
+export const seedConfig = async (config = {}) => {
   try {
+    const { validationError, data } = validateConfig(config, { allowUnknown: true });
+
+    if (validationError) {
+      logger.error(colors.red(validationError.details[0].message));
+    }
+
     const newConfig = await Config.create(data);
 
-    // eslint-disable-next-line no-console
-    if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with page settings.'));
+    logger.debug(colors.green('DB seeded with page settings.'));
 
-    return newConfig;
+    return JSON.parse(JSON.stringify(newConfig.toJSON()));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    process.exit(0);
+    logger.error(colors.red(error));
   }
 };
 
-export default seedConfig;
+export const removeConfig = async () => {
+  try {
+    await Config.deleteMany({});
+    logger.debug(colors.green('Page settings removed from DB.'));
+  } catch (error) {
+    logger.error(colors.red(error));
+  }
+};

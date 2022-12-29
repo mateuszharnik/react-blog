@@ -11,11 +11,10 @@ on:
         options:
           - all-tests
           - contact
-  schedule:
-    - cron: "0 3 * * *"
   push:
     branches:
       - master
+      - stage
 
 concurrency:
   group: e2e-${{ github.ref }}

@@ -1,39 +1,35 @@
 import colors from 'colors/safe';
-import config from '@server/config';
+import logger from '@server/logger';
 import validateFAQ from '@server/api/v1/faqs/schema';
 import FAQ from '@server/api/v1/faqs/model';
+import sanitize from '@server/helpers/purify';
 
-const { NODE_ENV, APP_ENV } = config;
-
-const seedFAQs = async (faqs = []) => {
-  const createdFAQs = [];
-
-  faqs.forEach((faq) => {
+export const seedFAQs = async (faq = {}) => {
+  try {
     const { validationError, data } = validateFAQ(faq, { allowUnknown: true });
 
     if (validationError) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red(validationError.details[0].message));
-      process.exit(0);
+      logger.error(colors.red(validationError.details[0].message));
     }
 
-    createdFAQs.push(data);
-  });
+    data.title = sanitize(data.title);
+    data.contents = sanitize(data.contents);
 
-  try {
-    if (createdFAQs.length) {
-      const newFAQs = await FAQ.create(createdFAQs);
+    const newFAQ = await FAQ.create(data);
 
-      // eslint-disable-next-line no-console
-      if (NODE_ENV !== 'test' && APP_ENV !== 'e2e') console.log(colors.green('DB seeded with frequently asked questions.'));
+    logger.debug(colors.green('DB seeded with frequently asked question.'));
 
-      return newFAQs;
-    }
+    return JSON.parse(JSON.stringify(newFAQ.toJSON()));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(colors.red(error));
-    process.exit(0);
+    logger.error(colors.red(error));
   }
 };
 
-export default seedFAQs;
+export const removeFAQs = async () => {
+  try {
+    await FAQ.deleteMany({});
+    logger.debug(colors.green('Frequently asked questions removed from DB.'));
+  } catch (error) {
+    logger.error(colors.red(error));
+  }
+};
