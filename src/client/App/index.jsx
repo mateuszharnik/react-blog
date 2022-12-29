@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 import Router from '@client/router';
+import ErrorBoundary from '@client/components/ErrorBoundary';
+import LazyPageSpinner from '@client/components/LazyLoading/LazyPageSpinner';
 
 const createSetMedia = (setIsDesktop) => (media) => {
   setIsDesktop(media.matches);
@@ -47,14 +48,14 @@ const App = memo(() => {
   }, [isDesktop, isOpen, isLayerActive]);
 
   return (
-    <>
+    <ErrorBoundary>
       {isLayerActive && (
         <div className="layer">
           <LazyPageSpinner />
         </div>
       )}
       {isLoading ? <LazyPageSpinner /> : <Router />}
-    </>
+    </ErrorBoundary>
   );
 });
 
