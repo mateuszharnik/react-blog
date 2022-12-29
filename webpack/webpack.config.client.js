@@ -15,7 +15,9 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 const webpack = require('webpack');
+const { version } = require('../package.json');
 
 module.exports = (webpackEnv, { mode }) => {
   config();
@@ -48,7 +50,7 @@ module.exports = (webpackEnv, { mode }) => {
         '@e2e': resolve(__dirname, '../src/e2e'),
       },
     },
-    devtool: mode === 'production' ? '' : 'source-map',
+    devtool: mode === 'production' ? 'hidden-source-map' : 'source-map',
     devServer: {
       compress: true,
       hot: true,
@@ -158,6 +160,7 @@ module.exports = (webpackEnv, { mode }) => {
         'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
         'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL),
         'process.env.CLIENT_URL': JSON.stringify(process.env.CLIENT_URL),
+        'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
       }),
       new CleanWebpackPlugin(),
       ...(mode !== 'production'
@@ -173,7 +176,16 @@ module.exports = (webpackEnv, { mode }) => {
             clearConsole: true,
           }),
         ]
-        : []),
+        : [
+          new SentryWebpackPlugin({
+            org: process.env.SENTRY_ORGANIZATION_NAME,
+            project: process.env.SENTRY_PROJECT_NAME,
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            release: version,
+            include: './dist/client',
+            ignore: ['node_modules'],
+          }),
+        ]),
       new FixStyleOnlyEntriesPlugin(),
       new HTMLWebpackPlugin({
         inject: true,

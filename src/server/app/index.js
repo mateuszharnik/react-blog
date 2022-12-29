@@ -26,6 +26,7 @@ app.use(
     useDefaults: true,
     directives: {
       'img-src': ["'self'", 'https: http: data:'],
+      'default-src': ["'self'", '*.ingest.sentry.io'],
     },
   }),
 );

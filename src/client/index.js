@@ -5,6 +5,7 @@ import { StoreProvider } from 'easy-peasy';
 import { BrowserRouter as Router } from 'react-router-dom';
 import setInterceptors from '@client/helpers/libs/axios/interceptors';
 import I18n from '@client/locales/i18n';
+import initSentry from '@client/helpers/sentry';
 import initAOS from '@client/helpers/aos';
 import store from '@client/store/index.store';
 import App from '@client/App';
@@ -16,6 +17,7 @@ import './index.scss';
     setInterceptors(axios, store);
 
     initAOS();
+    initSentry();
   } finally {
     render(
       <StoreProvider store={store}>
