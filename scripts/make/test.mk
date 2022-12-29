@@ -3,11 +3,18 @@
 ##############################################
 
 .ONESHELL:
-test: # Test client and server
+test: # Test client, server and shared
 test:
 	@make test@client
 	@make test@server
 	@make test@shared
+
+.ONESHELL:
+test-ci: # Test client, server and shared with --ci flag
+test-ci:
+	@make test-ci@client
+	@make test-ci@server
+	@make test-ci@shared
 
 .ONESHELL:
 test@server: # Test server
@@ -15,14 +22,29 @@ test@server:
 	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server npx jest ./src/server --runInBand --coverage --env=node
 
 .ONESHELL:
+test-ci@server: # Test server with --ci flag
+test-ci@server:
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=server npx jest ./src/server --runInBand --coverage --ci --env=node
+
+.ONESHELL:
 test@client: # Test client
 test@client:
 	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client npx jest ./src/client --runInBand --coverage
 
 .ONESHELL:
+test-ci@client: # Test client with --ci flag
+test-ci@client:
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=client npx jest ./src/client --runInBand --coverage --ci
+
+.ONESHELL:
 test@shared: # Test shared
 test@shared:
 	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --runInBand --coverage
+
+.ONESHELL:
+test-ci@shared: # Test shared with --ci flag
+test-ci@shared:
+	@cross-env NODE_ENV=test APP_ENV=test COVERAGE_DIR=shared npx jest ./src/shared --runInBand --coverage --ci
 
 .ONESHELL:
 test@scripts: # Test proptypes scripts
