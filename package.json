@@ -32,23 +32,23 @@
     "e2e:open": "cross-env NODE_ENV=test APP_ENV=e2e cypress open",
     "purgecss": "purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css",
     "lint": "yarn run lint:js && yarn run lint:style",
-    "lint:js": "cross-env NODE_ENV=production eslint ./src/ --ext .js,.jsx",
-    "lint:server": "cross-env NODE_ENV=production eslint ./src/server/ --ext .js",
-    "lint:client": "cross-env NODE_ENV=production eslint ./src/client/ --ext .js,.jsx",
+    "lint:js": "cross-env NODE_ENV=production eslint ./src/ --ext .js,.jsx,.json",
+    "lint:server": "cross-env NODE_ENV=production eslint ./src/server/ --ext .js,.json",
+    "lint:client": "cross-env NODE_ENV=production eslint ./src/client/ --ext .js,.jsx,.json",
     "lint:shared": "cross-env NODE_ENV=production eslint ./src/shared/ --ext .js",
-    "lint:e2e": "cross-env NODE_ENV=production eslint ./src/e2e/ --ext .js",
+    "lint:e2e": "cross-env NODE_ENV=production eslint ./src/e2e/ --ext .js,.json",
     "lint:style": "stylelint ./src/client/**/*.{css,scss}",
     "migration:up": "migrate-mongo up -f migrations.config.js",
     "heroku-postbuild": "yarn run migration:up && yarn run build"
   },
   "lint-staged": {
-    "src/server/**/*.js": [
+    "src/server/**/*.{js,json}": [
       "yarn run lint:server"
     ],
     "src/server/**/*.test.js": [
       "yarn run test:server"
     ],
-    "src/client/**/*.{js,jsx}": [
+    "src/client/**/*.{js,jsx,json}": [
       "yarn run lint:client"
     ],
     "src/client/**/*.test.js": [
@@ -63,7 +63,7 @@
     "src/shared/**/*.test.js": [
       "yarn run test:shared"
     ],
-    "src/e2e/**/*.js": [
+    "src/e2e/**/*.{js,json}": [
       "yarn run lint:e2e"
     ]
   },
@@ -164,6 +164,7 @@
     "eslint-import-resolver-webpack": "~0.13.2",
     "eslint-plugin-cypress": "~2.12.1",
     "eslint-plugin-import": "~2.26.0",
+    "eslint-plugin-jsonc": "~1.7.0",
     "eslint-plugin-jsx-a11y": "~6.6.1",
     "eslint-plugin-react": "~7.26.1",
     "eslint-plugin-react-hooks": "~4.2.0",

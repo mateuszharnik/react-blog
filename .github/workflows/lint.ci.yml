@@ -3,10 +3,6 @@ name: Lint
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-      - stage
   pull_request:
     branches:
       - master
