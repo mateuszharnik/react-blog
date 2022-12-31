@@ -99,5 +99,10 @@ module.exports = {
         'no-unused-expressions': 0,
       },
     },
+    {
+      extends: ['plugin:jsonc/recommended-with-json'],
+      files: ['src/**/*.json'],
+      parser: 'jsonc-eslint-parser',
+    },
   ],
 };

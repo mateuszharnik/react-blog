@@ -235,7 +235,7 @@ module.exports = (webpackEnv, { mode }) => {
       }),
       new ESLintPlugin({
         context: './',
-        extensions: ['js', 'jsx'],
+        extensions: ['js', 'jsx', 'json'],
       }),
       new CopyPlugin({
         patterns: [
