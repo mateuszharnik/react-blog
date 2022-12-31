@@ -178,18 +178,16 @@ module.exports = (webpackEnv, { mode }) => {
         ]
         : []),
       ...(
-        process.env.APP_ENV === 'production' || process.env.APP_ENV === 'staging' || process.env.APP_ENV === 'testing'
-          ? [
-            new SentryWebpackPlugin({
-              org: process.env.SENTRY_ORGANIZATION_NAME,
-              project: process.env.SENTRY_PROJECT_NAME,
-              authToken: process.env.SENTRY_AUTH_TOKEN,
-              release: version,
-              include: './dist/client',
-              ignore: ['node_modules'],
-            }),
-          ]
-          : []
+        process.env.APP_ENV === 'production' && process.env.SENTRY_DSN ? [
+          new SentryWebpackPlugin({
+            org: process.env.SENTRY_ORGANIZATION_NAME,
+            project: process.env.SENTRY_PROJECT_NAME,
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            release: version,
+            include: './dist/client',
+            ignore: ['node_modules'],
+          }),
+        ] : []
       ),
       new FixStyleOnlyEntriesPlugin(),
       new HTMLWebpackPlugin({
