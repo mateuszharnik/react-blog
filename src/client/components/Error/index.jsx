@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import LazyImage from '@client/components/LazyImage';
-import bug from '@client/assets/images/undraw_fixing_bugs_w7gi.svg';
+import bug from '@client/assets/images/undraw_fixing_bugs_light_w7gi.svg';
 
 const Error = memo(() => {
   const [isLoading, setIsLoading] = useState(false);
