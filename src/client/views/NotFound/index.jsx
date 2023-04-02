@@ -4,7 +4,7 @@ import { useStoreActions } from 'easy-peasy';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import LazyImage from '@client/components/LazyImage';
 import { setTitle, setMeta, notFoundMeta } from '@client/helpers/documentMeta';
-import notFound from '@client/assets/images/undraw_page_not_found_su7k.svg';
+import notFound from '@client/assets/images/undraw_page_not_found_light_su7k.svg';
 
 const NotFound = memo(() => {
   const [seconds, setSeconds] = useState(10);
