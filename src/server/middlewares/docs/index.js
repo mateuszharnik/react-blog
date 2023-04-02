@@ -15,14 +15,14 @@ export const isLoggedIn = async (req, res, next) => {
 
     const token = req.cookies?._docs;
 
-    if (!token) return res.redirect('/dokumentacja');
+    if (!token) return res.redirect('/docs');
 
     const decodedToken = await verify(token, envConfig.DOCS_TOKEN_SECRET);
 
-    if (!decodedToken?.id) return res.redirect('/dokumentacja');
+    if (!decodedToken?.id) return res.redirect('/docs');
   } catch (error) {
     logger.error(colors.red(error));
-    return res.redirect('/dokumentacja');
+    return res.redirect('/docs');
   }
 
   next();

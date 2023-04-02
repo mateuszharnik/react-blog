@@ -5,8 +5,6 @@ const validateSignIn = (password = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
     password: Joi.string()
       .trim()
-      .min(8)
-      .max(32)
       .required()
       .messages(passwordMessages),
   });

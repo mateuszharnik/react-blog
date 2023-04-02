@@ -61,7 +61,7 @@ const schema = Joi.object({
     .default('http://localhost:8080'),
   DB_URL: Joi.string()
     .trim()
-    .default('mongodb://localhost/db'),
+    .default('mongodb://localhost:27017/db'),
 }).unknown(true);
 
 const { error, value } = schema.validate(process.env);
