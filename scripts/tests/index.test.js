@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 describe('Props validation', () => {
   it('should throw error about required prop', () => {
     const errors = ['Warning: Failed %s type: %s', 'prop', 'The prop `name` is marked as required in `Component`, but its value is `undefined`.'];

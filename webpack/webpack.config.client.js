@@ -1,13 +1,13 @@
 const { join, resolve } = require('path');
 const { config } = require('dotenv');
 const fs = require('fs');
+const Joi = require('joi');
 const colors = require('colors/safe');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CleanCSS = require('clean-css');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const Imagemin = require('imagemin-webpack-plugin').default;
 const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
@@ -23,11 +23,59 @@ module.exports = (webpackEnv, { mode }) => {
   config();
 
   if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-    const path = resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+    const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
     if (fs.existsSync(path)) {
       config({ path });
     }
+  }
+
+  const schema = Joi.object({
+    NODE_ENV: Joi.string()
+      .trim()
+      .valid('development', 'production', 'test')
+      .required(),
+    APP_ENV: Joi.string()
+      .trim()
+      .valid('development', 'production', 'test', 'e2e', 'staging', 'testing')
+      .required(),
+    CLIENT_PORT: Joi.string()
+      .trim()
+      .required(),
+    DEVTOOLS_ENABLED: Joi.bool()
+      .required(),
+    BASE_URL: Joi.string()
+      .trim()
+      .required(),
+    SERVER_URL: Joi.string()
+      .trim()
+      .required(),
+    CLIENT_URL: Joi.string()
+      .trim()
+      .required(),
+    SENTRY_DSN: Joi.string()
+      .trim()
+      .allow('')
+      .required(),
+    SENTRY_ORGANIZATION_NAME: Joi.string()
+      .trim()
+      .allow('')
+      .required(),
+    SENTRY_PROJECT_NAME: Joi.string()
+      .trim()
+      .allow('')
+      .required(),
+    SENTRY_AUTH_TOKEN: Joi.string()
+      .trim()
+      .allow('')
+      .required(),
+  }).unknown(true);
+
+  const { error, value: env } = schema.validate(process.env);
+
+  if (error) {
+    console.error(colors.red(`Missing property in config file: ${error.message}`));
+    process.exit(1);
   }
 
   return {
@@ -56,14 +104,14 @@ module.exports = (webpackEnv, { mode }) => {
       hot: true,
       historyApiFallback: true,
       open: true,
-      port: process.env.CLIENT_PORT,
+      port: env.CLIENT_PORT,
       quiet: true,
       overlay: {
         warnings: false,
         errors: true,
       },
       proxy: {
-        '/api': process.env.SERVER_URL,
+        '/api': env.SERVER_URL,
       },
     },
     optimization: {
@@ -133,6 +181,11 @@ module.exports = (webpackEnv, { mode }) => {
           },
         },
         {
+          test: /\.mjs$/,
+          include: /(node_modules|bower_components)/,
+          type: 'javascript/auto',
+        },
+        {
           test: /\.(png|jpe?g|gif|svg)$/,
           exclude: /(node_modules|bower_components|fonts)/,
           loader: 'url-loader',
@@ -156,11 +209,13 @@ module.exports = (webpackEnv, { mode }) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
-        'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL),
-        'process.env.CLIENT_URL': JSON.stringify(process.env.CLIENT_URL),
-        'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
+        'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
+        'process.env.DEVTOOLS_ENABLED': JSON.stringify(env.DEVTOOLS_ENABLED),
+        'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
+        'process.env.SERVER_URL': JSON.stringify(env.SERVER_URL),
+        'process.env.CLIENT_URL': JSON.stringify(env.CLIENT_URL),
+        'process.env.SENTRY_DSN': JSON.stringify(env.SENTRY_DSN),
+        ...(!env.DEVTOOLS_ENABLED && mode === 'production' && { __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
       }),
       new CleanWebpackPlugin(),
       ...(mode !== 'production'
@@ -178,11 +233,11 @@ module.exports = (webpackEnv, { mode }) => {
         ]
         : []),
       ...(
-        process.env.APP_ENV === 'production' && process.env.SENTRY_DSN ? [
+        env.APP_ENV === 'production' && env.SENTRY_DSN ? [
           new SentryWebpackPlugin({
-            org: process.env.SENTRY_ORGANIZATION_NAME,
-            project: process.env.SENTRY_PROJECT_NAME,
-            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: env.SENTRY_ORGANIZATION_NAME,
+            project: env.SENTRY_PROJECT_NAME,
+            authToken: env.SENTRY_AUTH_TOKEN,
             release: version,
             include: './dist/client',
             ignore: ['node_modules'],
@@ -252,7 +307,6 @@ module.exports = (webpackEnv, { mode }) => {
         ],
       }),
       new Imagemin({ test: /\.(jpe?g|png|gif|svg})$/i }),
-      ...(process.env.ANALYZE === 'true' ? [new BundleAnalyzerPlugin()] : []),
     ],
   };
 };
