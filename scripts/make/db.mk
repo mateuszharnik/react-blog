@@ -5,36 +5,50 @@
 .ONESHELL:
 db@seed: # Seed the database with example data for given environment
 db@seed: check-env
+	@make db@clean-$(ENV)
+	@make migration@up-$(ENV)
 	@cross-env APP_ENV=$(ENV) npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-production: # Seed the database with example data in production environment
 db@seed-production:
+	@make db@clean-production
+	@make migration@up-production
 	@cross-env APP_ENV=production npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-development: # Seed the database with example data in local environment
 db@seed-development:
+	@make db@clean-development
+	@make migration@up-development
 	@cross-env APP_ENV=development npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-test: # Seed the database with example data in test environment
 db@seed-test:
+	@make db@clean-test
+	@make migration@up-test
 	@cross-env NODE_ENV=test APP_ENV=test npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-e2e: # Seed the database with example data in e2e environment
 db@seed-e2e:
+	@make db@clean-e2e
+	@make migration@up-e2e
 	@cross-env APP_ENV=e2e npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-staging: # Seed the database with example data in staging environment
 db@seed-staging:
+	@make db@clean-staging
+	@make migration@up-staging
 	@cross-env APP_ENV=staging npx babel-node ./src/server/seeds/index.js
 
 .ONESHELL:
 db@seed-testing: # Seed the database with example data in testing environment
 db@seed-testing:
+	@make db@clean-testing
+	@make migration@up-testing
 	@cross-env APP_ENV=testing npx babel-node ./src/server/seeds/index.js
 
 ##############################################
@@ -84,7 +98,7 @@ db@clean-testing:
 migration@create: # Create new migration file
 migration@create:
 	@echo -e "This task will never end automatically so you should kill this task manually after creating a new migration file\n"
-	@cross-env APP_ENV=development npx migrate-mongo create -f ./migrations.config.js $(NAME)
+	@cross-env APP_ENV=development npx migrate-mongo create -f migrations.config.js $(NAME)
 
 ##############################################
 ############### RUN MIGRATIONS ###############

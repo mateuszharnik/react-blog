@@ -72,7 +72,7 @@ jobs:
         with:
           install: false
           browser: chrome
-          start: yarn run start:e2e
+          start: make start@e2e
           command: make e2e@suite SUITE=${{ (github.event.inputs.suite == '' || github.event.inputs.suite == 'all-tests') && '**' || github.event.inputs.suite }}
           wait-on: "http://localhost:3000"
           wait-on-timeout: 180
