@@ -72,7 +72,7 @@ describe('Docs middlewares', () => {
       expect(next).toBeCalledTimes(1);
     });
 
-    it('should redirect user to `/dokumentacja` if token not exist in `req.cookies`', async () => {
+    it('should redirect user to `/docs` if token not exist in `req.cookies`', async () => {
       const req = {};
 
       await cleanDB();
@@ -80,7 +80,7 @@ describe('Docs middlewares', () => {
 
       await isLoggedIn(req, res, next);
 
-      expect(res.redirect).toBeCalledWith('/dokumentacja');
+      expect(res.redirect).toBeCalledWith('/docs');
       expect(res.redirect).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledTimes(0);
@@ -88,7 +88,7 @@ describe('Docs middlewares', () => {
       expect(next).toBeCalledTimes(0);
     });
 
-    it('should redirect user to `/dokumentacja` if token is invalid', async () => {
+    it('should redirect user to `/docs` if token is invalid', async () => {
       const token = sign({}, 'invalid_token', { expiresIn: '5m' });
       const req = { cookies: { _docs: token } };
 
@@ -100,13 +100,13 @@ describe('Docs middlewares', () => {
       expect(loggerSpy).toBeCalledWith(colors.red(new JsonWebTokenError('invalid signature')));
       expect(loggerSpy).toBeCalledTimes(1);
 
-      expect(res.redirect).toBeCalledWith('/dokumentacja');
+      expect(res.redirect).toBeCalledWith('/docs');
       expect(res.redirect).toBeCalledTimes(1);
 
       expect(next).toBeCalledTimes(0);
     });
 
-    it('should redirect user to `/dokumentacja` if decoded token is empty', async () => {
+    it('should redirect user to `/docs` if decoded token is empty', async () => {
       const token = sign({}, config.DOCS_TOKEN_SECRET, { expiresIn: '5m' });
       const req = { cookies: { _docs: token } };
 
@@ -115,7 +115,7 @@ describe('Docs middlewares', () => {
       expect(verifySpy).toBeCalledWith(token, config.DOCS_TOKEN_SECRET);
       expect(verifySpy).toBeCalledTimes(1);
 
-      expect(res.redirect).toBeCalledWith('/dokumentacja');
+      expect(res.redirect).toBeCalledWith('/docs');
       expect(res.redirect).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledTimes(0);
@@ -123,7 +123,7 @@ describe('Docs middlewares', () => {
       expect(next).toBeCalledTimes(0);
     });
 
-    it('should redirect user to `/dokumentacja` if error occurred', async () => {
+    it('should redirect user to `/docs` if error occurred', async () => {
       const req = {};
 
       findOneSpy.mockRejectedValueOnce('error');
@@ -135,7 +135,7 @@ describe('Docs middlewares', () => {
       expect(loggerSpy).toBeCalledWith(colors.red('error'));
       expect(loggerSpy).toBeCalledTimes(1);
 
-      expect(res.redirect).toBeCalledWith('/dokumentacja');
+      expect(res.redirect).toBeCalledWith('/docs');
       expect(res.redirect).toBeCalledTimes(1);
 
       expect(next).toBeCalledTimes(0);

@@ -59,7 +59,7 @@ describe('Error middlewares', () => {
   /* =============== notFound middleware =============== */
   describe('notFound', () => {
     it('should return status 404 and `next` function with error', () => {
-      const error = new Error(JSON.stringify('Nie znaleziono /abc'));
+      const error = new Error(JSON.stringify({ message: 'Nie znaleziono /abc' }));
       const req = { originalUrl: '/abc' };
 
       notFound(req, res, next);
