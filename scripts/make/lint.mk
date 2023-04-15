@@ -48,6 +48,11 @@ lint@eslint: # Lint .eslintrc.js file
 lint@eslint:
 	@npx eslint .eslintrc.js --no-ignore .eslintrc.js
 
+.ONESHELL:
+lint@storybook: # Lint .storybook files
+lint@storybook:
+	@npx eslint .storybook/ --ext .js
+
 ##################################################
 ############### LINT WITH FIX FLAG ###############
 ##################################################
@@ -97,3 +102,8 @@ lint-fix@style:
 lint-fix@eslint: # Lint and fix .eslintrc.js file
 lint-fix@eslint:
 	@npx eslint .eslintrc.js --no-ignore .eslintrc.js --fix
+
+.ONESHELL:
+lint-fix@storybook: # Lint and fix .storybook files
+lint-fix@storybook:
+	@npx eslint .storybook/ --ext .js --fix
