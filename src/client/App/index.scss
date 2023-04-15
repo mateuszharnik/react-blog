@@ -1,9 +1,23 @@
-/*** Imports ***/
 @import "../assets/scss/variables";
+
+/*** Content ***/
+@import "./content/AppContent/index";
+
+[data-bs-theme="dark"] {
+  --scrollbar-theme: dark;
+}
+
+[data-bs-theme="light"] {
+  --scrollbar-theme: light;
+}
+
+:root {
+  color-scheme: var(--scrollbar-theme);
+}
 
 ::selection {
   background-color: $primary;
-  color: $white;
+  color: $body-bg;
 }
 
 a {
@@ -17,5 +31,103 @@ a {
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+kbd {
+  background: $gray-300;
+  color: var(--bs-secondary-color);
+}
+
+.modal {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+[data-bs-theme="light"] {
+  .modal {
+    background-color: $body-secondary-bg;
+    --bs-modal-border-color: #{$border-color};
+  }
+
+  .btn-close {
+    &:focus,
+    &:focus-visible {
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: black auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .modal {
+    background-color: $body-secondary-bg-dark;
+    --bs-modal-border-color: #{$border-color-dark};
+  }
+
+  .btn-close {
+    &:focus,
+    &:focus-visible {
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: white auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#141414' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
+
+  $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#141414'/></svg>");
+
+  .form-check-input:checked[type="radio"] {
+    --bs-form-check-bg-image: #{escape-svg($form-check-radio-checked-bg-image)};
+  }
+
+  .form-check-input:checked[type="checkbox"] {
+    --bs-form-check-bg-image: #{escape-svg($form-check-input-checked-bg-image)};
+  }
+
+  .btn:not([class*="btn-outline"]) {
+    --bs-btn-color: #{$body-bg-dark};
+
+    &:disabled {
+      --bs-btn-disabled-color: #{$body-bg-dark};
+    }
+
+    &:active {
+      --bs-btn-active-color: #{$body-bg-dark};
+    }
+
+    &:hover,
+    &:focus-visible {
+      --bs-btn-hover-color: #{$body-bg-dark};
+    }
+  }
+
+  .btn[class*="btn-outline"] {
+    &:active {
+      --bs-btn-active-color: #{$body-bg-dark};
+    }
+
+    &:hover,
+    &:focus-visible {
+      --bs-btn-hover-color: #{$body-bg-dark};
+    }
+  }
+
+  kbd {
+    background: $body-color;
+    color: var(--bs-secondary-color);
   }
 }

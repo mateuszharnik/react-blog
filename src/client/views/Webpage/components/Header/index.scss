@@ -1,0 +1,45 @@
+@import "../../../../assets/scss/variables";
+
+/*** Components ***/
+@import "./components/NavBar/Nav/index";
+@import "./components/NavBar/Hamburger/index";
+@import "./components/NavBar/NavLink/index";
+@import "./components/NavBar/NavImageLink/index";
+@import "./components/NavBar/NavImageButton/index";
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+  @include toRem(height, 84);
+  @include toRem(max-width, 1320);
+  @include toRem(padding, 20);
+
+  @include media-breakpoint-up(lg) {
+    flex-wrap: nowrap;
+  }
+
+  &__container {
+    background-color: #030303;
+    color: $white;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: $zindex-fixed + 10;
+  }
+
+  &__logo {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+
+    @include media-breakpoint-up(lg) {
+      @include toRem(margin-right, 20);
+      position: relative;
+      z-index: 100;
+    }
+  }
+}

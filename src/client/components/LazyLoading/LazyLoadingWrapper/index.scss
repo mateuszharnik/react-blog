@@ -1,10 +1,12 @@
-/*** Imports ***/
 @import "../../../assets/scss/variables";
 
 .lazy-loading-wrapper {
   @include toRem(min-height, 400);
+  background-color: $body-bg;
+}
 
-  &__component {
-    max-height: calc(100vh - 84px);
+[data-bs-theme="dark"] {
+  .lazy-loading-wrapper {
+    background-color: $body-bg-dark;
   }
 }

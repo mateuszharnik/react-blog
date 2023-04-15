@@ -1,0 +1,9 @@
+@import "../../assets/scss/variables";
+
+.page {
+  &-wrapper {
+    min-height: 100vh;
+    padding-top: 5.25rem;
+    position: relative;
+  }
+}

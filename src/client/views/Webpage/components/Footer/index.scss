@@ -1,0 +1,44 @@
+@import "../../../../assets/scss/variables";
+
+.footer {
+  background-color: #030303;
+  color: $white;
+  padding: 2.5rem 1.875rem;
+
+  &-links {
+    @include toRem(max-width, 300);
+
+    &__list {
+      list-style-type: none;
+    }
+
+    &__item {
+      @include toRem(margin, 5);
+    }
+
+    &__link {
+      align-items: center;
+      color: #bcbcbc;
+      display: flex;
+      justify-content: center;
+      @include toRem(padding, 5);
+      @include toRem(width, 44);
+      @include toRem(height, 44);
+      @include toRem(font-size, 24);
+
+      &:hover {
+        color: $white;
+        text-decoration: none;
+
+        .footer-links__icon {
+          transform: scale(1.15);
+          transition: transform 0.15s ease-in-out;
+        }
+      }
+
+      .footer-links__icon {
+        transition: transform 0.15s ease-in-out;
+      }
+    }
+  }
+}
