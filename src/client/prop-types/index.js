@@ -13,6 +13,6 @@ export { toastPropTypes } from './toastPropTypes';
 export { toastsContainerPropTypes, toastsContainerDefaultProps } from './toastsContainerPropTypes';
 export { portalPropTypes, portalDefaultProps } from './portalPropTypes';
 export { childrenPropTypes, childrenDefaultProps } from './childrenPropTypes';
-export { protectedRouteDefaultProps, protectedRoutePropTypes } from './protectedRoutePropTypes';
+export { protectedRoutePropTypes, protectedRouteDefaultProps } from './protectedRoutePropTypes';
 export { redirectPropTypes, redirectDefaultProps } from './redirectPropTypes';
 export { refPropTypes, refDefaultProps } from './refPropTypes';
