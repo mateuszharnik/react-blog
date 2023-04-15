@@ -87,7 +87,7 @@ describe('storeUtils', () => {
       key: 'default',
     };
 
-    it('should return false is returned value is not an object', () => {
+    it('should return false if returned value is not an object', () => {
       expect(checkIfStoreEventExist(defaultPayload)).toStrictEqual(false);
 
       expect(checkIfStoreEventExist({
