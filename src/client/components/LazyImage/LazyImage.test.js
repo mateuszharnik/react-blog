@@ -1,9 +1,8 @@
-import React from 'react';
 import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+import { testsConstants } from '@shared/constants';
 import logoDark from '@client/assets/images/logo-dark.svg';
-import testIds from '@shared/testIds';
 import LazyImage from './index';
 
 describe('LazyImage', () => {
@@ -14,9 +13,9 @@ describe('LazyImage', () => {
       width={200}
     />);
 
-    const imageWrapperEl = screen.getByTestId(testIds.LazyLoadImageWrapper);
-    const imageEl = screen.getByTestId(testIds.LazyLoadImage);
-    const spinnerEl = screen.getByTestId(testIds.LazyLoadImageSpinner);
+    const imageWrapperEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_WRAPPER);
+    const imageEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE);
+    const spinnerEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_SPINNER);
 
     expect(imageWrapperEl).toBeInTheDocument();
     expect(imageWrapperEl).not.toHaveClass();
@@ -49,9 +48,9 @@ describe('LazyImage', () => {
       spinnerClassName="spinnerClassName"
     />);
 
-    const imageWrapperEl = screen.getByTestId(testIds.LazyLoadImageWrapper);
-    const imageEl = screen.getByTestId(testIds.LazyLoadImage);
-    const spinnerEl = screen.getByTestId(testIds.LazyLoadImageSpinner);
+    const imageWrapperEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_WRAPPER);
+    const imageEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE);
+    const spinnerEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_SPINNER);
 
     expect(imageWrapperEl).toBeInTheDocument();
     expect(imageWrapperEl).toHaveClass('divClassName', { exact: true });

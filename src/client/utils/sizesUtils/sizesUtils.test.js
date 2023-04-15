@@ -1,4 +1,4 @@
-import getWindowInnerHeight from './index';
+import { getWindowInnerHeight } from './index';
 
 describe('getWindowInnerHeight', () => {
   let windowSpy = null;

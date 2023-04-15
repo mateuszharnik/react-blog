@@ -1,32 +1,34 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import testIds from '@shared/testIds';
+import { testsConstants, routesConstants } from '@shared/constants';
+import I18nextProvider from '@client/providers/i18nextProvider';
 import NavLink from './index';
 
 describe('NavLink', () => {
   it('should render NavLink component with required props', async () => {
     render(
       <MemoryRouter
-        basename="/"
-        initialEntries={['/']}
+        basename={process.env.BASE_URL}
+        initialEntries={[routesConstants.ROOT]}
       >
-        <NavLink
-          title="Title"
-          to="/o-blogu"
-        >
-          Content
-        </NavLink>,
+        <I18nextProvider>
+          <NavLink
+            title="Title"
+            to={routesConstants.ABOUT.ROOT}
+          >
+            Content
+          </NavLink>
+        </I18nextProvider>
       </MemoryRouter>,
     );
 
-    const navLinkEl = screen.getByTestId(testIds.NavLink);
-    const navLinkTextEl = screen.getByTestId(testIds.NavLinkText);
+    const navLinkEl = screen.getByTestId(testsConstants.NAV_LINK);
+    const navLinkTextEl = screen.getByTestId(testsConstants.NAV_LINK_TEXT);
 
     expect(navLinkEl).toBeInTheDocument();
     expect(navLinkEl).toHaveClass('nav__link mx-auto', { exact: true });
     expect(navLinkEl).toHaveAttribute('title', 'Title');
-    expect(navLinkEl).toHaveAttribute('href', '/o-blogu');
+    expect(navLinkEl).toHaveAttribute('href', routesConstants.ABOUT.ROOT);
 
     expect(navLinkTextEl).toBeInTheDocument();
     expect(navLinkTextEl).toHaveTextContent('Content');
@@ -38,29 +40,31 @@ describe('NavLink', () => {
 
     render(
       <MemoryRouter
-        basename="/"
-        initialEntries={['/']}
+        basename={process.env.BASE_URL}
+        initialEntries={[routesConstants.ROOT]}
       >
-        <NavLink
-          title="Title"
-          to="/o-blogu"
-          dataNav="dataNav"
-          dataDropdownNav="dataDropdownNav"
-          id={id}
-          onBlur={onBlur}
-        >
-          Content
-        </NavLink>,
+        <I18nextProvider>
+          <NavLink
+            title="Title"
+            to={routesConstants.ABOUT.ROOT}
+            dataNav="dataNav"
+            dataDropdownNav="dataDropdownNav"
+            id={id}
+            onBlur={onBlur}
+          >
+            Content
+          </NavLink>
+        </I18nextProvider>
       </MemoryRouter>,
     );
 
-    const navLinkEl = screen.getByTestId(`${testIds.NavLink}-${id}`);
-    const navLinkTextEl = screen.getByTestId(`${testIds.NavLinkText}-${id}`);
+    const navLinkEl = screen.getByTestId(`${testsConstants.NAV_LINK}-${id}`);
+    const navLinkTextEl = screen.getByTestId(`${testsConstants.NAV_LINK_TEXT}-${id}`);
 
     expect(navLinkEl).toBeInTheDocument();
     expect(navLinkEl).toHaveClass('nav__link mx-auto', { exact: true });
     expect(navLinkEl).toHaveAttribute('title', 'Title');
-    expect(navLinkEl).toHaveAttribute('href', '/o-blogu');
+    expect(navLinkEl).toHaveAttribute('href', routesConstants.ABOUT.ROOT);
     expect(navLinkEl).toHaveAttribute('data-nav', 'dataNav');
     expect(navLinkEl).toHaveAttribute('data-dropdown-nav', 'dataDropdownNav');
 
@@ -74,27 +78,29 @@ describe('NavLink', () => {
   it('should render NavLink component with active class', async () => {
     render(
       <MemoryRouter
-        basename="/"
-        initialEntries={['/o-blogu']}
+        basename={process.env.BASE_URL}
+        initialEntries={[routesConstants.ABOUT.ROOT]}
       >
-        <NavLink
-          title="Title"
-          to="/o-blogu"
-        >
-          Content
-        </NavLink>,
+        <I18nextProvider>
+          <NavLink
+            title="Title"
+            to={routesConstants.ABOUT.ROOT}
+          >
+            Content
+          </NavLink>
+        </I18nextProvider>
       </MemoryRouter>,
     );
 
-    const navLinkEl = screen.getByTestId(testIds.NavLink);
-    const navLinkTextEl = screen.getByTestId(testIds.NavLinkText);
-    const navLinkTextHelperEl = screen.getByTestId(testIds.NavLinkTextHelper);
+    const navLinkEl = screen.getByTestId(testsConstants.NAV_LINK);
+    const navLinkTextEl = screen.getByTestId(testsConstants.NAV_LINK_TEXT);
+    const navLinkTextHelperEl = screen.getByTestId(testsConstants.NAV_LINK_TEXT_HELPER);
 
     expect(navLinkEl).toBeInTheDocument();
     expect(navLinkEl).toHaveClass('active');
     expect(navLinkEl).toHaveAttribute('aria-current', 'page');
     expect(navLinkEl).toHaveAttribute('title', 'Title');
-    expect(navLinkEl).toHaveAttribute('href', '/o-blogu');
+    expect(navLinkEl).toHaveAttribute('href', routesConstants.ABOUT.ROOT);
 
     expect(navLinkTextEl).toBeInTheDocument();
     expect(navLinkTextEl).toHaveTextContent('Content');

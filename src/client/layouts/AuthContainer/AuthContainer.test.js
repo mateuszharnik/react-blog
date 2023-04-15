@@ -1,13 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import testIds from '@shared/testIds';
+import { testsConstants } from '@shared/constants';
 import AuthContainer from './index';
 
 describe('AuthContainer', () => {
   it('should render AuthContainer component', async () => {
     render(<AuthContainer>Content</AuthContainer>);
 
-    const authContainerEl = screen.getByTestId(testIds.AuthContainer);
+    const authContainerEl = screen.getByTestId(testsConstants.AUTH_CONTAINER);
 
     expect(authContainerEl).toBeInTheDocument();
     expect(authContainerEl).toHaveTextContent('Content');

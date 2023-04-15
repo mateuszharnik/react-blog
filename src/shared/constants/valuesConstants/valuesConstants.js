@@ -15,7 +15,6 @@ export default {
 
   LANG: {
     PL: 'pl',
-    EN: 'en',
   },
 
   API_STATUSES: {
