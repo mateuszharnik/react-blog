@@ -1,0 +1,41 @@
+{
+  "title": {
+    "HOMEPAGE": "Mateusz Harnik | Blog o kodowaniu",
+    "POSTS": "Wszystkie posty",
+    "PROFILE": "Profil użytkownika",
+    "SETTINGS": "Ustawienia",
+    "ABOUT_US": "O blogu",
+    "FAQS": "Najczęściej zadawane pytania",
+    "CONTACT": "Kontakt",
+    "ADMIN_DASHBOARD": "Panel administratora",
+    "SIGN_IN": "Zaloguj się",
+    "ADMIN_SIGN_IN": "Zaloguj się",
+    "SIGN_UP": "Zarejestruj się",
+    "SIGN_OUT": "Wylogowywanie",
+    "DOCUMENTATION": "Dokumentacja",
+    "NOT_FOUND": "404"
+  },
+
+  "description": {
+    "HOMEPAGE": "Blog o kodowaniu założony przez Mateusza Harnik. Znajdziesz tutaj informacje, porady oraz wiedzę o kodowaniu stron internetowych.",
+    "POSTS": "Zobacz wszystkie posty.",
+    "PROFILE": "Podgląd profilu.",
+    "SETTINGS": "Ustawienia profilu.",
+    "ABOUT_US": "Dowiedz się czegoś o blogu oraz o jego autorach.",
+    "FAQS": "Sprawdź najczęściej zadawane pytania.",
+    "CONTACT": "Zobacz jak można się ze mną skontaktować.",
+    "ADMIN_DASHBOARD": "Zarządzaj blogiem.",
+    "SIGN_IN": "Zaloguj się do konta.",
+    "ADMIN_SIGN_IN": "Zaloguj się do konta administratora.",
+    "SIGN_UP": "Utwórz nowe konto.",
+    "SIGN_OUT": "Strona wylogowywania.",
+    "DOCUMENTATION": "Zaloguj się do dokumentacji API.",
+    "NOT_FOUND": "Nie znaleziono strony."
+  },
+
+  "TITLE": "Mateusz Harnik | Blog o kodowaniu",
+  "DESCRIPTION": "Blog o kodowaniu założony przez Mateusza Harnik. Znajdziesz tutaj informacje, porady oraz wiedzę o kodowaniu stron internetowych.",
+  "KEYWORDS": "Mateusz Harnik, front-end, back-end, blog, kodowanie, strony internetowe",
+  "SITE_NAME": "Mateusz Harnik Blog",
+  "IMAGE_ALT": "Podgląd strony Mateusz Harnik Blog"
+}

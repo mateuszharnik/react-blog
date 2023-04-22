@@ -1,0 +1,44 @@
+{
+  "NO_CONTENT": "Brak treści.",
+
+  "errors": {
+    "TRY_REFRESH_PAGE": "Spróbuj odświeżyć stronę",
+    "REFRESH_PAGE": "Odśwież stronę",
+    "UNEXPECTED_ERROR_OCCURRED": "Wystąpił nieoczekiwany błąd.",
+    "ERROR_OCCURRED": "Wystąpił błąd.",
+    "ERROR_ON_THE_PAGE": "Błąd na stronie"
+  },
+
+  "toasts": {
+    "CLOSE_NOTIFICATION": "Zamknij powiadomienie",
+    "CLOSE": "Zamknij"
+  },
+
+  "skipNavLink": {
+    "SKIP_NAVIGATION": "Pomiń nawigację",
+    "GO_TO_MAIN_CONTENT": "Przejdź do głównej treści"
+  },
+
+  "scrollToTopButton": {
+    "SCROLL_TO_TOP": "Przewiń do góry",
+    "TO_TOP": "Do góry"
+  },
+
+  "gender": {
+    "MALE": "mężczyzna",
+    "FEMALE": "kobieta"
+  },
+
+  "connectionStatus": {
+    "NO_CONNECTION": "Brak połączenia"
+  },
+
+  "notFound": {
+    "IMAGE_ALT_TEXT": "Napis 404",
+    "PAGE_NOT_FOUND": "Nie znaleziono strony.",
+    "BACK_TO": "Powrót do",
+    "BACK_TO_HOMEPAGE": "Wróć do strony głównej",
+    "HOME_PAGE": "strony głównej",
+    "SECONDS": "za {{seconds}}."
+  }
+}
