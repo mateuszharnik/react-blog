@@ -1,12 +1,12 @@
-import React, { memo } from 'react';
-import { oneOfType, arrayOf, node } from 'prop-types';
-import testIds from '@shared/testIds';
+import { memo } from 'react';
+import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { testsConstants } from '@shared/constants';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 
 const AuthWrapper = memo(({ children }) => (
   <MaxViewHeight>
     <div
-      data-testid={testIds.AuthWrapper}
+      data-testid={testsConstants.AUTH_WRAPPER}
       className="auth-wrapper"
     >
       {children}
@@ -17,11 +17,11 @@ const AuthWrapper = memo(({ children }) => (
 AuthWrapper.displayName = 'AuthWrapper';
 
 AuthWrapper.propTypes = {
-  children: oneOfType([arrayOf(node), node]),
+  children: childrenPropTypes,
 };
 
 AuthWrapper.defaultProps = {
-  children: null,
+  children: childrenDefaultProps,
 };
 
 export default AuthWrapper;
