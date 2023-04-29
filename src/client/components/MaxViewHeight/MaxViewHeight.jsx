@@ -2,7 +2,7 @@ import {
   memo, useEffect, useState, useMemo, useCallback,
 } from 'react';
 import { getWindowInnerHeight } from '@client/utils/sizesUtils';
-import { maxViewHeightDefaultProps, maxViewHeightPropTypes } from '@client/prop-types';
+import { maxViewHeightPropTypes, maxViewHeightDefaultProps } from '@client/prop-types';
 
 const MaxViewHeight = memo(({ offsetHeight, maxViewHeightClassName, children }) => {
   const [height, setHeight] = useState(getWindowInnerHeight(offsetHeight));

@@ -1,1 +1,1 @@
-export { protectedRouteDefaultProps, protectedRoutePropTypes } from './protectedRoutePropTypes';
+export { protectedRoutePropTypes, protectedRouteDefaultProps } from './protectedRoutePropTypes';

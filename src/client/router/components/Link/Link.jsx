@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
-import isString from 'lodash/isString';
 import { Link as DefaultLink } from 'react-router-dom';
+import isString from 'lodash/isString';
 import { linkPropTypes, linkDefaultProps } from '@client/prop-types';
 
 const Link = memo(({

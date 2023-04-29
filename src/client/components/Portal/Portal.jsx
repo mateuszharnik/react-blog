@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { portalDefaultProps, portalPropTypes } from '@client/prop-types';
+import { portalPropTypes, portalDefaultProps } from '@client/prop-types';
 
 const Portal = memo(({ to, children }) => {
   const target = useMemo(() => {
