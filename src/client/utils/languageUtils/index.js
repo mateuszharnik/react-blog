@@ -1,0 +1,1 @@
+export { getCharsTranslation } from './languageUtils';

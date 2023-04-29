@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify';
 
-const sanitize = (text = '') => DOMPurify.sanitize(text, {
+export const sanitize = (text = '') => DOMPurify.sanitize(text, {
   FORBID_TAGS: [
     'style',
     'script',
@@ -19,5 +19,3 @@ const sanitize = (text = '') => DOMPurify.sanitize(text, {
     'onload',
   ],
 });
-
-export default sanitize;

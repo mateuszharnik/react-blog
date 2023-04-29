@@ -2,21 +2,22 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons/faCheckCircle';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons/faExclamationCircle';
+import { toastsConstants } from '@shared/constants';
 
-const getToastIcon = (type = '') => {
+export const getToastIcon = (type = '') => {
   let result = '';
 
   switch (type) {
-    case 'warning':
+    case toastsConstants.TYPE.WARNING:
       result = faExclamationTriangle;
       break;
-    case 'danger':
+    case toastsConstants.TYPE.DANGER:
       result = faExclamationCircle;
       break;
-    case 'info':
+    case toastsConstants.TYPE.INFO:
       result = faInfoCircle;
       break;
-    case 'success':
+    case toastsConstants.TYPE.SUCCESS:
       result = faCheckCircle;
       break;
     default:
@@ -26,5 +27,3 @@ const getToastIcon = (type = '') => {
 
   return result;
 };
-
-export default getToastIcon;

@@ -1,6 +1,6 @@
 import isFinite from 'lodash/isFinite';
 
-const getWindowInnerHeight = (offsetHeight = 0) => {
+export const getWindowInnerHeight = (offsetHeight = 0) => {
   const offsetHeightNumber = isFinite(offsetHeight) ? offsetHeight : 0;
   const { innerHeight } = window;
 
@@ -8,5 +8,3 @@ const getWindowInnerHeight = (offsetHeight = 0) => {
 
   return innerHeight > offsetHeightNumber ? innerHeight - offsetHeightNumber : innerHeight;
 };
-
-export default getWindowInnerHeight;
