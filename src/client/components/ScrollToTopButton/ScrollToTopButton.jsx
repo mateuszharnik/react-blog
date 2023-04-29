@@ -1,16 +1,25 @@
-import React, {
+import {
   memo, useState, useEffect, useCallback,
 } from 'react';
-import { shape, instanceOf } from 'prop-types';
-import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons/faChevronUp';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
+import { refPropTypes, refDefaultProps } from '@client/prop-types';
+import Portal from '@client/components/Portal';
+
+const PATH = 'common.scrollToTopButton';
 
 const ScrollToTopButton = memo(({ target }) => {
   const [isVisible, setIsVisible] = useState(window.pageYOffset >= 800);
+
+  const { t } = useTranslation();
+
+  const toggleIsVisible = useCallback(() => {
+    setIsVisible(window.pageYOffset >= 800);
+  }, []);
 
   const handleScroll = useCallback(async (e) => {
     e.preventDefault();
@@ -26,10 +35,6 @@ const ScrollToTopButton = memo(({ target }) => {
     }
   }, [target]);
 
-  const toggleIsVisible = useCallback(() => {
-    setIsVisible(window.pageYOffset >= 800);
-  }, []);
-
   useEffect(() => {
     const throttledToggleIsVisible = throttle(toggleIsVisible, 100);
     const debouncedToggleIsVisible = debounce(toggleIsVisible, 100);
@@ -41,10 +46,10 @@ const ScrollToTopButton = memo(({ target }) => {
       window.removeEventListener('scroll', throttledToggleIsVisible);
       window.removeEventListener('scroll', debouncedToggleIsVisible);
     };
-  }, [toggleIsVisible]);
+  }, []);
 
-  return createPortal(
-    <div className="react-portal-target">
+  return (
+    <Portal to="scroll-button">
       <TransitionGroup component={null}>
         <CSSTransition
           appear
@@ -55,31 +60,32 @@ const ScrollToTopButton = memo(({ target }) => {
           <>
             {isVisible && (
               <a
-                href="#tresc"
-                title="Przewiń do góry"
+                href="#main"
+                title={t(`${PATH}.SCROLL_TO_TOP`)}
                 className="btn btn-primary scroll-top-button"
                 onClick={handleScroll}
               >
-                <span className="visually-hidden">Do góry</span>{' '}
+                <span className="visually-hidden">
+                  {t(`${PATH}.TO_TOP`)}
+                </span>
                 <FontAwesomeIcon icon={faChevronUp} />
               </a>
             )}
           </>
         </CSSTransition>
       </TransitionGroup>
-    </div>,
-    document.getElementById('scroll-button'),
+    </Portal>
   );
 });
 
 ScrollToTopButton.displayName = 'ScrollToTopButton';
 
 ScrollToTopButton.propTypes = {
-  target: shape({ current: instanceOf(Element) }),
+  target: refPropTypes,
 };
 
 ScrollToTopButton.defaultProps = {
-  target: null,
+  target: refDefaultProps,
 };
 
 export default ScrollToTopButton;

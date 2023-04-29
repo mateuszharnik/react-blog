@@ -1,17 +1,20 @@
-import React, {
+import {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
-import { createPortal } from 'react-dom';
-import { string, number, oneOf } from 'prop-types';
-import { useStoreActions, useStoreState } from 'easy-peasy';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { useToastsContext } from '@client/context/ToastsContext';
+import { toastsContainerPropTypes, toastsContainerDefaultProps } from '@client/prop-types';
 import Toast from '@client/components/Toasts/Toast';
+import Portal from '@client/components/Portal';
 
-const ToastsContainer = memo(({ module, limit, position }) => {
-  const toasts = useStoreState((state) => state.toasts?.[`${module}Toasts`]);
-  const { setPosition, setLimit, removeToasts } = useStoreActions((actions) => actions.toasts);
+const ToastsContainer = memo(({ limit, position }) => {
+  const {
+    toasts,
+    utils: { setShowFromBottom, setLimit },
+    actions: { removeToasts },
+  } = useToastsContext();
 
-  const divClass = useMemo(() => `toast-wrapper toast-wrapper__${position}`, [position]);
+  const divClassName = useMemo(() => `toast-wrapper toast-wrapper__${position}`, [position]);
 
   const marginBottom = useMemo(() => !position?.includes('top'), [position]);
 
@@ -26,18 +29,20 @@ const ToastsContainer = memo(({ module, limit, position }) => {
   }, []);
 
   useEffect(() => {
-    setPosition(!position?.includes('top'));
+    setShowFromBottom(!position?.includes('top'));
   }, [position]);
 
   useEffect(() => {
     setLimit(limit);
   }, [limit]);
 
-  useEffect(() => () => removeToasts(module), []);
+  useEffect(() => () => {
+    removeToasts();
+  }, []);
 
-  return createPortal(
-    <div className="react-portal-target">
-      <div className={divClass}>
+  return (
+    <Portal to="toast">
+      <div className={divClassName}>
         <TransitionGroup component={null}>
           {toasts.map((toast) => (
             <CSSTransition
@@ -59,22 +64,14 @@ const ToastsContainer = memo(({ module, limit, position }) => {
           ))}
         </TransitionGroup>
       </div>
-    </div>,
-    document.getElementById('toast'),
+    </Portal>
   );
 });
 
 ToastsContainer.displayName = 'ToastsContainer';
 
-ToastsContainer.propTypes = {
-  module: oneOf(['signIn', 'signUp', 'admin', 'webpage', 'docs']).isRequired,
-  limit: number,
-  position: string,
-};
+ToastsContainer.propTypes = toastsContainerPropTypes;
 
-ToastsContainer.defaultProps = {
-  limit: 5,
-  position: 'bottom-right',
-};
+ToastsContainer.defaultProps = toastsContainerDefaultProps;
 
 export default ToastsContainer;

@@ -1,19 +1,21 @@
-import React, {
+import {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
-import {
-  string, number, bool, shape, oneOfType, object, oneOf,
-} from 'prop-types';
-import { useStoreActions } from 'easy-peasy';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import getToastIcon from '@client/helpers/icons';
+import { useToastsContext } from '@client/context/ToastsContext';
+import { getToastIcon } from '@client/utils/iconsUtils';
+import { toastPropTypes } from '@client/prop-types';
+
+const PATH = 'common.toasts';
 
 const Toast = memo(({ marginBottom, toast }) => {
-  const { removeToast } = useStoreActions((actions) => actions.toasts);
+  const { t } = useTranslation();
+  const { actions: { removeToast } } = useToastsContext();
 
-  const divClass = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
+  const divClassName = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
 
-  const toastClass = useMemo(() => `toast toast-${toast.theme} toast-${toast.theme}-${toast.type} ${marginBottom ? 'mt-2' : 'mb-2'}`, [toast, marginBottom]);
+  const toastClassName = useMemo(() => `toast toast-${toast.type} ${marginBottom ? 'mt-2' : 'mb-2'}`, [toast, marginBottom]);
 
   const icon = useMemo(() => {
     if (!toast.icon) {
@@ -36,20 +38,24 @@ const Toast = memo(({ marginBottom, toast }) => {
   }, [toast]);
 
   useEffect(() => {
+    let timeout = null;
+
     if (toast.autoClose) {
-      const timeout = setTimeout(() => {
+      timeout = setTimeout(() => {
         removeToast(toast.id);
       }, toast.delay);
-
-      return () => {
-        clearTimeout(timeout);
-      };
     }
+
+    return () => {
+      if (toast.autoClose) {
+        clearTimeout(timeout);
+      }
+    };
   }, []);
 
   return (
     <div
-      className={toastClass}
+      className={toastClassName}
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
@@ -70,61 +76,47 @@ const Toast = memo(({ marginBottom, toast }) => {
             </div>
           )}
           <strong className="me-auto">
-            { toast.title }{' '}
+            {toast.title}
           </strong>
           <button
             type="button"
-            title="Zamknij powiadomienie"
+            title={t(`${PATH}.CLOSE_NOTIFICATION`)}
             className="btn-close ms-auto"
-            aria-label="Zamknij"
+            aria-label={t(`${PATH}.CLOSE`)}
             onClick={handleRemove}
           />
         </div>
       )}
-      <div className={divClass}>
+      <div className={divClassName}>
         <div className="toast-body">
-          { toast.message }
+          {toast.message}
         </div>
         {!toast.title && (
           <button
             type="button"
-            title="Zamknij powiadomienie"
+            title={t(`${PATH}.CLOSE_NOTIFICATION`)}
             className="btn-close me-2 m-auto"
-            aria-label="Zamknij"
+            aria-label={t(`${PATH}.CLOSE`)}
             onClick={handleRemove}
           />
         )}
       </div>
-      <div className="toast-progress__wrapper px-1 pb-1">
-        <div className="toast-progress">
-          {toast.progressBar && toast.autoClose && (
+      {toast.progressBar && toast.autoClose && (
+        <div className="toast-progress__wrapper px-1 pb-1">
+          <div className="toast-progress">
             <div
               className="toast-progress__bar"
               style={{ animationDuration: `${toast.delay}ms` }}
             />
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 });
 
 Toast.displayName = 'Toast';
 
-Toast.propTypes = {
-  marginBottom: bool.isRequired,
-  toast: shape({
-    id: string.isRequired,
-    message: string.isRequired,
-    title: string.isRequired,
-    delay: number.isRequired,
-    autoClose: bool.isRequired,
-    progressBar: bool.isRequired,
-    theme: string.isRequired,
-    type: string.isRequired,
-    icon: oneOfType([string, object]).isRequired,
-    module: oneOf(['signIn', 'signUp', 'admin', 'webpage', 'docs']).isRequired,
-  }).isRequired,
-};
+Toast.propTypes = toastPropTypes;
 
 export default Toast;

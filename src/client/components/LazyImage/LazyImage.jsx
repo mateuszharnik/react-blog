@@ -1,9 +1,9 @@
-import React, {
-  useState, useMemo, useCallback, memo,
+import {
+  memo, useState, useMemo, useCallback, useEffect,
 } from 'react';
-import { string, number } from 'prop-types';
 import lazySizes from 'lazysizes';
-import testIds from '@shared/testIds';
+import { lazyImagePropTypes, lazyImageDefaultProps } from '@client/prop-types';
+import { testsConstants } from '@shared/constants';
 import Spinner from '@client/components/Spinner';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
@@ -17,7 +17,7 @@ const LazyImage = memo(
   }) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const className = useMemo(
+    const imageClassName = useMemo(
       () => `lazy-load-image${isLoaded ? '' : ' lazy-load-image--hidden'} ${imgClassName}`.trim(),
       [isLoaded, imgClassName],
     );
@@ -26,23 +26,27 @@ const LazyImage = memo(
       setIsLoaded(true);
     }, []);
 
+    useEffect(() => {
+      setIsLoaded(false);
+    }, [src]);
+
     return (
       <div
-        data-testid={testIds.LazyLoadImageWrapper}
+        data-testid={testsConstants.LAZY_LOAD_IMAGE_WRAPPER}
         className={divClassName || null}
       >
         <img
-          data-testid={testIds.LazyLoadImage}
+          data-testid={testsConstants.LAZY_LOAD_IMAGE}
           alt={alt}
           data-src={src}
           height={height}
           width={width}
-          className={className}
+          className={imageClassName}
           onLoad={handleLoad}
         />
         {!isLoaded && (
           <div
-            data-testid={testIds.LazyLoadImageSpinner}
+            data-testid={testsConstants.LAZY_LOAD_IMAGE_SPINNER}
             className={spinnerClassName || null}
           >
             <Spinner />
@@ -55,21 +59,8 @@ const LazyImage = memo(
 
 LazyImage.displayName = 'LazyImage';
 
-LazyImage.propTypes = {
-  src: string.isRequired,
-  height: number.isRequired,
-  width: number.isRequired,
-  alt: string,
-  divClassName: string,
-  imgClassName: string,
-  spinnerClassName: string,
-};
+LazyImage.propTypes = lazyImagePropTypes;
 
-LazyImage.defaultProps = {
-  alt: '',
-  divClassName: '',
-  imgClassName: '',
-  spinnerClassName: '',
-};
+LazyImage.defaultProps = lazyImageDefaultProps;
 
 export default LazyImage;

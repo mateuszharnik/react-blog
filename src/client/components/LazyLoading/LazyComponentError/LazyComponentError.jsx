@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import Error from '@client/components/Error';
 import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 

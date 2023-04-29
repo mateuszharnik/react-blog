@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
-import testIds from '@shared/testIds';
+import { testsConstants } from '@shared/constants';
 
 const Spinner = memo(() => (
   <div
-    data-testid={testIds.Spinner}
+    data-testid={testsConstants.SPINNER}
     className="text-primary text-center"
   >
     <FontAwesomeIcon

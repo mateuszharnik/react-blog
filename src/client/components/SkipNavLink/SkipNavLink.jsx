@@ -1,8 +1,13 @@
-import React, { memo, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-import { shape, instanceOf } from 'prop-types';
+import { memo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { refPropTypes, refDefaultProps } from '@client/prop-types';
+import Portal from '@client/components/Portal';
+
+const PATH = 'common.skipNavLink';
 
 const SkipNavLink = memo(({ target }) => {
+  const { t } = useTranslation();
+
   const handleScroll = useCallback(async (e) => {
     e.preventDefault();
 
@@ -17,29 +22,28 @@ const SkipNavLink = memo(({ target }) => {
     }
   }, [target]);
 
-  return createPortal(
-    <div className="react-portal-target">
+  return (
+    <Portal to="skip-nav">
       <a
-        href="#tresc"
+        href="#main"
         className="skip-nav-link px-3 py-2"
-        title="Przejdź do głównej treści"
+        title={t(`${PATH}.GO_TO_MAIN_CONTENT`)}
         onClick={handleScroll}
       >
-        Pomiń nawigację
+        {t(`${PATH}.SKIP_NAVIGATION`)}
       </a>
-    </div>,
-    document.getElementById('skip-nav'),
+    </Portal>
   );
 });
 
 SkipNavLink.displayName = 'SkipNavLink';
 
 SkipNavLink.propTypes = {
-  target: shape({ current: instanceOf(Element) }),
+  target: refPropTypes,
 };
 
 SkipNavLink.defaultProps = {
-  target: null,
+  target: refDefaultProps,
 };
 
 export default SkipNavLink;
