@@ -1,0 +1,1 @@
+export { queryService } from './queryService';

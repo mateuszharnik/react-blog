@@ -1,1 +1,6 @@
-export { getCharsTranslation } from './languageUtils';
+export {
+  languages,
+  getCharsTranslation,
+  getLanguage,
+  checkLanguage,
+} from './languageUtils';
