@@ -1,10 +1,13 @@
-import React, { memo, useMemo } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
-import testIds from '@shared/testIds';
-import getWindowInnerHeight from '@client/helpers/getWindowInnerHeight';
+import { Link } from '@client/router/components';
+import { getWindowInnerHeight } from '@client/utils/sizesUtils';
+import { testsConstants, routesConstants } from '@shared/constants';
+import Heading from '@client/components/Heading';
+
+const PATH = 'home.banner';
 
 const WelcomeBanner = memo(() => {
   const { t } = useTranslation();
@@ -13,7 +16,7 @@ const WelcomeBanner = memo(() => {
 
   return (
     <div
-      data-testid={testIds.WelcomeBanner}
+      data-testid={testsConstants.WELCOME_BANNER}
       className="welcome-banner d-flex flex-wrap justify-content-center align-items-center"
       style={{ height }}
     >
@@ -25,14 +28,19 @@ const WelcomeBanner = memo(() => {
           data-aos-duration="1000"
           data-aos-delay="100"
         >
-          <h2 className="display-1 fw-bolder text-uppercase mb-0">
+          <Heading
+            as="h2"
+            className="display-1 fw-bolder text-uppercase mb-0"
+          >
             <div>
-              <Trans
-                i18nKey="home.banner.HEADER"
-                components={{ span: <span className="welcome-banner__title d-block d-lg-inline" /> }}
-              />
+              <span className="welcome-banner__title d-block d-lg-inline">
+                {t(`${PATH}.HEADER_FIRST_HALF`)}
+              </span>{' '}
+              <span className="welcome-banner__title d-block d-lg-inline">
+                {t(`${PATH}.HEADER_SECOND_HALF`)}
+              </span>
             </div>
-          </h2>
+          </Heading>
         </header>
         <p
           className="welcome-banner__text mx-auto mb-4 mb-lg-5"
@@ -41,7 +49,7 @@ const WelcomeBanner = memo(() => {
           data-aos-duration="1000"
           data-aos-delay="500"
         >
-          {t('home.banner.DESCRIPTION')}
+          {t(`${PATH}.DESCRIPTION`)}
         </p>
         <div
           data-aos="fade"
@@ -50,11 +58,11 @@ const WelcomeBanner = memo(() => {
           data-aos-delay="900"
         >
           <Link
-            to="/posty"
+            to={routesConstants.POSTS.ROOT}
             className="btn btn-primary rounded-pill px-4"
-            title="Przejdź do wszystkich wpisów"
+            title={t(`${PATH}.BUTTON_TITLE`)}
           >
-            Przejdź do bloga
+            {t(`${PATH}.BUTTON_TEXT`)}
           </Link>
         </div>
       </div>
