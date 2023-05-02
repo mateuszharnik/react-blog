@@ -1,8 +1,9 @@
 import {
   elementType, string, bool, arrayOf, oneOf,
 } from 'prop-types';
-import { permissionsConstants, rolesConstants } from '@shared/constants';
+import { permissionsConstants, rolesConstants, routesConstants } from '@shared/constants';
 
+const { ROOT } = routesConstants;
 const { ADMIN, SUPERUSER, USER } = rolesConstants;
 
 const {
@@ -56,7 +57,7 @@ export const protectedRouteDefaultProps = {
   pageComponent: undefined,
   paywallComponent: undefined,
   accessDeniedComponent: undefined,
-  redirect: '/',
+  redirect: ROOT,
   shouldBeAuthenticated: true,
   subscription: '',
   roles: [],

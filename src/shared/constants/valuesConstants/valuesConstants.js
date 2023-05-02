@@ -1,4 +1,9 @@
 export default {
+  ENV: {
+    PRODUCTION: 'production',
+    DEVELOPMENT: 'development',
+  },
+
   GENDER: {
     FEMALE: 'kobieta',
     MALE: 'mężczyzna',

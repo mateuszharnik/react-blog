@@ -4,8 +4,8 @@ import {
 import { useLayerContext } from '@client/context/LayerContext';
 import { dateAndTimeService } from '@client/services/dateAndTimeService';
 import { i18nService } from '@client/services/i18nService';
+import { languages, getLanguage, checkLanguage } from '@client/utils/languageUtils';
 import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
-import { languages, getLanguage, checkLanguage } from '@client/utils/languageUtils/languageUtils';
 
 export const Context = createContext();
 

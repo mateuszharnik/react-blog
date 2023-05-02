@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
-import { isDevtoolsEnabled } from '@client/utils/envUtils/envUtils';
+import { isDevtoolsEnabled } from '@client/utils/envUtils';
 import ThemeContext from '@client/context/ThemeContext';
 import LayerContext from '@client/context/LayerContext';
 import MatchMediaContext from '@client/context/MatchMediaContext';
