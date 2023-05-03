@@ -1,99 +1,73 @@
-import React, {
-  memo, useMemo, useCallback, useRef, useEffect,
-} from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { useStoreState, useStoreActions } from 'easy-peasy';
-import { string } from 'prop-types';
+import { memo, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons/faUserAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
-import LazyImage from '@client/components/LazyImage';
-import NavLink from '@client/components/NavBar/NavLink';
+import { Link } from '@client/router/components';
+import { useDropdownNav } from '@client/views/Webpage/components/Header/components/NavBar/NavImageButton/hooks';
+import { navImageButtonPropTypes, navImageButtonDefaultProps } from '@client/prop-types';
+import { routesConstants, rolesConstants, valuesConstants } from '@shared/constants';
 import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
+import LazyImage from '@client/components/LazyImage';
+import NavLink from '@client/views/Webpage/components/Header/components/NavBar/NavLink';
+
+const PATH = 'navigation';
 
 const NavImageButton = memo(({
-  src, type, gender, className,
+  src,
+  type,
+  gender,
+  ...restProps
 }) => {
+  const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
-  const { pathname } = useLocation();
-  const { isDesktop } = useStoreState((store) => store.matchMedia);
-  const { isOpen, isAnimated } = useStoreState((store) => store.navDropdown);
-  const { toggleNav } = useStoreActions((actions) => actions.navDropdown);
-  const { signOut } = useStoreActions((actions) => actions.auth);
-  const navigate = useNavigate();
+
+  const { t } = useTranslation();
+  const {
+    isOpen, isAnimated,
+    actions: { handleToggleNav, handleCloseNavOnBlur },
+  } = useDropdownNav({ buttonRef, dropdownRef });
 
   const image = useMemo(() => {
     if (src) return src;
 
-    return gender === 'kobieta' ? female : male;
+    return gender === valuesConstants.GENDER.FEMALE ? female : male;
   }, [src, gender]);
 
-  const to = useMemo(() => (type === 'USER' ? '/profil' : '/admin'), [type]);
+  const to = useMemo(() => (
+    type === rolesConstants.USER
+      ? routesConstants.PROFILE.DASHBOARD.ROOT
+      : routesConstants.ADMIN.ROOT
+  ), [type]);
 
-  const isAdmin = useMemo(() => type !== 'USER', [type]);
+  const title = useMemo(() => `${PATH}.menu.${isOpen ? 'CLOSE_MENU' : 'OPEN_MENU'}`, [isOpen]);
 
-  const setFocus = useCallback(() => {
-    setTimeout(() => {
-      const element = buttonRef.current;
-
-      if (element) element.focus();
-    }, 200);
-  }, [buttonRef]);
-
-  const handleSignOut = useCallback(async (e) => {
-    e.preventDefault();
-
-    await signOut();
-
-    navigate('/zaloguj');
-  }, []);
-
-  const handleToggleNav = useCallback(() => {
-    toggleNav();
-
-    setFocus();
-  }, [setFocus]);
-
-  const handleCloseNavOnBlur = useCallback((e) => {
-    if (!e?.relatedTarget) return;
-
-    if (!e?.relatedTarget?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
-  }, [isOpen]);
-
-  const closeNavOnClick = useCallback((e) => {
-    if (!e?.target?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
-  }, [isOpen]);
-
-  useEffect(() => {
-    document.addEventListener('click', closeNavOnClick);
-
-    return () => document.removeEventListener('click', closeNavOnClick);
-  }, [closeNavOnClick]);
-
-  useEffect(() => () => toggleNav(false), [pathname, isDesktop]);
+  const isAdmin = useMemo(() => type !== rolesConstants.USER, [type]);
 
   return (
     <div className="nav__link-image-wrapper">
       <button
-        type="button"
         ref={buttonRef}
-        className={className}
-        title={isOpen ? 'Zamknij menu' : 'Otwórz menu'}
+        type="button"
+        title={t(title)}
         disabled={isAnimated}
         data-dropdown-nav="true"
+        {...restProps}
         onClick={handleToggleNav}
         onBlur={handleCloseNavOnBlur}
       >
-        <span className="visually-hidden">Menu</span>
+        <span className="visually-hidden">
+          {t(`${PATH}.menu.MENU`)}
+        </span>
         <LazyImage
           divClassName="nav__link-image"
           imgClassName="rounded-circle"
           width={36}
           height={36}
-          alt="Zdjęcie użytkownika"
+          alt={t(`${PATH}.USER_IMAGE`)}
           src={image}
         />
       </button>
@@ -109,6 +83,7 @@ const NavImageButton = memo(({
               <div
                 className="dropdown-nav"
                 data-dropdown-nav="true"
+                ref={dropdownRef}
               >
                 <ul
                   className="dropdown-nav__list py-2"
@@ -117,48 +92,56 @@ const NavImageButton = memo(({
                   <li className="dropdown-nav__item">
                     <NavLink
                       to={to}
-                      title="Wyświetl swój profil"
+                      title={t(`${PATH}.nav.profile.TITLE`)}
                       dataDropdownNav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
                       <FontAwesomeIcon
                         icon={faUserAlt}
                         fixedWidth
-                      />{' '}
-                      <span className="ms-2">Profil</span>
+                      />
+                      <span className="ms-2">
+                        {' '}
+                        {t(`${PATH}.nav.profile.LINK`)}
+                      </span>
                     </NavLink>
                   </li>
                   {!isAdmin && (
                     <li className="dropdown-nav__item">
                       <NavLink
-                        to="/profil/ustawienia"
-                        title="Ustawienia konta"
+                        to={routesConstants.PROFILE.SETTINGS.ROOT}
+                        title={t(`${PATH}.nav.settings.TITLE`)}
                         dataDropdownNav="true"
                         onBlur={handleCloseNavOnBlur}
                       >
                         <FontAwesomeIcon
                           icon={faCog}
                           fixedWidth
-                        />{' '}
-                        <span className="ms-2">Ustawienia</span>
+                        />
+                        <span className="ms-2">
+                          {' '}
+                          {t(`${PATH}.nav.settings.LINK`)}
+                        </span>
                       </NavLink>
                     </li>
                   )}
                   <li className="dropdown-nav__item">
                     <Link
+                      to={routesConstants.AUTH.SIGN_OUT.ROOT}
+                      title={t(`${PATH}.nav.signOut.TITLE`)}
                       className="nav__link mx-auto"
-                      to="/zaloguj"
-                      title="Wyloguj się"
                       data-dropdown-nav="true"
-                      onClick={handleSignOut}
                       onBlur={handleCloseNavOnBlur}
                     >
                       <span className="nav__text">
                         <FontAwesomeIcon
                           icon={faSignOutAlt}
                           fixedWidth
-                        />{' '}
-                        <span className="ms-2">Wyloguj</span>
+                        />
+                        <span className="ms-2">
+                          {' '}
+                          {t(`${PATH}.nav.signOut.LINK`)}
+                        </span>
                       </span>
                     </Link>
                   </li>
@@ -174,15 +157,8 @@ const NavImageButton = memo(({
 
 NavImageButton.displayName = 'NavImageButton';
 
-NavImageButton.propTypes = {
-  type: string.isRequired,
-  gender: string.isRequired,
-  className: string.isRequired,
-  src: string,
-};
+NavImageButton.propTypes = navImageButtonPropTypes;
 
-NavImageButton.defaultProps = {
-  src: '',
-};
+NavImageButton.defaultProps = navImageButtonDefaultProps;
 
 export default NavImageButton;
