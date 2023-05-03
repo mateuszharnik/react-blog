@@ -1,18 +1,23 @@
-import React, { memo, useMemo } from 'react';
-import { useStoreState } from 'easy-peasy';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
+import { useContact } from '@client/store/contact';
+import { useConfig } from '@client/store/config';
 import Logo from '@client/components/Logo';
 
 const year = new Date().getFullYear();
 
+const PATH = 'footer';
+
 const Footer = memo(() => {
-  const { contact } = useStoreState((state) => state.contact);
-  const { config } = useStoreState((state) => state.config);
+  const { t } = useTranslation();
+  const { contact } = useContact();
+  const { config } = useConfig();
 
   const mailTo = useMemo(() => `mailto:${contact?.email}`, [contact]);
 
@@ -31,13 +36,17 @@ const Footer = memo(() => {
           <ul className="footer-links__list m-0 p-0 d-flex justify-content-center">
             {contact?.email && config?.show_email && (
               <li className="footer-links__item">
-                <span className="visually-hidden">Email: </span>
+                <span className="visually-hidden">
+                  {t(`${PATH}.email.EMAIL_LABEL`)}
+                </span>
                 <a
                   href={mailTo}
-                  title="Napisz do mnie"
+                  title={t(`${PATH}.email.EMAIL_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">{contact?.email}</span>{' '}
+                  <span className="visually-hidden">
+                    {contact?.email}
+                  </span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon
                       icon={faEnvelope}
@@ -49,13 +58,17 @@ const Footer = memo(() => {
             )}
             {contact?.facebook_url && config?.show_social_media && (
               <li className="footer-links__item">
-                <span className="visually-hidden">Facebook: </span>
+                <span className="visually-hidden">
+                  {t(`${PATH}.socialMedia.facebook.FACEBOOK_LABEL`)}
+                </span>
                 <a
                   href={contact?.facebook_url}
-                  title="Przejdź do profilu na Facebook"
+                  title={t(`${PATH}.socialMedia.facebook.FACEBOOK_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">{contact?.facebook_url}</span>{' '}
+                  <span className="visually-hidden">
+                    {contact?.facebook_url}
+                  </span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon
                       icon={faFacebook}
@@ -67,13 +80,17 @@ const Footer = memo(() => {
             )}
             {contact?.github_url && config?.show_social_media && (
               <li className="footer-links__item">
-                <span className="visually-hidden">Github: </span>
+                <span className="visually-hidden">
+                  {t(`${PATH}.socialMedia.github.GITHUB_LABEL`)}
+                </span>
                 <a
                   href={contact?.github_url}
-                  title="Przejdź do profilu na Github"
+                  title={t(`${PATH}.socialMedia.github.GITHUB_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">{contact?.github_url}</span>{' '}
+                  <span className="visually-hidden">
+                    {contact?.github_url}
+                  </span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon
                       icon={faGithub}
@@ -85,13 +102,17 @@ const Footer = memo(() => {
             )}
             {contact?.instagram_url && config?.show_social_media && (
               <li className="footer-links__item">
-                <span className="visually-hidden">Instagram: </span>
+                <span className="visually-hidden">
+                  {t(`${PATH}.socialMedia.instagram.INSTAGRAM_LABEL`)}
+                </span>
                 <a
                   href={contact?.instagram_url}
-                  title="Przejdź do profilu na Instagram"
+                  title={t(`${PATH}.socialMedia.instagram.INSTAGRAM_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">{contact?.instagram_url}</span>{' '}
+                  <span className="visually-hidden">
+                    {contact?.instagram_url}
+                  </span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon
                       icon={faInstagram}
@@ -103,13 +124,17 @@ const Footer = memo(() => {
             )}
             {contact?.twitter_url && config?.show_social_media && (
               <li className="footer-links__item">
-                <span className="visually-hidden">Twitter: </span>
+                <span className="visually-hidden">
+                  {t(`${PATH}.socialMedia.twitter.TWITTER_LABEL`)}
+                </span>
                 <a
                   href={contact?.twitter_url}
-                  title="Przejdź do profilu na Twitter"
+                  title={t(`${PATH}.socialMedia.twitter.TWITTER_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">{contact?.twitter_url}</span>{' '}
+                  <span className="visually-hidden">
+                    {contact?.twitter_url}
+                  </span>{' '}
                   <span className="footer-links__icon">
                     <FontAwesomeIcon
                       icon={faTwitter}
@@ -125,7 +150,9 @@ const Footer = memo(() => {
       <div className="text-center mb-4">
         <Logo />
       </div>
-      <div className="text-center">Mateusz Harnik &copy; {year}</div>
+      <div className="text-center">
+        {t(`${PATH}.COPYRIGHT`, { year })}
+      </div>
     </footer>
   );
 });
