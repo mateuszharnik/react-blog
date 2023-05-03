@@ -1,9 +1,8 @@
-/*** Imports ***/
 @import "../../assets/scss/variables";
 
 .skip-nav-link {
   background-color: $primary;
-  color: $white;
+  color: $body-bg;
   left: 50%;
   opacity: 0;
   pointer-events: none;
@@ -27,7 +26,17 @@
   }
 
   &:hover {
-    color: $white;
+    color: $body-bg;
     text-decoration: none;
+  }
+}
+
+[data-bs-theme="dark"] {
+  .skip-nav-link {
+    color: $body-bg-dark;
+
+    &:hover {
+      color: $body-bg-dark;
+    }
   }
 }

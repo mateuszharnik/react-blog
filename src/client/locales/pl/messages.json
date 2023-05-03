@@ -1,0 +1,51 @@
+{
+  "docsSignIn": {
+    "password": {
+      "REQUIRED": "Musisz podać hasło."
+    }
+  },
+
+  "signIn": {
+    "username": {
+      "NOT_MATCH": "Adres email jest nieprawidłowy.",
+      "REQUIRED": "Musisz podać login."
+    },
+    "password": {
+      "REQUIRED": "Musisz podać hasło."
+    }
+  },
+
+  "signUp": {
+    "username": {
+      "MIN_LENGTH": "Nazwa użytkownika musi mieć minimum {{count}}.",
+      "MAX_LENGTH": "Nazwa użytkownika może mieć maksymalnie {{count}}.",
+      "NOT_MATCH": "Nazwa użytkownika może zawierać tylko cyfry oraz małe i duże litery.",
+      "REQUIRED": "Musisz podać nazwę użytkownika."
+    },
+
+    "email": {
+      "NOT_MATCH": "Adres email jest nieprawidłowy.",
+      "REQUIRED": "Musisz podać adres email."
+    },
+
+    "password": {
+      "MIN_LENGTH": "Hasło musi mieć minimum {{count}}.",
+      "MAX_LENGTH": "Hasło może mieć maksymalnie {{count}}.",
+      "REQUIRED": "Musisz podać hasło."
+    },
+
+    "confirmPassword": {
+      "NOT_MATCH": "Hasła nie są takie same.",
+      "REQUIRED": "Musisz powtórzyć hasło."
+    },
+
+    "gender": {
+      "CHOSE_BETWEEN": "Musisz wybrać między mężczyzną a kobietą.",
+      "REQUIRED": "Musisz podać płeć."
+    },
+
+    "isTermsOfUseAccepted": {
+      "REQUIRED": "Musisz zaakceptować warunki użytkowania."
+    }
+  }
+}

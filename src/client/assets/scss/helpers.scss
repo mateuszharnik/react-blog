@@ -1,4 +1,3 @@
-/*** Imports ***/
 @import "./variables";
 
 .position-center,
@@ -15,15 +14,6 @@
 
 .max-vh-100 {
   max-height: 100vh;
-}
-
-.layer {
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 999;
 }
 
 .invalid-feedback {
@@ -48,7 +38,45 @@
   }
 }
 
+[data-bs-theme="light"] {
+  .markdown {
+    @import "~highlight.js/styles/github";
+
+    pre {
+      background-color: $body-bg;
+      border: 2px solid $gray-300;
+      color: $body-color;
+    }
+
+    .language-lines {
+      > span {
+        color: rgba($body-color, 0.5);
+      }
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .markdown {
+    @import "~highlight.js/styles/github-dark";
+
+    pre {
+      background-color: $body-bg-dark;
+      border: 2px solid $gray-700;
+      color: $body-color-dark;
+    }
+
+    .language-lines {
+      > span {
+        color: rgba($body-color-dark, 0.5);
+      }
+    }
+  }
+}
+
 .markdown {
+  word-wrap: break-word;
+
   h1,
   h2,
   h3,
@@ -65,10 +93,7 @@
   }
 
   pre {
-    background-color: #1c1e26;
-    border: 2px solid transparent;
     border-radius: 8px;
-    color: #cbced0;
     padding: 0.75rem 0.75rem 0.75rem 3.125rem;
     position: relative;
     @include toRem(padding-left, 52);
@@ -96,7 +121,6 @@
     @include toRem(width, 28);
 
     > span {
-      color: #6f6f70;
       display: block;
       pointer-events: none;
     }

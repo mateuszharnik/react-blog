@@ -1,0 +1,59 @@
+{
+  "YOU_ARE_HERE": "(Jesteś tutaj)",
+  "USER_IMAGE": "Zdjęcie użytkownika",
+  "NAVIGATION": "Nawigacja",
+  "PAGE_LOGO": "Logo strony",
+
+  "menu": {
+    "MENU": "Menu",
+    "CLOSE_MENU": "Zamknij menu",
+    "OPEN_MENU": "Otwórz menu"
+  },
+
+  "nav": {
+    "homepage": {
+      "LINK": "Strona główna",
+      "TITLE": "Wróć do strony głównej"
+    },
+
+    "posts": {
+      "LINK": "Posty",
+      "TITLE": "Zobacz najnowsze wpisy"
+    },
+
+    "about": {
+      "LINK": "O blogu",
+      "TITLE": "Dowiedz się trochę o blogu"
+    },
+
+    "faq": {
+      "LINK": "FAQ",
+      "TITLE": "Zobacz najczęściej zadawane pytania"
+    },
+
+    "contact": {
+      "LINK": "Kontakt",
+      "TITLE": "Skontaktuj się"
+    },
+
+    "profile": {
+      "LINK": "Profil",
+      "TITLE": "Wyświetl swój profil"
+    },
+
+    "settings": {
+      "LINK": "Ustawienia",
+      "TITLE": "Ustawienia konta"
+    },
+
+    "signIn": {
+      "LINK": "Zaloguj",
+      "TITLE": "Zaloguj się"
+    },
+
+    "signOut": {
+      "LINK": "Wyloguj",
+      "TITLE": "Wyloguj się"
+    }
+  }
+}

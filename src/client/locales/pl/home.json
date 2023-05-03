@@ -1,6 +1,9 @@
 {
   "banner": {
-    "HEADER": "<span>Blog o</span> <span>kodowaniu</span>",
-    "DESCRIPTION": "Witaj 👋🏼 Jesteś tutaj ponieważ szukasz informacji o tworzeniu stron internetowych. Może żaden ze mnie ekspert, ale kilka rzeczy potrafię. Tak więc śmiało rozejrzyj się, może znajdziesz coś przydatnego."
+    "HEADER_FIRST_HALF": "Blog o",
+    "HEADER_SECOND_HALF": "kodowaniu",
+    "DESCRIPTION": "Witaj 👋🏼 Jesteś tutaj ponieważ szukasz informacji o tworzeniu stron internetowych. Może żaden ze mnie ekspert, ale kilka rzeczy potrafię. Tak więc śmiało rozejrzyj się, może znajdziesz coś przydatnego.",
+    "BUTTON_TITLE": "Przejdź do wszystkich wpisów",
+    "BUTTON_TEXT": "Przejdź do bloga"
   }
 }

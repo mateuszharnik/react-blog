@@ -1,0 +1,16 @@
+export default {
+  CAN_MANAGE_POSTS: 'can_manage_posts',
+  CAN_MANAGE_CATEGORIES: 'can_manage_categories',
+  CAN_MANAGE_TAGS: 'can_manage_tags',
+  CAN_MANAGE_COMMENTS: 'can_manage_comments',
+  CAN_MANAGE_MESSAGES: 'can_manage_messages',
+  CAN_MANAGE_CONTACT: 'can_manage_contact',
+  CAN_MANAGE_ABOUT_US: 'can_manage_about_us',
+  CAN_MANAGE_NEWSLETTER: 'can_manage_newsletter',
+  CAN_MANAGE_USERS: 'can_manage_users',
+  CAN_MANAGE_ADMIN_USERS: 'can_manage_admin_users',
+  CAN_MANAGE_ROLES: 'can_manage_roles',
+  CAN_MANAGE_TERMS_OF_USE: 'can_manage_terms_of_use',
+  CAN_MANAGE_CONFIG: 'can_manage_config',
+  CAN_MANAGE_FAQS: 'can_manage_faqs',
+};
