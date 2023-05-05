@@ -1,6 +1,6 @@
 {
   "name": "react-blog",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "author": "Mateusz Harnik",
   "license": "MIT",
   "main": "./src/server/index.js",
