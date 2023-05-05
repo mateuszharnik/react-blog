@@ -3,10 +3,6 @@ name: Lint
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-      - stage
   pull_request:
     branches:
       - master
@@ -65,4 +61,4 @@ jobs:
         run: yarn run build
 
       - name: Run Eslint 🔎
-        run: yarn run lint
+        run: make lint

@@ -1,0 +1,76 @@
+{
+  "SUCCESSFULLY_SAVED": "Pomyślnie zapisano.",
+  "SUCCESSFULLY_LOGGED_IN": "Pomyślnie zalogowano.",
+  "SUCCESSFULLY_REGISTERED": "Pomyślnie zarejestrowano.",
+  "SUCCESSFULLY_SENT": "Pomyślnie wysłano.",
+  "SAVE": "Zapisz",
+  "SAVE_CHANGES": "Zapisz zmiany",
+  "SIGN_UP": "Zarejestruj się",
+  "SIGNING_UP": "Rejestrowanie",
+  "SIGN_IN": "Zaloguj się",
+  "SIGNING_IN": "Logowanie",
+  "SEND": "Wyślij",
+  "SEND_MESSAGE": "Wyślij wiadomość",
+
+  "chars": {
+    "PLURAL_GENITIVE": "znaków",
+    "SINGULAR_NOMINATIVE": "znak",
+    "PLURAL_NOMINATIVE": "znaki"
+  },
+
+  "signUpForm": {
+    "username": {
+      "LABEL": "Nazwa użytkownika",
+      "PLACEHOLDER": "User"
+    },
+
+    "email": {
+      "LABEL": "Adres email",
+      "PLACEHOLDER": "example@domain.com"
+    },
+
+    "password": {
+      "LABEL": "Hasło",
+      "PLACEHOLDER": "********"
+    },
+
+    "confirmPassword": {
+      "LABEL": "Powtórz hasło",
+      "PLACEHOLDER": "********"
+    },
+
+     "gender": {
+      "LABEL": "Płeć",
+      "FEMALE_VALUE": "Kobieta",
+      "MALE_VALUE": "Mężczyzna"
+    },
+
+     "isTermsOfUseAccepted": {
+      "LABEL": "Akceptuję",
+      "LABEL_BUTTON": "warunki użytkowania",
+      "LABEL_BUTTON_TITLE": "Pokaż warunki użytkowania"
+    }
+  },
+
+  "signInForm": {
+    "FORGOT_PASSWORD": "Nie pamiętasz hasła?",
+    "GO_TO_PASSWORD_RECOVERY": "Przejdź do przywracania hasła",
+
+    "username": {
+      "LABEL": "Login",
+      "PLACEHOLDER": "Nazwa użytkownika lub email"
+    },
+
+    "password": {
+      "LABEL": "Hasło",
+      "PLACEHOLDER": "********"
+    }
+  },
+
+  "docsSignInForm": {
+    "password": {
+      "LABEL": "Hasło",
+      "PLACEHOLDER": "********"
+    }
+  }
+}

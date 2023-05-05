@@ -1,0 +1,20 @@
+{
+  "editor": {
+    "BOLD": "Pogrubienie",
+    "ITALIC": "Kursywa",
+    "STRIKETHROUGH": "Przekreślenie",
+    "HEADING": "Nagłówek",
+    "CODE": "Blok kodu",
+    "UNORDERED_LIST": "List punktowa",
+    "ORDERED_LIST": "List numerowana",
+    "QUOTE": "Cytat",
+    "LINK": "Wstaw link",
+    "IMAGE": "Wstaw obrazek",
+    "TABLE": "Wstaw tabele",
+    "HORIZONTAL_RULE": "Linia",
+    "PREVIEW": "Podgląd",
+    "UNDO": "Następna zmiana",
+    "REDO": "Poprzednia zmiana",
+    "PLACEHOLDER": "Wpisz coś..."
+  }
+}

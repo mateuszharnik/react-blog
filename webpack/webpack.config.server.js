@@ -43,7 +43,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new ESLintPlugin({
       context: './',
-      extensions: ['js'],
+      extensions: ['js', 'json'],
     }),
   ],
 };

@@ -1,7 +1,7 @@
 import config from '@server/config';
 
 export const notFound = (req, res, next) => {
-  const error = new Error(JSON.stringify(`Nie znaleziono ${req.originalUrl}`));
+  const error = new Error(JSON.stringify({ message: `Nie znaleziono ${req.originalUrl}` }));
   res.status(404);
   next(error);
 };

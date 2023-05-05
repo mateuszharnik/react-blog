@@ -6,13 +6,13 @@ services:
     volumes:
       - ./docker-data/db-data:/data/db
     ports:
-      - 27017:27017
+      - ${DOCKER_MONGO_PORT}:27017
   mongo-express:
     image: mongo-express:0.54
     restart: always
     depends_on:
       - mongo
     ports:
-      - 8081:8081
+      - ${DOCKER_ADMIN_PANEL_PORT}:8081
 volumes:
   db-data:
