@@ -41,7 +41,7 @@ module.exports = (webpackEnv, { mode }) => {
       .required(),
     CLIENT_PORT: Joi.string()
       .trim()
-      .required(),
+      .default('8080'),
     DEVTOOLS_ENABLED: Joi.bool()
       .required(),
     BASE_URL: Joi.string()
