@@ -40,8 +40,7 @@ module.exports = (webpackEnv, { mode }) => {
       .valid('development', 'production', 'test', 'e2e', 'staging', 'testing')
       .required(),
     CLIENT_PORT: Joi.string()
-      .trim()
-      .default('8080'),
+      .trim(),
     DEVTOOLS_ENABLED: Joi.bool()
       .required(),
     BASE_URL: Joi.string()

@@ -66,6 +66,7 @@ export const useNav = ({ openNavButtonRef, closeNavButtonRef }) => {
   useEffect(() => () => {
     toggleNav(false);
     toggleDropdownNav(false);
+    document.body.classList.remove('overflow-hidden');
   }, []);
 
   useEffect(() => {
