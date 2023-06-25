@@ -1,33 +1,27 @@
-import '@client/helpers/disableDevTools';
-import React from 'react';
 import { render } from 'react-dom';
-import { StoreProvider } from 'easy-peasy';
-import { BrowserRouter as Router } from 'react-router-dom';
-import setInterceptors from '@client/helpers/libs/axios/interceptors';
-import I18n from '@client/locales/i18n';
-import initSentry from '@client/helpers/sentry';
-import initAOS from '@client/helpers/aos';
-import store from '@client/store/index.store';
+import { sentryService } from '@client/services/sentryService';
+import { aosService } from '@client/services/aosService';
+import StoreProvider from '@client/providers/storeProvider';
+import RouterProvider from '@client/providers/routerProvider';
+import I18nextProvider from '@client/providers/i18nextProvider';
+import QueryClientProvider from '@client/providers/queryClientProvider';
 import App from '@client/App';
 import './index.scss';
 
 (async () => {
-  try {
-    const axios = (await import(/* webpackChunkName: 'axios' */ '@client/helpers/libs/axios')).default;
-    setInterceptors(axios, store);
+  aosService.init();
+  sentryService.init();
 
-    initAOS();
-    initSentry();
-  } finally {
-    render(
-      <StoreProvider store={store}>
-        <Router basename={process.env.BASE_URL}>
-          <I18n>
+  render(
+    <StoreProvider>
+      <RouterProvider>
+        <I18nextProvider>
+          <QueryClientProvider>
             <App />
-          </I18n>
-        </Router>
-      </StoreProvider>,
-      document.getElementById('app'),
-    );
-  }
+          </QueryClientProvider>
+        </I18nextProvider>
+      </RouterProvider>
+    </StoreProvider>,
+    document.getElementById('app'),
+  );
 })();

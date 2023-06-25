@@ -1,0 +1,30 @@
+{
+  "COPYRIGHT": "Mateusz Harnik © {{year}}",
+
+  "email": {
+    "EMAIL_LABEL": "Email: ",
+    "EMAIL_TITLE": "Napisz do mnie"
+  },
+
+  "socialMedia": {
+    "facebook": {
+      "FACEBOOK_LABEL": "Facebook: ",
+      "FACEBOOK_TITLE": "Przejdź do profilu na Facebook"
+    },
+
+    "github": {
+      "GITHUB_LABEL": "Github: ",
+      "GITHUB_TITLE": "Przejdź do profilu na Github"
+    },
+
+    "instagram": {
+      "INSTAGRAM_LABEL": "Instagram: ",
+      "INSTAGRAM_TITLE": "Przejdź do profilu na Instagram"
+    },
+
+    "twitter": {
+      "TWITTER_LABEL": "Twitter: ",
+      "TWITTER_TITLE": "Przejdź do profilu na Twitter"
+    }
+  }
+}

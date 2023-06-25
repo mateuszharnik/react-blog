@@ -3,6 +3,7 @@ const { config } = require('dotenv');
 config();
 
 module.exports = {
+  testEnvironment: 'jsdom',
   coverageDirectory: `<rootDir>/coverage/${process.env.COVERAGE_DIR || ''}`,
   moduleFileExtensions: ['js', 'jsx', 'json'],
   transform: {

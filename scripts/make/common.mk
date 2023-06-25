@@ -14,6 +14,10 @@ DEV_ENV = development
 AVAILABLE_DEV_ENVS = development test e2e
 AVAILABLE_DEV_ENVS_LIST = development, test, e2e
 
+PROD_ENV = production
+AVAILABLE_PROD_ENVS = production staging testing
+AVAILABLE_PROD_ENVS_LIST = production, staging, testing
+
 #########################################
 ############### FUNCTIONS ###############
 #########################################
@@ -28,6 +32,11 @@ ifeq ($(filter $(DEV_ENV),$(AVAILABLE_DEV_ENVS)),)
 	@echo -e "Invalid DEV_ENV variable. DEV_ENV must be one of [$(AVAILABLE_DEV_ENVS_LIST)]" && exit 1
 endif
 
+check-production-env: # Validate PROD_ENV variable
+ifeq ($(filter $(PROD_ENV),$(AVAILABLE_PROD_ENVS)),)
+	@echo -e "Invalid PROD_ENV variable. PROD_ENV must be one of [$(AVAILABLE_PROD_ENVS_LIST)]" && exit 1
+endif
+
 check-suite: # Validate SUITE variable
 ifeq ($(filter $(SUITE),$(AVAILABLE_SUITES)),)
 	@echo -e "Invalid SUITE variable. SUITE must be one of [$(AVAILABLE_SUITES_LIST)]" && exit 1
@@ -40,4 +49,4 @@ endif
 .ONESHELL:
 install@global: # Install all global npm dependencies
 install@global:
-	@npm install -g rimraf cross-env yarn@1.22.17
+	@npm install -g rimraf cross-env yarn

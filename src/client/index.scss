@@ -1,61 +1,83 @@
-/*** Highlight ***/
-@import "~highlight.js/styles/base16/horizon-dark";
-
-/*** Imports ***/
 @import "./assets/scss/variables";
 @import "./assets/scss/helpers";
 
 /*** App ***/
 @import "./App/index";
 
+/*** Router ***/
+@import "./router/components/ProtectedRoute/index";
+@import "./router/components/DocsRoute/index";
+@import "./router/components/Redirect/index";
+@import "./router/components/Link/index";
+@import "./router/components/ActiveLink/index";
+@import "./router/components/ExactActiveLink/index";
+@import "./router/components/View/index";
+
+/*** Layouts ***/
+@import "./layouts/PageWrapper/index";
+@import "./layouts/PageContainer/index";
+@import "./layouts/AuthWrapper/index";
+@import "./layouts/AuthContainer/index";
+
+/*** Forms ***/
+@import "./forms/AdminSignInForm/index";
+@import "./forms/SignInForm/index";
+@import "./forms/SignUpForm/index";
+@import "./forms/DocsSignInForm/index";
+
+/*** Context ***/
+@import "./context/ThemeContext/index";
+@import "./context/LayerContext/index";
+@import "./context/MatchMediaContext/index";
+@import "./context/LanguageContext/index";
+@import "./context/ToastsContext/index";
+
 /*** Components ***/
 @import "./components/Logo/index";
+@import "./components/Portal/index";
 @import "./components/Spinner/index";
+@import "./components/ConnectionStatus/index";
 @import "./components/Error/index";
-@import "./components/Layouts/PageWrapper/index";
-@import "./components/Layouts/PageContainer/index";
-@import "./components/Layouts/AuthWrapper/index";
-@import "./components/Layouts/AuthContainer/index";
+@import "./components/ErrorBoundary/index";
 @import "./components/ScrollToTopButton/index";
 @import "./components/MaxViewHeight/index";
+@import "./components/OverlayScrollbars/index";
 @import "./components/LazyImage/index";
 @import "./components/Toasts/ToastsContainer/index";
 @import "./components/Toasts/Toast/index";
-@import "./components/Header/index";
-@import "./components/NavBar/Nav/index";
-@import "./components/NavBar/Hamburger/index";
-@import "./components/NavBar/NavLink/index";
-@import "./components/NavBar/NavImageLink/index";
-@import "./components/NavBar/NavImageButton/index";
-@import "./components/Footer/index";
+@import "./components/Heading/index";
 @import "./components/SkipNavLink/index";
 @import "./components/LazyLoading/LazyComponentError/index";
 @import "./components/LazyLoading/LazyComponentSpinner/index";
-@import "./components/LazyLoading/LazyPageError/index";
-@import "./components/LazyLoading/LazyPageSpinner/index";
 @import "./components/LazyLoading/LazyLoadingWrapper/index";
-@import "./components/Forms/SignInForm/index";
-@import "./components/Forms/SignUpForm/index";
-@import "./components/Forms/DocsSignInForm/index";
-@import "./components/WelcomeBanner/index";
-@import "./components/ProtectedRoute/index";
 
-/*** Views ***/
-@import "./views/Webpage/Main/index";
-@import "./views/Webpage/Home/index";
-@import "./views/Webpage/About/index";
-@import "./views/Webpage/Contact/index";
-@import "./views/Webpage/FAQs/index";
-@import "./views/Webpage/Posts/index";
-@import "./views/Webpage/Profile/index";
-@import "./views/Webpage/Settings/index";
-@import "./views/Admin/Main/index";
-@import "./views/Admin/Dashboard/index";
+/*** Webpage ***/
+@import "./views/Webpage/index";
+
+@import "./views/Webpage/pages/Home/index";
+@import "./views/Webpage/pages/About/index";
+@import "./views/Webpage/pages/Contact/index";
+@import "./views/Webpage/pages/FAQs/index";
+@import "./views/Webpage/pages/Posts/index";
+@import "./views/Webpage/pages/Profile/index";
+@import "./views/Webpage/pages/Profile/pages/Dashboard/index";
+@import "./views/Webpage/pages/Profile/pages/Settings/index";
+
+/*** Admin ***/
+@import "./views/Admin/index";
+
+@import "./views/Admin/pages/Dashboard/index";
+
+/*** Auth ***/
 @import "./views/Auth/AdminSignIn/index";
 @import "./views/Auth/SignIn/index";
 @import "./views/Auth/SignUp/index";
-@import "./views/Docs/Main/index";
-@import "./views/Docs/SignIn/index";
+@import "./views/Auth/SignOut/index";
+
+/*** Docs ***/
+@import "./views/Docs/index";
+
+/*** NotFound ***/
 @import "./views/NotFound/index";
 
 /*** Animations ***/

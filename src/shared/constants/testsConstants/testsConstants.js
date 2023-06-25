@@ -1,0 +1,18 @@
+export default {
+  PAGE_LOGO: 'page-logo',
+  PAGE_NAV: 'page-nav',
+  SPINNER: 'spinner',
+  WELCOME_BANNER: 'welcome-banner',
+  AUTH_CONTAINER: 'auth-container',
+  PAGE_CONTAINER: 'page-container',
+  AUTH_WRAPPER: 'auth-wrapper',
+  PAGE_WRAPPER: 'page-wrapper',
+  LAZY_LOAD_IMAGE_WRAPPER: 'lazy-load-image-wrapper',
+  LAZY_LOAD_IMAGE_SPINNER: 'lazy-load-image-spinner',
+  LAZY_LOAD_IMAGE: 'lazy-load-image',
+  NAV_LINK: 'nav-link',
+  NAV_LINK_TEXT: 'nav-link-text',
+  NAV_LINK_TEXT_HELPER: 'nav-link-text-helper',
+  HEADER_NAV_LINK: 'header-nav-link',
+  HEADER_NAV_LINK_TEXT: 'header-nav-link-text',
+};
