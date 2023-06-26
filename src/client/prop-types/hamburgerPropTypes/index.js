@@ -1,1 +1,1 @@
-export { hamburgerPropTypes, hamburgerDefaultProps } from './hamburgerPropTypes';
+export { hamburgerPropTypes } from './hamburgerPropTypes';

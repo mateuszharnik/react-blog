@@ -5,7 +5,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
 import { overlayScrollbarConfig as options } from '@client/configs/overlayScrollbarConfig';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 const OverlayScrollbars = memo(({ children }) => {
   const scrollbarRef = useRef(null);
@@ -42,11 +42,11 @@ const OverlayScrollbars = memo(({ children }) => {
 OverlayScrollbars.displayName = 'OverlayScrollbars';
 
 OverlayScrollbars.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 OverlayScrollbars.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default OverlayScrollbars;

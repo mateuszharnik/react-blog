@@ -3,7 +3,7 @@ import Spinner from '@client/components/Spinner';
 import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 
 const LazyAdminComponentSpinner = memo(() => (
-  <LazyLoadingWrapper wrapperClassName="lazy-loading-admin-wrapper">
+  <LazyLoadingWrapper className="lazy-loading-admin-wrapper">
     <Spinner />
   </LazyLoadingWrapper>
 ));

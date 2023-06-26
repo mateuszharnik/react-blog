@@ -1,1 +1,1 @@
-export { logoPropTypes, logoDefaultProps } from './logoPropTypes';
+export { logoPropTypes } from './logoPropTypes';

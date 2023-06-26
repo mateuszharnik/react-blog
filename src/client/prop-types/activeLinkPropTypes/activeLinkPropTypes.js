@@ -1,15 +1,16 @@
 import { string } from 'prop-types';
-import { childrenPropTypes, childrenDefaultProps } from '../childrenPropTypes';
+import { childrenPropTypes } from '../childrenPropTypes';
 
 export const activeLinkPropTypes = {
-  to: string.isRequired,
-  id: string,
-  linkClassName: string,
-  children: childrenPropTypes,
-};
-
-export const activeLinkDefaultProps = {
-  id: '',
-  linkClassName: 'link',
-  children: childrenDefaultProps,
+  props: {
+    to: string.isRequired,
+    id: string,
+    className: string,
+    children: childrenPropTypes.props,
+  },
+  default: {
+    id: '',
+    className: 'link',
+    children: childrenPropTypes.default,
+  },
 };

@@ -1,0 +1,1 @@
+export { markdownPropTypes } from './markdownPropTypes';

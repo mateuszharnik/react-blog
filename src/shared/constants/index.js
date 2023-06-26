@@ -7,3 +7,4 @@ export { default as valuesConstants } from './valuesConstants';
 export { default as formsConstants } from './formsConstants';
 export { default as permissionsConstants } from './permissionsConstants';
 export { default as testsConstants } from './testsConstants';
+export { default as propTypesConstants } from './propTypesConstants';

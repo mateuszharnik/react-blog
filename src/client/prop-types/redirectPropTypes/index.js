@@ -1,1 +1,1 @@
-export { redirectPropTypes, redirectDefaultProps } from './redirectPropTypes';
+export { redirectPropTypes } from './redirectPropTypes';

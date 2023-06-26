@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { View } from '@client/router/components';
+import View from '@client/router/components/View';
 
 const ProfileContent = memo(() => (
   <View />

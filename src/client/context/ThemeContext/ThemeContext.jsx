@@ -1,7 +1,7 @@
 import {
   memo, createContext, useMemo, useState, useCallback, useEffect,
 } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import { valuesConstants } from '@shared/constants';
 
 export const Context = createContext();
@@ -48,11 +48,11 @@ const ThemeContext = memo(({ children }) => {
 ThemeContext.displayName = 'ThemeContext';
 
 ThemeContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 ThemeContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default ThemeContext;

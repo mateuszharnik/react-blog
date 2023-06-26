@@ -1,1 +1,1 @@
-export { headingPropTypes, headingDefaultProps } from './headingPropTypes';
+export { headingPropTypes } from './headingPropTypes';

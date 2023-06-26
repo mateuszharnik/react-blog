@@ -9,8 +9,9 @@ import LayerContext from '@client/context/LayerContext';
 import MatchMediaContext from '@client/context/MatchMediaContext';
 import LanguageContext from '@client/context/LanguageContext';
 import ToastsContext from '@client/context/ToastsContext';
-import ConnectionStatus from '@client/components/ConnectionStatus';
-import Heading from '@client/components/Heading';
+import ConnectionStatus from '@client/components/Errors/ConnectionStatus';
+import Heading from '@client/components/Typography/Heading';
+import ErrorBoundary from '@client/components/Errors/ErrorBoundary';
 import AppContent from '@client/App/content/AppContent';
 
 const ToastsContainer = lazyLoad({
@@ -42,9 +43,11 @@ const App = memo(() => {
                 <Heading className="visually-hidden">
                   {t(`${PATH}.TITLE`)}
                 </Heading>
-                <AppContent />
-                <ToastsContainer />
-                <ConnectionStatus />
+                <ErrorBoundary>
+                  <AppContent />
+                  <ToastsContainer />
+                  <ConnectionStatus />
+                </ErrorBoundary>
               </ToastsContext>
             </MatchMediaContext>
           </LanguageContext>

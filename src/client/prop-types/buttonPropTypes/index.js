@@ -1,0 +1,1 @@
+export { buttonPropTypes } from './buttonPropTypes';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { QueryClientProvider as ReactQueryClientProvider, QueryClient } from 'react-query';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 export const queryClient = new QueryClient();
 
@@ -13,11 +13,11 @@ const QueryClientProvider = memo(({ children }) => (
 QueryClientProvider.displayName = 'QueryClientProvider';
 
 QueryClientProvider.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 QueryClientProvider.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default QueryClientProvider;

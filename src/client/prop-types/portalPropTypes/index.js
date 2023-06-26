@@ -1,1 +1,1 @@
-export { portalPropTypes, portalDefaultProps } from './portalPropTypes';
+export { portalPropTypes } from './portalPropTypes';

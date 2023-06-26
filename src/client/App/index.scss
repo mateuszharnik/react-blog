@@ -34,11 +34,6 @@ a {
   }
 }
 
-kbd {
-  background: $gray-300;
-  color: var(--bs-secondary-color);
-}
-
 .modal {
   align-items: center;
   display: flex;
@@ -50,38 +45,12 @@ kbd {
     background-color: $body-secondary-bg;
     --bs-modal-border-color: #{$border-color};
   }
-
-  .btn-close {
-    &:focus,
-    &:focus-visible {
-      border-radius: 0px;
-      box-shadow: none;
-    }
-
-    &:focus-visible {
-      outline: black auto 1px;
-      outline: -webkit-focus-ring-color auto 1px;
-    }
-  }
 }
 
 [data-bs-theme="dark"] {
   .modal {
     background-color: $body-secondary-bg-dark;
     --bs-modal-border-color: #{$border-color-dark};
-  }
-
-  .btn-close {
-    &:focus,
-    &:focus-visible {
-      border-radius: 0px;
-      box-shadow: none;
-    }
-
-    &:focus-visible {
-      outline: white auto 1px;
-      outline: -webkit-focus-ring-color auto 1px;
-    }
   }
 }
 
@@ -96,38 +65,5 @@ kbd {
 
   .form-check-input:checked[type="checkbox"] {
     --bs-form-check-bg-image: #{escape-svg($form-check-input-checked-bg-image)};
-  }
-
-  .btn:not([class*="btn-outline"]) {
-    --bs-btn-color: #{$body-bg-dark};
-
-    &:disabled {
-      --bs-btn-disabled-color: #{$body-bg-dark};
-    }
-
-    &:active {
-      --bs-btn-active-color: #{$body-bg-dark};
-    }
-
-    &:hover,
-    &:focus-visible {
-      --bs-btn-hover-color: #{$body-bg-dark};
-    }
-  }
-
-  .btn[class*="btn-outline"] {
-    &:active {
-      --bs-btn-active-color: #{$body-bg-dark};
-    }
-
-    &:hover,
-    &:focus-visible {
-      --bs-btn-hover-color: #{$body-bg-dark};
-    }
-  }
-
-  kbd {
-    background: $body-color;
-    color: var(--bs-secondary-color);
   }
 }

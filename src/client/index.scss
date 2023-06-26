@@ -33,23 +33,38 @@
 @import "./context/ToastsContext/index";
 
 /*** Components ***/
-@import "./components/Logo/index";
-@import "./components/Portal/index";
-@import "./components/Spinner/index";
-@import "./components/ConnectionStatus/index";
-@import "./components/Error/index";
-@import "./components/ErrorBoundary/index";
-@import "./components/ScrollToTopButton/index";
-@import "./components/MaxViewHeight/index";
-@import "./components/OverlayScrollbars/index";
-@import "./components/LazyImage/index";
+@import "./components/Buttons/Button/index";
+@import "./components/Buttons/CloseButton/index";
+@import "./components/Buttons/ScrollToTopButton/index";
+
+@import "./components/Errors/ConnectionStatus/index";
+@import "./components/Errors/Error/index";
+@import "./components/Errors/ErrorBoundary/index";
+
+@import "./components/Typography/Heading/index";
+@import "./components/Typography/Text/index";
+
 @import "./components/Toasts/ToastsContainer/index";
 @import "./components/Toasts/Toast/index";
-@import "./components/Heading/index";
-@import "./components/SkipNavLink/index";
+
+@import "./components/Lists/List/index";
+@import "./components/Lists/ListItem/index";
+
 @import "./components/LazyLoading/LazyComponentError/index";
 @import "./components/LazyLoading/LazyComponentSpinner/index";
 @import "./components/LazyLoading/LazyLoadingWrapper/index";
+
+@import "./components/Images/Logo/index";
+@import "./components/Images/LazyImage/index";
+
+@import "./components/Box/index";
+@import "./components/KeyboardKey/index";
+@import "./components/Markdown/index";
+@import "./components/Portal/index";
+@import "./components/Spinner/index";
+@import "./components/MaxViewHeight/index";
+@import "./components/OverlayScrollbars/index";
+@import "./components/SkipNavLink/index";
 
 /*** Webpage ***/
 @import "./views/Webpage/index";

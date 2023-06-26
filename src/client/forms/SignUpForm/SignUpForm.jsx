@@ -8,6 +8,8 @@ import { useAuth } from '@client/store/auth';
 import { useToastsContext } from '@client/context/ToastsContext';
 import { signUpSchema as validationSchema } from '@client/schemas/signUpSchemas';
 import { routesConstants, toastsConstants, valuesConstants } from '@shared/constants';
+import Box from '@client/components/Box';
+import Button from '@client/components/Buttons/Button';
 
 const FORMS_PATH = 'forms';
 const PATH = 'forms.signUpForm';
@@ -71,7 +73,7 @@ const SignUpForm = memo(() => {
       className="row"
       onSubmit={form.handleSubmit}
     >
-      <div className="mb-3 col-12">
+      <Box className="mb-3 col-12">
         <label
           htmlFor="username"
           className="form-label"
@@ -89,12 +91,12 @@ const SignUpForm = memo(() => {
           value={form.values.username.value}
         />
         {form.touched.username.value && form.errors.username.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.username.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12">
+      </Box>
+      <Box className="mb-3 col-12">
         <label
           htmlFor="email"
           className="form-label"
@@ -112,12 +114,12 @@ const SignUpForm = memo(() => {
           value={form.values.email.value}
         />
         {form.touched.email.value && form.errors.email.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.email.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12">
+      </Box>
+      <Box className="mb-3 col-12">
         <label
           htmlFor="password"
           className="form-label"
@@ -135,12 +137,12 @@ const SignUpForm = memo(() => {
           value={form.values.password.value}
         />
         {form.touched.password.value && form.errors.password.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.password.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12">
+      </Box>
+      <Box className="mb-3 col-12">
         <label
           htmlFor="confirm_password"
           className="form-label"
@@ -158,17 +160,17 @@ const SignUpForm = memo(() => {
           value={form.values.confirm_password.value}
         />
         {form.touched.confirm_password.value && form.errors.confirm_password.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.confirm_password.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12">
-        <div className="form-label">
+      </Box>
+      <Box className="mb-3 col-12">
+        <Box className="form-label">
           {t(`${PATH}.gender.LABEL`)}{' '}
-        </div>
-        <div className="row mx-0 justify-content-center">
-          <div className="form-check col-auto">
+        </Box>
+        <Box className="row mx-0 justify-content-center">
+          <Box className="form-check col-auto">
             <input
               className="form-check-input"
               type="radio"
@@ -185,8 +187,8 @@ const SignUpForm = memo(() => {
             >
               {t(`${PATH}.gender.MALE_VALUE`)}
             </label>
-          </div>
-          <div className="form-check col-auto">
+          </Box>
+          <Box className="form-check col-auto">
             <input
               className="form-check-input"
               type="radio"
@@ -203,16 +205,16 @@ const SignUpForm = memo(() => {
             >
               {t(`${PATH}.gender.FEMALE_VALUE`)}
             </label>
-          </div>
-        </div>
+          </Box>
+        </Box>
         {form.touched.gender.value && form.errors.gender.value ? (
-          <div className="invalid-feedback text-center">
+          <Box className="invalid-feedback text-center">
             {form.errors.gender.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12 text-center">
-        <div className="form-check d-inline-block">
+      </Box>
+      <Box className="mb-3 col-12 text-center">
+        <Box className="form-check d-inline-block">
           <input
             className="form-check-input"
             type="checkbox"
@@ -228,43 +230,47 @@ const SignUpForm = memo(() => {
           >
             {t(`${PATH}.isTermsOfUseAccepted.LABEL`)}
           </label>{' '}
-          <button
-            type="button"
+          <Button
             title={t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON_TITLE`)}
             className="button-link"
           >
             {t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON`)}
-          </button>
-        </div>
+          </Button>
+        </Box>
         {(
           form.touched.is_terms_of_use_accepted.value
             && form.errors.is_terms_of_use_accepted.value
         ) ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.is_terms_of_use_accepted.value}
-          </div>
+          </Box>
           ) : null}
-      </div>
-      <div className="col-12 text-center">
-        <button
+      </Box>
+      <Box className="col-12 text-center">
+        <Button
           type="submit"
           title={t(title)}
           disabled={signUpMetadata.isFetching}
-          className="btn btn-primary rounded-pill px-4"
+          className="px-4"
+          variant="solid"
+          rounded
         >
-          <span>
+          <Box as="span">
             {t(`${FORMS_PATH}.SIGN_UP`)}
-          </span>{' '}
+          </Box>{' '}
           {signUpMetadata.isFetching && (
-            <span className="ms-1">
+            <Box
+              as="span"
+              className="ms-1"
+            >
               <FontAwesomeIcon
                 spin
                 icon={faCircleNotch}
               />
-            </span>
+            </Box>
           )}
-        </button>
-      </div>
+        </Button>
+      </Box>
     </form>
   );
 });

@@ -2,13 +2,15 @@ import { memo, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
-import { Link } from '@client/router/components';
 import { useRouter } from '@client/router/hooks';
 import { useForm } from '@client/hooks/useForm';
 import { useAuth } from '@client/store/auth';
 import { useToastsContext } from '@client/context/ToastsContext';
 import { signInSchema as validationSchema } from '@client/schemas/signInSchemas';
 import { routesConstants, toastsConstants } from '@shared/constants';
+import Link from '@client/router/components/Link';
+import Box from '@client/components/Box';
+import Button from '@client/components/Buttons/Button';
 
 const FORMS_PATH = 'forms';
 const PATH = 'forms.signInForm';
@@ -68,7 +70,7 @@ const AdminSignInForm = memo(() => {
       className="row"
       onSubmit={form.handleSubmit}
     >
-      <div className="mb-3 col-12">
+      <Box className="mb-3 col-12">
         <label
           htmlFor="username"
           className="form-label"
@@ -86,12 +88,12 @@ const AdminSignInForm = memo(() => {
           value={form.values.username.value}
         />
         {form.touched.username.value && form.errors.username.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.username.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="mb-3 col-12">
+      </Box>
+      <Box className="mb-3 col-12">
         <label
           htmlFor="password"
           className="form-label"
@@ -109,39 +111,44 @@ const AdminSignInForm = memo(() => {
           value={form.values.password.value}
         />
         {form.touched.password.value && form.errors.password.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.password.value}
-          </div>
+          </Box>
         ) : null}
-        <div className="mt-1">
+        <Box className="mt-1">
           <Link
             to={routesConstants.ROOT}
             title={t(`${PATH}.GO_TO_PASSWORD_RECOVERY`)}
           >
             {t(`${PATH}.FORGOT_PASSWORD`)}
           </Link>
-        </div>
-      </div>
-      <div className="col-12 text-center">
-        <button
+        </Box>
+      </Box>
+      <Box className="col-12 text-center">
+        <Button
           type="submit"
           title={t(title)}
           disabled={adminSignInMetadata.isFetching}
-          className="btn btn-primary rounded-pill px-4"
+          variant="solid"
+          className="px-4"
+          rounded
         >
-          <span>
+          <Box as="span">
             {t(`${FORMS_PATH}.SIGN_IN`)}
-          </span>{' '}
+          </Box>{' '}
           {adminSignInMetadata.isFetching && (
-            <span className="ms-1">
+            <Box
+              as="span"
+              className="ms-1"
+            >
               <FontAwesomeIcon
                 spin
                 icon={faCircleNotch}
               />
-            </span>
+            </Box>
           )}
-        </button>
-      </div>
+        </Button>
+      </Box>
     </form>
   );
 });

@@ -39,6 +39,7 @@ describe('Header', () => {
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
+    const headerNavLinkTextHelperEl = screen.queryByTestId(`${testsConstants.NAV_LINK_TEXT_HELPER}-homepage`);
     const pageLogoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
     const pageNavEl = screen.getByTestId(testsConstants.PAGE_NAV);
 
@@ -50,6 +51,7 @@ describe('Header', () => {
     expect(headerNavLinkTextEl).toBeInTheDocument();
     expect(headerNavLinkTextEl).toHaveTextContent('Strona główna');
 
+    expect(headerNavLinkTextHelperEl).not.toBeInTheDocument();
     expect(pageLogoEl).toBeInTheDocument();
     expect(pageNavEl).toBeInTheDocument();
   });
@@ -72,6 +74,7 @@ describe('Header', () => {
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
+    const headerNavLinkTextHelperEl = screen.getByTestId(`${testsConstants.NAV_LINK_TEXT_HELPER}-homepage`);
     const pageLogoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
     const pageNavEl = screen.getByTestId(testsConstants.PAGE_NAV);
 
@@ -82,7 +85,10 @@ describe('Header', () => {
     expect(headerNavLinkEl).toHaveAttribute('href', routesConstants.ROOT);
 
     expect(headerNavLinkTextEl).toBeInTheDocument();
-    expect(headerNavLinkTextEl).toHaveTextContent('Strona główna (Jesteś tutaj)');
+    expect(headerNavLinkTextEl).toHaveTextContent('Strona główna');
+
+    expect(headerNavLinkTextHelperEl).toBeInTheDocument();
+    expect(headerNavLinkTextHelperEl).toHaveTextContent('(Jesteś tutaj)');
 
     expect(pageLogoEl).toBeInTheDocument();
     expect(pageNavEl).toBeInTheDocument();

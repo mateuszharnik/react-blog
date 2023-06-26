@@ -1,0 +1,90 @@
+@import "../../assets/scss/variables";
+
+[data-bs-theme="light"] {
+  .markdown {
+    @import "~highlight.js/styles/github";
+
+    pre {
+      background-color: $body-bg;
+      border: 2px solid $gray-300;
+      color: $body-color;
+    }
+
+    .language-lines {
+      > span {
+        color: rgba($body-color, 0.5);
+      }
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .markdown {
+    @import "~highlight.js/styles/github-dark";
+
+    pre {
+      background-color: $body-bg-dark;
+      border: 2px solid $gray-700;
+      color: $body-color-dark;
+    }
+
+    .language-lines {
+      > span {
+        color: rgba($body-color-dark, 0.5);
+      }
+    }
+  }
+}
+
+.markdown {
+  word-wrap: break-word;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @include toRem(margin-bottom, 16);
+  }
+
+  img {
+    display: block;
+    margin: 1rem auto;
+    max-width: 100%;
+  }
+
+  pre {
+    border-radius: 8px;
+    padding: 0.75rem 0.75rem 0.75rem 3.125rem;
+    position: relative;
+    @include toRem(padding-left, 52);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .pre {
+    @include toRem(padding-left, 31.7);
+
+    .language-lines {
+      text-align: left;
+      width: auto;
+    }
+  }
+
+  .language-lines {
+    pointer-events: none;
+    position: absolute;
+    text-align: right;
+    @include toRem(top, 12);
+    @include toRem(left, 12);
+    @include toRem(width, 28);
+
+    > span {
+      display: block;
+      pointer-events: none;
+    }
+  }
+}

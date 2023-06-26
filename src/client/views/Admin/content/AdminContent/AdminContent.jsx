@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
-import { View } from '@client/router/components';
 import { useLayerContext } from '@client/context/LayerContext';
+import View from '@client/router/components/View';
 
 const AdminContent = memo(() => {
   const { hideLayer } = useLayerContext();
