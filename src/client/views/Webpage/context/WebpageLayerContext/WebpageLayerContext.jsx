@@ -1,8 +1,9 @@
 import {
   memo, createContext, useMemo, useState, useCallback,
 } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyWebpageComponentSpinner from '@client/views/Webpage/components/LazyLoading/LazyWebpageComponentSpinner';
+import Box from '@client/components/Box';
 
 export const Context = createContext();
 
@@ -26,9 +27,9 @@ const WebpageLayerContext = memo(({ children }) => {
   return (
     <Context.Provider value={value}>
       {isWebpageLayerActive && (
-        <div className="webpage-layer">
+        <Box className="webpage-layer">
           <LazyWebpageComponentSpinner />
-        </div>
+        </Box>
       )}
       {children}
     </Context.Provider>
@@ -38,11 +39,11 @@ const WebpageLayerContext = memo(({ children }) => {
 WebpageLayerContext.displayName = 'WebpageLayerContext';
 
 WebpageLayerContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 WebpageLayerContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default WebpageLayerContext;

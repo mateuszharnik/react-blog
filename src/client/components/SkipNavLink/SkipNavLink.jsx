@@ -1,6 +1,7 @@
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { refPropTypes, refDefaultProps } from '@client/prop-types';
+import { refPropTypes } from '@client/prop-types/refPropTypes';
+import Link from '@client/router/components/Link';
 import Portal from '@client/components/Portal';
 
 const PATH = 'common.skipNavLink';
@@ -24,14 +25,14 @@ const SkipNavLink = memo(({ target }) => {
 
   return (
     <Portal to="skip-nav">
-      <a
-        href="#main"
+      <Link
+        to="#main"
         className="skip-nav-link px-3 py-2"
         title={t(`${PATH}.GO_TO_MAIN_CONTENT`)}
         onClick={handleScroll}
       >
         {t(`${PATH}.SKIP_NAVIGATION`)}
-      </a>
+      </Link>
     </Portal>
   );
 });
@@ -39,11 +40,11 @@ const SkipNavLink = memo(({ target }) => {
 SkipNavLink.displayName = 'SkipNavLink';
 
 SkipNavLink.propTypes = {
-  target: refPropTypes,
+  target: refPropTypes.props,
 };
 
 SkipNavLink.defaultProps = {
-  target: refDefaultProps,
+  target: refPropTypes.default,
 };
 
 export default SkipNavLink;

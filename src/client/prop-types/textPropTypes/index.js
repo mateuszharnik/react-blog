@@ -1,0 +1,1 @@
+export { textPropTypes } from './textPropTypes';

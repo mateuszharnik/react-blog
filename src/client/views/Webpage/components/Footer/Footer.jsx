@@ -8,7 +8,11 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 import { useContact } from '@client/store/contact';
 import { useConfig } from '@client/store/config';
-import Logo from '@client/components/Logo';
+import Link from '@client/router/components/Link';
+import Logo from '@client/components/Images/Logo';
+import Box from '@client/components/Box';
+import List from '@client/components/Lists/List';
+import ListItem from '@client/components/Lists/ListItem';
 
 const year = new Date().getFullYear();
 
@@ -30,130 +34,178 @@ const Footer = memo(() => {
   }, [contact, config]);
 
   return (
-    <footer className="footer">
+    <Box
+      as="footer"
+      className="footer"
+    >
       {shouldRender && (
-        <div className="footer-links mx-auto mb-4">
-          <ul className="footer-links__list m-0 p-0 d-flex justify-content-center">
+        <Box className="footer-links mx-auto mb-4">
+          <List className="footer-links__list m-0 p-0 d-flex justify-content-center">
             {contact?.email && config?.show_email && (
-              <li className="footer-links__item">
-                <span className="visually-hidden">
+              <ListItem className="footer-links__item">
+                <Box
+                  as="span"
+                  className="visually-hidden"
+                >
                   {t(`${PATH}.email.EMAIL_LABEL`)}
-                </span>
-                <a
-                  href={mailTo}
+                </Box>
+                <Link
+                  to={mailTo}
                   title={t(`${PATH}.email.EMAIL_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">
+                  <Box
+                    as="span"
+                    className="visually-hidden"
+                  >
                     {contact?.email}
-                  </span>{' '}
-                  <span className="footer-links__icon">
+                  </Box>{' '}
+                  <Box
+                    as="span"
+                    className="footer-links__icon"
+                  >
                     <FontAwesomeIcon
                       icon={faEnvelope}
                       fixedWidth
                     />
-                  </span>
-                </a>
-              </li>
+                  </Box>
+                </Link>
+              </ListItem>
             )}
             {contact?.facebook_url && config?.show_social_media && (
-              <li className="footer-links__item">
-                <span className="visually-hidden">
+              <ListItem className="footer-links__item">
+                <Box
+                  as="span"
+                  className="visually-hidden"
+                >
                   {t(`${PATH}.socialMedia.facebook.FACEBOOK_LABEL`)}
-                </span>
-                <a
-                  href={contact?.facebook_url}
+                </Box>
+                <Link
+                  to={contact?.facebook_url}
                   title={t(`${PATH}.socialMedia.facebook.FACEBOOK_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">
+                  <Box
+                    as="span"
+                    className="visually-hidden"
+                  >
                     {contact?.facebook_url}
-                  </span>{' '}
-                  <span className="footer-links__icon">
+                  </Box>{' '}
+                  <Box
+                    as="span"
+                    className="footer-links__icon"
+                  >
                     <FontAwesomeIcon
                       icon={faFacebook}
                       fixedWidth
                     />
-                  </span>
-                </a>
-              </li>
+                  </Box>
+                </Link>
+              </ListItem>
             )}
             {contact?.github_url && config?.show_social_media && (
-              <li className="footer-links__item">
-                <span className="visually-hidden">
+              <ListItem className="footer-links__item">
+                <Box
+                  as="span"
+                  className="visually-hidden"
+                >
                   {t(`${PATH}.socialMedia.github.GITHUB_LABEL`)}
-                </span>
-                <a
-                  href={contact?.github_url}
+                </Box>
+                <Link
+                  to={contact?.github_url}
                   title={t(`${PATH}.socialMedia.github.GITHUB_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">
+                  <Box
+                    as="span"
+                    className="visually-hidden"
+                  >
                     {contact?.github_url}
-                  </span>{' '}
-                  <span className="footer-links__icon">
+                  </Box>{' '}
+                  <Box
+                    as="span"
+                    className="footer-links__icon"
+                  >
                     <FontAwesomeIcon
                       icon={faGithub}
                       fixedWidth
                     />
-                  </span>
-                </a>
-              </li>
+                  </Box>
+                </Link>
+              </ListItem>
             )}
             {contact?.instagram_url && config?.show_social_media && (
-              <li className="footer-links__item">
-                <span className="visually-hidden">
+              <ListItem className="footer-links__item">
+                <Box
+                  as="span"
+                  className="visually-hidden"
+                >
                   {t(`${PATH}.socialMedia.instagram.INSTAGRAM_LABEL`)}
-                </span>
-                <a
-                  href={contact?.instagram_url}
+                </Box>
+                <Link
+                  to={contact?.instagram_url}
                   title={t(`${PATH}.socialMedia.instagram.INSTAGRAM_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">
+                  <Box
+                    as="span"
+                    className="visually-hidden"
+                  >
                     {contact?.instagram_url}
-                  </span>{' '}
-                  <span className="footer-links__icon">
+                  </Box>{' '}
+                  <Box
+                    as="span"
+                    className="footer-links__icon"
+                  >
                     <FontAwesomeIcon
                       icon={faInstagram}
                       fixedWidth
                     />
-                  </span>
-                </a>
-              </li>
+                  </Box>
+                </Link>
+              </ListItem>
             )}
             {contact?.twitter_url && config?.show_social_media && (
-              <li className="footer-links__item">
-                <span className="visually-hidden">
+              <ListItem className="footer-links__item">
+                <Box
+                  as="span"
+                  className="visually-hidden"
+                >
                   {t(`${PATH}.socialMedia.twitter.TWITTER_LABEL`)}
-                </span>
-                <a
-                  href={contact?.twitter_url}
+                </Box>
+                <Link
+                  to={contact?.twitter_url}
                   title={t(`${PATH}.socialMedia.twitter.TWITTER_TITLE`)}
                   className="footer-links__link"
                 >
-                  <span className="visually-hidden">
+                  <Box
+                    as="span"
+                    className="visually-hidden"
+                  >
                     {contact?.twitter_url}
-                  </span>{' '}
-                  <span className="footer-links__icon">
+                  </Box>{' '}
+                  <Box
+                    as="span"
+                    className="footer-links__icon"
+                  >
                     <FontAwesomeIcon
                       icon={faTwitter}
                       fixedWidth
                     />
-                  </span>
-                </a>
-              </li>
+                  </Box>
+                </Link>
+              </ListItem>
             )}
-          </ul>
-        </div>
+          </List>
+        </Box>
       )}
-      <div className="text-center mb-4">
+      <Box className="text-center mb-4">
         <Logo />
-      </div>
-      <div className="text-center">
+      </Box>
+      <Box className="text-center">
         {t(`${PATH}.COPYRIGHT`, { year })}
-      </div>
-    </footer>
+      </Box>
+    </Box>
   );
 });
 

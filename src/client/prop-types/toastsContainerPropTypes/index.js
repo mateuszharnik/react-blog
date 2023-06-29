@@ -1,1 +1,1 @@
-export { toastsContainerPropTypes, toastsContainerDefaultProps } from './toastsContainerPropTypes';
+export { toastsContainerPropTypes } from './toastsContainerPropTypes';

@@ -7,6 +7,8 @@ import { sanitize } from '@client/utils/sanitizeUtils';
 import { toastsConstants } from '@shared/constants';
 import PageContainer from '@client/layouts/PageContainer';
 import Spinner from '@client/components/Spinner';
+import Box from '@client/components/Box';
+import Markdown from '@client/components/Markdown';
 
 const AboutContent = memo(() => {
   const { t } = useTranslation();
@@ -54,23 +56,22 @@ const AboutContent = memo(() => {
   return (
     <PageContainer>
       {getAboutMetadata.isLoading ? (
-        <div className="position-component-center">
+        <Box className="position-component-center">
           <Spinner />
-        </div>
+        </Box>
       ) : (
-        <div className="py-4">
+        <Box className="py-4">
           {about?.html_contents ? (
-            <div
+            <Markdown
               className="markdown mt-2"
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: contents }}
+              html={contents}
             />
           ) : (
-            <div className="position-component-center">
+            <Box className="position-component-center">
               {t('common.NO_CONTENT')}
-            </div>
+            </Box>
           )}
-        </div>
+        </Box>
       )}
     </PageContainer>
   );

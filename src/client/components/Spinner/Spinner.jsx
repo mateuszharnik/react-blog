@@ -2,9 +2,10 @@ import { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import { testsConstants } from '@shared/constants';
+import Box from '@client/components/Box';
 
 const Spinner = memo(() => (
-  <div
+  <Box
     data-testid={testsConstants.SPINNER}
     className="text-primary text-center"
   >
@@ -13,7 +14,7 @@ const Spinner = memo(() => (
       spin
       size="3x"
     />
-  </div>
+  </Box>
 ));
 
 Spinner.displayName = 'Spinner';

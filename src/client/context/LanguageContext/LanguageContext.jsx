@@ -5,7 +5,7 @@ import { useLayerContext } from '@client/context/LayerContext';
 import { dateAndTimeService } from '@client/services/dateAndTimeService';
 import { i18nService } from '@client/services/i18nService';
 import { languages, getLanguage, checkLanguage } from '@client/utils/languageUtils';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 export const Context = createContext();
 
@@ -55,11 +55,11 @@ const LanguageContext = memo(({ children }) => {
 LanguageContext.displayName = 'LanguageContext';
 
 LanguageContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 LanguageContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default LanguageContext;

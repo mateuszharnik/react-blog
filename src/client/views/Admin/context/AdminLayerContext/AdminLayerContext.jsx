@@ -1,8 +1,9 @@
 import {
   memo, createContext, useMemo, useState, useCallback, useEffect,
 } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyAdminComponentSpinner from '@client/views/Admin/components/LazyLoading/LazyAdminComponentSpinner';
+import Box from '@client/components/Box';
 
 export const Context = createContext();
 
@@ -34,9 +35,9 @@ const AdminLayerContext = memo(({ children }) => {
   return (
     <Context.Provider value={value}>
       {isAdminLayerActive && (
-        <div className="admin-layer">
+        <Box className="admin-layer">
           <LazyAdminComponentSpinner />
-        </div>
+        </Box>
       )}
       {children}
     </Context.Provider>
@@ -46,11 +47,11 @@ const AdminLayerContext = memo(({ children }) => {
 AdminLayerContext.displayName = 'AdminLayerContext';
 
 AdminLayerContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 AdminLayerContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default AdminLayerContext;

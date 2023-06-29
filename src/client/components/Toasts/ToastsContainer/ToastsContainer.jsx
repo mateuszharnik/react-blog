@@ -3,9 +3,11 @@ import {
 } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useToastsContext } from '@client/context/ToastsContext';
-import { toastsContainerPropTypes, toastsContainerDefaultProps } from '@client/prop-types';
+import { toastsContainerPropTypes } from '@client/prop-types/toastsContainerPropTypes';
 import Toast from '@client/components/Toasts/Toast';
 import Portal from '@client/components/Portal';
+import Box from '@client/components/Box';
+import { getDivClassName } from './ToastsContainer.classes';
 
 const ToastsContainer = memo(({ limit, position }) => {
   const {
@@ -14,7 +16,7 @@ const ToastsContainer = memo(({ limit, position }) => {
     actions: { removeToasts },
   } = useToastsContext();
 
-  const divClassName = useMemo(() => `toast-wrapper toast-wrapper__${position}`, [position]);
+  const divClassName = useMemo(() => getDivClassName({ position }), [position]);
 
   const marginBottom = useMemo(() => !position?.includes('top'), [position]);
 
@@ -42,7 +44,7 @@ const ToastsContainer = memo(({ limit, position }) => {
 
   return (
     <Portal to="toast">
-      <div className={divClassName}>
+      <Box className={divClassName}>
         <TransitionGroup component={null}>
           {toasts.map((toast) => (
             <CSSTransition
@@ -54,24 +56,24 @@ const ToastsContainer = memo(({ limit, position }) => {
               onExiting={removeHeight}
               onExited={removeHeight}
             >
-              <div className="position-relative">
+              <Box className="position-relative">
                 <Toast
                   toast={toast}
                   marginBottom={marginBottom}
                 />
-              </div>
+              </Box>
             </CSSTransition>
           ))}
         </TransitionGroup>
-      </div>
+      </Box>
     </Portal>
   );
 });
 
 ToastsContainer.displayName = 'ToastsContainer';
 
-ToastsContainer.propTypes = toastsContainerPropTypes;
+ToastsContainer.propTypes = toastsContainerPropTypes.position;
 
-ToastsContainer.defaultProps = toastsContainerDefaultProps;
+ToastsContainer.defaultProps = toastsContainerPropTypes.default;
 
 export default ToastsContainer;

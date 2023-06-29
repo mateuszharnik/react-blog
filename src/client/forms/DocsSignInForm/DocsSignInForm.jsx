@@ -8,6 +8,8 @@ import { useToastsContext } from '@client/context/ToastsContext';
 import { envConfig } from '@client/configs/envConfig';
 import { docsSignInSchema as validationSchema } from '@client/schemas/docsSignInSchemas';
 import { toastsConstants, apiConstants } from '@shared/constants';
+import Box from '@client/components/Box';
+import Button from '@client/components/Buttons/Button';
 
 const apiDocsUrl = `${envConfig.CLIENT_URL}/${apiConstants.DOCS.ROOT}`;
 
@@ -64,7 +66,7 @@ const DocsSignInForm = memo(() => {
       className="row"
       onSubmit={form.handleSubmit}
     >
-      <div className="mb-3 col-12">
+      <Box className="mb-3 col-12">
         <label
           htmlFor="password"
           className="form-label"
@@ -82,31 +84,36 @@ const DocsSignInForm = memo(() => {
           value={form.values.password.value}
         />
         {form.touched.password.value && form.errors.password.value ? (
-          <div className="invalid-feedback">
+          <Box className="invalid-feedback">
             {form.errors.password.value}
-          </div>
+          </Box>
         ) : null}
-      </div>
-      <div className="col-12 text-center">
-        <button
+      </Box>
+      <Box className="col-12 text-center">
+        <Button
           type="submit"
           title={t(title)}
           disabled={signInMetadata.isFetching}
-          className="btn btn-primary rounded-pill px-4"
+          variant="solid"
+          className="px-4"
+          rounded
         >
-          <span>
+          <Box as="span">
             {t(`${FORMS_PATH}.SIGN_IN`)}
-          </span>{' '}
+          </Box>{' '}
           {signInMetadata.isFetching && (
-            <span className="ms-1">
+            <Box
+              as="span"
+              className="ms-1"
+            >
               <FontAwesomeIcon
                 spin
                 icon={faCircleNotch}
               />
-            </span>
+            </Box>
           )}
-        </button>
-      </div>
+        </Button>
+      </Box>
     </form>
   );
 });

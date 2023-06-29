@@ -1,0 +1,14 @@
+@import "../../../assets/scss/variables";
+
+.scroll-top-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  z-index: $zindex-fixed;
+  @include toRem(bottom, 10);
+  @include toRem(right, 10);
+  @include toRem(width, 44);
+  @include toRem(height, 44);
+  @include toRem(padding, 10);
+}

@@ -1,14 +1,13 @@
 import { memo, forwardRef, useMemo } from 'react';
-import { hamburgerPropTypes, hamburgerDefaultProps } from '@client/prop-types';
+import { hamburgerPropTypes } from '@client/prop-types/hamburgerPropTypes';
+import Box from '@client/components/Box';
+import { getButtonClassName } from './Hamburger.classes';
 
 const Hamburger = memo(
   forwardRef(({
-    onBlur, onClick, title, hamburgerClassName, attr, isExpanded, text,
+    onBlur, onClick, title, className, attr, isExpanded, text,
   }, buttonRef) => {
-    const buttonClassName = useMemo(
-      () => `hamburger p-1 ${hamburgerClassName}`.trim(),
-      [hamburgerClassName],
-    );
+    const buttonClassName = useMemo(() => getButtonClassName({ className }), [className]);
 
     return (
       <button
@@ -23,10 +22,13 @@ const Hamburger = memo(
         onBlur={onBlur}
         onClick={onClick}
       >
-        <span className="visually-hidden">
+        <Box
+          as="span"
+          className="visually-hidden"
+        >
           {text}
-        </span>
-        <div className="hamburger__bar" />
+        </Box>
+        <Box className="hamburger__bar" />
       </button>
     );
   }),
@@ -34,8 +36,8 @@ const Hamburger = memo(
 
 Hamburger.displayName = 'Hamburger';
 
-Hamburger.propTypes = hamburgerPropTypes;
+Hamburger.propTypes = hamburgerPropTypes.props;
 
-Hamburger.defaultProps = hamburgerDefaultProps;
+Hamburger.defaultProps = hamburgerPropTypes.default;
 
 export default Hamburger;

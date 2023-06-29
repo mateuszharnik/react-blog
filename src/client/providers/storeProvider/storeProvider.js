@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { StoreProvider as EasyPeasyStoreProvider } from 'easy-peasy';
 import { store } from '@client/store';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 const StoreProvider = memo(({ children }) => (
   <EasyPeasyStoreProvider store={store}>
@@ -12,11 +12,11 @@ const StoreProvider = memo(({ children }) => (
 StoreProvider.displayName = 'StoreProvider';
 
 StoreProvider.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 StoreProvider.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default StoreProvider;

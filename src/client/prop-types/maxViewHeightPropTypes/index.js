@@ -1,1 +1,1 @@
-export { maxViewHeightPropTypes, maxViewHeightDefaultProps } from './maxViewHeightPropTypes';
+export { maxViewHeightPropTypes } from './maxViewHeightPropTypes';

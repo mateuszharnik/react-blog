@@ -1,5 +1,6 @@
 import { shape, instanceOf } from 'prop-types';
 
-export const refPropTypes = shape({ current: instanceOf(Element) });
-
-export const refDefaultProps = null;
+export const refPropTypes = {
+  props: shape({ current: instanceOf(Element) }),
+  default: {},
+};

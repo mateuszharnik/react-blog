@@ -6,7 +6,7 @@ import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import { useRouter } from '@client/router/hooks';
 import { usePermissions } from '@client/store/user';
-import { protectedRoutePropTypes, protectedRouteDefaultProps } from '@client/prop-types';
+import { protectedRoutePropTypes } from '@client/prop-types/protectedRoutePropTypes';
 
 const ProtectedRoute = memo(({
   pageComponent,
@@ -85,8 +85,8 @@ const ProtectedRoute = memo(({
 
 ProtectedRoute.displayName = 'ProtectedRoute';
 
-ProtectedRoute.propTypes = protectedRoutePropTypes;
+ProtectedRoute.propTypes = protectedRoutePropTypes.props;
 
-ProtectedRoute.defaultProps = protectedRouteDefaultProps;
+ProtectedRoute.defaultProps = protectedRoutePropTypes.default;
 
 export default ProtectedRoute;

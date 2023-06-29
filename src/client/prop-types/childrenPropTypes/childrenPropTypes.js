@@ -1,5 +1,6 @@
 import { oneOfType, arrayOf, node } from 'prop-types';
 
-export const childrenPropTypes = oneOfType([arrayOf(node), node]);
-
-export const childrenDefaultProps = null;
+export const childrenPropTypes = {
+  props: oneOfType([arrayOf(node), node]),
+  default: null,
+};

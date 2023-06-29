@@ -1,7 +1,0 @@
-@import "../../assets/scss/variables";
-
-.error {
-  @include toRem(max-width, 400);
-  @include toRem(padding, 16);
-  text-align: center;
-}

@@ -1,7 +1,7 @@
 import {
   memo, createContext, useMemo, useState, useEffect, useCallback,
 } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 export const Context = createContext();
 
@@ -38,11 +38,11 @@ const MatchMediaContext = memo(({ children }) => {
 MatchMediaContext.displayName = 'MatchMediaContext';
 
 MatchMediaContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 MatchMediaContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default MatchMediaContext;

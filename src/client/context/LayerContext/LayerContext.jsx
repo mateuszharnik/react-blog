@@ -1,8 +1,9 @@
 import {
   memo, createContext, useMemo, useState, useCallback, useEffect,
 } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
+import Box from '@client/components/Box';
 
 export const Context = createContext();
 
@@ -34,9 +35,9 @@ const LayerContext = memo(({ children }) => {
   return (
     <Context.Provider value={value}>
       {isLayerActive && (
-        <div className="layer">
+        <Box className="layer">
           <LazyComponentSpinner />
-        </div>
+        </Box>
       )}
       {children}
     </Context.Provider>
@@ -46,11 +47,11 @@ const LayerContext = memo(({ children }) => {
 LayerContext.displayName = 'LayerContext';
 
 LayerContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 LayerContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default LayerContext;

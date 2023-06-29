@@ -1,0 +1,69 @@
+@import "../../../assets/scss/variables";
+
+[data-bs-theme="dark"] {
+  .btn:not([class*="btn-outline"]) {
+    --bs-btn-color: #{$body-bg-dark};
+
+    &:disabled {
+      --bs-btn-disabled-color: #{$body-bg-dark};
+    }
+
+    &:active {
+      --bs-btn-active-color: #{$body-bg-dark};
+    }
+
+    &:hover,
+    &:focus-visible {
+      --bs-btn-hover-color: #{$body-bg-dark};
+    }
+  }
+
+  .btn[class*="btn-outline"] {
+    &:active {
+      --bs-btn-active-color: #{$body-bg-dark};
+    }
+
+    &:hover,
+    &:focus-visible {
+      --bs-btn-hover-color: #{$body-bg-dark};
+    }
+  }
+
+  .button-link {
+    &:active,
+    &:focus-visible {
+      outline: white auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
+  }
+}
+
+.button-link {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  color: $link-color;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+
+  &:hover {
+    background: transparent;
+    color: $link-hover-color;
+    text-decoration: underline;
+  }
+
+  &:active,
+  &:focus-visible {
+    background: transparent !important;
+    border: none;
+    box-shadow: none;
+    color: $link-color !important;
+    outline: black auto 1px;
+    outline: -webkit-focus-ring-color auto 1px;
+
+    &:hover {
+      color: $link-hover-color !important;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { portalPropTypes, portalDefaultProps } from '@client/prop-types';
+import { portalPropTypes } from '@client/prop-types/portalPropTypes';
 
 const Portal = memo(({ to, children }) => {
   const target = useMemo(() => {
@@ -14,8 +14,8 @@ const Portal = memo(({ to, children }) => {
 
 Portal.displayName = 'Portal';
 
-Portal.propTypes = portalPropTypes;
+Portal.propTypes = portalPropTypes.props;
 
-Portal.defaultProps = portalDefaultProps;
+Portal.defaultProps = portalPropTypes.default;
 
 export default Portal;

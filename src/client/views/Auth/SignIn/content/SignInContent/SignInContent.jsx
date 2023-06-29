@@ -8,7 +8,9 @@ import Link from '@client/router/components/Link';
 import AuthWrapper from '@client/layouts/AuthWrapper';
 import AuthContainer from '@client/layouts/AuthContainer';
 import SignInForm from '@client/forms/SignInForm';
-import Heading from '@client/components/Heading';
+import Heading from '@client/components/Typography/Heading';
+import Text from '@client/components/Typography/Text';
+import Box from '@client/components/Box';
 
 const PATH = 'auth';
 
@@ -29,28 +31,32 @@ const SignInContent = memo(() => {
         >
           {t('head.title.SIGN_IN')}
         </Heading>
-        <p className="text-center text-muted">
+        <Text className="text-center text-muted">
           {t(`${PATH}.signIn.user.DESCRIPTION`)}
-        </p>
-        <div className="mb-3">
+        </Text>
+        <Box className="mb-3">
           <FontAwesomeIcon icon={faArrowLeft} />{' '}
           <Link
             to={routesConstants.ROOT}
             title={t(`${PATH}.BACK_TO_HOMEPAGE`)}
           >
-            <span>{t(`${PATH}.BACK`)}</span>
+            <Box as="span">
+              {t(`${PATH}.BACK`)}
+            </Box>
           </Link>
-        </div>
+        </Box>
         <SignInForm />
-        <div className="mt-3 text-center">
+        <Box className="mt-3 text-center">
           {t(`${PATH}.signIn.user.YOU_DON_NOT_HAVE_ACCOUNT`)}{' '}
           <Link
             to={routesConstants.AUTH.SIGN_UP.ROOT}
             title={t(`${PATH}.GO_TO_SIGN_UP`)}
           >
-            <span>{t(`${PATH}.SIGN_UP`)}</span>
+            <Box as="span">
+              {t(`${PATH}.SIGN_UP`)}
+            </Box>
           </Link>.
-        </div>
+        </Box>
       </AuthContainer>
     </AuthWrapper>
   );

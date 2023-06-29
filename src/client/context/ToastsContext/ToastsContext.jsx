@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultToast } from '@client/configs/toastsConfig';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
 export const Context = createContext();
 
@@ -74,11 +74,11 @@ const ToastsContext = memo(({ children }) => {
 ToastsContext.displayName = 'ToastsContext';
 
 ToastsContext.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 ToastsContext.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default ToastsContext;

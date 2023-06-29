@@ -1,1 +1,1 @@
-export { navLinkPropTypes, navLinkDefaultProps } from './navLinkPropTypes';
+export { navLinkPropTypes } from './navLinkPropTypes';
