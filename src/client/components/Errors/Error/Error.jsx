@@ -4,7 +4,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
-import { useThemeContext } from '@client/context/ThemeContext';
+import { useThemeContext } from '@client/contexts/ThemeContext';
 import { valuesConstants } from '@shared/constants';
 import imageDark from '@client/assets/images/undraw_fixing_bugs_dark_w7gi.svg';
 import imageLight from '@client/assets/images/undraw_fixing_bugs_light_w7gi.svg';
@@ -15,7 +15,7 @@ import Button from '@client/components/Buttons/Button';
 
 const PATH = 'common.errors';
 
-const Error = memo(() => {
+const Error = memo((props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { t } = useTranslation();
@@ -32,7 +32,10 @@ const Error = memo(() => {
   }, []);
 
   return (
-    <Box className="error m-auto">
+    <Box
+      className="error m-auto"
+      {...props}
+    >
       <LazyImage
         src={image}
         alt={t(`${PATH}.ERROR_ON_THE_PAGE`)}

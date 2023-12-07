@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from '@client/router/hooks';
 import { useNavigation } from '@client/store/navigation';
-import { useMatchMediaContext } from '@client/context/MatchMediaContext';
+import { useMatchMediaContext } from '@client/contexts/MatchMediaContext';
 
 export const useNav = ({ openNavButtonRef, closeNavButtonRef }) => {
   const { isDesktop } = useMatchMediaContext();

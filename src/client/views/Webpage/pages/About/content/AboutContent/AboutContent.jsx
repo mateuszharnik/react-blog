@@ -1,8 +1,8 @@
 import { memo, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAbout } from '@client/store/about';
-import { useToastsContext } from '@client/context/ToastsContext';
-import { useWebpageLayerContext } from '@client/views/Webpage/context/WebpageLayerContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
+import { useWebpageLayerContext } from '@client/views/Webpage/contexts/WebpageLayerContext';
 import { sanitize } from '@client/utils/sanitizeUtils';
 import { toastsConstants } from '@shared/constants';
 import PageContainer from '@client/layouts/PageContainer';

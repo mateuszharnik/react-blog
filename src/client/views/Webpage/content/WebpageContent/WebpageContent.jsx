@@ -1,5 +1,5 @@
 import { memo, useRef, useEffect } from 'react';
-import { useLayerContext } from '@client/context/LayerContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import View from '@client/router/components/View';
 import PageWrapper from '@client/layouts/PageWrapper';

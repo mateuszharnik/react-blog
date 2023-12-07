@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { testsConstants, routesConstants } from '@shared/constants';
 import I18nextProvider from '@client/providers/i18nextProvider';
 import StoreProvider from '@client/providers/storeProvider';
-import MatchMediaContext from '@client/context/MatchMediaContext';
+import MatchMediaContext from '@client/contexts/MatchMediaContext';
 import Header from './index';
 
 describe('Header', () => {

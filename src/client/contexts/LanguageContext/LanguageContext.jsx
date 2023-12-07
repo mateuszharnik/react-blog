@@ -1,7 +1,7 @@
 import {
   memo, createContext, useMemo, useState, useCallback, useEffect,
 } from 'react';
-import { useLayerContext } from '@client/context/LayerContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
 import { dateAndTimeService } from '@client/services/dateAndTimeService';
 import { i18nService } from '@client/services/i18nService';
 import { languages, getLanguage, checkLanguage } from '@client/utils/languageUtils';

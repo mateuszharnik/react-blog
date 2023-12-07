@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
-import AdminLayerContext from '@client/views/Admin/context/AdminLayerContext';
+import AdminLayerContext from '@client/views/Admin/contexts/AdminLayerContext';
 import LazyAdminComponentError from '@client/views/Admin/components/LazyLoading/LazyAdminComponentError';
 import LazyAdminComponentSpinner from '@client/views/Admin/components/LazyLoading/LazyAdminComponentSpinner';
 

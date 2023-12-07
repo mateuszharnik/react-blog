@@ -1,4 +1,4 @@
-import ThemeContext from '@client/context/ThemeContext';
+import ThemeContext from '@client/contexts/ThemeContext';
 import Error from './index';
 import '@client/libs.scss';
 import '@client/index.scss';
@@ -11,3 +11,6 @@ export default {
 const Template = (args) => <ThemeContext><Error {...args} /></ThemeContext>;
 
 export const Default = Template.bind({});
+Default.parameters = {
+  controls: { hideNoControlsWarning: true },
+};

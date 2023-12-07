@@ -2,8 +2,8 @@ import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from '@client/router/hooks';
 import { useAuth } from '@client/store/auth';
-import { useToastsContext } from '@client/context/ToastsContext';
-import { useLayerContext } from '@client/context/LayerContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
 import { routesConstants, toastsConstants } from '@shared/constants';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
