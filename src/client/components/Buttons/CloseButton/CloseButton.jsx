@@ -2,13 +2,17 @@ import { memo, useMemo, forwardRef } from 'react';
 import { closeButtonPropTypes } from '@client/prop-types/closeButtonPropTypes';
 import { getCloseButtonClassName } from './CloseButton.classes';
 
-const CloseButton = memo(forwardRef(({ className, children, ...restProps }, buttonRef) => {
+const CloseButton = memo(forwardRef(({
+  className,
+  children,
+  ...restProps
+}, buttonRef) => {
   const buttonClassName = useMemo(() => getCloseButtonClassName({ className }), [className]);
 
   return (
     <button
-      type="button"
       ref={buttonRef}
+      type="button"
       className={buttonClassName}
       {...restProps}
     >

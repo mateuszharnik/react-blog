@@ -7,8 +7,8 @@ const Box = memo(forwardRef(({
   ...restProps
 }, boxRef) => (
   <Component
-    {...restProps}
     ref={boxRef}
+    {...restProps}
   >
     {children}
   </Component>

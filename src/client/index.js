@@ -8,20 +8,18 @@ import QueryClientProvider from '@client/providers/queryClientProvider';
 import App from '@client/App';
 import './index.scss';
 
-(async () => {
-  aosService.init();
-  sentryService.init();
+aosService.init();
+sentryService.init();
 
-  render(
-    <StoreProvider>
-      <RouterProvider>
-        <I18nextProvider>
-          <QueryClientProvider>
-            <App />
-          </QueryClientProvider>
-        </I18nextProvider>
-      </RouterProvider>
-    </StoreProvider>,
-    document.getElementById('app'),
-  );
-})();
+render(
+  <StoreProvider>
+    <RouterProvider>
+      <I18nextProvider>
+        <QueryClientProvider>
+          <App />
+        </QueryClientProvider>
+      </I18nextProvider>
+    </RouterProvider>
+  </StoreProvider>,
+  document.getElementById('app'),
+);

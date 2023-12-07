@@ -2,7 +2,7 @@ const { resolve } = require('path');
 
 module.exports = {
   stories: ['../src/client/**/*.stories.js'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-postcss'],
+  addons: ['@storybook/addon-links', '@storybook/addon-actions', '@storybook/addon-essentials', '@storybook/addon-postcss'],
   webpackFinal: async (config) => {
     config.resolve.alias['@client'] = resolve(__dirname, '../src/client');
     config.resolve.alias['@shared'] = resolve(__dirname, '../src/shared');

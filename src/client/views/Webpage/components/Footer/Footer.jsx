@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
 
 const PATH = 'footer';
 
-const Footer = memo(() => {
+const Footer = memo((props) => {
   const { t } = useTranslation();
   const { contact } = useContact();
   const { config } = useConfig();
@@ -37,6 +37,7 @@ const Footer = memo(() => {
     <Box
       as="footer"
       className="footer"
+      {...props}
     >
       {shouldRender && (
         <Box className="footer-links mx-auto mb-4">

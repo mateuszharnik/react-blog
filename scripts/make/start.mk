@@ -56,19 +56,19 @@ dev@server:
 dev: # Start development server for given environment
 dev: check-development-env
 dev:
-	@npx concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=$(DEV_ENV)" "make dev@server DEV_ENV=$(DEV_ENV)"
+	@concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=$(DEV_ENV)" "make dev@server DEV_ENV=$(DEV_ENV)"
 
 .ONESHELL:
 dev@development: # Start development server in local environment
 dev@development:
-	@npx concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=development" "make dev@server DEV_ENV=development"
+	@concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=development" "make dev@server DEV_ENV=development"
 
 .ONESHELL:
 dev@test: # Start development server in test environment
 dev@test:
-	@npx concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=test" "make dev@server DEV_ENV=test"
+	@concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=test" "make dev@server DEV_ENV=test"
 
 .ONESHELL:
 dev@e2e: # Start development server in e2e environment
 dev@e2e:
-	@npx concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=e2e" "make dev@server DEV_ENV=e2e"
+	@concurrently -n "@frontend,@backend" -c "blue,red" "make dev@client DEV_ENV=e2e" "make dev@server DEV_ENV=e2e"

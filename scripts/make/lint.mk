@@ -41,7 +41,7 @@ lint@scripts:
 .ONESHELL:
 lint@style: # Lint all css and scss files in client directory
 lint@style:
-	@npx stylelint ./src/client/**/*.{css,scss}
+	@stylelint ./src/client/**/*.{css,scss}
 
 .ONESHELL:
 lint@eslint: # Lint .eslintrc.js file
@@ -96,7 +96,7 @@ lint-fix@scripts:
 .ONESHELL:
 lint-fix@style: # Lint and fix all css and scss files in client directory
 lint-fix@style:
-	@npx stylelint ./src/client/**/*.{css,scss} --fix
+	@stylelint ./src/client/**/*.{css,scss} --fix
 
 .ONESHELL:
 lint-fix@eslint: # Lint and fix .eslintrc.js file

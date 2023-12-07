@@ -3,10 +3,11 @@ import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import { testsConstants } from '@shared/constants';
 import Box from '@client/components/Box';
 
-const AuthContainer = memo(({ children }) => (
+const AuthContainer = memo(({ children, ...restProps }) => (
   <Box
     data-testid={testsConstants.AUTH_CONTAINER}
     className="auth-container"
+    {...restProps}
   >
     {children}
   </Box>

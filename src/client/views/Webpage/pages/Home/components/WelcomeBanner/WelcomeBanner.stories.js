@@ -13,3 +13,6 @@ export default {
 const Template = (args) => <WelcomeBanner {...args} />;
 
 export const Default = Template.bind({});
+Default.parameters = {
+  controls: { hideNoControlsWarning: true },
+};

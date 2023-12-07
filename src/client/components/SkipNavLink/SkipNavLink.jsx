@@ -6,7 +6,7 @@ import Portal from '@client/components/Portal';
 
 const PATH = 'common.skipNavLink';
 
-const SkipNavLink = memo(({ target }) => {
+const SkipNavLink = memo(({ target, ...restProps }) => {
   const { t } = useTranslation();
 
   const handleScroll = useCallback(async (e) => {
@@ -29,6 +29,7 @@ const SkipNavLink = memo(({ target }) => {
         to="#main"
         className="skip-nav-link px-3 py-2"
         title={t(`${PATH}.GO_TO_MAIN_CONTENT`)}
+        {...restProps}
         onClick={handleScroll}
       >
         {t(`${PATH}.SKIP_NAVIGATION`)}

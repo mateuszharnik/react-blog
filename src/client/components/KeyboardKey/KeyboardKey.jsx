@@ -6,8 +6,8 @@ const KeyboardKey = memo(forwardRef(({
   ...restProps
 }, keyboardKeyRef) => (
   <kbd
-    {...restProps}
     ref={keyboardKeyRef}
+    {...restProps}
   >
     {children}
   </kbd>

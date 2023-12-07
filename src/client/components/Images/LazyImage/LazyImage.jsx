@@ -1,5 +1,5 @@
 import {
-  memo, useState, useMemo, useCallback, useEffect,
+  memo, useState, useMemo, useCallback, useEffect, forwardRef,
 } from 'react';
 import lazySizes from 'lazysizes';
 import { lazyImagePropTypes } from '@client/prop-types/lazyImagePropTypes';
@@ -13,50 +13,57 @@ lazySizes.cfg.loadedClass = 'lazy-loaded-image';
 lazySizes.cfg.lazyClass = 'lazy-load-image';
 lazySizes.cfg.loadingClass = 'lazy-loading-image';
 
-const LazyImage = memo(
-  ({
-    src, alt, divClassName, imgClassName, spinnerClassName, height, width,
-  }) => {
-    const [isLoaded, setIsLoaded] = useState(false);
+const LazyImage = memo(forwardRef(({
+  src,
+  alt,
+  divClassName,
+  imgClassName,
+  spinnerClassName,
+  height,
+  width,
+  ...restProps
+}, imageRef) => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    const imageClassName = useMemo(() => getImageClassName({
-      isLoaded, className: imgClassName,
-    }), [isLoaded, imgClassName]);
+  const imageClassName = useMemo(() => getImageClassName({
+    isLoaded, className: imgClassName,
+  }), [isLoaded, imgClassName]);
 
-    const handleLoad = useCallback(() => {
-      setIsLoaded(true);
-    }, []);
+  const handleLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
 
-    useEffect(() => {
-      setIsLoaded(false);
-    }, [src]);
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
 
-    return (
-      <Box
-        data-testid={testsConstants.LAZY_LOAD_IMAGE_WRAPPER}
-        className={divClassName || null}
-      >
-        <img
-          data-testid={testsConstants.LAZY_LOAD_IMAGE}
-          alt={alt}
-          data-src={src}
-          height={height}
-          width={width}
-          className={imageClassName}
-          onLoad={handleLoad}
-        />
-        {!isLoaded && (
-          <Box
-            data-testid={testsConstants.LAZY_LOAD_IMAGE_SPINNER}
-            className={spinnerClassName || null}
-          >
-            <Spinner />
-          </Box>
-        )}
-      </Box>
-    );
-  },
-);
+  return (
+    <Box
+      data-testid={testsConstants.LAZY_LOAD_IMAGE_WRAPPER}
+      className={divClassName || null}
+      {...restProps}
+    >
+      <img
+        ref={imageRef}
+        data-testid={testsConstants.LAZY_LOAD_IMAGE}
+        alt={alt}
+        data-src={src}
+        height={height}
+        width={width}
+        className={imageClassName}
+        onLoad={handleLoad}
+      />
+      {!isLoaded && (
+        <Box
+          data-testid={testsConstants.LAZY_LOAD_IMAGE_SPINNER}
+          className={spinnerClassName || null}
+        >
+          <Spinner />
+        </Box>
+      )}
+    </Box>
+  );
+}));
 
 LazyImage.displayName = 'LazyImage';
 

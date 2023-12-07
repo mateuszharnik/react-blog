@@ -6,8 +6,8 @@ const ListItem = memo(forwardRef(({
   ...restProps
 }, listItemRef) => (
   <li
-    {...restProps}
     ref={listItemRef}
+    {...restProps}
   >
     {children}
   </li>

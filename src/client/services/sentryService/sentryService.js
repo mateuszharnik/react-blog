@@ -19,6 +19,10 @@ class SentryService {
       normalizeDepth: 5,
     });
   }
+
+  getInstance() {
+    return this.#client;
+  }
 }
 
 export const sentryService = new SentryService(Sentry);
