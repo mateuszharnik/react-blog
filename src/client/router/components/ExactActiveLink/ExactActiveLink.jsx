@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink as Link } from 'react-router-dom';
 import { activeLinkPropTypes } from '@client/prop-types/activeLinkPropTypes';
@@ -7,13 +7,18 @@ import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const ExactActiveLink = memo(({
-  id, to, className, children, ...restProps
-}) => {
+const ExactActiveLink = memo(forwardRef(({
+  id,
+  to,
+  className,
+  children,
+  ...restProps
+}, linkRef) => {
   const { t } = useTranslation();
 
   return (
     <Link
+      ref={linkRef}
       end
       to={to}
       className={className}
@@ -36,7 +41,7 @@ const ExactActiveLink = memo(({
       )}
     </Link>
   );
-});
+}));
 
 ExactActiveLink.displayName = 'ExactActiveLink';
 

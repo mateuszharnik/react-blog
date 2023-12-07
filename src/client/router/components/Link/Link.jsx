@@ -1,15 +1,19 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, forwardRef } from 'react';
 import { Link as DefaultLink } from 'react-router-dom';
 import isString from 'lodash/isString';
 import { linkPropTypes } from '@client/prop-types/linkPropTypes';
 
-const Link = memo(({
-  to, className, children, ...restProps
-}) => {
+const Link = memo(forwardRef(({
+  to,
+  className,
+  children,
+  ...restProps
+}, linkRef) => {
   const isExternalLink = useMemo(() => isString(to) && (to.startsWith('http') || to.startsWith('mailto:') || to.startsWith('#')), [to]);
 
   return isExternalLink ? (
     <a
+      ref={linkRef}
       href={to}
       className={className}
       {...restProps}
@@ -18,6 +22,7 @@ const Link = memo(({
     </a>
   ) : (
     <DefaultLink
+      ref={linkRef}
       to={to}
       className={className}
       {...restProps}
@@ -25,7 +30,7 @@ const Link = memo(({
       {children}
     </DefaultLink>
   );
-});
+}));
 
 Link.displayName = 'Link';
 

@@ -4,11 +4,12 @@ import { testsConstants } from '@shared/constants';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import Box from '@client/components/Box';
 
-const AuthWrapper = memo(({ children }) => (
+const AuthWrapper = memo(({ children, ...restProps }) => (
   <MaxViewHeight>
     <Box
       data-testid={testsConstants.AUTH_WRAPPER}
       className="auth-wrapper"
+      {...restProps}
     >
       {children}
     </Box>

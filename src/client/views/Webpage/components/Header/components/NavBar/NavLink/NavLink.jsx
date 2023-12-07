@@ -12,6 +12,7 @@ const NavLink = memo(({
   dataNav,
   dataDropdownNav,
   id,
+  ...restProps
 }) => (
   <ExactActiveLink
     id={id}
@@ -21,6 +22,7 @@ const NavLink = memo(({
     data-nav={dataNav}
     data-dropdown-nav={dataDropdownNav}
     className="nav__link mx-auto"
+    {...restProps}
     onBlur={onBlur}
   >
     <Box

@@ -1,12 +1,17 @@
 import {
-  memo, useEffect, useState, useMemo, useCallback,
+  memo, useEffect, useState, useMemo, useCallback, forwardRef,
 } from 'react';
 import { getWindowInnerHeight } from '@client/utils/sizesUtils';
 import { maxViewHeightPropTypes } from '@client/prop-types/maxViewHeightPropTypes';
 import Box from '@client/components/Box';
 import { getDivClassName } from './MaxViewHeight.classes';
 
-const MaxViewHeight = memo(({ offsetHeight, className, children }) => {
+const MaxViewHeight = memo(forwardRef(({
+  offsetHeight,
+  className,
+  children,
+  ...restProps
+}, maxViewHeightRef) => {
   const [height, setHeight] = useState(getWindowInnerHeight(offsetHeight));
 
   const divClassName = useMemo(() => getDivClassName({ className }), [className]);
@@ -34,13 +39,15 @@ const MaxViewHeight = memo(({ offsetHeight, className, children }) => {
 
   return (
     <Box
+      ref={maxViewHeightRef}
       className={divClassName}
       style={divStyles}
+      {...restProps}
     >
       {children}
     </Box>
   );
-});
+}));
 
 MaxViewHeight.displayName = 'MaxViewHeight';
 

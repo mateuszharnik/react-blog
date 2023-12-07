@@ -1,5 +1,5 @@
 import { memo, useState, useEffect } from 'react';
-import Loadable from 'react-loadable';
+import Loadable from '@docusaurus/react-loadable';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyComponentError from '@client/components/LazyLoading/LazyComponentError';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';

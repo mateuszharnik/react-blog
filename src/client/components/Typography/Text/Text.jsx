@@ -1,15 +1,18 @@
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { textPropTypes } from '@client/prop-types/textPropTypes';
 
-const Text = memo(({
+const Text = memo(forwardRef(({
   as: Component,
   children,
   ...restProps
-}) => (
-  <Component {...restProps}>
+}, textRef) => (
+  <Component
+    ref={textRef}
+    {...restProps}
+  >
     {children}
   </Component>
-));
+)));
 
 Text.displayName = 'Text';
 

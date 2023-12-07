@@ -36,7 +36,7 @@ const NavImageLink = memo(({
       <ExactActiveLink
         to={to}
         title={t(`${PATH}.nav.profile.TITLE`)}
-        data-nav
+        data-nav="true"
         {...restProps}
         onBlur={onBlur}
       >

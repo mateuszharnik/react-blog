@@ -55,9 +55,9 @@ const NavImageButton = memo(({
       <button
         ref={buttonRef}
         type="button"
+        data-dropdown-nav="true"
         title={t(title)}
         disabled={isAnimated}
-        data-dropdown-nav="true"
         {...restProps}
         onClick={handleToggleNav}
         onBlur={handleCloseNavOnBlur}
@@ -87,9 +87,9 @@ const NavImageButton = memo(({
           <>
             {isOpen && (
               <Box
-                className="dropdown-nav"
-                data-dropdown-nav="true"
                 ref={dropdownRef}
+                data-dropdown-nav="true"
+                className="dropdown-nav"
               >
                 <List
                   className="dropdown-nav__list py-2"
@@ -97,9 +97,9 @@ const NavImageButton = memo(({
                 >
                   <ListItem className="dropdown-nav__item">
                     <NavLink
+                      dataDropdownNav="true"
                       to={to}
                       title={t(`${PATH}.nav.profile.TITLE`)}
-                      dataDropdownNav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
                       <FontAwesomeIcon
@@ -118,9 +118,9 @@ const NavImageButton = memo(({
                   {!isAdmin && (
                     <ListItem className="dropdown-nav__item">
                       <NavLink
+                        dataDropdownNav="true"
                         to={routesConstants.PROFILE.SETTINGS.ROOT}
                         title={t(`${PATH}.nav.settings.TITLE`)}
-                        dataDropdownNav="true"
                         onBlur={handleCloseNavOnBlur}
                       >
                         <FontAwesomeIcon

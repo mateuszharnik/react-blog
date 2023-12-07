@@ -8,11 +8,14 @@ import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const Header = memo(() => {
+const Header = memo((props) => {
   const { t } = useTranslation();
 
   return (
-    <Box className="header__container w-100">
+    <Box
+      className="header__container w-100"
+      {...props}
+    >
       <Box
         as="header"
         className="header mx-auto"

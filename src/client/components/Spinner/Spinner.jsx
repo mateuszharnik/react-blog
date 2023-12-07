@@ -4,10 +4,11 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import { testsConstants } from '@shared/constants';
 import Box from '@client/components/Box';
 
-const Spinner = memo(() => (
+const Spinner = memo((props) => (
   <Box
     data-testid={testsConstants.SPINNER}
     className="text-primary text-center"
+    {...props}
   >
     <FontAwesomeIcon
       icon={faCircleNotch}

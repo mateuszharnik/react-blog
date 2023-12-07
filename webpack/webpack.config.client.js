@@ -286,6 +286,8 @@ module.exports = (webpackEnv, { mode }) => {
         canPrint: true,
       }),
       new ESLintPlugin({
+        failOnError: mode === 'production',
+        failOnWarning: mode === 'production',
         context: './',
         extensions: ['js', 'jsx', 'json'],
       }),

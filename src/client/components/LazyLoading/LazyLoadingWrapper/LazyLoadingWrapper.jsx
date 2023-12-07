@@ -4,7 +4,9 @@ import MaxViewHeight from '@client/components/MaxViewHeight';
 import Box from '@client/components/Box';
 import { getMaxViewHeightClassName } from './LazyLoadingWrapper.classes';
 
-const LazyLoadingWrapper = memo(({ children, className, offsetTop }) => {
+const LazyLoadingWrapper = memo(({
+  children, className, offsetTop, ...restProps
+}) => {
   const maxViewHeightClassName = useMemo(() => getMaxViewHeightClassName({
     className,
   }), [className]);
@@ -14,7 +16,10 @@ const LazyLoadingWrapper = memo(({ children, className, offsetTop }) => {
       offsetHeight={offsetTop}
       className={maxViewHeightClassName}
     >
-      <Box className="position-center w-100">
+      <Box
+        className="position-center w-100"
+        {...restProps}
+      >
         {children}
       </Box>
     </MaxViewHeight>

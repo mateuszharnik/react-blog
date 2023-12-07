@@ -60,7 +60,7 @@ build@server:
 .ONESHELL:
 build@purgecss: # Purge unused styles
 build@purgecss:
-	@npx purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css
+	@purgecss --css dist/client/css/styles.css --content dist/client/index.html dist/client/js/**/*.js --output dist/client/css/styles.css
 
 #######################################################
 ############### BUILD AND START PROJECT ###############

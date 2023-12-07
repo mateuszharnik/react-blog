@@ -10,7 +10,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'common.connectionStatus';
 
-const ConnectionStatus = memo(() => {
+const ConnectionStatus = memo((props) => {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
   const { t } = useTranslation();
@@ -44,7 +44,10 @@ const ConnectionStatus = memo(() => {
         >
           <>
             {isOffline && (
-              <Box className="connection-status px-3 py-2">
+              <Box
+                className="connection-status px-3 py-2"
+                {...props}
+              >
                 <FontAwesomeIcon icon={faWifi} />
                 <Box
                   as="span"

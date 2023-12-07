@@ -14,7 +14,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'common.scrollToTopButton';
 
-const ScrollToTopButton = memo(({ target }) => {
+const ScrollToTopButton = memo(({ target, ...restProps }) => {
   const [isVisible, setIsVisible] = useState(window.pageYOffset >= 800);
 
   const { t } = useTranslation();
@@ -63,8 +63,9 @@ const ScrollToTopButton = memo(({ target }) => {
             {isVisible && (
               <Link
                 to="#main"
-                title={t(`${PATH}.SCROLL_TO_TOP`)}
                 className="btn btn-primary scroll-top-button"
+                title={t(`${PATH}.SCROLL_TO_TOP`)}
+                {...restProps}
                 onClick={handleScroll}
               >
                 <Box
