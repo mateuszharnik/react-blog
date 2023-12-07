@@ -5,7 +5,7 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import { useRouter } from '@client/router/hooks';
 import { useForm } from '@client/hooks/useForm';
 import { useAuth } from '@client/store/auth';
-import { useToastsContext } from '@client/context/ToastsContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { signUpSchema as validationSchema } from '@client/schemas/signUpSchemas';
 import { routesConstants, toastsConstants, valuesConstants } from '@shared/constants';
 import Box from '@client/components/Box';

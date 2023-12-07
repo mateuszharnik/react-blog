@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
-import { useLayerContext } from '@client/context/LayerContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
 import { routesConstants } from '@shared/constants';
 import Link from '@client/router/components/Link';
 import AuthWrapper from '@client/layouts/AuthWrapper';

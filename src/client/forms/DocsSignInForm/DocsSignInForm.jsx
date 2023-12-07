@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import { useForm } from '@client/hooks/useForm';
 import { useDocs } from '@client/store/docs';
-import { useToastsContext } from '@client/context/ToastsContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { envConfig } from '@client/configs/envConfig';
 import { docsSignInSchema as validationSchema } from '@client/schemas/docsSignInSchemas';
 import { toastsConstants, apiConstants } from '@shared/constants';

@@ -3,8 +3,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from '@client/router/hooks';
-import { useLayerContext } from '@client/context/LayerContext';
-import { useThemeContext } from '@client/context/ThemeContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
+import { useThemeContext } from '@client/contexts/ThemeContext';
 import { routesConstants, valuesConstants } from '@shared/constants';
 import imageLight from '@client/assets/images/undraw_page_not_found_light_su7k.svg';
 import imageDark from '@client/assets/images/undraw_page_not_found_dark_su7k.svg';

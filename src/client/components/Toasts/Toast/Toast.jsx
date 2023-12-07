@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToastsContext } from '@client/context/ToastsContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { getToastIcon } from '@client/utils/iconsUtils';
 import { toastPropTypes } from '@client/prop-types/toastPropTypes';
 import Box from '@client/components/Box';

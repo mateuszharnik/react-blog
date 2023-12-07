@@ -26,11 +26,11 @@
 @import "./forms/DocsSignInForm/index";
 
 /*** Context ***/
-@import "./context/ThemeContext/index";
-@import "./context/LayerContext/index";
-@import "./context/MatchMediaContext/index";
-@import "./context/LanguageContext/index";
-@import "./context/ToastsContext/index";
+@import "./contexts/ThemeContext/index";
+@import "./contexts/LayerContext/index";
+@import "./contexts/MatchMediaContext/index";
+@import "./contexts/LanguageContext/index";
+@import "./contexts/ToastsContext/index";
 
 /*** Components ***/
 @import "./components/Buttons/Button/index";

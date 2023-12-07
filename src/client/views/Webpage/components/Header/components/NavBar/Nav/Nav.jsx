@@ -1,7 +1,7 @@
 import { memo, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@client/store/user';
-import { useMatchMediaContext } from '@client/context/MatchMediaContext';
+import { useMatchMediaContext } from '@client/contexts/MatchMediaContext';
 import { useNav } from '@client/views/Webpage/components/Header/components/NavBar/Nav/hooks';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import { testsConstants, routesConstants } from '@shared/constants';

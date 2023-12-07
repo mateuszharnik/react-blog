@@ -2,7 +2,7 @@ import {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useToastsContext } from '@client/context/ToastsContext';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { toastsContainerPropTypes } from '@client/prop-types/toastsContainerPropTypes';
 import Toast from '@client/components/Toasts/Toast';
 import Portal from '@client/components/Portal';
