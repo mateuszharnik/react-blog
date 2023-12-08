@@ -1,5 +1,5 @@
 import LanguageContext from './LanguageContext';
 
-export { useLanguageContext } from './hooks';
+export { default as useLanguageContext } from './hooks/useLanguageContext';
 
 export default LanguageContext;

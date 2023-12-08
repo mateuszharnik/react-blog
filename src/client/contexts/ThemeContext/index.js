@@ -1,5 +1,5 @@
 import ThemeContext from './ThemeContext';
 
-export { useThemeContext } from './hooks';
+export { default as useThemeContext } from './hooks/useThemeContext';
 
 export default ThemeContext;

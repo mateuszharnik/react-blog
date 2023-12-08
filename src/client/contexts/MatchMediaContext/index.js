@@ -1,5 +1,5 @@
 import MatchMediaContext from './MatchMediaContext';
 
-export { useMatchMediaContext } from './hooks';
+export { default as useMatchMediaContext } from './hooks/useMatchMediaContext';
 
 export default MatchMediaContext;

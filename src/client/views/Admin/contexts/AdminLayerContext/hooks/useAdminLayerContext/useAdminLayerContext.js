@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { Context } from '../AdminLayerContext';
+import { Context as AdminLayerContext } from '../../AdminLayerContext';
 
 export const useAdminLayerContext = () => {
   const {
     isAdminLayerActive,
     showAdminLayer,
     hideAdminLayer,
-  } = useContext(Context);
+  } = useContext(AdminLayerContext);
 
   return {
     isAdminLayerActive,

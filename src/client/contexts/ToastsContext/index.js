@@ -1,5 +1,5 @@
 import ToastsContext from './ToastsContext';
 
-export { useToastsContext } from './hooks';
+export { default as useToastsContext } from './hooks/useToastsContext';
 
 export default ToastsContext;

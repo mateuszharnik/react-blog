@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Context } from '../ToastsContext';
+import { Context as ToastsContext } from '../../ToastsContext';
 
 export const useToastsContext = () => {
   const {
@@ -11,7 +11,7 @@ export const useToastsContext = () => {
     setShowFromBottom,
     removeToast,
     removeToasts,
-  } = useContext(Context);
+  } = useContext(ToastsContext);
 
   return {
     toasts,
