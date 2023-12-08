@@ -1,2 +1,2 @@
 export { aboutStore } from './about.store';
-export { useAbout } from './hooks';
+export { default as useAbout } from './hooks/useAbout';
