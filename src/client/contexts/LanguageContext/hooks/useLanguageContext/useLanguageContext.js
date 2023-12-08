@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as LanguageContext } from '../../LanguageContext';
 
 export const useLanguageContext = () => {
@@ -6,7 +6,7 @@ export const useLanguageContext = () => {
     language,
     languages,
     setLanguage,
-  } = useContext(LanguageContext);
+  } = useSafeContext({ context: LanguageContext });
 
   return {
     language,

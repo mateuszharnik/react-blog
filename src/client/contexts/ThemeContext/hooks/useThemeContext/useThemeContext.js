@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as ThemeContext } from '../../ThemeContext';
 
 export const useThemeContext = () => {
@@ -6,7 +6,7 @@ export const useThemeContext = () => {
     theme,
     toggleTheme,
     setTheme,
-  } = useContext(ThemeContext);
+  } = useSafeContext({ context: ThemeContext });
 
   return {
     theme,

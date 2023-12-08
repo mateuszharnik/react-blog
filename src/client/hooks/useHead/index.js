@@ -1,1 +1,1 @@
-export { useHead } from './useHead';
+export { default as useHead } from './useHead';

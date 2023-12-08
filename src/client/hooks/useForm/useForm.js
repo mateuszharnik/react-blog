@@ -1,11 +1,15 @@
-import { useMemo } from 'react';
+import {
+  useMemo, useCallback, useEffect, useRef,
+} from 'react';
 import { useFormik } from 'formik';
 
-export const useForm = ({
+const useForm = ({
   initialValues = {},
   onSubmit = () => { },
   validationSchema,
 }) => {
+  const isInitialMount = useRef(true);
+
   const {
     handleSubmit,
     handleBlur,
@@ -17,12 +21,22 @@ export const useForm = ({
     errors: errorsMessages,
     values,
     touched,
-    // TODO: Add dirty
+    dirty,
+    isValid,
+    validateForm,
   } = useFormik({
     initialValues,
     validationSchema,
     onSubmit,
   });
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      validateForm();
+    }
+  }, [validationSchema]);
 
   const fields = useMemo(() => Object.keys(initialValues).reduce((acc, valueKey) => {
     acc[valueKey] = {
@@ -46,6 +60,12 @@ export const useForm = ({
     values: {}, errors: {}, touched: {},
   }), [fields]);
 
+  const checkIfFormIsValid = useCallback(() => (
+    dirty ? (
+      isValid && validationSchema.isValidSync(values)
+    ) : false
+  ), [dirty, isValid, values, validationSchema]);
+
   return {
     ...exposedFields,
     handleSubmit,
@@ -55,5 +75,8 @@ export const useForm = ({
     setErrors,
     setValues,
     setTouched,
+    checkIfFormIsValid,
   };
 };
+
+export default useForm;

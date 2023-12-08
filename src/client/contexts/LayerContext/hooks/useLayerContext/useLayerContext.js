@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as LayerContext } from '../../LayerContext';
 
 export const useLayerContext = () => {
@@ -6,7 +6,7 @@ export const useLayerContext = () => {
     isLayerActive,
     showLayer,
     hideLayer,
-  } = useContext(LayerContext);
+  } = useSafeContext({ context: LayerContext });
 
   return {
     isLayerActive,

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as AdminLayerContext } from '../../AdminLayerContext';
 
 export const useAdminLayerContext = () => {
@@ -6,7 +6,7 @@ export const useAdminLayerContext = () => {
     isAdminLayerActive,
     showAdminLayer,
     hideAdminLayer,
-  } = useContext(AdminLayerContext);
+  } = useSafeContext({ context: AdminLayerContext });
 
   return {
     isAdminLayerActive,

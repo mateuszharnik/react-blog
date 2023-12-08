@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const useHead = ({
+const useHead = ({
   title = '',
   description = '',
   keywords = '',
@@ -51,3 +51,5 @@ export const useHead = ({
     }
   }, [keywords]);
 };
+
+export default useHead;
