@@ -1,5 +1,5 @@
 import AdminLayerContext from './AdminLayerContext';
 
-export { useAdminLayerContext } from './hooks';
+export { default as useAdminLayerContext } from './hooks/useAdminLayerContext';
 
 export default AdminLayerContext;

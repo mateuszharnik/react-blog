@@ -1,5 +1,5 @@
 import WebpageLayerContext from './WebpageLayerContext';
 
-export { useWebpageLayerContext } from './hooks';
+export { default as useWebpageLayerContext } from './hooks/useWebpageLayerContext';
 
 export default WebpageLayerContext;

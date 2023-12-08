@@ -1,5 +1,5 @@
 import LayerContext from './LayerContext';
 
-export { useLayerContext } from './hooks';
+export { default as useLayerContext } from './hooks/useLayerContext';
 
 export default LayerContext;

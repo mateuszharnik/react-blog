@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { Context } from '../LayerContext';
+import { Context as LayerContext } from '../../LayerContext';
 
 export const useLayerContext = () => {
   const {
     isLayerActive,
     showLayer,
     hideLayer,
-  } = useContext(Context);
+  } = useContext(LayerContext);
 
   return {
     isLayerActive,

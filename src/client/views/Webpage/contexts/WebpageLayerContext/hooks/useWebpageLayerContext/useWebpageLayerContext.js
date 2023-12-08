@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { Context } from '../WebpageLayerContext';
+import { Context as WebpageLayerContext } from '../../WebpageLayerContext';
 
 export const useWebpageLayerContext = () => {
   const {
     isWebpageLayerActive,
     showWebpageLayer,
     hideWebpageLayer,
-  } = useContext(Context);
+  } = useContext(WebpageLayerContext);
 
   return {
     isWebpageLayerActive,
