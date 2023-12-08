@@ -7,7 +7,7 @@ export const useRouter = () => {
   const location = useLocation();
   const urlParams = useParams();
 
-  const { pathname, search } = location;
+  const { pathname, search, hash } = location;
 
   const urlQuery = useMemo(() => getQuery(search), [search]);
 
@@ -75,6 +75,7 @@ export const useRouter = () => {
     },
     location: {
       fullPath,
+      hash,
       path: pathname,
       params: urlParams,
       query: urlQuery,

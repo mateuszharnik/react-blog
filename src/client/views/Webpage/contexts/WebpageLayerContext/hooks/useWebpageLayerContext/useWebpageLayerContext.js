@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as WebpageLayerContext } from '../../WebpageLayerContext';
 
 export const useWebpageLayerContext = () => {
@@ -6,7 +6,7 @@ export const useWebpageLayerContext = () => {
     isWebpageLayerActive,
     showWebpageLayer,
     hideWebpageLayer,
-  } = useContext(WebpageLayerContext);
+  } = useSafeContext({ context: WebpageLayerContext });
 
   return {
     isWebpageLayerActive,

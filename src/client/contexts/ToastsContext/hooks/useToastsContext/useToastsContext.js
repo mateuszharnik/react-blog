@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useSafeContext } from '@client/hooks/useSafeContext';
 import { Context as ToastsContext } from '../../ToastsContext';
 
 export const useToastsContext = () => {
@@ -11,7 +11,7 @@ export const useToastsContext = () => {
     setShowFromBottom,
     removeToast,
     removeToasts,
-  } = useContext(ToastsContext);
+  } = useSafeContext({ context: ToastsContext });
 
   return {
     toasts,
