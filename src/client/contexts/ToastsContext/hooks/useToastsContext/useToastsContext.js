@@ -4,7 +4,9 @@ import { Context as ToastsContext } from '../../ToastsContext';
 export const useToastsContext = () => {
   const {
     toasts,
+    position,
     limit,
+    marginBottom,
     showFromBottom,
     addToast,
     setLimit,
@@ -16,7 +18,9 @@ export const useToastsContext = () => {
   return {
     toasts,
     limit,
+    position,
     showFromBottom,
+    marginBottom,
     actions: {
       addToast,
       removeToast,

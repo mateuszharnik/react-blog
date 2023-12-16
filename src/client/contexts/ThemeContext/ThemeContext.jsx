@@ -28,18 +28,18 @@ const ThemeContext = memo(({ children }) => {
     setThemeValue(themeMode);
   }, []);
 
-  const value = useMemo(() => ({
+  useEffect(() => {
+    setTheme(localStorage.getItem('theme'));
+  }, []);
+
+  const context = useMemo(() => ({
     theme,
     toggleTheme,
     setTheme,
   }), [theme, toggleTheme, setTheme]);
 
-  useEffect(() => {
-    setTheme(localStorage.getItem('theme'));
-  }, []);
-
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={context}>
       {children}
     </Context.Provider>
   );

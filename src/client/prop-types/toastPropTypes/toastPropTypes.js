@@ -1,5 +1,5 @@
 import {
-  bool, number, string, shape, oneOfType, oneOf, object,
+  func, bool, number, string, shape, oneOfType, oneOf, object,
 } from 'prop-types';
 import { propTypesConstants } from '@shared/constants';
 
@@ -8,6 +8,7 @@ const toastTypesArray = Object.values(propTypesConstants.TOAST_TYPES);
 export const toastPropTypes = {
   props: {
     marginBottom: bool.isRequired,
+    removeToast: func.isRequired,
     toast: shape({
       id: string.isRequired,
       message: string.isRequired,
