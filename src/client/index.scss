@@ -6,6 +6,7 @@
 
 /*** Router ***/
 @import "./router/components/ProtectedRoute/index";
+@import "./router/components/ProtectedComponent/index";
 @import "./router/components/DocsRoute/index";
 @import "./router/components/Redirect/index";
 @import "./router/components/Link/index";

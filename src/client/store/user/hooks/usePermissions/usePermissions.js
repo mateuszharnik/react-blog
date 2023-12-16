@@ -3,18 +3,25 @@ import {
 } from 'react';
 import { useStoreState } from 'easy-peasy';
 
-export const usePermissions = (requiredPermissions = [], requiredSubscription = '', roles = []) => {
+export const usePermissions = ({
+  requiredPermissions = [],
+  requiredSubscription = '',
+  requiredRoles = [],
+  requiredCondition = () => true,
+}) => {
   const [isReady, setIsReady] = useState(false);
+
   const [hasPermissions, setHasPermissions] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
+  const [hasCorrectCondition, setHasCorrectCondition] = useState(false);
 
   const { permissions } = useStoreState((store) => store.userStore);
 
   const isAuthenticated = useMemo(() => !!permissions, [permissions]);
 
   const hasRole = useMemo(
-    () => !!roles.find((role) => permissions?.type === role),
-    [roles, permissions],
+    () => !!requiredRoles.find((role) => permissions?.type === role),
+    [requiredRoles, permissions],
   );
 
   const checkPermissions = useCallback(() => {
@@ -34,17 +41,26 @@ export const usePermissions = (requiredPermissions = [], requiredSubscription = 
     return isPermissionsLengthEqual;
   }, [requiredPermissions, permissions]);
 
-  // TODO: Add subscription check if needed
   const checkSubscription = useCallback(() => {
     setHasSubscription(!requiredSubscription);
   }, [requiredSubscription]);
 
+  const checkCondition = useCallback(() => {
+    setHasCorrectCondition(requiredCondition());
+  }, [requiredCondition]);
+
   useEffect(() => {
     checkPermissions();
     checkSubscription();
+    checkCondition();
 
     setIsReady(true);
-  }, [requiredPermissions, requiredSubscription, permissions]);
+  }, [
+    requiredPermissions,
+    requiredSubscription,
+    requiredCondition,
+    permissions,
+  ]);
 
   return {
     isReady,
@@ -52,9 +68,11 @@ export const usePermissions = (requiredPermissions = [], requiredSubscription = 
     hasPermissions,
     hasSubscription,
     hasRole,
+    hasCorrectCondition,
     actions: {
       checkPermissions,
       checkSubscription,
+      checkCondition,
     },
   };
 };

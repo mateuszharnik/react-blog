@@ -1,9 +1,9 @@
 import {
   elementType, string, bool, arrayOf, oneOf, func,
 } from 'prop-types';
-import { permissionsConstants, rolesConstants, routesConstants } from '@shared/constants';
+import { permissionsConstants, rolesConstants } from '@shared/constants';
+import { childrenPropTypes } from '../childrenPropTypes';
 
-const { ROOT } = routesConstants;
 const { ADMIN, SUPERUSER, USER } = rolesConstants;
 
 const {
@@ -23,12 +23,10 @@ const {
   CAN_MANAGE_FAQS,
 } = permissionsConstants;
 
-export const protectedRoutePropTypes = {
+export const protectedComponentPropTypes = {
   props: {
-    pageComponent: elementType,
     paywallComponent: elementType,
     accessDeniedComponent: elementType,
-    redirect: string,
     shouldBeAuthenticated: bool,
     requiredCondition: func,
     requiredSubscription: string,
@@ -53,16 +51,16 @@ export const protectedRoutePropTypes = {
       CAN_MANAGE_CONFIG,
       CAN_MANAGE_FAQS,
     ])),
+    children: childrenPropTypes.props,
   },
   default: {
-    pageComponent: undefined,
     paywallComponent: undefined,
     accessDeniedComponent: undefined,
-    redirect: ROOT,
     shouldBeAuthenticated: true,
     requiredCondition: () => true,
     requiredSubscription: '',
     requiredRoles: [],
     requiredPermissions: [],
+    children: childrenPropTypes.default,
   },
 };
