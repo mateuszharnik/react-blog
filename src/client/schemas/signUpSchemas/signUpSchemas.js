@@ -3,9 +3,10 @@ import {
 } from 'yup';
 import { i18nService as i18next } from '@client/services/i18nService';
 import { getCharsTranslation } from '@client/utils/languageUtils';
-import { formsConstants } from '@shared/constants';
+import { formsConstants, valuesConstants } from '@shared/constants';
 
 const { SIGN_UP: { USERNAME, PASSWORD, EMAIL } } = formsConstants;
+const { GENDER: { FEMALE, MALE } } = valuesConstants;
 
 const { t, language } = i18next;
 
@@ -16,9 +17,9 @@ const PATH = 'messages.signUp';
 export const signUpSchema = object({
   username: string()
     .trim()
+    .matches(USERNAME.REGEXP, t(`${PATH}.username.NOT_MATCH`))
     .min(USERNAME.MIN_LENGTH, t(`${PATH}.username.MIN_LENGTH`, { count: `${USERNAME.MIN_LENGTH} ${t(chars(USERNAME.MIN_LENGTH))}` }))
     .max(USERNAME.MAX_LENGTH, t(`${PATH}.username.MAX_LENGTH`, { count: `${USERNAME.MAX_LENGTH} ${t(chars(USERNAME.MAX_LENGTH))}` }))
-    .matches(USERNAME.REGEXP, t(`${PATH}.username.NOT_MATCH`))
     .required(t(`${PATH}.username.REQUIRED`)),
   email: string()
     .trim()
@@ -37,10 +38,7 @@ export const signUpSchema = object({
       .trim()
       .required(t(`${PATH}.confirmPassword.REQUIRED`)))),
   gender: string()
-    .oneOf([
-      t('common.gender.FEMALE'),
-      t('common.gender.MALE'),
-    ], t(`${PATH}.gender.CHOSE_BETWEEN`))
+    .oneOf([FEMALE, MALE], t(`${PATH}.gender.CHOSE_BETWEEN`))
     .lowercase()
     .required(t(`${PATH}.gender.REQUIRED`)),
   is_terms_of_use_accepted: boolean()

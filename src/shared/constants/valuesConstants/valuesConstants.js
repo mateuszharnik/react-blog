@@ -5,8 +5,8 @@ export default {
   },
 
   GENDER: {
-    FEMALE: 'kobieta',
-    MALE: 'mężczyzna',
+    FEMALE: 'female',
+    MALE: 'male',
   },
 
   THEME: {
