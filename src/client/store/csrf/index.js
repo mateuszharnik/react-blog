@@ -1,2 +1,2 @@
 export { csrfStore } from './csrf.store';
-export { useCSRF } from './hooks';
+export { default as useCSRF } from './hooks/useCSRF';

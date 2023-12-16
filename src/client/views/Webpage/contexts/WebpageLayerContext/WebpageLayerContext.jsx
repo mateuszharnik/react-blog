@@ -1,33 +1,31 @@
-import {
-  memo, createContext, useMemo, useState, useCallback,
-} from 'react';
+import { memo, createContext, useMemo } from 'react';
+import { useLayer } from '@client/hooks/useLayer';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyWebpageComponentSpinner from '@client/views/Webpage/components/LazyLoading/LazyWebpageComponentSpinner';
 import Box from '@client/components/Box';
 
 export const Context = createContext();
 
-const WebpageLayerContext = memo(({ children }) => {
-  const [isWebpageLayerActive, setIsWebpageLayerActive] = useState(true);
+const WebpageLayerContext = memo(({ children, ...restProps }) => {
+  const {
+    isLayerActive: isWebpageLayerActive,
+    showLayer: showWebpageLayer,
+    hideLayer: hideWebpageLayer,
+  } = useLayer();
 
-  const showWebpageLayer = useCallback(() => {
-    setIsWebpageLayerActive(true);
-  }, []);
-
-  const hideWebpageLayer = useCallback(() => {
-    setIsWebpageLayerActive(false);
-  }, []);
-
-  const value = useMemo(() => ({
+  const context = useMemo(() => ({
     isWebpageLayerActive,
     showWebpageLayer,
     hideWebpageLayer,
   }), [isWebpageLayerActive, showWebpageLayer, hideWebpageLayer]);
 
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={context}>
       {isWebpageLayerActive && (
-        <Box className="webpage-layer">
+        <Box
+          className="webpage-layer"
+          {...restProps}
+        >
           <LazyWebpageComponentSpinner />
         </Box>
       )}

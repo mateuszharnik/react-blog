@@ -1,26 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from '@client/router/hooks';
-import { useNavigation } from '@client/store/navigation';
-import { useMatchMediaContext } from '@client/contexts/MatchMediaContext';
+import { usePageSizeContext } from '@client/contexts/PageSizeContext';
+import { useWebpageNavigationContext } from '@client/views/Webpage/contexts/WebpageNavigationContext';
 
 export const useNav = ({ openNavButtonRef, closeNavButtonRef }) => {
-  const { isDesktop } = useMatchMediaContext();
+  const { isDesktop } = usePageSizeContext();
+  const {
+    isOpen,
+    isAnimated,
+    toggleMainNav: toggleNav,
+    closeMainNav: closeNav,
+    toggleDropdownNav,
+    closeDropdownNav,
+  } = useWebpageNavigationContext();
 
   const [isVisible, setIsVisible] = useState(isDesktop);
 
   const { location: { path } } = useRouter();
-  const {
-    mainNav: {
-      isOpen, isAnimated,
-      actions: { toggleNav, closeNav },
-    },
-    dropdownNav: {
-      actions: {
-        toggleNav: toggleDropdownNav,
-        closeNav: closeDropdownNav,
-      },
-    },
-  } = useNavigation();
 
   const handleCloseNavOnBlur = useCallback((e) => {
     if (!e?.relatedTarget || isDesktop) return;

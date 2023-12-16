@@ -2,23 +2,16 @@ import {
   memo, useCallback, useEffect, useMemo,
 } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useToastsContext } from '@client/contexts/ToastsContext';
 import { toastsContainerPropTypes } from '@client/prop-types/toastsContainerPropTypes';
 import Toast from '@client/components/Toasts/Toast';
 import Portal from '@client/components/Portal';
 import Box from '@client/components/Box';
 import { getDivClassName } from './ToastsContainer.classes';
 
-const ToastsContainer = memo(({ limit, position }) => {
-  const {
-    toasts,
-    utils: { setShowFromBottom, setLimit },
-    actions: { removeToasts },
-  } = useToastsContext();
-
+const ToastsContainer = memo(({
+  toasts, limit, position, marginBottom, removeToasts, removeToast, ...restProps
+}) => {
   const divClassName = useMemo(() => getDivClassName({ position }), [position]);
-
-  const marginBottom = useMemo(() => !position?.includes('top'), [position]);
 
   const setHeight = useCallback((element) => {
     element.style.height = `${element.clientHeight}px`;
@@ -30,21 +23,16 @@ const ToastsContainer = memo(({ limit, position }) => {
     }, 0);
   }, []);
 
-  useEffect(() => {
-    setShowFromBottom(!position?.includes('top'));
-  }, [position]);
-
-  useEffect(() => {
-    setLimit(limit);
-  }, [limit]);
-
   useEffect(() => () => {
     removeToasts();
   }, []);
 
   return (
     <Portal to="toast">
-      <Box className={divClassName}>
+      <Box
+        className={divClassName}
+        {...restProps}
+      >
         <TransitionGroup component={null}>
           {toasts.map((toast) => (
             <CSSTransition
@@ -60,6 +48,7 @@ const ToastsContainer = memo(({ limit, position }) => {
                 <Toast
                   toast={toast}
                   marginBottom={marginBottom}
+                  removeToast={removeToast}
                 />
               </Box>
             </CSSTransition>

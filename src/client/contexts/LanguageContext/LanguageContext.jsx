@@ -35,18 +35,18 @@ const LanguageContext = memo(({ children }) => {
     }
   }, []);
 
-  const value = useMemo(() => ({
+  useEffect(() => {
+    setLanguage({ reload: false });
+  }, []);
+
+  const context = useMemo(() => ({
     language: lang,
     languages,
     setLanguage,
   }), [lang, setLanguage]);
 
-  useEffect(() => {
-    setLanguage({ reload: false });
-  }, []);
-
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={context}>
       {children}
     </Context.Provider>
   );

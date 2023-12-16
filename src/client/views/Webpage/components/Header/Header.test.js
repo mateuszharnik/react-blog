@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { testsConstants, routesConstants } from '@shared/constants';
 import I18nextProvider from '@client/providers/i18nextProvider';
 import StoreProvider from '@client/providers/storeProvider';
-import MatchMediaContext from '@client/contexts/MatchMediaContext';
+import PageSizeContext from '@client/contexts/PageSizeContext';
+import WebpageNavigationContext from '@client/views/Webpage/contexts/WebpageNavigationContext';
 import Header from './index';
 
 describe('Header', () => {
@@ -29,9 +30,11 @@ describe('Header', () => {
           initialEntries={[routesConstants.ABOUT.ROOT]}
         >
           <I18nextProvider>
-            <MatchMediaContext>
-              <Header />
-            </MatchMediaContext>
+            <PageSizeContext>
+              <WebpageNavigationContext>
+                <Header />
+              </WebpageNavigationContext>
+            </PageSizeContext>
           </I18nextProvider>
         </MemoryRouter>
       </StoreProvider>,
@@ -64,9 +67,11 @@ describe('Header', () => {
           initialEntries={[routesConstants.ROOT]}
         >
           <I18nextProvider>
-            <MatchMediaContext>
-              <Header />
-            </MatchMediaContext>
+            <PageSizeContext>
+              <WebpageNavigationContext>
+                <Header />
+              </WebpageNavigationContext>
+            </PageSizeContext>
           </I18nextProvider>
         </MemoryRouter>
       </StoreProvider>,

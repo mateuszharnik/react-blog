@@ -1,7 +1,7 @@
 import { memo, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@client/store/user';
-import { useMatchMediaContext } from '@client/contexts/MatchMediaContext';
+import { usePageSizeContext } from '@client/contexts/PageSizeContext';
 import { useNav } from '@client/views/Webpage/components/Header/components/NavBar/Nav/hooks';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import { testsConstants, routesConstants } from '@shared/constants';
@@ -40,7 +40,7 @@ const Nav = memo(() => {
 
   const { t } = useTranslation();
   const { user } = useUser();
-  const { isDesktop } = useMatchMediaContext();
+  const { isDesktop } = usePageSizeContext();
   const {
     isOpen,
     isAnimated,
@@ -90,12 +90,12 @@ const Nav = memo(() => {
             <Box className={divClassName}>
               {isOpen && (
                 <Hamburger
+                  ref={closeNavButtonRef}
+                  className="open order-1 order-lg-0"
                   attr
                   isExpanded={isOpen}
-                  ref={closeNavButtonRef}
                   title={t(`${PATH}.menu.CLOSE_MENU`)}
                   text={t(`${PATH}.menu.CLOSE_MENU`)}
-                  className="open order-1 order-lg-0"
                   onClick={handleCloseNav}
                   onBlur={handleCloseNavOnBlur}
                 />
@@ -120,7 +120,7 @@ const Nav = memo(() => {
             >
               <>
                 {!isDesktop && (
-                  <ListItem className="nav__item text-center mb-3 mb-lg-0">
+                  <ListItem className="nav__item text-center mb-3 mb-lg-0 d-lg-none">
                     <NavLink
                       to={routesConstants.ROOT}
                       title={t(`${PATH}.nav.homepage.TITLE`)}

@@ -1,13 +1,12 @@
 import { useCallback, useEffect } from 'react';
-import { useNavigation } from '@client/store/navigation';
+import { useWebpageNavigationContext } from '@client/views/Webpage/contexts/WebpageNavigationContext';
 
 export const useDropdownNav = ({ buttonRef, dropdownRef }) => {
   const {
-    dropdownNav: {
-      isOpen, isAnimated,
-      actions: { toggleNav },
-    },
-  } = useNavigation();
+    isDropdownOpen: isOpen,
+    isDropdownAnimated: isAnimated,
+    toggleDropdownNav: toggleNav,
+  } = useWebpageNavigationContext();
 
   const setFocus = useCallback(() => {
     setTimeout(() => {

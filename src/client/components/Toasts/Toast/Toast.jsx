@@ -3,7 +3,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToastsContext } from '@client/contexts/ToastsContext';
 import { getToastIcon } from '@client/utils/iconsUtils';
 import { toastPropTypes } from '@client/prop-types/toastPropTypes';
 import Box from '@client/components/Box';
@@ -13,9 +12,8 @@ import { getToastClassName } from './Toast.classes';
 
 const PATH = 'common.toasts';
 
-const Toast = memo(({ marginBottom, toast }) => {
+const Toast = memo(({ marginBottom, toast, removeToast }) => {
   const { t } = useTranslation();
-  const { actions: { removeToast } } = useToastsContext();
 
   const divClassName = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
 

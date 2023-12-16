@@ -1,41 +1,38 @@
 import {
-  memo, createContext, useMemo, useState, useCallback, useEffect,
+  memo, createContext, useMemo, useEffect,
 } from 'react';
+import { useLayer } from '@client/hooks/useLayer';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyAdminComponentSpinner from '@client/views/Admin/components/LazyLoading/LazyAdminComponentSpinner';
 import Box from '@client/components/Box';
 
 export const Context = createContext();
 
-const AdminLayerContext = memo(({ children }) => {
-  const [isAdminLayerActive, setIsAdminLayerActive] = useState(true);
+const AdminLayerContext = memo(({ children, ...restProps }) => {
+  const {
+    isLayerActive: isAdminLayerActive,
+    showLayer: showAdminLayer,
+    hideLayer: hideAdminLayer,
+    toggleBodyOverflow,
+  } = useLayer();
 
-  const showAdminLayer = useCallback(() => {
-    setIsAdminLayerActive(true);
-  }, []);
-
-  const hideAdminLayer = useCallback(() => {
-    setIsAdminLayerActive(false);
-  }, []);
-
-  const value = useMemo(() => ({
+  const context = useMemo(() => ({
     isAdminLayerActive,
     showAdminLayer,
     hideAdminLayer,
   }), [isAdminLayerActive, showAdminLayer, hideAdminLayer]);
 
   useEffect(() => {
-    if (isAdminLayerActive) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
+    toggleBodyOverflow();
   }, [isAdminLayerActive]);
 
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={context}>
       {isAdminLayerActive && (
-        <Box className="admin-layer">
+        <Box
+          className="admin-layer"
+          {...restProps}
+        >
           <LazyAdminComponentSpinner />
         </Box>
       )}

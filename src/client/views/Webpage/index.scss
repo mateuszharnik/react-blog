@@ -1,8 +1,11 @@
+@import "../../assets/scss/variables";
+
 /*** Content ***/
 @import "./content/WebpageContent/index";
 
 /*** Context ***/
 @import "./contexts/WebpageLayerContext/index";
+@import "./contexts/WebpageNavigationContext/index";
 
 /*** Components ***/
 @import "./components/Header/index";

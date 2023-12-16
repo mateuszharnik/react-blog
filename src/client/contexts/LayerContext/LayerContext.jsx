@@ -1,41 +1,38 @@
 import {
-  memo, createContext, useMemo, useState, useCallback, useEffect,
+  memo, createContext, useMemo, useEffect,
 } from 'react';
+import { useLayer } from '@client/hooks/useLayer';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 import Box from '@client/components/Box';
 
 export const Context = createContext();
 
-const LayerContext = memo(({ children }) => {
-  const [isLayerActive, setIsLayerActive] = useState(true);
+const LayerContext = memo(({ children, ...restProps }) => {
+  const {
+    isLayerActive,
+    showLayer,
+    hideLayer,
+    toggleBodyOverflow,
+  } = useLayer();
 
-  const showLayer = useCallback(() => {
-    setIsLayerActive(true);
-  }, []);
+  useEffect(() => {
+    toggleBodyOverflow();
+  }, [isLayerActive]);
 
-  const hideLayer = useCallback(() => {
-    setIsLayerActive(false);
-  }, []);
-
-  const value = useMemo(() => ({
+  const context = useMemo(() => ({
     isLayerActive,
     showLayer,
     hideLayer,
   }), [isLayerActive, showLayer, hideLayer]);
 
-  useEffect(() => {
-    if (isLayerActive) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-  }, [isLayerActive]);
-
   return (
-    <Context.Provider value={value}>
+    <Context.Provider value={context}>
       {isLayerActive && (
-        <Box className="layer">
+        <Box
+          className="layer"
+          {...restProps}
+        >
           <LazyComponentSpinner />
         </Box>
       )}
