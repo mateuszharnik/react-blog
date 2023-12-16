@@ -1,0 +1,1 @@
+export { protectedComponentPropTypes } from './protectedComponentPropTypes';

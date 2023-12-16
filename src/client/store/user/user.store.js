@@ -3,7 +3,7 @@ import { storeActions } from '@client/utils/storeUtils';
 
 export const userStore = {
   user: null,
-  events: {},
+  requests: {},
 
   permissions: computed((state) => state.user?.role),
 

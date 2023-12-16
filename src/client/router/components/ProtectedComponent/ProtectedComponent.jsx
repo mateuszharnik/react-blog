@@ -1,18 +1,15 @@
 import {
   memo, useMemo, useState, useEffect,
 } from 'react';
-import { Outlet } from 'react-router-dom';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
-import { useRouter } from '@client/router/hooks';
 import { usePermissions } from '@client/store/user';
-import { protectedRoutePropTypes } from '@client/prop-types/protectedRoutePropTypes';
+import { protectedComponentPropTypes } from '@client/prop-types/protectedComponentPropTypes';
 
-const ProtectedRoute = memo(({
-  pageComponent,
+const ProtectedComponent = memo(({
+  children,
   paywallComponent,
   accessDeniedComponent,
-  redirect,
   shouldBeAuthenticated,
   requiredSubscription,
   requiredRoles,
@@ -21,7 +18,6 @@ const ProtectedRoute = memo(({
 }) => {
   const [shouldRenderComponent, setShouldRenderComponent] = useState(false);
 
-  const { history: { replace } } = useRouter();
   const {
     isReady,
     isAuthenticated,
@@ -52,7 +48,7 @@ const ProtectedRoute = memo(({
       ],
       [
         stubTrue,
-        () => pageComponent,
+        () => null,
       ],
     ]);
 
@@ -63,46 +59,35 @@ const ProtectedRoute = memo(({
     hasSubscription,
     accessDeniedComponent,
     paywallComponent,
-    pageComponent,
   ]);
 
   useEffect(() => {
     if (!isReady) return;
 
-    if (isAuthenticated !== shouldBeAuthenticated) {
-      return replace(redirect);
-    }
+    if (isAuthenticated !== shouldBeAuthenticated) return;
 
-    if (!hasRole && requiredRoles.length) {
-      return replace(redirect);
-    }
+    if (!hasRole && requiredRoles.length) return;
 
-    if (!hasCorrectCondition && !accessDeniedComponent) {
-      return replace(redirect);
-    }
+    if (!hasCorrectCondition && !accessDeniedComponent) return;
 
-    if (!hasPermissions && !accessDeniedComponent) {
-      return replace(redirect);
-    }
+    if (!hasPermissions && !accessDeniedComponent) return;
 
-    if (!hasSubscription && !paywallComponent) {
-      return replace(redirect);
-    }
+    if (!hasSubscription && !paywallComponent) return;
 
     setShouldRenderComponent(true);
   }, [isReady]);
 
   return shouldRenderComponent ? (
     <>
-      {DynamicComponent ? <DynamicComponent /> : <Outlet />}
+      {DynamicComponent ? <DynamicComponent /> : children}
     </>
   ) : null;
 });
 
-ProtectedRoute.displayName = 'ProtectedRoute';
+ProtectedComponent.displayName = 'ProtectedComponent';
 
-ProtectedRoute.propTypes = protectedRoutePropTypes.props;
+ProtectedComponent.propTypes = protectedComponentPropTypes.props;
 
-ProtectedRoute.defaultProps = protectedRoutePropTypes.default;
+ProtectedComponent.defaultProps = protectedComponentPropTypes.default;
 
-export default ProtectedRoute;
+export default ProtectedComponent;
