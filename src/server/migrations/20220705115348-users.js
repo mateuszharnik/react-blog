@@ -13,7 +13,7 @@ module.exports = {
         email: config.ADMIN_EMAIL,
         description: '',
         password: await hash(config.ADMIN_PASSWORD, 8),
-        gender: 'mężczyzna',
+        gender: 'male',
         facebook_url: '',
         dribbble_url: '',
         youtube_url: '',
