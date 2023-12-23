@@ -1,13 +1,10 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/messages/messages.store';
 
-export const useMessages = ({ key = defaultKey } = {}) => {
-  const getMessagesCancelToken = useRef(null);
-  const createMessageCancelToken = useRef(null);
-
-  const { messages, events } = useStoreState((store) => store.messagesStore);
+export const useMessages = ({ key } = {}) => {
+  const { messages, requests } = useStoreState((store) => store.messagesStore);
 
   const {
     getMessagesAction,
@@ -16,50 +13,34 @@ export const useMessages = ({ key = defaultKey } = {}) => {
     resetCreateMessageMetadataAction,
   } = useStoreActions((actions) => actions.messagesStore);
 
-  const getMessagesMetadata = useMemo(() => (
-    events?.getMessagesEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const createMessageMetadata = useMemo(() => (
-    events?.createMessageEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    getMessages,
+    getMessagesMetadata,
+    cancelGetMessages,
+    resetGetMessageMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_MESSAGES_REQUEST,
+    action: getMessagesAction,
+    resetMetadataAction: resetGetMessageMetadataAction,
+  });
 
-  const getMessages = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getMessagesCancelToken.current = cancelToken;
-    return getMessagesAction({ key, options, ...payload });
-  }, [getMessagesCancelToken]);
-
-  const cancelGetMessages = useCallback((message) => {
-    getMessagesCancelToken.current.cancel(message);
-  }, [getMessagesCancelToken]);
-
-  const createMessage = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    createMessageCancelToken.current = cancelToken;
-    return createMessageAction({ key, options, ...payload });
-  }, [createMessageCancelToken]);
-
-  const cancelCreateMessage = useCallback((message) => {
-    createMessageCancelToken.current.cancel(message);
-  }, [createMessageCancelToken]);
+  const [
+    createMessage,
+    createMessageMetadata,
+    cancelCreateMessage,
+    resetCreateMessageMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.CREATE_MESSAGE_REQUEST,
+    action: createMessageAction,
+    resetMetadataAction: resetCreateMessageMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetGetMessageMetadataAction({ key });
-    resetCreateMessageMetadataAction({ key });
+    resetGetMessageMetadata();
+    resetCreateMessageMetadata();
   }, []);
-
-  const resetCreateMessageMetadata = useCallback(() => (
-    resetCreateMessageMetadataAction({ key })
-  ), []);
-
-  const resetGetMessageMetadata = useCallback(() => (
-    resetGetMessageMetadataAction({ key })
-  ), []);
 
   return {
     messages,

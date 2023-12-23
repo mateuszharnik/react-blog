@@ -1,65 +1,46 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/about/about.store';
 
-export const useAbout = ({ key = defaultKey } = {}) => {
-  const getAboutCancelToken = useRef(null);
-  const updateAboutCancelToken = useRef(null);
-
-  const { about, events } = useStoreState((store) => store.aboutStore);
+export const useAbout = ({ key } = {}) => {
+  const { about, requests } = useStoreState((store) => store.aboutStore);
 
   const {
     getAboutAction,
     updateAboutAction,
-    resetUpdateAboutMetadataAction,
     resetGetAboutMetadataAction,
+    resetUpdateAboutMetadataAction,
   } = useStoreActions((actions) => actions.aboutStore);
 
-  const getAboutMetadata = useMemo(() => (
-    events?.getAboutEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const updateAboutMetadata = useMemo(() => (
-    events?.updateAboutEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    getAbout,
+    getAboutMetadata,
+    cancelGetAbout,
+    resetGetAboutMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_ABOUT_REQUEST,
+    action: getAboutAction,
+    resetMetadataAction: resetGetAboutMetadataAction,
+  });
 
-  const getAbout = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getAboutCancelToken.current = cancelToken;
-    return getAboutAction({ key, options, ...payload });
-  }, [getAboutCancelToken]);
-
-  const cancelGetAbout = useCallback((message) => {
-    getAboutCancelToken.current.cancel(message);
-  }, [getAboutCancelToken]);
-
-  const updateAbout = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    updateAboutCancelToken.current = cancelToken;
-    return updateAboutAction({ key, options, ...payload });
-  }, [updateAboutCancelToken]);
-
-  const cancelUpdateAbout = useCallback((message) => {
-    updateAboutCancelToken.current.cancel(message);
-  }, [updateAboutCancelToken]);
+  const [
+    updateAbout,
+    updateAboutMetadata,
+    cancelUpdateAbout,
+    resetUpdateAboutMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.UPDATE_ABOUT_REQUEST,
+    action: updateAboutAction,
+    resetMetadataAction: resetUpdateAboutMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetUpdateAboutMetadataAction({ key });
-    resetGetAboutMetadataAction({ key });
+    resetGetAboutMetadata();
+    resetUpdateAboutMetadata();
   }, []);
-
-  const resetGetAboutMetadata = useCallback(() => (
-    resetGetAboutMetadataAction({ key })
-  ), []);
-
-  const resetUpdateAboutMetadata = useCallback(() => (
-    resetUpdateAboutMetadataAction({ key })
-  ), []);
 
   return {
     about,

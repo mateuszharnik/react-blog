@@ -1,13 +1,10 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/config/config.store';
 
-export const useConfig = ({ key = defaultKey } = {}) => {
-  const getConfigCancelToken = useRef(null);
-  const updateConfigCancelToken = useRef(null);
-
-  const { config, events } = useStoreState((store) => store.configStore);
+export const useConfig = ({ key } = {}) => {
+  const { config, requests } = useStoreState((store) => store.configStore);
 
   const {
     getConfigAction,
@@ -16,50 +13,34 @@ export const useConfig = ({ key = defaultKey } = {}) => {
     resetGetConfigMetadataAction,
   } = useStoreActions((actions) => actions.configStore);
 
-  const getConfigMetadata = useMemo(() => (
-    events?.getConfigEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const updateConfigMetadata = useMemo(() => (
-    events?.updateConfigEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    getConfig,
+    getConfigMetadata,
+    cancelGetConfig,
+    resetGetConfigMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_CONFIG_REQUEST,
+    action: getConfigAction,
+    resetMetadataAction: resetGetConfigMetadataAction,
+  });
 
-  const getConfig = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getConfigCancelToken.current = cancelToken;
-    return getConfigAction({ key, options, ...payload });
-  }, [getConfigCancelToken]);
-
-  const cancelGetConfig = useCallback((message) => {
-    getConfigCancelToken.current.cancel(message);
-  }, [getConfigCancelToken]);
-
-  const updateConfig = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    updateConfigCancelToken.current = cancelToken;
-    return updateConfigAction({ key, options, ...payload });
-  }, [updateConfigCancelToken]);
-
-  const cancelUpdateConfig = useCallback((message) => {
-    updateConfigCancelToken.current.cancel(message);
-  }, [updateConfigCancelToken]);
+  const [
+    updateConfig,
+    updateConfigMetadata,
+    cancelUpdateConfig,
+    resetUpdateConfigMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.UPDATE_CONFIG_REQUEST,
+    action: updateConfigAction,
+    resetMetadataAction: resetUpdateConfigMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetUpdateConfigMetadataAction({ key });
-    resetGetConfigMetadataAction({ key });
+    resetGetConfigMetadata();
+    resetUpdateConfigMetadata();
   }, []);
-
-  const resetGetConfigMetadata = useCallback(() => (
-    resetGetConfigMetadataAction({ key })
-  ), []);
-
-  const resetUpdateConfigMetadata = useCallback(() => (
-    resetUpdateConfigMetadataAction({ key })
-  ), []);
 
   return {
     config,

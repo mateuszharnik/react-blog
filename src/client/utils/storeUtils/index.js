@@ -1,7 +1,8 @@
 export {
   defaultKey,
   storeActions,
-  setEventMetadata,
-  generateEventMetadata,
-  checkIfStoreEventExist,
+  setRequestMetadata,
+  generateRequestMetadata,
+  checkIfStoreRequestExist,
+  createStoreActionsHook,
 } from './storeUtils';

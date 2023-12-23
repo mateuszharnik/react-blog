@@ -1,3 +1,4 @@
+import { useCallback, useMemo, useRef } from 'react';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import get from 'lodash/get';
@@ -31,14 +32,14 @@ const defaultMetadata = {
   data: null,
 };
 
-export const generateEventMetadata = ({ status = API_STATUSES.TRIGGERED, error = '', data = null } = {}) => {
-  const getEventMetadataForStatus = cond([
+export const generateRequestMetadata = ({ status = API_STATUSES.TRIGGERED, error = '', data = null } = {}) => {
+  const getRequestMetadataForStatus = cond([
     [
-      ({ status: eventStatus }) => eventStatus === API_STATUSES.TRIGGERED,
+      ({ status: requestStatus }) => requestStatus === API_STATUSES.TRIGGERED,
       () => ({ ...defaultMetadata }),
     ],
     [
-      ({ status: eventStatus }) => eventStatus === API_STATUSES.FETCHING,
+      ({ status: requestStatus }) => requestStatus === API_STATUSES.FETCHING,
       () => ({
         ...defaultMetadata,
         isIdle: false,
@@ -46,61 +47,61 @@ export const generateEventMetadata = ({ status = API_STATUSES.TRIGGERED, error =
       }),
     ],
     [
-      ({ status: eventStatus }) => eventStatus === API_STATUSES.ERROR,
-      ({ error: eventError }) => ({
+      ({ status: requestStatus }) => requestStatus === API_STATUSES.ERROR,
+      ({ error: requestError }) => ({
         ...defaultMetadata,
         isIdle: false,
         isLoading: false,
         isError: true,
         isFinished: true,
-        error: eventError,
+        error: requestError,
       }),
     ],
     [
-      ({ status: eventStatus }) => eventStatus === API_STATUSES.SUCCESS,
-      ({ data: eventData }) => ({
+      ({ status: requestStatus }) => requestStatus === API_STATUSES.SUCCESS,
+      ({ data: requestData }) => ({
         ...defaultMetadata,
         isIdle: false,
         isLoading: false,
         isSuccess: true,
         isFinished: true,
-        data: eventData,
+        data: requestData,
       }),
     ],
     [
       stubTrue,
       () => {
-        throw new Error('Event status is invalid');
+        throw new Error('Request status is invalid');
       },
     ],
   ]);
 
-  return getEventMetadataForStatus({ status, error, data });
+  return getRequestMetadataForStatus({ status, error, data });
 };
 
-export const checkIfStoreEventExist = ({ events = {}, event, key } = {}) => {
-  if (!isObject(events)) throw new Error('Events should be an object');
+export const checkIfStoreRequestExist = ({ requests = {}, request, key } = {}) => {
+  if (!isObject(requests)) throw new Error('Requests should be an object');
 
-  return isObject(get(events, `${event}.${key}`));
+  return isObject(get(requests, `${request}.${key}`));
 };
 
-export const setEventMetadata = ({
-  state, event, key, metadata, createIfNotExist = false,
+export const setRequestMetadata = ({
+  state, request, key, metadata, createIfNotExist = false,
 } = {}) => {
-  if (checkIfStoreEventExist({ events: state.events, event, key })) {
-    state.events[event][key] = metadata;
+  if (checkIfStoreRequestExist({ requests: state.requests, request, key })) {
+    state.requests[request][key] = metadata;
   } else if (createIfNotExist) {
-    set(state.events, `${event}.${key}`, metadata);
+    set(state.requests, `${request}.${key}`, metadata);
   }
 };
 
 const onTriggerAction = (callback) => (state, payload = {}) => {
-  const { event, shouldUpdateMetadata = false, key = defaultKey } = payload;
-  const metadata = generateEventMetadata({ status: API_STATUSES.TRIGGERED });
+  const { request, shouldUpdateMetadata = false, key = defaultKey } = payload;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.TRIGGERED });
 
   if (shouldUpdateMetadata) {
-    setEventMetadata({
-      state, event, key, metadata, createIfNotExist: true,
+    setRequestMetadata({
+      state, request, key, metadata, createIfNotExist: true,
     });
   }
 
@@ -110,12 +111,12 @@ const onTriggerAction = (callback) => (state, payload = {}) => {
 };
 
 const onFetchingAction = (callback) => (state, payload = {}) => {
-  const { event, shouldUpdateMetadata = false, key = defaultKey } = payload;
-  const metadata = generateEventMetadata({ status: API_STATUSES.FETCHING });
+  const { request, shouldUpdateMetadata = false, key = defaultKey } = payload;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.FETCHING });
 
   if (shouldUpdateMetadata) {
-    setEventMetadata({
-      state, event, key, metadata,
+    setRequestMetadata({
+      state, request, key, metadata,
     });
   }
 
@@ -126,13 +127,13 @@ const onFetchingAction = (callback) => (state, payload = {}) => {
 
 const onErrorAction = (callback) => (state, payload = {}) => {
   const {
-    event, shouldUpdateMetadata = false, key = defaultKey, error,
+    request, shouldUpdateMetadata = false, key = defaultKey, error,
   } = payload;
-  const metadata = generateEventMetadata({ status: API_STATUSES.ERROR, error });
+  const metadata = generateRequestMetadata({ status: API_STATUSES.ERROR, error });
 
   if (shouldUpdateMetadata) {
-    setEventMetadata({
-      state, event, key, metadata,
+    setRequestMetadata({
+      state, request, key, metadata,
     });
   }
 
@@ -143,13 +144,13 @@ const onErrorAction = (callback) => (state, payload = {}) => {
 
 const onSuccessAction = (callback) => (state, payload = {}) => {
   const {
-    event, shouldUpdateMetadata = false, key = defaultKey, result,
+    request, shouldUpdateMetadata = false, key = defaultKey, result,
   } = payload;
-  const metadata = generateEventMetadata({ status: API_STATUSES.SUCCESS, data: result });
+  const metadata = generateRequestMetadata({ status: API_STATUSES.SUCCESS, data: result });
 
   if (shouldUpdateMetadata) {
-    setEventMetadata({
-      state, event, key, metadata,
+    setRequestMetadata({
+      state, request, key, metadata,
     });
   }
 
@@ -158,18 +159,18 @@ const onSuccessAction = (callback) => (state, payload = {}) => {
   }
 };
 
-const onResetAction = (event, callback) => (state, payload = {}) => {
+const onResetAction = (request, callback) => (state, payload = {}) => {
   const { key = defaultKey } = payload;
 
-  if (!isString(event)) {
-    throw new Error('Event must be type of string');
+  if (!isString(request)) {
+    throw new Error('Request must be type of string');
   }
 
-  if (checkIfStoreEventExist({ events: state.events, event, key })) {
-    unset(state.events, `${event}.${key}`);
+  if (checkIfStoreRequestExist({ requests: state.requests, request, key })) {
+    unset(state.requests, `${request}.${key}`);
 
-    if (!Object.keys(state.events[event]).length) {
-      unset(state.events, `${event}`);
+    if (!Object.keys(state.requests[request]).length) {
+      unset(state.requests, `${request}`);
     }
   }
 
@@ -179,18 +180,18 @@ const onResetAction = (event, callback) => (state, payload = {}) => {
 };
 
 const createAction = ({
-  event, action, onTrigger, onFetching, onSuccess, onError,
+  request, action, onTrigger, onFetching, onSuccess, onError,
 } = {}) => async (actions, payload = {}, helpers) => {
   const shouldUpdateMetadata = payload.shouldUpdateMetadata || true;
 
   actions[onTrigger || defaultActionNames.ON_TRIGGER]({
-    event, shouldUpdateMetadata, ...payload,
+    request, shouldUpdateMetadata, ...payload,
   });
   if (isFunction(payload.onTrigger)) await payload.onTrigger(payload);
 
   try {
     actions[onFetching || defaultActionNames.ON_FETCHING]({
-      event, shouldUpdateMetadata, ...payload,
+      request, shouldUpdateMetadata, ...payload,
     });
     if (isFunction(payload.onFetching)) await payload.onFetching(payload);
 
@@ -199,7 +200,7 @@ const createAction = ({
     const { data } = await action(actions, payload, helpers);
 
     actions[onSuccess || defaultActionNames.ON_SUCCESS]({
-      event, result: data, shouldUpdateMetadata, ...payload,
+      request, result: data, shouldUpdateMetadata, ...payload,
     });
     if (isFunction(payload.onSuccess)) await payload.onSuccess(payload, data);
   } catch (e) {
@@ -208,12 +209,12 @@ const createAction = ({
     if (apiService.isCancel(e)) {
       error = e.message;
     } else {
-      const { data } = e.response;
+      const { data = {} } = e.response;
       error = data.messages ? data.messages[0].message : data;
     }
 
     actions[onError || defaultActionNames.ON_ERROR]({
-      event, error, shouldUpdateMetadata, ...payload,
+      request, error, shouldUpdateMetadata, ...payload,
     });
     if (isFunction(payload.onError)) await payload.onError(payload, error);
   }
@@ -226,4 +227,32 @@ export const storeActions = {
   onSuccess: onSuccessAction,
   onReset: onResetAction,
   createAction,
+};
+
+export const createStoreActionsHook = ({
+  requests, key = defaultKey,
+}) => ({
+  request, action, resetMetadataAction,
+}) => {
+  const cancelToken = useRef(null);
+
+  const metadata = useMemo(() => (
+    requests?.[request]?.[key] || generateRequestMetadata()
+  ), [requests]);
+
+  const storeAction = useCallback((payload = {}) => {
+    const cancelTokenSource = apiService.CancelToken.source();
+    const options = { cancelToken: cancelTokenSource.token };
+
+    cancelToken.current = cancelTokenSource;
+    return action({ key, options, ...payload });
+  }, [cancelToken]);
+
+  const cancelAction = useCallback((message) => {
+    cancelToken.current.cancel(message);
+  }, [cancelToken]);
+
+  const resetMetadata = useCallback(() => resetMetadataAction({ key }), []);
+
+  return [storeAction, metadata, cancelAction, resetMetadata];
 };

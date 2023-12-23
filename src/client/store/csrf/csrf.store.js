@@ -2,15 +2,15 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_CSRF_TOKEN_EVENT: 'getCSRFTokenEvent',
+export const requestsNames = {
+  GET_CSRF_TOKEN_REQUEST: 'getCSRFTokenRequest',
 };
 
 export const csrfStore = {
-  events: {},
+  requests: {},
 
   getCSRFTokenAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_CSRF_TOKEN_EVENT,
+    request: requestsNames.GET_CSRF_TOKEN_REQUEST,
     action: async (_, { options }) => {
       const response = await apiService.csrf.getCSRFToken(options);
 
@@ -18,7 +18,9 @@ export const csrfStore = {
     },
   })),
 
-  resetGetCSRFTokenMetadataAction: action(storeActions.onReset(eventsNames.GET_CSRF_TOKEN_EVENT)),
+  resetGetCSRFTokenMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_CSRF_TOKEN_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 
