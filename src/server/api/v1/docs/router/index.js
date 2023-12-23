@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { serve, setup } from 'swagger-ui-express';
-import swaggerDocument from '@server/docs/API.json';
+import swaggerDocument from '@server/docs';
 import { isLoggedIn, isNotLoggedIn, isNotUseDocsPassword } from '@server/middlewares/docs';
 import { signIn, getRefreshToken } from '../controller';
 
