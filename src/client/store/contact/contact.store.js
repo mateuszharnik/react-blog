@@ -2,30 +2,34 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_CONTACT_EVENT: 'getContactEvent',
-  UPDATE_CONTACT_EVENT: 'updateContactEvent',
+export const requestsNames = {
+  GET_CONTACT_REQUEST: 'getContactRequest',
+  UPDATE_CONTACT_REQUEST: 'updateContactRequest',
 };
 
 export const contactStore = {
   contact: null,
-  events: {},
+  requests: {},
 
   getContactAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_CONTACT_EVENT,
+    request: requestsNames.GET_CONTACT_REQUEST,
     onSuccess: 'setContact',
     action: (_, { options }) => apiService.contact.getContact(options),
   })),
 
   updateContactAction: thunk(storeActions.createAction({
-    event: eventsNames.UPDATE_CONTACT_EVENT,
+    request: requestsNames.UPDATE_CONTACT_REQUEST,
     onSuccess: 'updateContact',
     action: (_, { payload, options }) => apiService.contact.updateContact(payload, options),
   })),
 
-  resetGetContactMetadataAction: action(storeActions.onReset(eventsNames.GET_CONTACT_EVENT)),
+  resetGetContactMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_CONTACT_REQUEST,
+  )),
 
-  resetUpdateContactMetadataAction: action(storeActions.onReset(eventsNames.UPDATE_CONTACT_EVENT)),
+  resetUpdateContactMetadataAction: action(storeActions.onReset(
+    requestsNames.UPDATE_CONTACT_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 

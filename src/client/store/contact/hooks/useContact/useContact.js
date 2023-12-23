@@ -1,13 +1,10 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/contact/contact.store';
 
-export const useContact = ({ key = defaultKey } = {}) => {
-  const getContactCancelToken = useRef(null);
-  const updateContactCancelToken = useRef(null);
-
-  const { contact, events } = useStoreState((store) => store.contactStore);
+export const useContact = ({ key } = {}) => {
+  const { contact, requests } = useStoreState((store) => store.contactStore);
 
   const {
     getContactAction,
@@ -16,50 +13,34 @@ export const useContact = ({ key = defaultKey } = {}) => {
     resetGetContactMetadataAction,
   } = useStoreActions((actions) => actions.contactStore);
 
-  const getContactMetadata = useMemo(() => (
-    events?.getContactEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const updateContactMetadata = useMemo(() => (
-    events?.updateContactEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    getContact,
+    getContactMetadata,
+    cancelGetContact,
+    resetGetContactMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_CONTACT_REQUEST,
+    action: getContactAction,
+    resetMetadataAction: resetGetContactMetadataAction,
+  });
 
-  const getContact = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getContactCancelToken.current = cancelToken;
-    return getContactAction({ key, options, ...payload });
-  }, [getContactCancelToken]);
-
-  const cancelGetContact = useCallback((message) => {
-    getContactCancelToken.current.cancel(message);
-  }, [getContactCancelToken]);
-
-  const updateContact = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    updateContactCancelToken.current = cancelToken;
-    return updateContactAction({ key, options, ...payload });
-  }, [updateContactCancelToken]);
-
-  const cancelUpdateContact = useCallback((message) => {
-    updateContactCancelToken.current.cancel(message);
-  }, [updateContactCancelToken]);
+  const [
+    updateContact,
+    updateContactMetadata,
+    cancelUpdateContact,
+    resetUpdateContactMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.UPDATE_CONTACT_REQUEST,
+    action: updateContactAction,
+    resetMetadataAction: resetUpdateContactMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetUpdateContactMetadataAction({ key });
-    resetGetContactMetadataAction({ key });
+    resetGetContactMetadata();
+    resetUpdateContactMetadata();
   }, []);
-
-  const resetGetContactMetadata = useCallback(() => (
-    resetGetContactMetadataAction({ key })
-  ), []);
-
-  const resetUpdateContactMetadata = useCallback(() => (
-    resetUpdateContactMetadataAction({ key })
-  ), []);
 
   return {
     contact,

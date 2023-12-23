@@ -1,41 +1,32 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/tokens/tokens.store';
 
-export const useTokens = ({ key = defaultKey } = {}) => {
-  const getRefreshTokenCancelToken = useRef(null);
-
-  const { accessToken, events } = useStoreState((store) => store.tokensStore);
+export const useTokens = ({ key } = {}) => {
+  const { accessToken, requests } = useStoreState((store) => store.tokensStore);
 
   const {
     getRefreshTokenAction,
     resetGetRefreshTokenMetadataAction,
   } = useStoreActions((actions) => actions.tokensStore);
 
-  const getRefreshTokenMetadata = useMemo(() => (
-    events?.getRefreshTokenEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const getRefreshToken = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getRefreshTokenCancelToken.current = cancelToken;
-    return getRefreshTokenAction({ key, options, ...payload });
-  }, [getRefreshTokenCancelToken]);
-
-  const cancelGetRefreshToken = useCallback((message) => {
-    getRefreshTokenCancelToken.current.cancel(message);
-  }, [getRefreshTokenCancelToken]);
+  const [
+    getRefreshToken,
+    getRefreshTokenMetadata,
+    cancelGetRefreshToken,
+    resetGetRefreshTokenMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_REFRESH_TOKEN_REQUEST,
+    action: getRefreshTokenAction,
+    resetMetadataAction: resetGetRefreshTokenMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetGetRefreshTokenMetadataAction({ key });
+    resetGetRefreshTokenMetadata();
   }, []);
-
-  const resetGetRefreshTokenMetadata = useCallback(() => (
-    resetGetRefreshTokenMetadataAction({ key })
-  ), []);
 
   return {
     accessToken,

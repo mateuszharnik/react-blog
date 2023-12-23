@@ -2,30 +2,34 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_MESSAGES_EVENT: 'getMessagesEvent',
-  CREATE_MESSAGE_EVENT: 'createMessageEvent',
+export const requestsNames = {
+  GET_MESSAGES_REQUEST: 'getMessagesRequest',
+  CREATE_MESSAGE_REQUEST: 'createMessageRequest',
 };
 
 export const messagesStore = {
   messages: [],
-  events: {},
+  requests: {},
 
   getMessagesAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_MESSAGES_EVENT,
+    request: requestsNames.GET_MESSAGES_REQUEST,
     onSuccess: 'setMessages',
     action: (_, { options }) => apiService.messages.getMessages(options),
   })),
 
   createMessageAction: thunk(storeActions.createAction({
-    event: eventsNames.CREATE_MESSAGE_EVENT,
+    request: requestsNames.CREATE_MESSAGE_REQUEST,
     onSuccess: 'updateMessages',
     action: (_, { payload, options }) => apiService.messages.createMessage(payload, options),
   })),
 
-  resetGetMessageMetadataAction: action(storeActions.onReset(eventsNames.GET_MESSAGES_EVENT)),
+  resetGetMessageMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_MESSAGES_REQUEST,
+  )),
 
-  resetCreateMessageMetadataAction: action(storeActions.onReset(eventsNames.CREATE_MESSAGE_EVENT)),
+  resetCreateMessageMetadataAction: action(storeActions.onReset(
+    requestsNames.CREATE_MESSAGE_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 

@@ -1,113 +1,74 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/auth/auth.store';
 
-export const useAuth = ({ key = defaultKey } = {}) => {
-  const adminSignInCancelToken = useRef(null);
-  const signInCancelToken = useRef(null);
-  const signOutCancelToken = useRef(null);
-  const signUpCancelToken = useRef(null);
-
-  const { events } = useStoreState((store) => store.authStore);
+export const useAuth = ({ key } = {}) => {
+  const { requests } = useStoreState((store) => store.authStore);
 
   const {
     adminSignInAction,
     signInAction,
-    signOutAction,
     signUpAction,
+    signOutAction,
     resetAdminSignInMetadataAction,
     resetSignInMetadataAction,
     resetSignUpMetadataAction,
     resetSignOutMetadataAction,
   } = useStoreActions((actions) => actions.authStore);
 
-  const adminSignInMetadata = useMemo(() => (
-    events?.adminSignInEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const signInMetadata = useMemo(() => (
-    events?.signInEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    adminSignIn,
+    adminSignInMetadata,
+    cancelAdminSignIn,
+    resetAdminSignInMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.ADMIN_SIGN_IN_REQUEST,
+    action: adminSignInAction,
+    resetMetadataAction: resetAdminSignInMetadataAction,
+  });
 
-  const signOutMetadata = useMemo(() => (
-    events?.signOutEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    signIn,
+    signInMetadata,
+    cancelSignIn,
+    resetSignInMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.SIGN_IN_REQUEST,
+    action: signInAction,
+    resetMetadataAction: resetSignInMetadataAction,
+  });
 
-  const signUpMetadata = useMemo(() => (
-    events?.signUpEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    signUp,
+    signUpMetadata,
+    cancelSignUp,
+    resetSignUpMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.SIGN_UP_REQUEST,
+    action: signUpAction,
+    resetMetadataAction: resetSignUpMetadataAction,
+  });
 
-  const adminSignIn = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    adminSignInCancelToken.current = cancelToken;
-    return adminSignInAction({ key, options, ...payload });
-  }, [adminSignInCancelToken]);
-
-  const cancelAdminSignIn = useCallback((message) => {
-    adminSignInCancelToken.current.cancel(message);
-  }, [adminSignInCancelToken]);
-
-  const signIn = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    signInCancelToken.current = cancelToken;
-    return signInAction({ key, options, ...payload });
-  }, [signInCancelToken]);
-
-  const cancelSignIn = useCallback((message) => {
-    signInCancelToken.current.cancel(message);
-  }, [signInCancelToken]);
-
-  const signOut = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    signOutCancelToken.current = cancelToken;
-    return signOutAction({ key, options, ...payload });
-  }, [signOutCancelToken]);
-
-  const cancelSignOut = useCallback((message) => {
-    signOutCancelToken.current.cancel(message);
-  }, [signOutCancelToken]);
-
-  const signUp = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    signUpCancelToken.current = cancelToken;
-    return signUpAction({ key, options, ...payload });
-  }, [signUpCancelToken]);
-
-  const cancelSignUp = useCallback((message) => {
-    signUpCancelToken.current.cancel(message);
-  }, [signUpCancelToken]);
+  const [
+    signOut,
+    signOutMetadata,
+    cancelSignOut,
+    resetSignOutMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.SIGN_OUT_REQUEST,
+    action: signOutAction,
+    resetMetadataAction: resetSignOutMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetAdminSignInMetadataAction({ key });
-    resetSignInMetadataAction({ key });
-    resetSignUpMetadataAction({ key });
-    resetSignOutMetadataAction({ key });
+    resetAdminSignInMetadata();
+    resetSignInMetadata();
+    resetSignUpMetadata();
+    resetSignOutMetadata();
   }, []);
-
-  const resetAdminSignInMetadata = useCallback(() => (
-    resetAdminSignInMetadataAction({ key })
-  ), []);
-
-  const resetSignInMetadata = useCallback(() => (
-    resetSignInMetadataAction({ key })
-  ), []);
-
-  const resetSignUpMetadata = useCallback(() => (
-    resetSignUpMetadataAction({ key })
-  ), []);
-
-  const resetSignOutMetadata = useCallback(() => (
-    resetSignOutMetadataAction({ key })
-  ), []);
 
   return {
     actions: {

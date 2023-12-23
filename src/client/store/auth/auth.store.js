@@ -2,18 +2,18 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  ADMIN_SIGN_IN_EVENT: 'adminSignInEvent',
-  SIGN_IN_EVENT: 'signInEvent',
-  SIGN_OUT_EVENT: 'signOutEvent',
-  SIGN_UP_EVENT: 'signUpEvent',
+export const requestsNames = {
+  ADMIN_SIGN_IN_REQUEST: 'adminSignInRequest',
+  SIGN_IN_REQUEST: 'signInRequest',
+  SIGN_OUT_REQUEST: 'signOutRequest',
+  SIGN_UP_REQUEST: 'signUpRequest',
 };
 
 export const authStore = {
-  events: {},
+  requests: {},
 
   adminSignInAction: thunk(storeActions.createAction({
-    event: eventsNames.ADMIN_SIGN_IN_EVENT,
+    request: requestsNames.ADMIN_SIGN_IN_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.auth.signIn(payload, options, true);
 
@@ -25,7 +25,7 @@ export const authStore = {
   })),
 
   signInAction: thunk(storeActions.createAction({
-    event: eventsNames.SIGN_IN_EVENT,
+    request: requestsNames.SIGN_IN_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.auth.signIn(payload, options);
 
@@ -37,7 +37,7 @@ export const authStore = {
   })),
 
   signUpAction: thunk(storeActions.createAction({
-    event: eventsNames.SIGN_UP_EVENT,
+    request: requestsNames.SIGN_UP_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.auth.signUp(payload, options);
 
@@ -49,7 +49,7 @@ export const authStore = {
   })),
 
   signOutAction: thunk(storeActions.createAction({
-    event: eventsNames.SIGN_OUT_EVENT,
+    request: requestsNames.SIGN_OUT_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.auth.signOut(payload, options);
 
@@ -60,13 +60,21 @@ export const authStore = {
     },
   })),
 
-  resetAdminSignInMetadataAction: action(storeActions.onReset(eventsNames.ADMIN_SIGN_IN_EVENT)),
+  resetAdminSignInMetadataAction: action(storeActions.onReset(
+    requestsNames.ADMIN_SIGN_IN_REQUEST,
+  )),
 
-  resetSignInMetadataAction: action(storeActions.onReset(eventsNames.SIGN_IN_EVENT)),
+  resetSignInMetadataAction: action(storeActions.onReset(
+    requestsNames.SIGN_IN_REQUEST,
+  )),
 
-  resetSignUpMetadataAction: action(storeActions.onReset(eventsNames.SIGN_UP_EVENT)),
+  resetSignUpMetadataAction: action(storeActions.onReset(
+    requestsNames.SIGN_UP_REQUEST,
+  )),
 
-  resetSignOutMetadataAction: action(storeActions.onReset(eventsNames.SIGN_OUT_EVENT)),
+  resetSignOutMetadataAction: action(storeActions.onReset(
+    requestsNames.SIGN_OUT_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 

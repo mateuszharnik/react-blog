@@ -2,30 +2,34 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_CONFIG_EVENT: 'getConfigEvent',
-  UPDATE_CONFIG_EVENT: 'updateConfigEvent',
+export const requestsNames = {
+  GET_CONFIG_REQUEST: 'getConfigRequest',
+  UPDATE_CONFIG_REQUEST: 'updateConfigRequest',
 };
 
 export const configStore = {
   config: null,
-  events: {},
+  requests: {},
 
   getConfigAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_CONFIG_EVENT,
+    request: requestsNames.GET_CONFIG_REQUEST,
     onSuccess: 'setConfig',
     action: (_, { options }) => apiService.config.getConfig(options),
   })),
 
   updateConfigAction: thunk(storeActions.createAction({
-    event: eventsNames.UPDATE_CONFIG_EVENT,
+    request: requestsNames.UPDATE_CONFIG_REQUEST,
     onSuccess: 'updateConfig',
     action: (_, { payload, options }) => apiService.config.updateConfig(payload, options),
   })),
 
-  resetGetConfigMetadataAction: action(storeActions.onReset(eventsNames.GET_CONFIG_EVENT)),
+  resetGetConfigMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_CONFIG_REQUEST,
+  )),
 
-  resetUpdateConfigMetadataAction: action(storeActions.onReset(eventsNames.UPDATE_CONFIG_EVENT)),
+  resetUpdateConfigMetadataAction: action(storeActions.onReset(
+    requestsNames.UPDATE_CONFIG_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 

@@ -1,13 +1,10 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { apiService } from '@client/services/apiService';
-import { defaultKey, generateEventMetadata } from '@client/utils/storeUtils';
+import { createStoreActionsHook } from '@client/utils/storeUtils';
+import { requestsNames } from '@client/store/docs/docs.store';
 
-export const useDocs = ({ key = defaultKey } = {}) => {
-  const signInCancelToken = useRef(null);
-  const getRefreshTokenCancelToken = useRef(null);
-
-  const { accessToken, events } = useStoreState((store) => store.docsStore);
+export const useDocs = ({ key } = {}) => {
+  const { accessToken, requests } = useStoreState((store) => store.docsStore);
 
   const {
     signInAction,
@@ -16,50 +13,34 @@ export const useDocs = ({ key = defaultKey } = {}) => {
     resetGetRefreshTokenMetadataAction,
   } = useStoreActions((actions) => actions.docsStore);
 
-  const signInMetadata = useMemo(() => (
-    events?.signInEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const useCreateStoreActions = createStoreActionsHook({ requests, key });
 
-  const getRefreshTokenMetadata = useMemo(() => (
-    events?.getRefreshTokenEvent?.[key] || generateEventMetadata()
-  ), [events]);
+  const [
+    signIn,
+    signInMetadata,
+    cancelSignIn,
+    resetSignInMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.SIGN_IN_REQUEST,
+    action: signInAction,
+    resetMetadataAction: resetSignInMetadataAction,
+  });
 
-  const signIn = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    signInCancelToken.current = cancelToken;
-    return signInAction({ key, options, ...payload });
-  }, [signInCancelToken]);
-
-  const cancelSignIn = useCallback((message) => {
-    signInCancelToken.current.cancel(message);
-  }, [signInCancelToken]);
-
-  const getRefreshToken = useCallback((payload = {}) => {
-    const cancelToken = apiService.CancelToken.source();
-    const options = { cancelToken: cancelToken.token };
-
-    getRefreshTokenCancelToken.current = cancelToken;
-    return getRefreshTokenAction({ key, options, ...payload });
-  }, [getRefreshTokenCancelToken]);
-
-  const cancelGetRefreshToken = useCallback((message) => {
-    getRefreshTokenCancelToken.current.cancel(message);
-  }, [getRefreshTokenCancelToken]);
+  const [
+    getRefreshToken,
+    getRefreshTokenMetadata,
+    cancelGetRefreshToken,
+    resetGetRefreshTokenMetadata,
+  ] = useCreateStoreActions({
+    request: requestsNames.GET_REFRESH_TOKEN_REQUEST,
+    action: getRefreshTokenAction,
+    resetMetadataAction: resetGetRefreshTokenMetadataAction,
+  });
 
   const resetAllMetadata = useCallback(() => {
-    resetSignInMetadataAction({ key });
-    resetGetRefreshTokenMetadataAction({ key });
+    resetSignInMetadata();
+    resetGetRefreshTokenMetadata();
   }, []);
-
-  const resetSignInMetadata = useCallback(() => (
-    resetSignInMetadataAction({ key })
-  ), []);
-
-  const resetGetRefreshTokenMetadata = useCallback(() => (
-    resetGetRefreshTokenMetadataAction({ key })
-  ), []);
 
   return {
     accessToken,
