@@ -1,0 +1,1 @@
+export { PrivateContactAPIService } from './privateContactAPIService';

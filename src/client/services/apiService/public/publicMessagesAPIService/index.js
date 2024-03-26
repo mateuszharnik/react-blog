@@ -1,0 +1,1 @@
+export { PublicMessagesAPIService } from './publicMessagesAPIService';

@@ -1,0 +1,1 @@
+export { PrivateAuthAPIService } from './privateAuthAPIService';
