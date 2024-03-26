@@ -8,16 +8,16 @@ import { valuesConstants } from '@shared/constants';
 const { LANG } = valuesConstants;
 
 class I18nService {
-  #client = null;
+  constructor() {
+    this.client = i18next;
 
-  constructor(client) {
-    this.#client = client;
+    this.#init();
   }
 
-  init() {
+  #init = () => {
     const language = getLanguage();
 
-    this.#client
+    this.client
       .use(LanguageDetector)
       .use(initReactI18next)
       .init({
@@ -27,9 +27,9 @@ class I18nService {
           pl,
         },
       });
-
-    return this.#client;
   }
 }
 
-export const i18nService = new I18nService(i18next).init();
+const { client } = new I18nService();
+
+export const i18nService = client;

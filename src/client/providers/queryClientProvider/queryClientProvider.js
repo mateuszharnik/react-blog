@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import { QueryClientProvider as ReactQueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider as ReactQueryClientProvider } from 'react-query';
+import { queryService } from '@client/services/queryService';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-export const queryClient = new QueryClient();
-
 const QueryClientProvider = memo(({ children }) => (
-  <ReactQueryClientProvider client={queryClient}>
+  <ReactQueryClientProvider client={queryService.client}>
     {children}
   </ReactQueryClientProvider>
 ));

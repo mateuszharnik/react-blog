@@ -5,25 +5,25 @@ import { valuesConstants } from '@shared/constants';
 const { LANG } = valuesConstants;
 
 class DateAndTimeService {
-  #client = null;
+  constructor() {
+    this.client = moment;
 
-  constructor(client) {
-    this.#client = client;
+    this.#init();
   }
 
-  init() {
+  #init = () => {
     const language = getLanguage();
 
     this.#setLanguage(language);
-
-    return this.#client;
   }
 
-  #setLanguage(language = LANG.PL) {
+  #setLanguage = (language = LANG.PL) => {
     const lang = checkLanguage(language);
 
-    this.#client.locale(lang);
+    this.client.locale(lang);
   }
 }
 
-export const dateAndTimeService = new DateAndTimeService(moment).init();
+const { client } = new DateAndTimeService();
+
+export const dateAndTimeService = client;

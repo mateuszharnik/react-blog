@@ -1,5 +1,6 @@
 import { createStore } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
+import { queryService } from '@client/services/queryService';
 import { isDevtoolsEnabled } from '@client/utils/envUtils';
 import { csrfStore } from './csrf';
 import { authStore } from './auth';
@@ -30,4 +31,5 @@ export const store = createStore(
   },
 );
 
-apiService.setInterceptors(store);
+apiService.setStore(store);
+queryService.setStore(store);

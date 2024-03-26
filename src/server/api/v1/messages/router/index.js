@@ -23,31 +23,31 @@ const messageLimiter = config.NODE_ENV !== 'test' && config.APP_ENV !== 'e2e' ? 
 router.get(
   '/',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   getMessages,
 );
 router.get(
   '/count',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   countMessages(),
 );
 router.get(
   '/count/read',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   countMessages(true),
 );
 router.get(
   '/count/new',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   countMessages(false),
 );
 router.get(
   '/:id',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   getMessage,
 );
 router.post(
@@ -58,13 +58,13 @@ router.post(
 router.delete(
   '/',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   deleteMessages,
 );
 router.delete(
   '/:id',
   isLoggedIn,
-  canManage(permissions.roles),
+  canManage(permissions.messages),
   deleteMessage,
 );
 

@@ -4,7 +4,7 @@ export const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|
 
 export const passwordRegExp = /^(?=.*[0-9])(?=.*[!@#$%^&*~`])(?=.*[a-ząćęłńóśżź])(?=.*[A-ZĄĆĘŁŃÓŚŹŻ])[a-ząćęłńóśżźA-ZĄĆĘŁŃÓŚŹŻ0-9!@#$%^&*~`]{8,32}$/;
 
-export const nameRegExp = /^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚźŹżŻ]{2,32}$/;
+export const nameRegExp = /^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚźŹżŻ]{1,32}$/;
 
 export const alphanumRegExp = /^[a-z0-9]+$/i;
 
