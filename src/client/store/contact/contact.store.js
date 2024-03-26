@@ -14,13 +14,15 @@ export const contactStore = {
   getContactAction: thunk(storeActions.createAction({
     request: requestsNames.GET_CONTACT_REQUEST,
     onSuccess: 'setContact',
-    action: (_, { options }) => apiService.contact.getContact(options),
+    action: (_, { options }) => apiService.publicContact
+      .getContact(options),
   })),
 
   updateContactAction: thunk(storeActions.createAction({
     request: requestsNames.UPDATE_CONTACT_REQUEST,
     onSuccess: 'updateContact',
-    action: (_, { payload, options }) => apiService.contact.updateContact(payload, options),
+    action: (_, { payload, options }) => apiService.privateContact
+      .updateContact(payload, options),
   })),
 
   resetGetContactMetadataAction: action(storeActions.onReset(
@@ -44,4 +46,8 @@ export const contactStore = {
   updateContact: action(storeActions.onSuccess((state, { result }) => {
     state.contact = result;
   })),
+
+  reset: action((state) => {
+    state.contact = null;
+  }),
 };

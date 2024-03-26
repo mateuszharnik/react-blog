@@ -18,4 +18,8 @@ export const userStore = {
   setUser: action(storeActions.onSuccess((state, { result }) => {
     state.user = result.user;
   })),
+
+  reset: action((state) => {
+    state.user = null;
+  }),
 };

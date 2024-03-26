@@ -14,13 +14,15 @@ export const aboutStore = {
   getAboutAction: thunk(storeActions.createAction({
     request: requestsNames.GET_ABOUT_REQUEST,
     onSuccess: 'setAbout',
-    action: (_, { options }) => apiService.about.getAbout(options),
+    action: (_, { options }) => apiService.publicAbout
+      .getAbout(options),
   })),
 
   updateAboutAction: thunk(storeActions.createAction({
     request: requestsNames.UPDATE_ABOUT_REQUEST,
     onSuccess: 'updateAbout',
-    action: (_, { payload, options }) => apiService.about.updateAbout(payload, options),
+    action: (_, { payload, options }) => apiService.privateAbout
+      .updateAbout(payload, options),
   })),
 
   resetGetAboutMetadataAction: action(storeActions.onReset(
@@ -44,4 +46,8 @@ export const aboutStore = {
   updateAbout: action(storeActions.onSuccess((state, { result }) => {
     state.about = result;
   })),
+
+  reset: action((state) => {
+    state.about = null;
+  }),
 };

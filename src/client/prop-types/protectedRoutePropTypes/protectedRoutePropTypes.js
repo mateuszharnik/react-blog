@@ -1,5 +1,5 @@
 import {
-  elementType, string, bool, arrayOf, oneOf, func,
+  elementType, string, bool, arrayOf, oneOf, func, array,
 } from 'prop-types';
 import { permissionsConstants, rolesConstants, routesConstants } from '@shared/constants';
 
@@ -31,7 +31,7 @@ export const protectedRoutePropTypes = {
     redirect: string,
     shouldBeAuthenticated: bool,
     requiredCondition: func,
-    requiredSubscription: string,
+    requiredSubscriptions: array,
     requiredRoles: arrayOf(oneOf([
       ADMIN,
       SUPERUSER,
@@ -61,7 +61,7 @@ export const protectedRoutePropTypes = {
     redirect: ROOT,
     shouldBeAuthenticated: true,
     requiredCondition: () => true,
-    requiredSubscription: '',
+    requiredSubscriptions: [],
     requiredRoles: [],
     requiredPermissions: [],
   },

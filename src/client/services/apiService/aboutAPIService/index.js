@@ -1,1 +1,0 @@
-export { AboutAPIService } from './aboutAPIService';
