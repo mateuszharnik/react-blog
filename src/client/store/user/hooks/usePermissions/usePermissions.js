@@ -1,78 +1,88 @@
-import {
-  useState, useMemo, useCallback, useEffect,
-} from 'react';
+import { useMemo, useCallback } from 'react';
 import { useStoreState } from 'easy-peasy';
+import isFunction from 'lodash/isFunction';
 
 export const usePermissions = ({
   requiredPermissions = [],
-  requiredSubscription = '',
+  requiredSubscriptions = [],
   requiredRoles = [],
   requiredCondition = () => true,
 }) => {
-  const [isReady, setIsReady] = useState(false);
+  const { permissions: userPermissions } = useStoreState((store) => store.userStore);
 
-  const [hasPermissions, setHasPermissions] = useState(false);
-  const [hasSubscription, setHasSubscription] = useState(false);
-  const [hasCorrectCondition, setHasCorrectCondition] = useState(false);
+  const checkRoles = useCallback((roles) => {
+    if (!roles.length) return true;
 
-  const { permissions } = useStoreState((store) => store.userStore);
-
-  const isAuthenticated = useMemo(() => !!permissions, [permissions]);
-
-  const hasRole = useMemo(
-    () => !!requiredRoles.find((role) => permissions?.type === role),
-    [requiredRoles, permissions],
-  );
-
-  const checkPermissions = useCallback(() => {
-    if (!requiredPermissions.length) {
-      setHasPermissions(true);
-      return true;
-    }
-
-    const requiredPermissionsLength = requiredPermissions
-      .filter((requiredPermission) => permissions?.[requiredPermission]).length;
-
-    const isPermissionsLengthEqual = (
-      requiredPermissionsLength === requiredPermissions.length
+    const hasRequiredRole = !!roles.find(
+      (role) => userPermissions?.type === role,
     );
 
-    setHasPermissions(isPermissionsLengthEqual);
+    return hasRequiredRole;
+  }, [userPermissions]);
+
+  const checkSubscriptions = useCallback((subscriptions) => {
+    if (!subscriptions.length) return true;
+
+    const hasRequiredSubscription = !!subscriptions.find(
+      (subscription) => userPermissions?.subscription === subscription,
+    );
+
+    return hasRequiredSubscription;
+  }, [userPermissions]);
+
+  const checkPermissions = useCallback((permissions) => {
+    if (!permissions.length) return true;
+
+    const requiredPermissionsLength = permissions
+      .filter((requiredPermission) => userPermissions?.[requiredPermission]).length;
+
+    const isPermissionsLengthEqual = (
+      requiredPermissionsLength === permissions.length
+    );
+
     return isPermissionsLengthEqual;
-  }, [requiredPermissions, permissions]);
+  }, [userPermissions]);
 
-  const checkSubscription = useCallback(() => {
-    setHasSubscription(!requiredSubscription);
-  }, [requiredSubscription]);
+  const checkRequiredCondition = useCallback((condition) => (
+    !isFunction(condition) ? true : condition(userPermissions)
+  ), [userPermissions]);
 
-  const checkCondition = useCallback(() => {
-    setHasCorrectCondition(requiredCondition());
-  }, [requiredCondition]);
+  const isAuthenticated = useMemo(
+    () => !!userPermissions,
+    [userPermissions],
+  );
 
-  useEffect(() => {
-    checkPermissions();
-    checkSubscription();
-    checkCondition();
+  const hasRoles = useMemo(
+    () => checkRoles(requiredRoles),
+    [checkRoles, requiredRoles],
+  );
 
-    setIsReady(true);
-  }, [
-    requiredPermissions,
-    requiredSubscription,
-    requiredCondition,
-    permissions,
-  ]);
+  const hasPermissions = useMemo(
+    () => checkPermissions(requiredPermissions),
+    [checkPermissions, requiredPermissions],
+  );
+
+  const hasSubscriptions = useMemo(
+    () => checkSubscriptions(requiredSubscriptions),
+    [checkSubscriptions, requiredSubscriptions],
+  );
+
+  const hasCorrectCondition = useMemo(
+    () => checkRequiredCondition(requiredCondition),
+    [checkRequiredCondition, requiredCondition],
+  );
 
   return {
-    isReady,
     isAuthenticated,
     hasPermissions,
-    hasSubscription,
-    hasRole,
+    hasSubscriptions,
+    hasRoles,
     hasCorrectCondition,
     actions: {
+      checkRoles,
       checkPermissions,
-      checkSubscription,
-      checkCondition,
+      checkSubscriptions,
+      checkRequiredCondition,
     },
   };
 };
