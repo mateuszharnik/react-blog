@@ -1,10 +1,17 @@
-import { useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useTranslation } from 'react-i18next';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { createStoreActionsHook } from '@client/utils/storeUtils';
 import { requestsNames } from '@client/store/messages/messages.store';
+import { toastsConstants } from '@shared/constants';
 
 export const useMessages = ({ key } = {}) => {
-  const { messages, requests } = useStoreState((store) => store.messagesStore);
+  const { ids, entities, requests } = useStoreState((store) => store.messagesStore);
+  const { t } = useTranslation();
+  const { actions: { addToast } } = useToastsContext();
+
+  const messages = useMemo(() => ids.map((id) => entities[id]), [ids, entities]);
 
   const {
     getMessagesAction,
@@ -24,6 +31,12 @@ export const useMessages = ({ key } = {}) => {
     request: requestsNames.GET_MESSAGES_REQUEST,
     action: getMessagesAction,
     resetMetadataAction: resetGetMessageMetadataAction,
+    onError: ({ error }) => {
+      addToast({
+        message: error,
+        type: toastsConstants.TYPE.DANGER,
+      });
+    },
   });
 
   const [
@@ -35,6 +48,18 @@ export const useMessages = ({ key } = {}) => {
     request: requestsNames.CREATE_MESSAGE_REQUEST,
     action: createMessageAction,
     resetMetadataAction: resetCreateMessageMetadataAction,
+    onSuccess: () => {
+      addToast({
+        message: t('forms.SUCCESSFULLY_SENT'),
+        type: toastsConstants.TYPE.SUCCESS,
+      });
+    },
+    onError: ({ error }) => {
+      addToast({
+        message: error,
+        type: toastsConstants.TYPE.DANGER,
+      });
+    },
   });
 
   const resetAllMetadata = useCallback(() => {

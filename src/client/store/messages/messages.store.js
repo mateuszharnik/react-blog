@@ -1,26 +1,37 @@
+import orderBy from 'lodash/orderBy';
 import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
-import { storeActions } from '@client/utils/storeUtils';
+import { storeActions, createEntityAdapter } from '@client/utils/storeUtils';
 
 export const requestsNames = {
   GET_MESSAGES_REQUEST: 'getMessagesRequest',
   CREATE_MESSAGE_REQUEST: 'createMessageRequest',
 };
 
+const messagesAdapter = createEntityAdapter({
+  sort: (data) => orderBy(data, 'first_name', 'asc'),
+  initialState: {
+    ids: [],
+    entities: {},
+    requests: {},
+  },
+});
+
 export const messagesStore = {
-  messages: [],
-  requests: {},
+  ...messagesAdapter.getInitialState(),
 
   getMessagesAction: thunk(storeActions.createAction({
     request: requestsNames.GET_MESSAGES_REQUEST,
-    onSuccess: 'setMessages',
-    action: (_, { options }) => apiService.messages.getMessages(options),
+    onSuccess: 'onSuccessGetMessages',
+    action: (_, { options }) => apiService.privateMessages
+      .getMessages(options),
   })),
 
   createMessageAction: thunk(storeActions.createAction({
     request: requestsNames.CREATE_MESSAGE_REQUEST,
-    onSuccess: 'updateMessages',
-    action: (_, { payload, options }) => apiService.messages.createMessage(payload, options),
+    onSuccess: 'onSuccessCreateMessage',
+    action: (_, { payload, options }) => apiService.publicMessages
+      .createMessage(payload, options),
   })),
 
   resetGetMessageMetadataAction: action(storeActions.onReset(
@@ -37,11 +48,18 @@ export const messagesStore = {
 
   onError: action(storeActions.onError()),
 
-  setMessages: action(storeActions.onSuccess((state, { result }) => {
-    state.messages = result;
+  onSuccessGetMessages: action(storeActions.onSuccess((state, { result }) => {
+    messagesAdapter.setAll(state, result);
   })),
 
-  updateMessages: action(storeActions.onSuccess((state, { result }) => {
-    state.messages = [result, ...state.messages];
+  onSuccessCreateMessage: action(storeActions.onSuccess((state, { result }) => {
+    messagesAdapter.addOne(state, result);
   })),
+
+  reset: action((state) => {
+    const { ids, entities } = messagesAdapter.getInitialState();
+
+    state.ids = ids;
+    state.entities = entities;
+  }),
 };

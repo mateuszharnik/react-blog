@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useToastsContext } from '@client/contexts/ToastsContext';
 import { createStoreActionsHook } from '@client/utils/storeUtils';
 import { requestsNames } from '@client/store/docs/docs.store';
+import { toastsConstants } from '@shared/constants';
 
 export const useDocs = ({ key } = {}) => {
   const { accessToken, requests } = useStoreState((store) => store.docsStore);
+  const { actions: { addToast } } = useToastsContext();
 
   const {
     signInAction,
@@ -24,6 +27,12 @@ export const useDocs = ({ key } = {}) => {
     request: requestsNames.SIGN_IN_REQUEST,
     action: signInAction,
     resetMetadataAction: resetSignInMetadataAction,
+    onError: ({ error }) => {
+      addToast({
+        message: error,
+        type: toastsConstants.TYPE.DANGER,
+      });
+    },
   });
 
   const [
