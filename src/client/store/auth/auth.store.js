@@ -15,7 +15,7 @@ export const authStore = {
   adminSignInAction: thunk(storeActions.createAction({
     request: requestsNames.ADMIN_SIGN_IN_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
-      const response = await apiService.auth.signIn(payload, options, true);
+      const response = await apiService.publicAuth.signIn(payload, options, true);
 
       getStoreActions().userStore.setUser({ result: response?.data });
       getStoreActions().tokensStore.setAccessToken({ result: response?.data });
@@ -27,7 +27,7 @@ export const authStore = {
   signInAction: thunk(storeActions.createAction({
     request: requestsNames.SIGN_IN_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
-      const response = await apiService.auth.signIn(payload, options);
+      const response = await apiService.publicAuth.signIn(payload, options);
 
       getStoreActions().userStore.setUser({ result: response?.data });
       getStoreActions().tokensStore.setAccessToken({ result: response?.data });
@@ -39,7 +39,7 @@ export const authStore = {
   signUpAction: thunk(storeActions.createAction({
     request: requestsNames.SIGN_UP_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
-      const response = await apiService.auth.signUp(payload, options);
+      const response = await apiService.publicAuth.signUp(payload, options);
 
       getStoreActions().userStore.setUser({ result: response?.data });
       getStoreActions().tokensStore.setAccessToken({ result: response?.data });
@@ -51,10 +51,11 @@ export const authStore = {
   signOutAction: thunk(storeActions.createAction({
     request: requestsNames.SIGN_OUT_REQUEST,
     action: async (_, { payload, options }, { getStoreActions }) => {
-      const response = await apiService.auth.signOut(payload, options);
+      const response = await apiService.privateAuth.signOut(payload, options);
 
-      getStoreActions().userStore.setUser({ result: { user: null } });
-      getStoreActions().tokensStore.setAccessToken({ result: { accessToken: '' } });
+      getStoreActions().userStore.reset(null);
+      getStoreActions().tokensStore.reset(null);
+      getStoreActions().messagesStore.reset(null);
 
       return response;
     },

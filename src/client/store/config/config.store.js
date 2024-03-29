@@ -14,13 +14,15 @@ export const configStore = {
   getConfigAction: thunk(storeActions.createAction({
     request: requestsNames.GET_CONFIG_REQUEST,
     onSuccess: 'setConfig',
-    action: (_, { options }) => apiService.config.getConfig(options),
+    action: (_, { options }) => apiService.publicConfig
+      .getConfig(options),
   })),
 
   updateConfigAction: thunk(storeActions.createAction({
     request: requestsNames.UPDATE_CONFIG_REQUEST,
     onSuccess: 'updateConfig',
-    action: (_, { payload, options }) => apiService.config.updateConfig(payload, options),
+    action: (_, { payload, options }) => apiService.privateConfig
+      .updateConfig(payload, options),
   })),
 
   resetGetConfigMetadataAction: action(storeActions.onReset(
@@ -44,4 +46,8 @@ export const configStore = {
   updateConfig: action(storeActions.onSuccess((state, { result }) => {
     state.config = result;
   })),
+
+  reset: action((state) => {
+    state.config = null;
+  }),
 };

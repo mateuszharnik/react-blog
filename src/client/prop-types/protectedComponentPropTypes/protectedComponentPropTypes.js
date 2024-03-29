@@ -1,5 +1,5 @@
 import {
-  elementType, string, bool, arrayOf, oneOf, func,
+  elementType, bool, arrayOf, oneOf, func, array,
 } from 'prop-types';
 import { permissionsConstants, rolesConstants } from '@shared/constants';
 import { childrenPropTypes } from '../childrenPropTypes';
@@ -29,7 +29,7 @@ export const protectedComponentPropTypes = {
     accessDeniedComponent: elementType,
     shouldBeAuthenticated: bool,
     requiredCondition: func,
-    requiredSubscription: string,
+    requiredSubscriptions: array,
     requiredRoles: arrayOf(oneOf([
       ADMIN,
       SUPERUSER,
@@ -58,7 +58,7 @@ export const protectedComponentPropTypes = {
     accessDeniedComponent: undefined,
     shouldBeAuthenticated: true,
     requiredCondition: () => true,
-    requiredSubscription: '',
+    requiredSubscriptions: [],
     requiredRoles: [],
     requiredPermissions: [],
     children: childrenPropTypes.default,

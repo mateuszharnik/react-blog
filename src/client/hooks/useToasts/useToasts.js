@@ -22,9 +22,9 @@ const useToasts = ({ limit = 5, position = BOTTOM_RIGHT } = {}) => {
     };
 
     if (showFromBottomRef.current) {
-      setToasts([toast, ...toasts]);
+      setToasts((allToasts) => [toast, ...allToasts]);
     } else {
-      setToasts([...toasts, toast]);
+      setToasts((allToasts) => [...allToasts, toast]);
     }
   }, [toasts, limitRef, showFromBottomRef]);
 

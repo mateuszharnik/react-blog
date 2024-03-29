@@ -1,23 +1,28 @@
-import queryString from 'query-string';
+import { QueryClient } from 'react-query';
 
 class QueryService {
-  #client = null;
-
-  constructor(client) {
-    this.#client = client;
+  constructor() {
+    this.client = new QueryClient();
   }
 
-  parse(query, options) {
-    return this.#client.parse(query, options);
-  }
-
-  stringify(obj, options) {
-    return this.#client.stringify(obj, options);
-  }
-
-  parseUrl(path, options) {
-    return this.#client.parseUrl(path, options);
+  setStore = (store) => {
+    this.client.setDefaultOptions({
+      mutations: {
+        onSuccess: () => {
+          // eslint-disable-next-line
+          console.log(store);
+        },
+      },
+      queries: {
+        cacheTime: 100000,
+        staleTime: 100000,
+        onSuccess: () => {
+          // eslint-disable-next-line
+          console.log(store);
+        },
+      },
+    });
   }
 }
 
-export const queryService = new QueryService(queryString);
+export const queryService = new QueryService();

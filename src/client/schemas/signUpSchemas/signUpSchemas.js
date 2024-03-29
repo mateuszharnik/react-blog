@@ -17,9 +17,9 @@ const PATH = 'messages.signUp';
 export const signUpSchema = object({
   username: string()
     .trim()
-    .matches(USERNAME.REGEXP, t(`${PATH}.username.NOT_MATCH`))
     .min(USERNAME.MIN_LENGTH, t(`${PATH}.username.MIN_LENGTH`, { count: `${USERNAME.MIN_LENGTH} ${t(chars(USERNAME.MIN_LENGTH))}` }))
     .max(USERNAME.MAX_LENGTH, t(`${PATH}.username.MAX_LENGTH`, { count: `${USERNAME.MAX_LENGTH} ${t(chars(USERNAME.MAX_LENGTH))}` }))
+    .matches(USERNAME.REGEXP, t(`${PATH}.username.NOT_MATCH`))
     .required(t(`${PATH}.username.REQUIRED`)),
   email: string()
     .trim()

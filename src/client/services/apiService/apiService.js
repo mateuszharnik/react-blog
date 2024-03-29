@@ -1,94 +1,83 @@
-import axios, { CanceledError } from 'axios';
-import decode from 'jwt-decode';
-import { envConfig } from '@client/configs/envConfig';
-import { apiConstants, statusesConstants } from '@shared/constants';
-import { AboutAPIService } from './aboutAPIService';
-import { ContactAPIService } from './contactAPIService';
-import { ConfigAPIService } from './configAPIService';
-import { AuthAPIService } from './authAPIService';
-import { MessagesAPIService } from './messagesAPIService';
-import { DocsAPIService } from './docsAPIService';
-import { CsrfAPIService } from './csrfAPIService';
+import axios from 'axios';
+import { checkLanguage, getLanguage } from '@client/utils/languageUtils';
+import { apiConstants, valuesConstants } from '@shared/constants';
 
-class APIService {
-  #client = null;
+import { PrivateAboutAPIService } from './private/privateAboutAPIService';
+import { PrivateMessagesAPIService } from './private/privateMessagesAPIService';
+import { PrivateContactAPIService } from './private/privateContactAPIService';
+import { PrivateConfigAPIService } from './private/privateConfigAPIService';
+import { PrivateAuthAPIService } from './private/privateAuthAPIService';
 
-  constructor(client, baseURL) {
-    this.#client = client.create({ baseURL });
+import { PublicAboutAPIService } from './public/publicAboutAPIService';
+import { PublicMessagesAPIService } from './public/publicMessagesAPIService';
+import { PublicContactAPIService } from './public/publicContactAPIService';
+import { PublicConfigAPIService } from './public/publicConfigAPIService';
+import { PublicAuthAPIService } from './public/publicAuthAPIService';
+import { PublicDocsAPIService } from './public/publicDocsAPIService';
+import { PublicCsrfAPIService } from './public/publicCsrfAPIService';
 
-    this.isCancel = client.isCancel;
-    this.CancelToken = client.CancelToken;
+const { LANG } = valuesConstants;
 
-    this.about = new AboutAPIService(this.#client);
-    this.contact = new ContactAPIService(this.#client);
-    this.config = new ConfigAPIService(this.#client);
-    this.auth = new AuthAPIService(this.#client);
-    this.messages = new MessagesAPIService(this.#client);
-    this.docs = new DocsAPIService(this.#client);
-    this.csrf = new CsrfAPIService(this.#client);
+class ApiService {
+  constructor() {
+    this.client = axios;
+
+    this.#init();
+
+    this.privateAbout = new PrivateAboutAPIService(apiConstants.ABOUT.ROOT);
+    this.privateMessages = new PrivateMessagesAPIService(apiConstants.MESSAGES.ROOT);
+    this.privateContact = new PrivateContactAPIService(apiConstants.CONTACT.ROOT);
+    this.privateConfig = new PrivateConfigAPIService(apiConstants.CONFIG.ROOT);
+    this.privateAuth = new PrivateAuthAPIService(apiConstants.AUTH.ROOT);
+
+    this.publicAbout = new PublicAboutAPIService(apiConstants.ABOUT.ROOT);
+    this.publicMessages = new PublicMessagesAPIService(apiConstants.MESSAGES.ROOT);
+    this.publicContact = new PublicContactAPIService(apiConstants.CONTACT.ROOT);
+    this.publicConfig = new PublicConfigAPIService(apiConstants.CONFIG.ROOT);
+    this.publicAuth = new PublicAuthAPIService(apiConstants.AUTH.ROOT);
+    this.publicDocs = new PublicDocsAPIService(apiConstants.DOCS.ROOT);
+    this.publicCsrf = new PublicCsrfAPIService(apiConstants.CSRF_TOKEN.ROOT);
   }
 
-  #checkIfShouldRefresh = (response, config) => {
-    const isUnauthorized = response.status === statusesConstants.CODE.UNAUTHORIZED;
-    const isNotRetry = !config?._retry;
-    const isNotDocsUrl = response?.request?.responseURL !== `${envConfig.CLIENT_URL}/${apiConstants.DOCS.ROOT}`;
+  setStore = (store) => {
+    this.privateAbout.setStore(store);
+    this.privateMessages.setStore(store);
+    this.privateContact.setStore(store);
+    this.privateConfig.setStore(store);
+    this.privateAuth.setStore(store);
 
-    return isUnauthorized && isNotRetry && isNotDocsUrl;
+    this.publicAbout.setStore(store);
+    this.publicMessages.setStore(store);
+    this.publicContact.setStore(store);
+    this.publicConfig.setStore(store);
+    this.publicAuth.setStore(store);
+    this.publicDocs.setStore(store);
+    this.publicCsrf.setStore(store);
   }
 
-  #setResponseInterceptor(store) {
-    this.#client.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const { response, config } = error;
+  #init = () => {
+    const language = getLanguage();
 
-        if (error instanceof CanceledError) {
-          return Promise.reject(error);
-        }
-
-        if (this.#checkIfShouldRefresh(response, config)) {
-          try {
-            config._retry = true;
-
-            const accessToken = store.getState().tokensStore?.accessToken;
-
-            const { exp } = decode(accessToken);
-
-            if ((Math.floor(Date.now() / 1000)) < exp) {
-              return Promise.reject(error);
-            }
-
-            const { data } = await store.getActions().tokensStore.getRefreshToken();
-
-            if (data) {
-              return this.#client(config);
-            }
-          } catch (e) {
-            return Promise.reject(error);
-          }
-        }
-
-        return Promise.reject(error);
-      },
-    );
+    this.setLanguageHeader(language);
   }
 
-  #setRequestInterceptor(store) {
-    this.#client.interceptors.request.use((config) => {
-      const accessToken = store.getState().tokensStore?.accessToken;
+  setLanguageHeader = (language = LANG.PL) => {
+    const lang = checkLanguage(language);
 
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-
-      return config;
-    });
-  }
-
-  setInterceptors(store) {
-    this.#setRequestInterceptor(store);
-    this.#setResponseInterceptor(store);
+    this.client.defaults.headers.common['Accept-Language'] = lang;
   }
 }
 
-export const apiService = new APIService(axios, apiConstants.BASE_URL.ROOT);
+const {
+  client,
+  setStore,
+  setLanguageHeader,
+  ...rest
+} = new ApiService();
+
+export const apiService = {
+  ...client,
+  ...rest,
+  setStore,
+  setLanguageHeader,
+};

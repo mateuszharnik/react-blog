@@ -23,3 +23,11 @@
 .valid {
   border-color: $primary;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.select-none {
+  user-select: none;
+}

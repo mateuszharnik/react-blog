@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
+import { normalize, schema } from 'normalizr';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import get from 'lodash/get';
@@ -7,6 +8,8 @@ import unset from 'lodash/unset';
 import isObject from 'lodash/isObject';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
+import cloneDeep from 'lodash/cloneDeep';
+import pick from 'lodash/pick';
 import { apiService } from '@client/services/apiService';
 import { valuesConstants } from '@shared/constants';
 
@@ -183,6 +186,7 @@ const createAction = ({
   request, action, onTrigger, onFetching, onSuccess, onError,
 } = {}) => async (actions, payload = {}, helpers) => {
   const shouldUpdateMetadata = payload.shouldUpdateMetadata || true;
+  const result = { data: null, error: null };
 
   actions[onTrigger || defaultActionNames.ON_TRIGGER]({
     request, shouldUpdateMetadata, ...payload,
@@ -195,14 +199,14 @@ const createAction = ({
     });
     if (isFunction(payload.onFetching)) await payload.onFetching(payload);
 
-    if (!isFunction(action)) throw new Error('Callback must be a function');
-
-    const { data } = await action(actions, payload, helpers);
+    const response = await action(actions, payload, helpers);
 
     actions[onSuccess || defaultActionNames.ON_SUCCESS]({
-      request, result: data, shouldUpdateMetadata, ...payload,
+      request, result: response.data, shouldUpdateMetadata, ...payload,
     });
-    if (isFunction(payload.onSuccess)) await payload.onSuccess(payload, data);
+    if (isFunction(payload.onSuccess)) await payload.onSuccess(payload, response.data);
+
+    result.data = response.data;
   } catch (e) {
     let error = null;
 
@@ -217,7 +221,11 @@ const createAction = ({
       request, error, shouldUpdateMetadata, ...payload,
     });
     if (isFunction(payload.onError)) await payload.onError(payload, error);
+
+    result.error = error;
   }
+
+  return result;
 };
 
 export const storeActions = {
@@ -232,21 +240,97 @@ export const storeActions = {
 export const createStoreActionsHook = ({
   requests, key = defaultKey,
 }) => ({
-  request, action, resetMetadataAction,
+  request,
+  action,
+  resetMetadataAction,
+  onError: onActionError,
+  onSuccess: onActionSuccess,
+  onFetching: onActionFetching,
+  onTrigger: onActionTrigger,
 }) => {
   const cancelToken = useRef(null);
 
-  const metadata = useMemo(() => (
-    requests?.[request]?.[key] || generateRequestMetadata()
-  ), [requests]);
+  const metadata = useMemo(() => {
+    if (requests?.[request]?.[key]) {
+      return requests?.[request]?.[key];
+    }
+
+    return generateRequestMetadata();
+  }, [requests]);
+
+  const onError = useCallback((actions) => async (payload, error) => {
+    if (isFunction(actions.onPayloadError)) {
+      await actions.onPayloadError({ payload, error });
+    }
+
+    if (isFunction(actions.onActionError)) {
+      await actions.onActionError({ payload, error });
+    }
+  }, []);
+
+  const onSuccess = useCallback((actions) => async (payload, data) => {
+    if (isFunction(actions.onPayloadSuccess)) {
+      await actions.onPayloadSuccess({ payload, data });
+    }
+
+    if (isFunction(actions.onActionSuccess)) {
+      await actions.onActionSuccess({ payload, data });
+    }
+  }, []);
+
+  const onFetching = useCallback((actions) => async (payload) => {
+    if (isFunction(actions.onPayloadFetching)) {
+      await actions.onPayloadFetching({ payload });
+    }
+
+    if (isFunction(actions.onActionFetching)) {
+      await actions.onActionFetching({ payload });
+    }
+  }, []);
+
+  const onTrigger = useCallback((actions) => async (payload) => {
+    if (isFunction(actions.onPayloadTrigger)) {
+      await actions.onPayloadTrigger({ payload });
+    }
+
+    if (isFunction(actions.onActionTrigger)) {
+      await actions.onActionTrigger({ payload });
+    }
+  }, []);
 
   const storeAction = useCallback((payload = {}) => {
     const cancelTokenSource = apiService.CancelToken.source();
     const options = { cancelToken: cancelTokenSource.token };
-
     cancelToken.current = cancelTokenSource;
-    return action({ key, options, ...payload });
-  }, [cancelToken]);
+
+    const {
+      onError: onPayloadError,
+      onSuccess: onPayloadSuccess,
+      onFetching: onPayloadFetching,
+      onTrigger: onPayloadTrigger,
+      ...rest
+    } = payload;
+
+    return action({
+      key,
+      options,
+      onError: isFunction(onPayloadError) || isFunction(onActionError)
+        ? onError({ onPayloadError, onActionError }) : null,
+      onSuccess: isFunction(onPayloadSuccess) || isFunction(onActionSuccess)
+        ? onSuccess({ onPayloadSuccess, onActionSuccess }) : null,
+      onFetching: isFunction(onPayloadFetching) || isFunction(onActionFetching)
+        ? onFetching({ onPayloadFetching, onActionFetching }) : null,
+      onTrigger: isFunction(onPayloadTrigger) || isFunction(onActionTrigger)
+        ? onTrigger({ onPayloadTrigger, onActionTrigger }) : null,
+      ...rest,
+    });
+  }, [
+    cancelToken,
+    onActionError,
+    onActionSuccess,
+    onActionFetching,
+    onActionTrigger,
+  ]);
 
   const cancelAction = useCallback((message) => {
     cancelToken.current.cancel(message);
@@ -255,4 +339,161 @@ export const createStoreActionsHook = ({
   const resetMetadata = useCallback(() => resetMetadataAction({ key }), []);
 
   return [storeAction, metadata, cancelAction, resetMetadata];
+};
+
+export const createEntityAdapter = ({
+  selectId = 'id',
+  sort = (data) => data,
+  initialState = { ids: [], entities: {} },
+}) => {
+  const initialValues = cloneDeep(initialState);
+  const entitySchema = new schema.Entity('entities', {}, { idAttribute: selectId });
+
+  const normalizeData = (data) => {
+    const normalizedData = normalize(data, [entitySchema]);
+
+    return normalizedData.entities;
+  };
+
+  const synchronizeIdsWithEntities = (state) => {
+    state.entities = sort(Object.values(state.entities)).reduce((acc, next) => {
+      acc[next[selectId]] = next;
+
+      return acc;
+    }, {});
+    state.ids = Object.keys(state.entities);
+  };
+
+  const addOne = (state, entity) => {
+    const id = entity[selectId];
+
+    if (!state.entities[id]) {
+      state.entities[id] = entity;
+      synchronizeIdsWithEntities(state);
+    }
+  };
+
+  const addMany = (state, data) => {
+    const entities = normalizeData(data);
+
+    Object.keys(entities.entities).forEach((id) => {
+      if (!state.entities[id]) {
+        state.entities[id] = entities.entities[id];
+      }
+    });
+
+    synchronizeIdsWithEntities(state);
+  };
+
+  const setOne = (state, entity) => {
+    const id = entity[selectId];
+
+    state.entities[id] = entity;
+    synchronizeIdsWithEntities(state);
+  };
+
+  const setMany = (state, data) => {
+    const entities = normalizeData(data);
+
+    state.entities = { ...state.entities, ...entities.entities };
+    synchronizeIdsWithEntities(state);
+  };
+
+  const setAll = (state, data) => {
+    const entities = normalizeData(data);
+
+    state.entities = { ...entities.entities };
+    synchronizeIdsWithEntities(state);
+  };
+
+  const removeOne = (state, entityId) => {
+    delete state.entities[entityId];
+    synchronizeIdsWithEntities(state);
+  };
+
+  const removeMany = (state, entityIds) => {
+    entityIds.forEach((id) => delete state.entities[id]);
+    synchronizeIdsWithEntities(state);
+  };
+
+  const removeAll = (state) => {
+    state.entities = {};
+    state.ids = [];
+  };
+
+  const updateOne = (state, update) => {
+    const { [selectId]: id, changes } = update;
+
+    if (state.entities[id]) {
+      state.entities[id] = { ...state.entities[id], ...changes };
+      synchronizeIdsWithEntities(state);
+    }
+  };
+
+  const updateMany = (state, updates) => {
+    updates.forEach((update) => {
+      const { [selectId]: id, changes } = update;
+
+      if (state.entities[id]) {
+        state.entities[id] = { ...state.entities[id], ...changes };
+      }
+    });
+
+    synchronizeIdsWithEntities(state);
+  };
+
+  const upsertOne = (state, entity) => {
+    const id = entity[selectId];
+
+    if (state.entities[id]) {
+      updateOne(state, { changes: entity, [selectId]: id });
+    } else {
+      addOne(state, entity);
+    }
+  };
+
+  const upsertMany = (state, data) => {
+    const entities = normalizeData(data);
+
+    Object.entries(entities.entities).forEach(([id, entity]) => {
+      if (state.entities[id]) {
+        updateOne(state, { changes: entity, [selectId]: id });
+      } else {
+        addOne(state, entity);
+      }
+    });
+  };
+
+  const getInitialState = () => initialValues;
+
+  const getOne = (state, entityId) => state.entities[entityId];
+
+  const getMany = (state, entityIds) => {
+    synchronizeIdsWithEntities(state);
+    return pick(state.entities, entityIds);
+  };
+
+  const getAll = (state) => {
+    synchronizeIdsWithEntities(state);
+    return Object.values(state.entities);
+  };
+
+  return {
+    addOne,
+    addMany,
+    setOne,
+    setMany,
+    setAll,
+    removeOne,
+    removeMany,
+    removeAll,
+    updateOne,
+    updateMany,
+    upsertOne,
+    upsertMany,
+    getOne,
+    getMany,
+    getAll,
+    getInitialState,
+  };
 };

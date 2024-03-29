@@ -5,7 +5,7 @@ import { useDocs } from '@client/store/docs';
 import { envConfig } from '@client/configs/envConfig';
 import { apiConstants } from '@shared/constants';
 
-const apiDocsUrl = `${envConfig.CLIENT_URL}/${apiConstants.DOCS.ROOT}`;
+const apiDocsUrl = `${envConfig.CLIENT_URL}${apiConstants.DOCS.ROOT}`;
 
 const DocsRoute = memo(() => {
   const [isLoading, setIsLoading] = useState(true);

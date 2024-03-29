@@ -8,8 +8,8 @@ import QueryClientProvider from '@client/providers/queryClientProvider';
 import App from '@client/App';
 import './index.scss';
 
-aosService.init();
-sentryService.init();
+aosService.initAOS();
+sentryService.initSentry();
 
 render(
   <StoreProvider>

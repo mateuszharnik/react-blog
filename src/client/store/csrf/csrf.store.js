@@ -7,15 +7,12 @@ export const requestsNames = {
 };
 
 export const csrfStore = {
+  csrfToken: null,
   requests: {},
 
   getCSRFTokenAction: thunk(storeActions.createAction({
     request: requestsNames.GET_CSRF_TOKEN_REQUEST,
-    action: async (_, { options }) => {
-      const response = await apiService.csrf.getCSRFToken(options);
-
-      return response;
-    },
+    action: (_, { options }) => apiService.publicCsrf.getCSRFToken(options),
   })),
 
   resetGetCSRFTokenMetadataAction: action(storeActions.onReset(
@@ -28,5 +25,11 @@ export const csrfStore = {
 
   onError: action(storeActions.onError()),
 
-  onSuccess: action(storeActions.onSuccess()),
+  onSuccess: action(storeActions.onSuccess((state, { result }) => {
+    state.csrfToken = result?.CSRFToken;
+  })),
+
+  reset: action((state) => {
+    state.csrfToken = null;
+  }),
 };

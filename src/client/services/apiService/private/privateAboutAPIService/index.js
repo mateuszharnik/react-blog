@@ -1,0 +1,1 @@
+export { PrivateAboutAPIService } from './privateAboutAPIService';

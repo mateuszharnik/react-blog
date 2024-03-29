@@ -1,12 +1,10 @@
-import {
-  memo, useMemo, useState, useEffect,
-} from 'react';
+import { memo, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
-import { useRouter } from '@client/router/hooks';
 import { usePermissions } from '@client/store/user';
 import { protectedRoutePropTypes } from '@client/prop-types/protectedRoutePropTypes';
+import Redirect from '@client/router/components/Redirect';
 
 const ProtectedRoute = memo(({
   pageComponent,
@@ -14,24 +12,20 @@ const ProtectedRoute = memo(({
   accessDeniedComponent,
   redirect,
   shouldBeAuthenticated,
-  requiredSubscription,
+  requiredSubscriptions,
   requiredRoles,
   requiredPermissions,
   requiredCondition,
 }) => {
-  const [shouldRenderComponent, setShouldRenderComponent] = useState(false);
-
-  const { history: { replace } } = useRouter();
   const {
-    isReady,
     isAuthenticated,
     hasPermissions,
-    hasSubscription,
-    hasRole,
+    hasSubscriptions,
+    hasRoles,
     hasCorrectCondition,
   } = usePermissions({
     requiredPermissions,
-    requiredSubscription,
+    requiredSubscriptions,
     requiredRoles,
     requiredCondition,
   });
@@ -39,16 +33,24 @@ const ProtectedRoute = memo(({
   const DynamicComponent = useMemo(() => {
     const result = cond([
       [
-        () => !hasCorrectCondition && accessDeniedComponent,
-        () => accessDeniedComponent,
+        () => isAuthenticated !== shouldBeAuthenticated,
+        () => (() => <Redirect to={redirect} />),
       ],
       [
-        () => !hasPermissions && accessDeniedComponent,
-        () => accessDeniedComponent,
+        () => !hasCorrectCondition,
+        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
       ],
       [
-        () => !hasSubscription && paywallComponent,
-        () => paywallComponent,
+        () => !hasPermissions,
+        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
+      ],
+      [
+        () => !hasRoles,
+        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
+      ],
+      [
+        () => !hasSubscriptions,
+        () => paywallComponent || (() => <Redirect to={redirect} />),
       ],
       [
         stubTrue,
@@ -57,46 +59,9 @@ const ProtectedRoute = memo(({
     ]);
 
     return result();
-  }, [
-    hasCorrectCondition,
-    hasPermissions,
-    hasSubscription,
-    accessDeniedComponent,
-    paywallComponent,
-    pageComponent,
-  ]);
+  }, []);
 
-  useEffect(() => {
-    if (!isReady) return;
-
-    if (isAuthenticated !== shouldBeAuthenticated) {
-      return replace(redirect);
-    }
-
-    if (!hasRole && requiredRoles.length) {
-      return replace(redirect);
-    }
-
-    if (!hasCorrectCondition && !accessDeniedComponent) {
-      return replace(redirect);
-    }
-
-    if (!hasPermissions && !accessDeniedComponent) {
-      return replace(redirect);
-    }
-
-    if (!hasSubscription && !paywallComponent) {
-      return replace(redirect);
-    }
-
-    setShouldRenderComponent(true);
-  }, [isReady]);
-
-  return shouldRenderComponent ? (
-    <>
-      {DynamicComponent ? <DynamicComponent /> : <Outlet />}
-    </>
-  ) : null;
+  return DynamicComponent ? <DynamicComponent /> : <Outlet />;
 });
 
 ProtectedRoute.displayName = 'ProtectedRoute';

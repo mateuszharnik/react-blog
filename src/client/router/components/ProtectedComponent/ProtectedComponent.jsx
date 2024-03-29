@@ -1,6 +1,4 @@
-import {
-  memo, useMemo, useState, useEffect,
-} from 'react';
+import { memo, useMemo } from 'react';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import { usePermissions } from '@client/store/user';
@@ -11,23 +9,20 @@ const ProtectedComponent = memo(({
   paywallComponent,
   accessDeniedComponent,
   shouldBeAuthenticated,
-  requiredSubscription,
+  requiredSubscriptions,
   requiredRoles,
   requiredPermissions,
   requiredCondition,
 }) => {
-  const [shouldRenderComponent, setShouldRenderComponent] = useState(false);
-
   const {
-    isReady,
     isAuthenticated,
     hasPermissions,
-    hasSubscription,
-    hasRole,
+    hasSubscriptions,
+    hasRoles,
     hasCorrectCondition,
   } = usePermissions({
     requiredPermissions,
-    requiredSubscription,
+    requiredSubscriptions,
     requiredRoles,
     requiredCondition,
   });
@@ -35,20 +30,28 @@ const ProtectedComponent = memo(({
   const DynamicComponent = useMemo(() => {
     const result = cond([
       [
-        () => !hasCorrectCondition && accessDeniedComponent,
+        () => isAuthenticated !== shouldBeAuthenticated,
         () => accessDeniedComponent,
       ],
       [
-        () => !hasPermissions && accessDeniedComponent,
+        () => !hasCorrectCondition,
         () => accessDeniedComponent,
       ],
       [
-        () => !hasSubscription && paywallComponent,
+        () => !hasPermissions,
+        () => accessDeniedComponent,
+      ],
+      [
+        () => !hasRoles,
+        () => accessDeniedComponent,
+      ],
+      [
+        () => !hasSubscriptions,
         () => paywallComponent,
       ],
       [
         stubTrue,
-        () => null,
+        () => () => children,
       ],
     ]);
 
@@ -56,32 +59,15 @@ const ProtectedComponent = memo(({
   }, [
     hasCorrectCondition,
     hasPermissions,
-    hasSubscription,
+    hasRoles,
+    hasSubscriptions,
+    isAuthenticated,
+    shouldBeAuthenticated,
     accessDeniedComponent,
     paywallComponent,
   ]);
 
-  useEffect(() => {
-    if (!isReady) return;
-
-    if (isAuthenticated !== shouldBeAuthenticated) return;
-
-    if (!hasRole && requiredRoles.length) return;
-
-    if (!hasCorrectCondition && !accessDeniedComponent) return;
-
-    if (!hasPermissions && !accessDeniedComponent) return;
-
-    if (!hasSubscription && !paywallComponent) return;
-
-    setShouldRenderComponent(true);
-  }, [isReady]);
-
-  return shouldRenderComponent ? (
-    <>
-      {DynamicComponent ? <DynamicComponent /> : children}
-    </>
-  ) : null;
+  return DynamicComponent ? <DynamicComponent /> : null;
 });
 
 ProtectedComponent.displayName = 'ProtectedComponent';

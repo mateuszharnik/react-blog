@@ -3,7 +3,7 @@ import WelcomeBanner from './index';
 import '@client/libs.scss';
 import '@client/index.scss';
 
-aosService.init();
+aosService.initAOS();
 
 export default {
   title: 'Components/WelcomeBanner',

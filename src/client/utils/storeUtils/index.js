@@ -5,4 +5,5 @@ export {
   generateRequestMetadata,
   checkIfStoreRequestExist,
   createStoreActionsHook,
+  createEntityAdapter,
 } from './storeUtils';
