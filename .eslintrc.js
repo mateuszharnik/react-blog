@@ -88,6 +88,7 @@ module.exports = {
       'always',
       {
         js: 'never',
+        mjs: 'never',
         jsx: 'never',
       },
     ],
@@ -105,6 +106,19 @@ module.exports = {
       extends: ['plugin:jsonc/recommended-with-json'],
       files: ['src/**/*.json'],
       parser: 'jsonc-eslint-parser',
+    },
+    {
+      files: ['src/client/utils/testUtils/**/*.{jsx,js}'],
+      rules: {
+        'import/no-extraneous-dependencies': 0,
+        'react/prop-types': 0,
+      },
+    },
+    {
+      files: ['.storybook/**/*.js'],
+      rules: {
+        'import/no-extraneous-dependencies': 0,
+      },
     },
   ],
 };

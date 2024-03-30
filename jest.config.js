@@ -2,6 +2,8 @@ const { config } = require('dotenv');
 
 config();
 
+const path = process.env.COVERAGE_DIR === 'server' ? 'server' : 'client';
+
 module.exports = {
   testEnvironment: 'jsdom',
   coverageDirectory: `<rootDir>/coverage/${process.env.COVERAGE_DIR || ''}`,
@@ -19,5 +21,5 @@ module.exports = {
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: [`<rootDir>/tests/jest.setup.${path}.js`],
 };
