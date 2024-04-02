@@ -1,15 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@client/utils/testUtils';
 import { testsConstants } from '@shared/constants';
-import I18nextProvider from '@client/providers/i18nextProvider';
 import Logo from './index';
 
 describe('Logo', () => {
   it('should render Logo component', async () => {
-    render(
-      <I18nextProvider>
-        <Logo />
-      </I18nextProvider>,
-    );
+    await render(Logo);
 
     const logoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
 
@@ -19,15 +14,13 @@ describe('Logo', () => {
   });
 
   it('should render Logo component with given props', async () => {
-    render(
-      <I18nextProvider>
-        <Logo
-          width={200}
-          height={100}
-          dark
-        />
-      </I18nextProvider>,
-    );
+    await render(Logo, {
+      props: {
+        width: 200,
+        height: 100,
+        dark: true,
+      },
+    });
 
     const logoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
 

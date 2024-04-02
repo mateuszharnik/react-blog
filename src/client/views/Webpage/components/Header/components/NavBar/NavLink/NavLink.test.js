@@ -1,26 +1,17 @@
-import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@client/utils/testUtils';
 import { testsConstants, routesConstants } from '@shared/constants';
-import I18nextProvider from '@client/providers/i18nextProvider';
 import NavLink from './index';
 
 describe('NavLink', () => {
   it('should render NavLink component with required props', async () => {
-    render(
-      <MemoryRouter
-        basename={process.env.BASE_URL}
-        initialEntries={[routesConstants.ROOT]}
-      >
-        <I18nextProvider>
-          <NavLink
-            title="Title"
-            to={routesConstants.ABOUT.ROOT}
-          >
-            Content
-          </NavLink>
-        </I18nextProvider>
-      </MemoryRouter>,
-    );
+    await render(NavLink, {
+      props: {
+        title: 'Title',
+        to: routesConstants.ABOUT.ROOT,
+      },
+      children: 'Content',
+      routerPath: routesConstants.ROOT,
+    });
 
     const navLinkEl = screen.getByTestId(testsConstants.NAV_LINK);
     const navLinkTextEl = screen.getByTestId(testsConstants.NAV_LINK_TEXT);
@@ -38,25 +29,18 @@ describe('NavLink', () => {
     const onBlur = jest.fn();
     const id = 'test';
 
-    render(
-      <MemoryRouter
-        basename={process.env.BASE_URL}
-        initialEntries={[routesConstants.ROOT]}
-      >
-        <I18nextProvider>
-          <NavLink
-            title="Title"
-            to={routesConstants.ABOUT.ROOT}
-            dataNav="dataNav"
-            dataDropdownNav="dataDropdownNav"
-            id={id}
-            onBlur={onBlur}
-          >
-            Content
-          </NavLink>
-        </I18nextProvider>
-      </MemoryRouter>,
-    );
+    await render(NavLink, {
+      props: {
+        title: 'Title',
+        to: routesConstants.ABOUT.ROOT,
+        dataNav: 'dataNav',
+        dataDropdownNav: 'dataDropdownNav',
+        id,
+        onBlur,
+      },
+      children: 'Content',
+      routerPath: routesConstants.ROOT,
+    });
 
     const navLinkEl = screen.getByTestId(`${testsConstants.NAV_LINK}-${id}`);
     const navLinkTextEl = screen.getByTestId(`${testsConstants.NAV_LINK_TEXT}-${id}`);
@@ -76,21 +60,14 @@ describe('NavLink', () => {
   });
 
   it('should render NavLink component with active class', async () => {
-    render(
-      <MemoryRouter
-        basename={process.env.BASE_URL}
-        initialEntries={[routesConstants.ABOUT.ROOT]}
-      >
-        <I18nextProvider>
-          <NavLink
-            title="Title"
-            to={routesConstants.ABOUT.ROOT}
-          >
-            Content
-          </NavLink>
-        </I18nextProvider>
-      </MemoryRouter>,
-    );
+    await render(NavLink, {
+      props: {
+        title: 'Title',
+        to: routesConstants.ABOUT.ROOT,
+      },
+      children: 'Content',
+      routerPath: routesConstants.ABOUT.ROOT,
+    });
 
     const navLinkEl = screen.getByTestId(testsConstants.NAV_LINK);
     const navLinkTextEl = screen.getByTestId(testsConstants.NAV_LINK_TEXT);

@@ -1,17 +1,19 @@
 import {
   fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+} from '@client/utils/testUtils';
 import { testsConstants } from '@shared/constants';
 import logoDark from '@client/assets/images/logo-dark.svg';
 import LazyImage from './index';
 
 describe('LazyImage', () => {
   it('should render LazyImage component with required props', async () => {
-    render(<LazyImage
-      src={logoDark}
-      height={200}
-      width={200}
-    />);
+    await render(LazyImage, {
+      props: {
+        src: logoDark,
+        height: 200,
+        width: 200,
+      },
+    });
 
     const imageWrapperEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_WRAPPER);
     const imageEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE);
@@ -38,15 +40,17 @@ describe('LazyImage', () => {
   });
 
   it('should render LazyImage component with all props', async () => {
-    render(<LazyImage
-      src={logoDark}
-      height={200}
-      width={200}
-      alt="Alt"
-      divClassName="divClassName"
-      imgClassName="imgClassName"
-      spinnerClassName="spinnerClassName"
-    />);
+    await render(LazyImage, {
+      props: {
+        src: logoDark,
+        height: 200,
+        width: 200,
+        alt: 'Alt',
+        divClassName: 'divClassName',
+        imgClassName: 'imgClassName',
+        spinnerClassName: 'spinnerClassName',
+      },
+    });
 
     const imageWrapperEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE_WRAPPER);
     const imageEl = screen.getByTestId(testsConstants.LAZY_LOAD_IMAGE);

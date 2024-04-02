@@ -3,6 +3,7 @@ const { config } = require('dotenv');
 const fs = require('fs');
 const Joi = require('joi');
 const colors = require('colors/safe');
+const address = require('address');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
@@ -77,6 +78,12 @@ module.exports = (webpackEnv, { mode }) => {
     process.exit(1);
   }
 
+  const message = `Your application is running here:
+
+  - Local: ${colors.cyan(`http://localhost:${env.CLIENT_PORT}`)}
+  - Network: ${colors.cyan(`http://${address.ip()}:${env.CLIENT_PORT}`)}
+`;
+
   return {
     entry: {
       styles: './src/client/libs.scss',
@@ -99,10 +106,11 @@ module.exports = (webpackEnv, { mode }) => {
     },
     devtool: mode === 'production' ? 'hidden-source-map' : 'source-map',
     devServer: {
+      host: '0.0.0.0',
       compress: true,
       hot: true,
       historyApiFallback: true,
-      open: true,
+      open: false,
       port: env.CLIENT_PORT,
       quiet: true,
       overlay: {
@@ -221,11 +229,7 @@ module.exports = (webpackEnv, { mode }) => {
         ? [
           new FriendlyErrorsWebpackPlugin({
             compilationSuccessInfo: {
-              messages: [
-                `Your application is running here ${colors.cyan(
-                  `http://localhost:${process.env.CLIENT_PORT}`,
-                )}`,
-              ],
+              messages: [message],
             },
             clearConsole: true,
           }),
