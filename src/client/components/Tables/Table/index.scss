@@ -1,0 +1,23 @@
+@import "../../../assets/scss/variables";
+
+.table {
+  > :not(caption) > * > * {
+    border-bottom-width: 0;
+  }
+
+  thead tr {
+    border-bottom-width: var(--bs-border-width);
+  }
+
+  tfoot tr {
+    border-top-width: var(--bs-border-width);
+  }
+
+  tbody tr {
+    border-bottom-width: var(--bs-border-width);
+
+    &:last-of-type {
+      border-bottom-width: 0;
+    }
+  }
+}
