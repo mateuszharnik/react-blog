@@ -1,4 +1,6 @@
-import { rolesConstants } from '@shared/constants';
+import { permissionsConstants, rolesConstants } from '@shared/constants';
+
+export const editAboutPermissions = [permissionsConstants.CAN_MANAGE_ABOUT_US];
 
 export const userProfileRoles = [rolesConstants.USER];
 

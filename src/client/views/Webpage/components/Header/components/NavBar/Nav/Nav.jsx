@@ -101,7 +101,7 @@ const Nav = memo(() => {
                 />
               )}
               {user && (
-                <Box className="order-0 order-lg-1">
+                <Box className="order-0 order-lg-1 d-lg-none">
                   <NavImageLink
                     className="d-block p-1"
                     onBlur={handleCloseNavOnBlur}
@@ -206,7 +206,7 @@ const Nav = memo(() => {
                       <Link
                         to={routesConstants.AUTH.SIGN_OUT.ROOT}
                         title={t(`${PATH}.nav.signOut.TITLE`)}
-                        className="nav__link mx-auto"
+                        className="nav__link mx-auto d-lg-none"
                         data-nav="true"
                         onBlur={handleCloseNavOnBlur}
                       >
