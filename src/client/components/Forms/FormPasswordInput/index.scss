@@ -1,0 +1,38 @@
+@import "../../../assets/scss/variables";
+
+.password-input {
+  &--show-toggler {
+    @include toRem(padding-right, 34);
+  }
+
+  &__toggler-button {
+    align-items: center;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    @include toRem(font-size, 14);
+    @include toRem(right, 9);
+    @include toRem(top, 9);
+    @include toRem(padding, 2);
+    @include toRem(width, 22);
+    @include toRem(height, 22);
+  }
+}
+
+[data-bs-theme="light"] {
+  .password-input {
+    &__toggler-button {
+      color: $gray-300;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .password-input {
+    &__toggler-button {
+      color: $gray-700;
+    }
+  }
+}
