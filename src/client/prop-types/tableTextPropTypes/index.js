@@ -1,0 +1,1 @@
+export { tableTextPropTypes } from './tableTextPropTypes';
