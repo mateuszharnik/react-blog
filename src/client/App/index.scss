@@ -20,20 +20,6 @@
   color: $body-bg;
 }
 
-a {
-  text-decoration: none;
-
-  &.btn {
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .modal {
   align-items: center;
   display: flex;
@@ -51,19 +37,5 @@ a {
   .modal {
     background-color: $body-secondary-bg-dark;
     --bs-modal-border-color: #{$border-color-dark};
-  }
-}
-
-[data-bs-theme="dark"] {
-  $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#141414' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
-
-  $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#141414'/></svg>");
-
-  .form-check-input:checked[type="radio"] {
-    --bs-form-check-bg-image: #{escape-svg($form-check-radio-checked-bg-image)};
-  }
-
-  .form-check-input:checked[type="checkbox"] {
-    --bs-form-check-bg-image: #{escape-svg($form-check-input-checked-bg-image)};
   }
 }

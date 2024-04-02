@@ -15,12 +15,12 @@ import Box from '@client/components/Box';
 const PATH = 'common.scrollToTopButton';
 
 const ScrollToTopButton = memo(({ target, ...restProps }) => {
-  const [isVisible, setIsVisible] = useState(window.pageYOffset >= 800);
+  const [isVisible, setIsVisible] = useState(window.scrollY >= 300);
 
   const { t } = useTranslation();
 
   const toggleIsVisible = useCallback(() => {
-    setIsVisible(window.pageYOffset >= 800);
+    setIsVisible(window.scrollY >= 300);
   }, []);
 
   const handleScroll = useCallback(async (e) => {

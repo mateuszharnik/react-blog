@@ -14,8 +14,8 @@ class QueryService {
         },
       },
       queries: {
-        cacheTime: 100000,
-        staleTime: 100000,
+        cacheTime: 30000,
+        staleTime: 30000,
         onSuccess: () => {
           // eslint-disable-next-line
           console.log(store);

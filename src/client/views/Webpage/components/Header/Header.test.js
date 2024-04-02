@@ -1,44 +1,20 @@
-import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, createWrapperComponent } from '@client/utils/testUtils';
 import { testsConstants, routesConstants } from '@shared/constants';
-import I18nextProvider from '@client/providers/i18nextProvider';
-import StoreProvider from '@client/providers/storeProvider';
-import PageSizeContext from '@client/contexts/PageSizeContext';
 import WebpageNavigationContext from '@client/views/Webpage/contexts/WebpageNavigationContext';
 import Header from './index';
 
-describe('Header', () => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
-  });
+const wrapper = createWrapperComponent(({ children }) => (
+  <WebpageNavigationContext>
+    {children}
+  </WebpageNavigationContext>
+));
 
+describe('Header', () => {
   it('should render Header component', async () => {
-    render(
-      <StoreProvider>
-        <MemoryRouter
-          basename={process.env.BASE_URL}
-          initialEntries={[routesConstants.ABOUT.ROOT]}
-        >
-          <I18nextProvider>
-            <PageSizeContext>
-              <WebpageNavigationContext>
-                <Header />
-              </WebpageNavigationContext>
-            </PageSizeContext>
-          </I18nextProvider>
-        </MemoryRouter>
-      </StoreProvider>,
-    );
+    await render(Header, {
+      routerPath: routesConstants.ABOUT.ROOT,
+      wrapper,
+    });
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
@@ -60,22 +36,10 @@ describe('Header', () => {
   });
 
   it('should render Header component with helper text if user is on the home page', async () => {
-    render(
-      <StoreProvider>
-        <MemoryRouter
-          basename={process.env.BASE_URL}
-          initialEntries={[routesConstants.ROOT]}
-        >
-          <I18nextProvider>
-            <PageSizeContext>
-              <WebpageNavigationContext>
-                <Header />
-              </WebpageNavigationContext>
-            </PageSizeContext>
-          </I18nextProvider>
-        </MemoryRouter>
-      </StoreProvider>,
-    );
+    await render(Header, {
+      routerPath: routesConstants.ROOT,
+      wrapper,
+    });
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
