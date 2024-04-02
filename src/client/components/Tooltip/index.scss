@@ -1,0 +1,118 @@
+@import "../../assets/scss/variables";
+
+[data-bs-theme="light"] {
+  .tooltip {
+    background: $body-bg-dark;
+    color: $body-color-dark;
+
+    &--border {
+      border: 2px solid $body-bg;
+
+      .tooltip__arrow {
+        border: 2px solid $body-bg;
+      }
+    }
+
+    &__wrapper {
+      background: $body-bg-dark;
+    }
+
+    &__arrow {
+      background: $body-bg-dark;
+      border: 2px solid $body-bg-dark;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .tooltip {
+    background: $body-bg;
+    color: $body-color;
+
+    &--border {
+      border: 2px solid $body-bg-dark;
+
+      .tooltip__arrow {
+        border: 2px solid $body-bg-dark;
+      }
+    }
+
+    &__wrapper {
+      background: $body-bg;
+    }
+
+    &__arrow {
+      background: $body-bg;
+      border: 2px solid $body-bg;
+    }
+  }
+}
+
+.tooltip {
+  border-radius: $tooltip-border-radius;
+  font-size: $tooltip-font-size;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: max-content;
+  z-index: $zindex-tooltip;
+
+  &.tooltip--light {
+    background: $body-bg;
+    color: $body-color;
+
+    .tooltip__wrapper {
+      background: $body-bg;
+    }
+
+    .tooltip__arrow {
+      background: $body-bg;
+      border: 2px solid $body-bg;
+    }
+  }
+
+  &.tooltip--dark {
+    background: $body-bg-dark;
+    color: $body-color-dark;
+
+    .tooltip__wrapper {
+      background: $body-bg-dark;
+    }
+
+    .tooltip__arrow {
+      background: $body-bg-dark;
+      border: 2px solid $body-bg-dark;
+    }
+  }
+
+  &--border {
+    &.tooltip--light {
+      border: 2px solid $body-bg-dark;
+
+      .tooltip__arrow {
+        border: 2px solid $body-bg-dark;
+      }
+    }
+
+    &.tooltip--dark {
+      border: 2px solid $body-bg;
+
+      .tooltip__arrow {
+        border: 2px solid $body-bg;
+      }
+    }
+  }
+
+  &__wrapper {
+    border-radius: $tooltip-border-radius;
+    padding: $tooltip-padding-y $tooltip-padding-x;
+  }
+
+  &__arrow {
+    height: $tooltip-arrow-width;
+    position: absolute;
+    transform: rotate(45deg);
+    width: $tooltip-arrow-width;
+    z-index: -1;
+  }
+}

@@ -13,6 +13,24 @@ export default {
     H5: 'h5',
     H6: 'h6',
   },
+  FLOATING_POSITIONS: {
+    RIGHT: 'right',
+    LEFT: 'left',
+    TOP: 'top',
+    BOTTOM: 'bottom',
+  },
+  TOOLTIP_COLORS: {
+    DARK: 'dark',
+    LIGHT: 'light',
+  },
+  LABEL_TYPES: {
+    INPUT: 'input',
+    CHECK: 'check',
+  },
+  FORM_GROUP_TYPES: {
+    BUTTON: 'button',
+    INPUT: 'input',
+  },
   BOX_TYPES: {
     DIV: 'div',
     SPAN: 'span',
