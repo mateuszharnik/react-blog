@@ -1,10 +1,11 @@
 import { memo } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { adminsRoles, userProfileRoles } from '@client/configs/routerConfig';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import { adminsRoles, userProfileRoles, editAboutPermissions } from '@client/configs/routerConfig';
 import { routesConstants } from '@shared/constants';
 import Webpage from '@client/views/Webpage';
 import Home from '@client/views/Webpage/pages/Home';
 import About from '@client/views/Webpage/pages/About';
+import EditAbout from '@client/views/Webpage/pages/EditAbout';
 import Contact from '@client/views/Webpage/pages/Contact';
 import FAQs from '@client/views/Webpage/pages/FAQs';
 import Posts from '@client/views/Webpage/pages/Posts';
@@ -39,8 +40,23 @@ const Router = memo(() => (
       />
       <Route
         path={routesConstants.ABOUT.ROOT}
-        element={<About />}
-      />
+        element={<Outlet />}
+      >
+        <Route
+          index
+          element={<About />}
+        />
+        <Route
+          path={routesConstants.ABOUT.EDIT.ROOT}
+          element={(
+            <ProtectedRoute
+              key="EditAbout"
+              pageComponent={EditAbout}
+              requiredPermissions={editAboutPermissions}
+            />
+          )}
+        />
+      </Route>
       <Route
         path={routesConstants.CONTACT.ROOT}
         element={<Contact />}
