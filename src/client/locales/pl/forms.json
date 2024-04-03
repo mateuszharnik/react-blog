@@ -20,6 +20,41 @@
     "PLURAL_GENITIVE": "znaków"
   },
 
+  "updateAboutForm": {
+    "contents": {
+      "LABEL": "Zawartość strony",
+      "PLACEHOLDER": "Treść strony",
+      "HELPER": "Niedozwolone znaki zostaną usunięte."
+    }
+  },
+
+  "createMessageForm": {
+    "firstName": {
+      "LABEL": "Imię",
+      "PLACEHOLDER": "Podaj imię"
+    },
+
+    "lastName": {
+      "LABEL": "Nazwisko",
+      "PLACEHOLDER": "Podaj nazwisko"
+    },
+
+    "email": {
+      "LABEL": "Email",
+      "PLACEHOLDER": "email@domain.pl"
+    },
+
+    "subject": {
+      "LABEL": "Temat",
+      "PLACEHOLDER": "Podaj temat"
+    },
+
+     "contents": {
+      "LABEL": "Wiadomość",
+      "PLACEHOLDER": "O co chcesz zapytać?"
+    }
+  },
+
   "signUpForm": {
     "username": {
       "LABEL": "Nazwa użytkownika",

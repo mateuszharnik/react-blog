@@ -1,4 +1,10 @@
 {
+  "updateAbout": {
+    "contents": {
+      "MAX_LENGTH": "Treść strony może mieć maksymalnie {{count}}"
+    }
+  },
+
   "docsSignIn": {
     "password": {
       "REQUIRED": "Musisz podać hasło."
@@ -46,6 +52,37 @@
 
     "isTermsOfUseAccepted": {
       "REQUIRED": "Musisz zaakceptować warunki użytkowania."
+    }
+  },
+
+  "createMessage": {
+    "firstName": {
+      "MIN_LENGTH": "Imię musi mieć minimum {{count}}.",
+      "MAX_LENGTH": "Imię może mieć maksymalnie {{count}}.",
+      "NOT_MATCH": "Imię jest nieprawidłowe.",
+      "REQUIRED": "Musisz podać imię."
+    },
+
+    "lastName": {
+      "MIN_LENGTH": "Nazwisko musi mieć minimum {{count}}.",
+      "MAX_LENGTH": "Nazwisko może mieć maksymalnie {{count}}.",
+      "NOT_MATCH": "Nazwisko jest nieprawidłowe.",
+      "REQUIRED": "Musisz podać nazwisko."
+    },
+
+    "email": {
+      "NOT_MATCH": "Adres email jest nieprawidłowy.",
+      "REQUIRED": "Musisz podać adres email."
+    },
+
+    "subject": {
+      "MAX_LENGTH": "Temat wiadomości może mieć maksymalnie {{count}}.",
+      "REQUIRED": "Musisz podać temat wiadomości."
+    },
+
+    "contents": {
+      "MAX_LENGTH": "Treść wiadomości może mieć maksymalnie {{count}}.",
+      "REQUIRED": "Musisz podać treść wiadomości."
     }
   }
 }
