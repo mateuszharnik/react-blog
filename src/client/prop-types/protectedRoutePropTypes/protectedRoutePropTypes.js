@@ -1,5 +1,5 @@
 import {
-  elementType, string, bool, arrayOf, oneOf, func, array,
+  elementType, string, bool, arrayOf, oneOf, func, array, oneOfType,
 } from 'prop-types';
 import { permissionsConstants, rolesConstants, routesConstants } from '@shared/constants';
 
@@ -28,16 +28,16 @@ export const protectedRoutePropTypes = {
     pageComponent: elementType,
     paywallComponent: elementType,
     accessDeniedComponent: elementType,
+    redirectComponent: elementType,
     redirect: string,
     shouldBeAuthenticated: bool,
-    requiredCondition: func,
-    requiredSubscriptions: array,
-    requiredRoles: arrayOf(oneOf([
+    requiredSubscriptions: oneOfType([func, array]),
+    requiredRoles: oneOfType([func, arrayOf(oneOf([
       ADMIN,
       SUPERUSER,
       USER,
-    ])),
-    requiredPermissions: arrayOf(oneOf([
+    ]))]),
+    requiredPermissions: oneOfType([func, arrayOf(oneOf([
       CAN_MANAGE_POSTS,
       CAN_MANAGE_CATEGORIES,
       CAN_MANAGE_TAGS,
@@ -52,15 +52,15 @@ export const protectedRoutePropTypes = {
       CAN_MANAGE_TERMS_OF_USE,
       CAN_MANAGE_CONFIG,
       CAN_MANAGE_FAQS,
-    ])),
+    ]))]),
   },
   default: {
     pageComponent: undefined,
     paywallComponent: undefined,
     accessDeniedComponent: undefined,
+    redirectComponent: undefined,
     redirect: ROOT,
     shouldBeAuthenticated: true,
-    requiredCondition: () => true,
     requiredSubscriptions: [],
     requiredRoles: [],
     requiredPermissions: [],

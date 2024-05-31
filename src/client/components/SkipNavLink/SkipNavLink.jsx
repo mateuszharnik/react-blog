@@ -9,8 +9,8 @@ const PATH = 'common.skipNavLink';
 const SkipNavLink = memo(({ target, ...restProps }) => {
   const { t } = useTranslation();
 
-  const handleScroll = useCallback(async (e) => {
-    e.preventDefault();
+  const handleScroll = useCallback(async (event) => {
+    event.preventDefault();
 
     if (!target?.current) return;
 
@@ -24,7 +24,10 @@ const SkipNavLink = memo(({ target, ...restProps }) => {
   }, [target]);
 
   return (
-    <Portal to="skip-nav">
+    <Portal
+      to="skip-nav"
+      prepend
+    >
       <Link
         to="#main"
         className="skip-nav-link px-3 py-2"

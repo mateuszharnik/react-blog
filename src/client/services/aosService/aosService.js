@@ -9,7 +9,7 @@ class AOSService {
     this.client.init({
       once: true,
     });
-  }
+  };
 }
 
 const { client, initAOS } = new AOSService();

@@ -16,19 +16,19 @@ const useFormsUtils = ({
 
   const isHelpTextString = useMemo(() => isString(helpText), [helpText]);
 
-  const handleChange = useCallback((e) => {
+  const handleChange = useCallback((event) => {
     if (onChange) {
-      onChange(e);
+      onChange(event);
     } else {
-      form.handleChange(e);
+      form.handleChange(event);
     }
   }, [onChange, form.handleChange]);
 
-  const handleBlur = useCallback((e) => {
+  const handleBlur = useCallback((event) => {
     if (onBlur) {
-      onBlur(e);
+      onBlur(event);
     } else {
-      form.handleBlur(e);
+      form.handleBlur(event);
     }
   }, [onBlur, form.handleBlur]);
 

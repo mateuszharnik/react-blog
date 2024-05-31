@@ -13,7 +13,7 @@ export class PublicAPIService {
     this.#setInterceptors();
   }
 
-   #setResponseInterceptor() {
+  #setResponseInterceptor() {
     this.client.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -26,24 +26,24 @@ export class PublicAPIService {
     );
   }
 
-   #setRequestInterceptor() {
-     this.client.interceptors.request.use((config) => {
-       if (!this.#store) Promise.reject(new Error('Store must be initiate'));
+  #setRequestInterceptor() {
+    this.client.interceptors.request.use((config) => {
+      if (!this.#store) Promise.reject(new Error('Store must be initiate'));
 
-       const csrfToken = this.#store.getState().csrfStore?.csrfToken;
+      const csrfToken = this.#store.getState().csrfStore?.csrfToken;
 
-       if (csrfToken) {
-         config.headers.common['X-CSRF-TOKEN'] = csrfToken;
-       }
+      if (csrfToken) {
+        config.headers.common['X-CSRF-TOKEN'] = csrfToken;
+      }
 
-       return config;
-     });
-   }
+      return config;
+    });
+  }
 
   #setInterceptors() {
-     this.#setRequestInterceptor();
-     this.#setResponseInterceptor();
-   }
+    this.#setRequestInterceptor();
+    this.#setResponseInterceptor();
+  }
 
   setStore(store) {
     this.#store = store;
@@ -65,7 +65,7 @@ export class PrivateAPIService {
     const isNotDocsUrl = response?.request?.responseURL !== `${envConfig.CLIENT_URL}${apiConstants.DOCS.ROOT}`;
 
     return isUnauthorized && isNotRetry && isNotDocsUrl;
-  }
+  };
 
   #setResponseInterceptor() {
     this.client.interceptors.response.use(

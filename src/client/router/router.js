@@ -17,11 +17,10 @@ import AdminDashboard from '@client/views/Admin/pages/Dashboard';
 import AdminSignIn from '@client/views/Auth/AdminSignIn';
 import SignIn from '@client/views/Auth/SignIn';
 import SignUp from '@client/views/Auth/SignUp';
-import SignOut from '@client/views/Auth/SignOut';
-import Docs from '@client/views/Docs';
 import NotFound from '@client/views/NotFound';
 import ProtectedRoute from '@client/router/components/ProtectedRoute';
 import DocsRoute from '@client/router/components/DocsRoute';
+import SignOutRoute from '@client/router/components/SignOutRoute';
 import Redirect from '@client/router/components/Redirect';
 
 const Router = memo(() => (
@@ -140,22 +139,12 @@ const Router = memo(() => (
     />
     <Route
       path={routesConstants.AUTH.SIGN_OUT.ROOT}
-      element={(
-        <ProtectedRoute
-          key="SignOut"
-          pageComponent={SignOut}
-        />
-      )}
+      element={<SignOutRoute />}
     />
     <Route
       path={routesConstants.DOCS.ROOT}
       element={<DocsRoute />}
-    >
-      <Route
-        index
-        element={<Docs />}
-      />
-    </Route>
+    />
     <Route
       path={routesConstants.NOT_FOUND}
       element={<NotFound />}

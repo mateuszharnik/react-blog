@@ -23,8 +23,8 @@ const ScrollToTopButton = memo(({ target, ...restProps }) => {
     setIsVisible(window.scrollY >= 300);
   }, []);
 
-  const handleScroll = useCallback(async (e) => {
-    e.preventDefault();
+  const handleScroll = useCallback(async (event) => {
+    event.preventDefault();
 
     if (!target?.current) return;
 

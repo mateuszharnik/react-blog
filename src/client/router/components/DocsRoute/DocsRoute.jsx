@@ -1,9 +1,10 @@
 import { memo, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
 import { useConfig } from '@client/store/config';
 import { useDocs } from '@client/store/docs';
 import { envConfig } from '@client/configs/envConfig';
 import { apiConstants } from '@shared/constants';
+import Docs from '@client/views/Docs';
+import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
 const apiDocsUrl = `${envConfig.CLIENT_URL}${apiConstants.DOCS.ROOT}`;
 
@@ -17,11 +18,11 @@ const DocsRoute = memo(() => {
   } = useDocs();
   const { config } = useConfig();
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!config?.use_docs_password) {
       document.location.href = apiDocsUrl;
     } else {
-      await getRefreshToken();
+      getRefreshToken();
     }
   }, []);
 
@@ -41,7 +42,7 @@ const DocsRoute = memo(() => {
     }
   }, [getRefreshTokenMetadata.isError]);
 
-  return isLoading ? null : <Outlet />;
+  return isLoading ? <LazyComponentSpinner /> : <Docs />;
 });
 
 DocsRoute.displayName = 'DocsRoute';

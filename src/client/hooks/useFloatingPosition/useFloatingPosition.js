@@ -28,7 +28,10 @@ const useFloatingPosition = ({
   maxWidth = undefined,
 }) => {
   const [isOpen, setIsOpen] = useState(show);
+  const [isFocus, setIsFocus] = useState(false);
   const arrowRef = useRef(null);
+
+  const open = useMemo(() => isOpen || isFocus, [isOpen, isFocus]);
 
   const {
     refs, floatingStyles, middlewareData, placement, isPositioned,
@@ -36,7 +39,7 @@ const useFloatingPosition = ({
     transform: false,
     placement: position,
     whileElementsMounted: autoUpdate,
-    open: isOpen,
+    open,
     middleware: [
       offset(offsetPadding),
       flip(),
@@ -63,12 +66,24 @@ const useFloatingPosition = ({
     maxWidth,
   }), [floatingStyles, maxWidth]);
 
-  const showElement = useCallback(() => {
-    setIsOpen(true);
+  const showElement = useCallback((event) => {
+    if (event.type === 'focus') {
+      setIsFocus(true);
+    }
+
+    if (event.type === 'mouseenter') {
+      setIsOpen(true);
+    }
   }, []);
 
-  const hideElement = useCallback(() => {
-    setIsOpen(false);
+  const hideElement = useCallback((event) => {
+    if (event.type === 'blur') {
+      setIsFocus(false);
+    }
+
+    if (event.type === 'mouseleave') {
+      setIsOpen(false);
+    }
   }, []);
 
   return {
@@ -78,7 +93,7 @@ const useFloatingPosition = ({
     elementStyles,
     arrowStyles,
     middlewareData,
-    isOpen,
+    isOpen: open,
     placement,
     isPositioned,
     actions: {

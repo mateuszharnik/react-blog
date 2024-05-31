@@ -2,6 +2,7 @@
 
 [data-bs-theme="light"] {
   .markdown {
+    /*** Highlight light theme ***/
     @import "~highlight.js/styles/github";
 
     pre {
@@ -20,6 +21,7 @@
 
 [data-bs-theme="dark"] {
   .markdown {
+    /*** Highlight dark theme ***/
     @import "~highlight.js/styles/github-dark";
 
     pre {

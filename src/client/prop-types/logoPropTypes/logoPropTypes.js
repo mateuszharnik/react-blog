@@ -11,5 +11,4 @@ export const logoPropTypes = {
     height: 30,
     dark: false,
   },
-
 };

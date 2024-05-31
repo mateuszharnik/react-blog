@@ -14,7 +14,6 @@ const Editor = memo(({
   initialValue,
   placeholder,
   errors,
-  ariaDescribedBy,
   touched,
   setValues,
   setTouched,
@@ -73,7 +72,6 @@ const Editor = memo(({
           id={id}
           ref={editorRef}
           name={name}
-          aria-describedby={ariaDescribedBy}
           className="visually-hidden"
           rows="10"
           {...restProps}

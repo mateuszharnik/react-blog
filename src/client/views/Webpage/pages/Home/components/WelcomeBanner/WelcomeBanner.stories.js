@@ -8,11 +8,12 @@ aosService.initAOS();
 export default {
   title: 'Components/WelcomeBanner',
   component: WelcomeBanner,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
 };
 
-const Template = (args) => <WelcomeBanner {...args} />;
-
-export const Default = Template.bind({});
-Default.parameters = {
-  controls: { hideNoControlsWarning: true },
+export const Default = {
+  render: (args) => <WelcomeBanner {...args} />,
 };

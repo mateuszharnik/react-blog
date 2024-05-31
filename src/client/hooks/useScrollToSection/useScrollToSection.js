@@ -27,8 +27,8 @@ const useScrollToSection = ({
     return hash.includes(idHash);
   }, [exact, idHash, hash]);
 
-  useEffect(async () => {
-    if (checkIfShouldScroll()) await scrollToSection();
+  useEffect(() => {
+    if (checkIfShouldScroll()) scrollToSection();
   }, [idHash, hash]);
 
   return {

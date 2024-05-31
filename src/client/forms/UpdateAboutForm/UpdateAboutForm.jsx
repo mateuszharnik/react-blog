@@ -72,7 +72,7 @@ const UpdateAboutForm = memo((props) => {
           <Editor
             id="contents"
             name="contents"
-            ariaDescribedBy="contentsHelp"
+            aria-describedby="contentsHelp"
             placeholder={t(`${PATH}.contents.PLACEHOLDER`)}
             initialValue={form.values.contents}
             errors={form.errors.contents}

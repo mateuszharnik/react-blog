@@ -26,8 +26,8 @@ const EditAbout = memo(() => {
     description: t('head.description.EDIT_ABOUT_US'),
   });
 
-  useEffect(async () => {
-    await getAbout();
+  useEffect(() => {
+    getAbout();
   }, []);
 
   useEffect(() => () => {

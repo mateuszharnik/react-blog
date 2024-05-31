@@ -15,13 +15,13 @@ class DateAndTimeService {
     const language = getLanguage();
 
     this.#setLanguage(language);
-  }
+  };
 
   #setLanguage = (language = LANG.PL) => {
     const lang = checkLanguage(language);
 
     this.client.locale(lang);
-  }
+  };
 }
 
 const { client } = new DateAndTimeService();

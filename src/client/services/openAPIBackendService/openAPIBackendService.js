@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import OpenAPIBackend from 'openapi-backend';
 import definition from '@server/docs';
 
@@ -21,15 +20,15 @@ class OpenAPIBackendService {
 
       return res(ctx.json(mock));
     });
-  }
+  };
 
   #registerNotFound = () => {
     this.client.register('notFound', (c, res, ctx) => res(ctx.status(404)));
-  }
+  };
 
   #registerValidationFail = () => {
     this.client.register('validationFail', (c, res, ctx) => res(ctx.status(400), ctx.json({ error: c.validation.errors })));
-  }
+  };
 }
 
 const { client } = new OpenAPIBackendService();

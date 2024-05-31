@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import { memo, useMemo, forwardRef } from 'react';
 import { buttonPropTypes } from '@client/prop-types/buttonPropTypes';
 import { getButtonClassName } from './Button.classes';

@@ -17,8 +17,9 @@ const Tooltip = memo(({
   maxWidth,
   bordered,
   color,
-  onMouseEnter,
-  onMouseLeave,
+  triggerManual,
+  onShowTooltip,
+  onHideTooltip,
   children,
   ...restProps
 }) => {
@@ -48,21 +49,30 @@ const Tooltip = memo(({
 
   const wrapperClassName = useMemo(() => className, [className]);
 
-  const handleMouseEnter = useCallback(() => {
-    if (isFunction(onMouseEnter)) {
-      onMouseEnter(showTooltip);
+  const handleShowTooltip = useCallback((event) => {
+    if (isFunction(onShowTooltip)) {
+      onShowTooltip(showTooltip.bind(null, event), event);
     } else {
-      showTooltip();
+      showTooltip(event);
     }
-  }, [onMouseEnter, showTooltip]);
+  }, [onShowTooltip, showTooltip]);
 
-  const handleMouseLeave = useCallback(() => {
-    if (isFunction(onMouseLeave)) {
-      onMouseLeave(hideTooltip);
+  const handleHideTooltip = useCallback((event) => {
+    if (isFunction(onHideTooltip)) {
+      onHideTooltip(hideTooltip.bind(null, event), event);
     } else {
-      hideTooltip();
+      hideTooltip(event);
     }
-  }, [onMouseLeave, hideTooltip]);
+  }, [onHideTooltip, hideTooltip]);
+
+  const optionalProps = useMemo(() => (
+    triggerManual ? {} : {
+      tabIndex: '0',
+      onMouseEnter: handleShowTooltip,
+      onFocus: handleShowTooltip,
+      onMouseLeave: handleHideTooltip,
+      onBlur: handleHideTooltip,
+    }), [triggerManual, handleShowTooltip, handleHideTooltip]);
 
   return (
     <Box className={wrapperClassName}>
@@ -70,12 +80,11 @@ const Tooltip = memo(({
         ref={wrapperRef}
         className="d-inline-block"
         {...restProps}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        {...optionalProps}
       >
         {isFunction(children) ? children({
-          showTooltip,
-          hideTooltip,
+          handleShowTooltip,
+          handleHideTooltip,
           isOpen,
         }) : children}
       </Box>
