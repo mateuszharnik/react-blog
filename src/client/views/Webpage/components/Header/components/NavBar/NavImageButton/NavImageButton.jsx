@@ -23,6 +23,7 @@ const NavImageButton = memo(({
   src,
   type,
   gender,
+  handleSignOut,
   ...restProps
 }) => {
   const dropdownRef = useRef(null);
@@ -144,6 +145,7 @@ const NavImageButton = memo(({
                       className="nav__link mx-auto"
                       data-dropdown-nav="true"
                       onBlur={handleCloseNavOnBlur}
+                      onClick={handleSignOut}
                     >
                       <Box
                         as="span"

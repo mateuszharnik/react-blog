@@ -18,10 +18,10 @@ export const useNav = ({ openNavButtonRef, closeNavButtonRef }) => {
 
   const { location: { path } } = useRouter();
 
-  const handleCloseNavOnBlur = useCallback((e) => {
-    if (!e?.relatedTarget || isDesktop) return;
+  const handleCloseNavOnBlur = useCallback((event) => {
+    if (!event?.relatedTarget || isDesktop) return;
 
-    if (!e?.relatedTarget?.getAttribute('data-nav') && isOpen) toggleNav(false);
+    if (!event?.relatedTarget?.getAttribute('data-nav') && isOpen) toggleNav(false);
   }, [isDesktop, isOpen]);
 
   const setFocus = useCallback((navOpen = false) => {

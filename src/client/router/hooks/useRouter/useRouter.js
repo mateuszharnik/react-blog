@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { generatePath, getQuery } from '@client/utils/routerUtils';
+import { routesConstants } from '@shared/constants';
 
 export const useRouter = () => {
   const navigate = useNavigate();
@@ -27,6 +28,16 @@ export const useRouter = () => {
     const path = generatePath(to, { params, query });
 
     navigate(path, { state, replace });
+  }, [navigate]);
+
+  const signOut = useCallback((options = {}) => {
+    const {
+      state = {}, params = {}, query = {}, replace = false,
+    } = options;
+
+    const path = generatePath(routesConstants.AUTH.SIGN_OUT.ROOT, { params, query });
+
+    navigate(path, { state: { ...state, signOut: true }, replace });
   }, [navigate]);
 
   const pushBackLocation = useCallback((to = '/', options = {}) => {
@@ -72,6 +83,7 @@ export const useRouter = () => {
       replace,
       pushBackLocation,
       getPath,
+      signOut,
     },
     location: {
       fullPath,

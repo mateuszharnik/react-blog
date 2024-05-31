@@ -1,5 +1,5 @@
 import {
-  elementType, bool, arrayOf, oneOf, func, array,
+  elementType, bool, arrayOf, oneOf, func, array, oneOfType,
 } from 'prop-types';
 import { permissionsConstants, rolesConstants } from '@shared/constants';
 import { childrenPropTypes } from '../childrenPropTypes';
@@ -28,14 +28,13 @@ export const protectedComponentPropTypes = {
     paywallComponent: elementType,
     accessDeniedComponent: elementType,
     shouldBeAuthenticated: bool,
-    requiredCondition: func,
-    requiredSubscriptions: array,
-    requiredRoles: arrayOf(oneOf([
+    requiredSubscriptions: oneOfType([func, array]),
+    requiredRoles: oneOfType([func, arrayOf(oneOf([
       ADMIN,
       SUPERUSER,
       USER,
-    ])),
-    requiredPermissions: arrayOf(oneOf([
+    ]))]),
+    requiredPermissions: oneOfType([func, arrayOf(oneOf([
       CAN_MANAGE_POSTS,
       CAN_MANAGE_CATEGORIES,
       CAN_MANAGE_TAGS,
@@ -50,14 +49,13 @@ export const protectedComponentPropTypes = {
       CAN_MANAGE_TERMS_OF_USE,
       CAN_MANAGE_CONFIG,
       CAN_MANAGE_FAQS,
-    ])),
+    ]))]),
     children: childrenPropTypes.props,
   },
   default: {
     paywallComponent: undefined,
     accessDeniedComponent: undefined,
     shouldBeAuthenticated: true,
-    requiredCondition: () => true,
     requiredSubscriptions: [],
     requiredRoles: [],
     requiredPermissions: [],

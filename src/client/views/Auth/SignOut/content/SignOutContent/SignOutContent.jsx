@@ -2,10 +2,10 @@ import { memo, useEffect } from 'react';
 import { useRouter } from '@client/router/hooks';
 import { useAuth } from '@client/store/auth';
 import { useLayerContext } from '@client/contexts/LayerContext';
-import { routesConstants } from '@shared/constants';
+import { signOutPropTypes } from '@client/views/Auth/SignOut/propTypes/signOutPropTypes';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
-const SignOutContent = memo(() => {
+const SignOutContent = memo(({ redirectUrl }) => {
   const { history: { replace } } = useRouter();
   const { hideLayer } = useLayerContext();
 
@@ -20,10 +20,10 @@ const SignOutContent = memo(() => {
     }
   }, [signOutMetadata.isFinished]);
 
-  useEffect(async () => {
-    await signOut({
+  useEffect(() => {
+    signOut({
       onSuccess: () => {
-        replace(routesConstants.AUTH.SIGN_IN.ROOT);
+        replace(redirectUrl);
       },
     });
   }, []);
@@ -38,5 +38,9 @@ const SignOutContent = memo(() => {
 });
 
 SignOutContent.displayName = 'SignOutContent';
+
+SignOutContent.propTypes = signOutPropTypes.props;
+
+SignOutContent.defaultProps = signOutPropTypes.default;
 
 export default SignOutContent;

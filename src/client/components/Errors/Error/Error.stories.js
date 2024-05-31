@@ -6,11 +6,12 @@ import '@client/index.scss';
 export default {
   title: 'Components/Errors/Error',
   component: Error,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
 };
 
-const Template = (args) => <ThemeContext><Error {...args} /></ThemeContext>;
-
-export const Default = Template.bind({});
-Default.parameters = {
-  controls: { hideNoControlsWarning: true },
+export const Default = {
+  render: (args) => <ThemeContext><Error {...args} /></ThemeContext>,
 };

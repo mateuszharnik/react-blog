@@ -3,6 +3,8 @@ const { config } = require('dotenv');
 
 config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   root: true,
   env: {
@@ -11,7 +13,11 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ['plugin:react/recommended', 'airbnb'],
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+    'plugin:jsx-a11y/recommended',
+  ],
   parser: '@babel/eslint-parser',
   parserOptions: {
     requireConfigFile: false,
@@ -40,7 +46,7 @@ module.exports = {
       },
     },
   },
-  plugins: ['react'],
+  plugins: ['react', 'jsx-a11y'],
   rules: {
     'react/jsx-max-props-per-line': ['error', { maximum: 1 }],
     'react/jsx-filename-extension': 0,
@@ -48,27 +54,22 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/jsx-indent': ['error', 2],
     'react/react-in-jsx-scope': 0,
+    'react/button-has-type': 0,
     'import/prefer-default-export': 0,
     'no-underscore-dangle': 0,
     camelcase: 0,
     'no-param-reassign': 0,
     'consistent-return': 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': isProduction ? 'error' : 'off',
+    'no-debugger': isProduction ? 'error' : 'off',
+    'jsx-a11y/label-has-for': 0,
     'jsx-a11y/label-has-associated-control': [
       'error',
       {
         required: {
           some: ['nesting', 'id'],
         },
-      },
-    ],
-    'jsx-a11y/label-has-for': [
-      'error',
-      {
-        required: {
-          some: ['nesting', 'id'],
-        },
+        allowChildren: true,
       },
     ],
     'max-len': [
@@ -115,7 +116,12 @@ module.exports = {
       },
     },
     {
-      files: ['.storybook/**/*.js'],
+      files: [
+        '.storybook/**/*.js',
+        'cypress.config.js',
+        'src/client/services/openAPIBackendService/openAPIBackendService.js',
+        'src/client/services/mswService/mswService.js',
+      ],
       rules: {
         'import/no-extraneous-dependencies': 0,
       },

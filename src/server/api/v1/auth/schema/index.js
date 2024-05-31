@@ -12,7 +12,9 @@ import {
 } from '@shared/regexps';
 
 export const validateSignUp = (
-  newUser = {}, options = { abortEarly: false }, useInvalid = true,
+  newUser = {},
+  options = { abortEarly: false },
+  useInvalid = true,
 ) => {
   const invalid = useInvalid ? invalidUsernames : [];
 

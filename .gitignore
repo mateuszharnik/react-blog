@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs
+# Created by https://www.toptal.com/developers/gitignore/api/windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs,yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs,yarn
 
 ### Custom ###
 .todo
@@ -224,8 +224,6 @@ Temporary Items
 .history
 .ionide
 
-# Support for Project snippet scope
-
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -271,4 +269,21 @@ storybook-static/
 
 docker-data
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/windows,osx,linux,node,redis,visualstudiocode,cypressio,storybookjs,yarn

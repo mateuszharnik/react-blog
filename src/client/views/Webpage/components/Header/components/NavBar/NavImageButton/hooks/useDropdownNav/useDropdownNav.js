@@ -22,14 +22,14 @@ export const useDropdownNav = ({ buttonRef, dropdownRef }) => {
     setFocus();
   }, [setFocus]);
 
-  const handleCloseNavOnBlur = useCallback((e) => {
-    if (!e?.relatedTarget) return;
+  const handleCloseNavOnBlur = useCallback((event) => {
+    if (!event?.relatedTarget) return;
 
-    if (!e?.relatedTarget?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
+    if (!event?.relatedTarget?.getAttribute('data-dropdown-nav') && isOpen) toggleNav(false);
   }, [isOpen]);
 
-  const closeNavOnClick = useCallback((e) => {
-    if (!dropdownRef.current || dropdownRef.current?.contains(e.target)) return;
+  const closeNavOnClick = useCallback((event) => {
+    if (!dropdownRef.current || dropdownRef.current?.contains(event.target)) return;
 
     toggleNav(false);
   }, [dropdownRef]);

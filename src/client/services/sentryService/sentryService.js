@@ -16,7 +16,7 @@ class SentryService {
       tracesSampleRate: 0.2,
       normalizeDepth: 5,
     });
-  }
+  };
 }
 
 const { client, initSentry } = new SentryService();

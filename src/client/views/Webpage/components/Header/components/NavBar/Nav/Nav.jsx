@@ -1,5 +1,8 @@
-import { memo, useRef, useMemo } from 'react';
+import {
+  memo, useRef, useMemo, useCallback,
+} from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from '@client/router/hooks';
 import { useUser } from '@client/store/user';
 import { usePageSizeContext } from '@client/contexts/PageSizeContext';
 import { useNav } from '@client/views/Webpage/components/Header/components/NavBar/Nav/hooks';
@@ -39,6 +42,7 @@ const Nav = memo(() => {
   const closeNavButtonRef = useRef(null);
 
   const { t } = useTranslation();
+  const { history: { signOut } } = useRouter();
   const { user } = useUser();
   const { isDesktop } = usePageSizeContext();
   const {
@@ -62,6 +66,12 @@ const Nav = memo(() => {
   const navClassName = useMemo(() => getNavClassName({ isAnimated }), [isAnimated]);
 
   const divClassName = useMemo(() => getDivClassName({ user: !!user }), [user]);
+
+  const handleSignOut = useCallback((event) => {
+    event.preventDefault();
+
+    signOut();
+  }, [signOut]);
 
   return (
     <Box
@@ -200,6 +210,7 @@ const Nav = memo(() => {
                         gender={user?.gender}
                         type={user?.role?.type}
                         src={user?.image_url}
+                        handleSignOut={handleSignOut}
                         className="nav__link nav__link-button mx-auto overflow-hidden"
                       />
                     ) : (
@@ -209,6 +220,7 @@ const Nav = memo(() => {
                         className="nav__link mx-auto d-lg-none"
                         data-nav="true"
                         onBlur={handleCloseNavOnBlur}
+                        onClick={handleSignOut}
                       >
                         <Box
                           as="span"

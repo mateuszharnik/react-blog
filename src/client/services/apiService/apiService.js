@@ -53,19 +53,19 @@ class ApiService {
     this.publicAuth.setStore(store);
     this.publicDocs.setStore(store);
     this.publicCsrf.setStore(store);
-  }
+  };
 
   #init = () => {
     const language = getLanguage();
 
     this.setLanguageHeader(language);
-  }
+  };
 
   setLanguageHeader = (language = LANG.PL) => {
     const lang = checkLanguage(language);
 
     this.client.defaults.headers.common['Accept-Language'] = lang;
-  }
+  };
 }
 
 const {

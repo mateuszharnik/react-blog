@@ -27,7 +27,7 @@ class I18nService {
           pl,
         },
       });
-  }
+  };
 }
 
 const { client } = new I18nService();

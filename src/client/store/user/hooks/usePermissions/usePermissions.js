@@ -1,88 +1,88 @@
 import { useMemo, useCallback } from 'react';
 import { useStoreState } from 'easy-peasy';
 import isFunction from 'lodash/isFunction';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
 
 export const usePermissions = ({
   requiredPermissions = [],
   requiredSubscriptions = [],
   requiredRoles = [],
-  requiredCondition = () => true,
-}) => {
+} = {}) => {
   const { permissions: userPermissions } = useStoreState((store) => store.userStore);
 
-  const checkRoles = useCallback((roles) => {
+  const checkRoles = useCallback((roles, userData) => {
+    if (isFunction(roles)) return roles(userData);
+
+    if (!isArray(roles)) throw new Error('Prop "requiredRoles" should be an array or a function.');
+
     if (!roles.length) return true;
 
     const hasRequiredRole = !!roles.find(
-      (role) => userPermissions?.type === role,
+      (role) => userData?.type === role,
     );
 
     return hasRequiredRole;
-  }, [userPermissions]);
+  }, []);
 
-  const checkSubscriptions = useCallback((subscriptions) => {
+  const checkSubscriptions = useCallback((subscriptions, userData) => {
+    if (isFunction(subscriptions)) return subscriptions(userData);
+
+    if (!isArray(subscriptions)) throw new Error('Prop "requiredSubscriptions" should be an array or a function.');
+
     if (!subscriptions.length) return true;
 
     const hasRequiredSubscription = !!subscriptions.find(
-      (subscription) => userPermissions?.subscription === subscription,
+      (subscription) => userData?.subscription === subscription,
     );
 
     return hasRequiredSubscription;
-  }, [userPermissions]);
+  }, []);
 
-  const checkPermissions = useCallback((permissions) => {
+  const checkPermissions = useCallback((permissions, userData) => {
+    if (isFunction(permissions)) return permissions(userData);
+
+    if (!isArray(permissions)) throw new Error('Prop "requiredPermissions" should be an array or a function.');
+
     if (!permissions.length) return true;
 
-    const requiredPermissionsLength = permissions
-      .filter((requiredPermission) => userPermissions?.[requiredPermission]).length;
-
-    const isPermissionsLengthEqual = (
-      requiredPermissionsLength === permissions.length
+    const hasRequiredPermissions = permissions.every(
+      (requiredPermission) => userData?.[requiredPermission],
     );
 
-    return isPermissionsLengthEqual;
-  }, [userPermissions]);
-
-  const checkRequiredCondition = useCallback((condition) => (
-    !isFunction(condition) ? true : condition(userPermissions)
-  ), [userPermissions]);
+    return hasRequiredPermissions;
+  }, []);
 
   const isAuthenticated = useMemo(
-    () => !!userPermissions,
+    () => !isEmpty(userPermissions),
     [userPermissions],
   );
 
   const hasRoles = useMemo(
-    () => checkRoles(requiredRoles),
-    [checkRoles, requiredRoles],
+    () => checkRoles(requiredRoles, userPermissions),
+    [checkRoles, userPermissions, requiredRoles],
   );
 
   const hasPermissions = useMemo(
-    () => checkPermissions(requiredPermissions),
-    [checkPermissions, requiredPermissions],
+    () => checkPermissions(requiredPermissions, userPermissions),
+    [checkPermissions, userPermissions, requiredPermissions],
   );
 
   const hasSubscriptions = useMemo(
-    () => checkSubscriptions(requiredSubscriptions),
-    [checkSubscriptions, requiredSubscriptions],
-  );
-
-  const hasCorrectCondition = useMemo(
-    () => checkRequiredCondition(requiredCondition),
-    [checkRequiredCondition, requiredCondition],
+    () => checkSubscriptions(requiredSubscriptions, userPermissions),
+    [checkSubscriptions, userPermissions, requiredSubscriptions],
   );
 
   return {
+    permissions: userPermissions,
     isAuthenticated,
     hasPermissions,
     hasSubscriptions,
     hasRoles,
-    hasCorrectCondition,
     actions: {
       checkRoles,
       checkPermissions,
       checkSubscriptions,
-      checkRequiredCondition,
     },
   };
 };

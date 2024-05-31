@@ -1,4 +1,4 @@
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { sentryService } from '@client/services/sentryService';
 import { aosService } from '@client/services/aosService';
 import StoreProvider from '@client/providers/storeProvider';
@@ -11,7 +11,10 @@ import './index.scss';
 aosService.initAOS();
 sentryService.initSentry();
 
-render(
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+root.render(
   <StoreProvider>
     <RouterProvider>
       <I18nextProvider>
@@ -21,5 +24,4 @@ render(
       </I18nextProvider>
     </RouterProvider>
   </StoreProvider>,
-  document.getElementById('app'),
 );

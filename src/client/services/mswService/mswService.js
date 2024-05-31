@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { openAPIBackendService } from '@client/services/openAPIBackendService';

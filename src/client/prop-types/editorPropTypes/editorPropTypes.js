@@ -10,7 +10,6 @@ export const editorPropTypes = {
     initialValue: string,
     placeholder: string,
     errors: string,
-    ariaDescribedBy: string,
     touched: bool,
     setValues: func.isRequired,
     setTouched: func.isRequired,
@@ -21,7 +20,6 @@ export const editorPropTypes = {
     initialValue: '',
     placeholder: t('dictionary.editor.PLACEHOLDER'),
     errors: '',
-    ariaDescribedBy: undefined,
     touched: false,
   },
 };

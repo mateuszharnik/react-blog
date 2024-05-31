@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import uniqueId from 'lodash/uniqueId';
 import { portalPropTypes } from '@client/prop-types/portalPropTypes';
 
-const Portal = memo(({ to, children }) => {
+const Portal = memo(({ to, prepend, children }) => {
   const [isCreated, setIsCreated] = useState(false);
 
   const targetId = useMemo(() => {
@@ -19,7 +19,13 @@ const Portal = memo(({ to, children }) => {
   useEffect(() => {
     const createdElement = document.createElement('div');
     createdElement.id = targetId;
-    document.body.appendChild(createdElement);
+
+    if (prepend) {
+      document.body.prepend(createdElement);
+    } else {
+      document.body.appendChild(createdElement);
+    }
+
     setIsCreated(true);
 
     return () => {

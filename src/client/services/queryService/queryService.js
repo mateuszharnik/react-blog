@@ -22,7 +22,7 @@ class QueryService {
         },
       },
     });
-  }
+  };
 }
 
 export const queryService = new QueryService();

@@ -36,12 +36,12 @@ const useTable = ({ data, columns, pageSize = 10 }) => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const setGlobalFilters = useCallback((e) => {
-    setGlobalFilter(String(e.target.value));
+  const setGlobalFilters = useCallback((event) => {
+    setGlobalFilter(String(event.target.value));
   }, []);
 
-  const handlePageSizeChange = useCallback((e) => {
-    table.setPageSize(Number(e.target.value));
+  const handlePageSizeChange = useCallback((event) => {
+    table.setPageSize(Number(event.target.value));
   }, [table]);
 
   const counter = useMemo(() => {

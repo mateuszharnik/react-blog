@@ -6,62 +6,105 @@ import { usePermissions } from '@client/store/user';
 import { protectedRoutePropTypes } from '@client/prop-types/protectedRoutePropTypes';
 import Redirect from '@client/router/components/Redirect';
 
-const ProtectedRoute = memo(({
-  pageComponent,
-  paywallComponent,
-  accessDeniedComponent,
-  redirect,
-  shouldBeAuthenticated,
-  requiredSubscriptions,
-  requiredRoles,
-  requiredPermissions,
-  requiredCondition,
-}) => {
+const result = cond([
+  [
+    ({ isAuthenticated, props }) => isAuthenticated !== props.shouldBeAuthenticated,
+    ({ props }) => ({
+      component: props.redirectComponent || Redirect,
+      props: { to: props.redirect },
+    }),
+  ],
+  [
+    ({ hasPermissions }) => !hasPermissions,
+    ({ props }) => {
+      if (props.accessDeniedComponent) {
+        return {
+          component: props.accessDeniedComponent,
+          props: { requiredPermissions: props.requiredPermissions },
+        };
+      }
+
+      return {
+        component: props.redirectComponent || Redirect,
+        props: { to: props.redirect },
+      };
+    },
+  ],
+  [
+    ({ hasRoles }) => !hasRoles,
+    ({ props }) => {
+      if (props.accessDeniedComponent) {
+        return {
+          component: props.accessDeniedComponent,
+          props: { requiredRoles: props.requiredRoles },
+        };
+      }
+
+      return {
+        component: props.redirectComponent || Redirect,
+        props: { to: props.redirect },
+      };
+    },
+  ],
+  [
+    ({ hasSubscriptions }) => !hasSubscriptions,
+    ({ props }) => {
+      if (props.paywallComponent) {
+        return {
+          component: props.paywallComponent,
+          props: { requiredSubscriptions: props.requiredSubscriptions },
+        };
+      }
+
+      return {
+        component: props.redirectComponent || Redirect,
+        props: { to: props.redirect },
+      };
+    },
+  ],
+  [
+    ({ props }) => props.pageComponent,
+    ({ props }) => ({
+      component: props.pageComponent,
+      props: {},
+    }),
+  ],
+  [
+    stubTrue,
+    () => ({
+      component: Outlet,
+      props: {},
+    }),
+  ],
+]);
+
+const ProtectedRoute = memo((props) => {
   const {
     isAuthenticated,
     hasPermissions,
     hasSubscriptions,
     hasRoles,
-    hasCorrectCondition,
   } = usePermissions({
-    requiredPermissions,
-    requiredSubscriptions,
-    requiredRoles,
-    requiredCondition,
+    requiredPermissions: props.requiredPermissions,
+    requiredSubscriptions: props.requiredSubscriptions,
+    requiredRoles: props.requiredRoles,
   });
 
-  const DynamicComponent = useMemo(() => {
-    const result = cond([
-      [
-        () => isAuthenticated !== shouldBeAuthenticated,
-        () => (() => <Redirect to={redirect} />),
-      ],
-      [
-        () => !hasCorrectCondition,
-        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
-      ],
-      [
-        () => !hasPermissions,
-        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
-      ],
-      [
-        () => !hasRoles,
-        () => accessDeniedComponent || (() => <Redirect to={redirect} />),
-      ],
-      [
-        () => !hasSubscriptions,
-        () => paywallComponent || (() => <Redirect to={redirect} />),
-      ],
-      [
-        stubTrue,
-        () => pageComponent,
-      ],
-    ]);
+  const render = useMemo(() => result({
+    isAuthenticated,
+    hasPermissions,
+    hasRoles,
+    hasSubscriptions,
+    props,
+  }), [
+    isAuthenticated,
+    hasPermissions,
+    hasRoles,
+    hasSubscriptions,
+    props,
+  ]);
 
-    return result();
-  }, []);
-
-  return DynamicComponent ? <DynamicComponent /> : <Outlet />;
+  return <render.component {...render.props} />;
 });
 
 ProtectedRoute.displayName = 'ProtectedRoute';
