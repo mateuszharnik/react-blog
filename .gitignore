@@ -258,6 +258,7 @@ src/e2e/tests/results/*
 src/e2e/tests/reports/*
 src/e2e/tests/screenshots/*
 src/e2e/tests/videos/*
+src/e2e/tests/downloads/*
 
 ### StorybookJs ###
 # gitignore template for the Storybook, UI guide for front apps

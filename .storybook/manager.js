@@ -7,6 +7,6 @@ addons.setConfig({
     base: 'light',
     brandTitle: 'Blog o kodowaniu',
     brandImage: logo,
-    colorSecondary: '#ca164c',
+    colorSecondary: '#008489',
   }),
 });
