@@ -1,5 +1,13 @@
+@import "~bootstrap/scss/functions";
 @import "./assets/scss/variables";
 @import "./assets/scss/helpers";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~@fortawesome/fontawesome-free/scss/functions";
+@import "~@fortawesome/fontawesome-free/scss/mixins";
+@import "~@fortawesome/fontawesome-free/scss/variables";
 
 /*** App ***/
 @import "./App/index";
