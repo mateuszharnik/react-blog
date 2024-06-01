@@ -23,7 +23,7 @@ export default {
 
     config.module.rules.push({
       test: /\.scss$/,
-      exclude: /(node_modules|bower_components$)/,
+      exclude: /(node_modules|bower_components)/,
       include: resolve(__dirname, '../src/client/'),
       use: [
         { loader: 'style-loader' },
@@ -40,7 +40,7 @@ export default {
 
     config.module.rules.push({
       test: /\.css$/,
-      exclude: /(node_modules|bower_components$)/,
+      exclude: /(node_modules|bower_components)/,
       include: resolve(__dirname, '../src/client/'),
       use: [
         { loader: 'style-loader' },

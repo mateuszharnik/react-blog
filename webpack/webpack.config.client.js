@@ -187,7 +187,7 @@ module.exports = (webpackEnv, { mode }) => {
         cacheGroups: {
           // File for all js libs
           libs: {
-            test: /[\\/]node_modules[\\/].+\.(?!(css|scss|less|sass)).*$/,
+            test: /[\\/]node_modules[\\/].+\.(?!(css|scss|less|sass|styl)).*$/,
             chunks: 'initial',
             name: jsLibsEntry,
             enforce: true,
