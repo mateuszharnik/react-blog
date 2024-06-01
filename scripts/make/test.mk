@@ -12,9 +12,7 @@ test:
 .ONESHELL:
 test-watch: # Test client, server and shared in watch mode
 test-watch:
-	@make test-watch@client
-	@make test-watch@server
-	@make test-watch@shared
+	@concurrently -n "@client,@server,@shared" -c "blue,red,green" "make test-watch@client" "make test-watch@server" "make test-watch@shared"
 
 .ONESHELL:
 test-ci: # Test client, server and shared with --ci flag

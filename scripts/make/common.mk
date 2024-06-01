@@ -54,4 +54,4 @@ install@corepack-enable:
 .ONESHELL:
 install@global: # Install all global npm dependencies
 install@global:
-	@npm i -g rimraf@3.0.2 cross-env@7.0.3 concurrently@6.5.1 purgecss@4.1.3 stylelint@13.13.1
+	@npm i -g rimraf@5.0.5 cross-env@7.0.3 concurrently@8.2.2 purgecss@6.0.0

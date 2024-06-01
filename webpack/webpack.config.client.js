@@ -1,76 +1,56 @@
-const { join, resolve } = require('path');
-const { config } = require('dotenv');
-const fs = require('fs');
-const Joi = require('joi');
+const webpack = require('webpack');
 const colors = require('colors/safe');
 const address = require('address');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const Joi = require('joi');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const CleanCSS = require('clean-css');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const Imagemin = require('imagemin-webpack-plugin').default;
-const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const SentryWebpackPlugin = require('@sentry/webpack-plugin');
-const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
+const { join, resolve } = require('path');
+const { existsSync } = require('fs');
+const { config } = require('dotenv');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 const { version } = require('../package.json');
 
+config();
+
+// Set USE_SEPARATE_ENVIRONMENTS to true in the
+// .env file to use env specific environments variables
+if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
+  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
+
+  if (existsSync(path)) config({ path });
+}
+
+const schema = Joi.object({
+  NODE_ENV: Joi.string()
+    .trim()
+    .valid('development', 'production', 'test')
+    .required(),
+  APP_ENV: Joi.string()
+    .trim()
+    .valid('development', 'production', 'test', 'e2e', 'staging', 'testing')
+    .required(),
+  CLIENT_PORT: Joi.string().trim(),
+  DEVTOOLS_ENABLED: Joi.bool().required(),
+  BASE_URL: Joi.string().trim().required(),
+  SERVER_URL: Joi.string().trim().required(),
+  CLIENT_URL: Joi.string().trim().required(),
+  SENTRY_DSN: Joi.string().trim().allow('').required(),
+  SENTRY_ORGANIZATION_NAME: Joi.string().trim().allow('').required(),
+  SENTRY_PROJECT_NAME: Joi.string().trim().allow('').required(),
+  SENTRY_AUTH_TOKEN: Joi.string().trim().allow('').required(),
+}).unknown(true);
+
 module.exports = (webpackEnv, { mode }) => {
-  config();
-
-  if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-    const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
-
-    if (fs.existsSync(path)) {
-      config({ path });
-    }
-  }
-
-  const schema = Joi.object({
-    NODE_ENV: Joi.string()
-      .trim()
-      .valid('development', 'production', 'test')
-      .required(),
-    APP_ENV: Joi.string()
-      .trim()
-      .valid('development', 'production', 'test', 'e2e', 'staging', 'testing')
-      .required(),
-    CLIENT_PORT: Joi.string()
-      .trim(),
-    DEVTOOLS_ENABLED: Joi.bool()
-      .required(),
-    BASE_URL: Joi.string()
-      .trim()
-      .required(),
-    SERVER_URL: Joi.string()
-      .trim()
-      .required(),
-    CLIENT_URL: Joi.string()
-      .trim()
-      .required(),
-    SENTRY_DSN: Joi.string()
-      .trim()
-      .allow('')
-      .required(),
-    SENTRY_ORGANIZATION_NAME: Joi.string()
-      .trim()
-      .allow('')
-      .required(),
-    SENTRY_PROJECT_NAME: Joi.string()
-      .trim()
-      .allow('')
-      .required(),
-    SENTRY_AUTH_TOKEN: Joi.string()
-      .trim()
-      .allow('')
-      .required(),
-  }).unknown(true);
-
   const { error, value: env } = schema.validate(process.env);
 
   if (error) {
@@ -78,16 +58,56 @@ module.exports = (webpackEnv, { mode }) => {
     process.exit(1);
   }
 
-  const message = `Your application is running here:
+  const isProduction = mode === 'production';
 
+  // Use this plugins only in production mode
+  const productionPlugins = isProduction ? [
+    new CleanWebpackPlugin(),
+    new RemoveEmptyScriptsPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: './public/favicon-*.png', to: '[name].png' },
+        { from: './public/app.png', to: 'app.png' },
+        { from: './public/manifest.json', to: 'manifest.json' },
+      ],
+    }),
+  ] : [];
+
+  // Use this plugins only in development mode
+  const developmentPlugins = !isProduction ? [
+    new FriendlyErrorsWebpackPlugin({
+      compilationSuccessInfo: {
+        messages: [`Your application is running here: \n
   - Local: ${colors.cyan(`http://localhost:${env.CLIENT_PORT}`)}
   - Network: ${colors.cyan(`http://${address.ip()}:${env.CLIENT_PORT}`)}
-`;
+  `],
+      },
+      clearConsole: true,
+    }),
+  ] : [];
+
+  // Use Sentry plugin only if APP_ENV is equal production and we specify SENTRY_DSN
+  const sentryPlugin = env.APP_ENV === 'production' && env.SENTRY_DSN ? [
+    sentryWebpackPlugin({
+      org: env.SENTRY_ORGANIZATION_NAME,
+      project: env.SENTRY_PROJECT_NAME,
+      authToken: env.SENTRY_AUTH_TOKEN,
+      release: version,
+      include: './dist/client',
+      ignore: ['node_modules'],
+      telemetry: false,
+    }),
+  ] : [];
+
+  const cssLibsEntry = 'css-libs';
+  const jsLibsEntry = 'js-libs';
+  const appEntry = 'app';
 
   return {
     entry: {
-      styles: './src/client/libs.scss',
-      app: './src/client/index.js',
+      // Entry for all css libs, this will be clean by using purgecss
+      [cssLibsEntry]: './src/client/libs.scss',
+      [appEntry]: './src/client/index.js',
     },
     output: {
       filename: 'js/[name].js',
@@ -104,7 +124,8 @@ module.exports = (webpackEnv, { mode }) => {
         '@e2e': resolve(__dirname, '../src/e2e'),
       },
     },
-    devtool: mode === 'production' ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    stats: 'errors-warnings',
     devServer: {
       host: '0.0.0.0',
       compress: true,
@@ -112,26 +133,63 @@ module.exports = (webpackEnv, { mode }) => {
       historyApiFallback: true,
       open: false,
       port: env.CLIENT_PORT,
-      quiet: true,
-      overlay: {
-        warnings: false,
-        errors: true,
+      client: {
+        overlay: {
+          warnings: false,
+          errors: true,
+          runtimeErrors: false,
+        },
       },
-      proxy: {
-        '/api': env.SERVER_URL,
-      },
+      proxy: [{ context: ['/api'], target: env.SERVER_URL }],
     },
     optimization: {
+      minimize: isProduction,
+      minimizer: [
+        new TerserPlugin({ extractComments: false }),
+        new CssMinimizerPlugin({
+          minify: CssMinimizerPlugin.cleanCssMinify,
+          minimizerOptions: { level: 2, rebase: false },
+        }),
+        new ImageMinimizerPlugin({
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [
+                ['gifsicle', { interlaced: true }],
+                ['jpegtran', { progressive: true }],
+                ['optipng', { optimizationLevel: 5 }],
+                ['svgo', {
+                  plugins: [{
+                    name: 'preset-default',
+                    params: {
+                      overrides: {
+                        removeViewBox: false,
+                        addAttributesToSVGElement: {
+                          params: { attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }] },
+                        },
+                      },
+                    },
+                  }],
+                }],
+              ],
+            },
+          },
+        }),
+      ],
+      // Setting runtimeChunk as single gives ability to hmr with multiple entries
+      runtimeChunk: isProduction ? false : 'single',
       splitChunks: {
         name: (_, chunks) => `${chunks
           .map((item) => item.name)
           .sort()
           .join('~')}`,
         cacheGroups: {
+          // File for all js libs
           libs: {
-            test: /[\\/]node_modules[\\/].+\.(?!(css|scss|sass)).*$/,
+            test: /[\\/]node_modules[\\/].+\.(?!(css|scss|less|sass)).*$/,
             chunks: 'initial',
-            name: 'libs',
+            name: jsLibsEntry,
             enforce: true,
           },
         },
@@ -141,51 +199,31 @@ module.exports = (webpackEnv, { mode }) => {
       rules: [
         {
           test: /\.scss$/,
-          exclude: /(node_modules|bower_components|\.module\.scss$)/,
+          exclude: /(node_modules|bower_components)/,
           use: [
-            mode === 'production'
-              ? {
-                loader: MiniCssExtractPlugin.loader,
-                options: { publicPath: '../' },
-              }
+            isProduction
+              ? { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } }
               : { loader: 'style-loader' },
             { loader: 'css-loader', options: { sourceMap: true } },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true,
-                ident: 'postcss',
-              },
-            },
+            { loader: 'postcss-loader', options: { sourceMap: true } },
             { loader: 'sass-loader', options: { sourceMap: true } },
           ],
         },
         {
           test: /\.css$/,
-          exclude: /(node_modules|bower_components|\.module\.css$)/,
+          exclude: /(node_modules|bower_components)/,
           use: [
-            mode === 'production'
-              ? {
-                loader: MiniCssExtractPlugin.loader,
-                options: { publicPath: '../' },
-              }
+            isProduction
+              ? { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } }
               : { loader: 'style-loader' },
             { loader: 'css-loader', options: { sourceMap: true } },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true,
-                ident: 'postcss',
-              },
-            },
+            { loader: 'postcss-loader', options: { sourceMap: true } },
           ],
         },
         {
           test: /\.(js|jsx)$/,
           exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-          },
+          use: { loader: 'babel-loader' },
         },
         {
           test: /\.mjs$/,
@@ -195,22 +233,14 @@ module.exports = (webpackEnv, { mode }) => {
         {
           test: /\.(png|jpe?g|gif|svg)$/,
           exclude: /(node_modules|bower_components|fonts)/,
-          loader: 'url-loader',
-          options: {
-            limit: 8192,
-            name: '[name].[ext]',
-            outputPath: 'images/',
-          },
+          type: 'asset',
+          generator: { filename: 'images/[name][ext]' },
         },
         {
-          test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+          test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot)$/,
           exclude: /(images)/,
-          loader: 'url-loader',
-          options: {
-            limit: 8192,
-            name: '[name].[ext]',
-            outputPath: 'fonts/',
-          },
+          type: 'asset',
+          generator: { filename: 'fonts/[name][ext]' },
         },
       ],
     },
@@ -222,36 +252,16 @@ module.exports = (webpackEnv, { mode }) => {
         'process.env.SERVER_URL': JSON.stringify(env.SERVER_URL),
         'process.env.CLIENT_URL': JSON.stringify(env.CLIENT_URL),
         'process.env.SENTRY_DSN': JSON.stringify(env.SENTRY_DSN),
-        ...(!env.DEVTOOLS_ENABLED && mode === 'production' && { __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
+        ...(!env.DEVTOOLS_ENABLED && isProduction && { __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
       }),
-      new CleanWebpackPlugin(),
-      ...(mode !== 'production'
-        ? [
-          new FriendlyErrorsWebpackPlugin({
-            compilationSuccessInfo: {
-              messages: [message],
-            },
-            clearConsole: true,
-          }),
-        ]
-        : []),
-      ...(
-        env.APP_ENV === 'production' && env.SENTRY_DSN ? [
-          new SentryWebpackPlugin({
-            org: env.SENTRY_ORGANIZATION_NAME,
-            project: env.SENTRY_PROJECT_NAME,
-            authToken: env.SENTRY_AUTH_TOKEN,
-            release: version,
-            include: './dist/client',
-            ignore: ['node_modules'],
-          }),
-        ] : []
-      ),
-      new FixStyleOnlyEntriesPlugin(),
+      ...developmentPlugins,
+      ...productionPlugins,
+      ...sentryPlugin,
       new HTMLWebpackPlugin({
-        inject: true,
+        inject: 'body',
         template: './public/index.html',
         filename: './index.html',
+        scriptLoading: 'blocking',
         minify: {
           minifyCSS: true,
           minifyJS: true,
@@ -266,52 +276,30 @@ module.exports = (webpackEnv, { mode }) => {
       }),
       new PreloadWebpackPlugin({
         rel: 'preload',
-        include: {
-          type: 'initial',
-          entries: ['libs', 'app', 'styles'],
-        },
+        fileBlacklist: [/\.(map|png|jpe?g|gif|svg|woff2?|ttf|eot)$/],
+        include: { type: 'initial', entries: [jsLibsEntry, appEntry, cssLibsEntry] },
       }),
       new PreloadWebpackPlugin({
         rel: 'prefetch',
-      }),
-      new StylelintPlugin({
-        configFile: './stylelint.config.js',
-        fix: true,
-        files: '**/*.(scss|css)',
+        fileBlacklist: [/\.(map|png|jpe?g|gif|svg|woff2?|ttf|eot)$/],
       }),
       new MiniCssExtractPlugin({
         filename: 'css/[name].css',
         chunkFilename: 'css/[name].css',
       }),
-      new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: CleanCSS,
-        cssProcessorOptions: { level: 2, rebase: false },
-        canPrint: true,
+      new StylelintPlugin({
+        failOnError: isProduction,
+        failOnWarning: isProduction,
+        context: './',
+        extensions: ['css', 'scss'],
+        files: ['src/client'],
       }),
       new ESLintPlugin({
-        failOnError: mode === 'production',
-        failOnWarning: mode === 'production',
+        failOnError: isProduction,
+        failOnWarning: isProduction,
         context: './',
         extensions: ['js', 'jsx', 'json'],
       }),
-      new CopyPlugin({
-        patterns: [
-          {
-            from: './public/favicon-*.png',
-            to: '[name].png',
-          },
-          ...(mode === 'production' ? [{
-            from: './public/app.png',
-            to: 'app.png',
-          }] : []),
-          {
-            from: './public/manifest.json',
-            to: 'manifest.json',
-          },
-        ],
-      }),
-      new Imagemin({ test: /\.(jpe?g|png|gif|svg})$/i }),
     ],
   };
 };

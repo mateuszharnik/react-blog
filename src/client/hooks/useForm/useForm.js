@@ -67,15 +67,17 @@ const useForm = ({
     return metadata?.touched;
   }, [getFieldMeta]);
 
-  const isComplete = useMemo(() => {
-    const schema = isFunction(validationSchema)
-      ? validationSchema(values) : validationSchema;
+  const isComplete = useMemo(
+    () => {
+      const schema = isFunction(validationSchema)
+        ? validationSchema(values) : validationSchema;
 
-    const hasNoErrors = isSchema(schema) ? schema.isValidSync(values) : true;
+      const hasNoErrors = isSchema(schema) ? schema.isValidSync(values) : true;
 
-    return dirty ? isValid && hasNoErrors : false;
-  },
-  [dirty, isValid, values, validationSchema]);
+      return dirty ? isValid && hasNoErrors : false;
+    },
+    [dirty, isValid, values, validationSchema],
+  );
 
   return {
     isDirty: dirty,
