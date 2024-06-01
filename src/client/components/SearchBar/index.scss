@@ -1,0 +1,24 @@
+@import "../../assets/scss/variables";
+
+.form {
+  &-search {
+    position: relative;
+
+    &::before {
+      align-items: center;
+      content: "\f002";
+      display: flex;
+      font: var(--fa-font-solid);
+      justify-content: center;
+      position: absolute;
+      @include toRem(height, 36);
+      @include toRem(width, 36);
+      @include toRem(top, 2);
+      @include toRem(left, 2);
+    }
+  }
+
+  &-control__search {
+    @include toRem(padding-left, 36);
+  }
+}

@@ -1,3 +1,3 @@
 @mixin toRem($selector, $px) {
-  #{$selector}: ($px / 16) + rem;
+  #{$selector}: calc($px / 16) * 1rem;
 }

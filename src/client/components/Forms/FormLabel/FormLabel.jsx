@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-for */
 import { memo, useMemo } from 'react';
 import { formLabelPropTypes } from '@client/prop-types/formLabelPropTypes';
 import { getFormLabelClassName } from './FormLabel.classes';

@@ -29,7 +29,9 @@
 
 .toast-fade-exit-active {
   opacity: 0;
-  transition: opacity 0.25s ease-in-out, height 0.15s 0.3s ease-in-out;
+  transition:
+    opacity 0.25s ease-in-out,
+    height 0.15s 0.3s ease-in-out;
 }
 
 .fade-enter,
@@ -71,11 +73,15 @@
 .dropdown-fade-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
 }
 
 .dropdown-fade-exit-active {
   opacity: 0;
   transform: translateY(-1.25rem);
-  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
 }
