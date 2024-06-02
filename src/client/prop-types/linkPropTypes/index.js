@@ -1,1 +1,1 @@
-export { linkPropTypes, linkDefaultProps } from './linkPropTypes';
+export { linkPropTypes } from './linkPropTypes';

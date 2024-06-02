@@ -1,31 +1,46 @@
+import orderBy from 'lodash/orderBy';
 import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
-import { storeActions } from '@client/utils/storeUtils';
+import { storeActions, createEntityAdapter } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_MESSAGES_EVENT: 'getMessagesEvent',
-  CREATE_MESSAGE_EVENT: 'createMessageEvent',
+export const requestsNames = {
+  GET_MESSAGES_REQUEST: 'getMessagesRequest',
+  CREATE_MESSAGE_REQUEST: 'createMessageRequest',
 };
 
+const messagesAdapter = createEntityAdapter({
+  sort: (data) => orderBy(data, 'first_name', 'asc'),
+  initialState: {
+    ids: [],
+    entities: {},
+    requests: {},
+  },
+});
+
 export const messagesStore = {
-  messages: [],
-  events: {},
+  ...messagesAdapter.getInitialState(),
 
   getMessagesAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_MESSAGES_EVENT,
-    onSuccess: 'setMessages',
-    action: (_, { options }) => apiService.messages.getMessages(options),
+    request: requestsNames.GET_MESSAGES_REQUEST,
+    onSuccess: 'onSuccessGetMessages',
+    action: (_, { options }) => apiService.privateMessages
+      .getMessages(options),
   })),
 
   createMessageAction: thunk(storeActions.createAction({
-    event: eventsNames.CREATE_MESSAGE_EVENT,
-    onSuccess: 'updateMessages',
-    action: (_, { payload, options }) => apiService.messages.createMessage(payload, options),
+    request: requestsNames.CREATE_MESSAGE_REQUEST,
+    onSuccess: 'onSuccessCreateMessage',
+    action: (_, { payload, options }) => apiService.publicMessages
+      .createMessage(payload, options),
   })),
 
-  resetGetMessageMetadataAction: action(storeActions.onReset(eventsNames.GET_MESSAGES_EVENT)),
+  resetGetMessageMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_MESSAGES_REQUEST,
+  )),
 
-  resetCreateMessageMetadataAction: action(storeActions.onReset(eventsNames.CREATE_MESSAGE_EVENT)),
+  resetCreateMessageMetadataAction: action(storeActions.onReset(
+    requestsNames.CREATE_MESSAGE_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 
@@ -33,11 +48,18 @@ export const messagesStore = {
 
   onError: action(storeActions.onError()),
 
-  setMessages: action(storeActions.onSuccess((state, { result }) => {
-    state.messages = result;
+  onSuccessGetMessages: action(storeActions.onSuccess((state, { result }) => {
+    messagesAdapter.setAll(state, result);
   })),
 
-  updateMessages: action(storeActions.onSuccess((state, { result }) => {
-    state.messages = [result, ...state.messages];
+  onSuccessCreateMessage: action(storeActions.onSuccess((state, { result }) => {
+    messagesAdapter.addOne(state, result);
   })),
+
+  reset: action((state) => {
+    const { ids, entities } = messagesAdapter.getInitialState();
+
+    state.ids = ids;
+    state.entities = entities;
+  }),
 };

@@ -1,11 +1,13 @@
-import { string } from 'prop-types';
+import { string, func } from 'prop-types';
 
 export const navImageButtonPropTypes = {
-  type: string.isRequired,
-  gender: string.isRequired,
-  src: string,
-};
-
-export const navImageButtonDefaultProps = {
-  src: '',
+  props: {
+    type: string.isRequired,
+    gender: string.isRequired,
+    handleSignOut: func.isRequired,
+    src: string,
+  },
+  default: {
+    src: '',
+  },
 };

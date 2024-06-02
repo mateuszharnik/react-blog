@@ -1,0 +1,13 @@
+@import "../../assets/scss/variables";
+
+kbd {
+  background: $gray-300;
+  color: var(--bs-secondary-color);
+}
+
+[data-bs-theme="dark"] {
+  kbd {
+    background: $body-color;
+    color: var(--bs-secondary-color);
+  }
+}

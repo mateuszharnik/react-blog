@@ -1,1 +1,1 @@
-export { childrenPropTypes, childrenDefaultProps } from './childrenPropTypes';
+export { childrenPropTypes } from './childrenPropTypes';

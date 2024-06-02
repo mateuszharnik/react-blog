@@ -1,2 +1,3 @@
 export { userStore } from './user.store';
-export { useUser, usePermissions } from './hooks';
+export { default as usePermissions } from './hooks/usePermissions';
+export { default as useUser } from './hooks/useUser';

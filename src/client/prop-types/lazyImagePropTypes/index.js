@@ -1,1 +1,1 @@
-export { lazyImagePropTypes, lazyImageDefaultProps } from './lazyImagePropTypes';
+export { lazyImagePropTypes } from './lazyImagePropTypes';

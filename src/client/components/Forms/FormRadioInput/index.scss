@@ -1,0 +1,9 @@
+@import "../../../assets/scss/variables";
+
+[data-bs-theme="dark"] {
+  $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#141414'/></svg>");
+
+  .form-check-input:checked[type="radio"] {
+    --bs-form-check-bg-image: #{escape-svg($form-check-radio-checked-bg-image)};
+  }
+}

@@ -1,1 +1,1 @@
-export { refPropTypes, refDefaultProps } from './refPropTypes';
+export { refPropTypes } from './refPropTypes';

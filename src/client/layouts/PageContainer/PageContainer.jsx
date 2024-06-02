@@ -1,24 +1,26 @@
 import { memo } from 'react';
-import { childrenPropTypes, childrenDefaultProps } from '@client/prop-types';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import { testsConstants } from '@shared/constants';
+import Box from '@client/components/Box';
 
-const PageContainer = memo(({ children }) => (
-  <div
+const PageContainer = memo(({ children, ...restProps }) => (
+  <Box
     data-testid={testsConstants.PAGE_CONTAINER}
     className="page-container mx-auto"
+    {...restProps}
   >
     {children}
-  </div>
+  </Box>
 ));
 
 PageContainer.displayName = 'PageContainer';
 
 PageContainer.propTypes = {
-  children: childrenPropTypes,
+  children: childrenPropTypes.props,
 };
 
 PageContainer.defaultProps = {
-  children: childrenDefaultProps,
+  children: childrenPropTypes.default,
 };
 
 export default PageContainer;

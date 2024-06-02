@@ -1,46 +1,45 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActiveLink } from '@client/router/components';
 import { testsConstants, routesConstants } from '@shared/constants';
 import Nav from '@client/views/Webpage/components/Header/components/NavBar/Nav';
-import Logo from '@client/components/Logo';
+import ExactActiveLink from '@client/router/components/ExactActiveLink';
+import Logo from '@client/components/Images/Logo';
+import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const Header = memo(() => {
+const Header = memo((props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="header__container w-100">
-      <header className="header mx-auto">
-        <ActiveLink
-          to={routesConstants.ROOT}
-          end
-          className="header__logo"
+    <Box
+      className="header__container w-100"
+      {...props}
+    >
+      <Box
+        as="header"
+        className="header mx-auto"
+      >
+        <ExactActiveLink
+          id="homepage"
           title={t(`${PATH}.nav.homepage.LINK`)}
           data-testid={testsConstants.HEADER_NAV_LINK}
+          to={routesConstants.ROOT}
+          className="header__logo"
         >
-          {({ isActive }) => (
-            <>
-              <span
-                data-testid={testsConstants.HEADER_NAV_LINK_TEXT}
-                className="visually-hidden"
-              >
-                {t(`${PATH}.nav.homepage.LINK`)}
-                {' '}
-                {isActive && (
-                  <span>
-                    {t(`${PATH}.YOU_ARE_HERE`)}
-                  </span>
-                )}
-              </span>
-              <Logo />
-            </>
-          )}
-        </ActiveLink>
+          <Box
+            as="span"
+            data-testid={testsConstants.HEADER_NAV_LINK_TEXT}
+            className="visually-hidden"
+          >
+            {t(`${PATH}.nav.homepage.LINK`)}
+            {' '}
+          </Box>
+          <Logo />
+        </ExactActiveLink>
         <Nav />
-      </header>
-    </div>
+      </Box>
+    </Box>
   );
 });
 

@@ -1,17 +1,17 @@
 import aos from 'aos';
 
 class AOSService {
-  #client = null;
-
-  constructor(client) {
-    this.#client = client;
+  constructor() {
+    this.client = aos;
   }
 
-  init() {
-    this.#client.init({
+  initAOS = () => {
+    this.client.init({
       once: true,
     });
-  }
+  };
 }
 
-export const aosService = new AOSService(aos);
+const { client, initAOS } = new AOSService();
+
+export const aosService = { ...client, initAOS };

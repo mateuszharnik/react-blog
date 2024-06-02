@@ -1,2 +1,2 @@
 export { contactStore } from './contact.store';
-export { useContact } from './hooks';
+export { default as useContact } from './hooks/useContact';

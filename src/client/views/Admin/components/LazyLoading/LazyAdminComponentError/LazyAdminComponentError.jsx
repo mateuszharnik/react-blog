@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import Error from '@client/components/Error';
+import Error from '@client/components/Errors/Error';
 import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 
 const LazyAdminComponentError = memo(() => (
-  <LazyLoadingWrapper wrapperClassName="lazy-loading-admin-wrapper">
+  <LazyLoadingWrapper className="lazy-loading-admin-wrapper">
     <Error />
   </LazyLoadingWrapper>
 ));

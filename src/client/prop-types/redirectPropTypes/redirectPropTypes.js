@@ -4,9 +4,10 @@ import { routesConstants } from '@shared/constants';
 const { ROOT } = routesConstants;
 
 export const redirectPropTypes = {
-  to: string,
-};
-
-export const redirectDefaultProps = {
-  to: ROOT,
+  props: {
+    to: string,
+  },
+  default: {
+    to: ROOT,
+  },
 };

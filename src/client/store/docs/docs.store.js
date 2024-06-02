@@ -2,30 +2,34 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  SIGN_IN_EVENT: 'signInEvent',
-  GET_REFRESH_TOKEN_EVENT: 'getRefreshTokenEvent',
+export const requestsNames = {
+  SIGN_IN_REQUEST: 'signInRequest',
+  GET_REFRESH_TOKEN_REQUEST: 'getRefreshTokenRequest',
 };
 
 export const docsStore = {
-  accessToken: '',
-  events: {},
+  accessToken: null,
+  requests: {},
 
   signInAction: thunk(storeActions.createAction({
-    event: eventsNames.SIGN_IN_EVENT,
-    action: (_, { payload, options }) => apiService.docs.signIn(payload, options),
+    request: requestsNames.SIGN_IN_REQUEST,
+    action: (_, { payload, options }) => apiService.publicDocs
+      .signIn(payload, options),
   })),
 
   getRefreshTokenAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_REFRESH_TOKEN_EVENT,
+    request: requestsNames.GET_REFRESH_TOKEN_REQUEST,
     onSuccess: 'setAccessToken',
-    action: (_, { options }) => apiService.docs.getRefreshToken(options),
+    action: (_, { options }) => apiService.publicDocs
+      .getRefreshToken(options),
   })),
 
-  resetSignInMetadataAction: action(storeActions.onReset(eventsNames.SIGN_IN_EVENT)),
+  resetSignInMetadataAction: action(storeActions.onReset(
+    requestsNames.SIGN_IN_REQUEST,
+  )),
 
   resetGetRefreshTokenMetadataAction: action(storeActions.onReset(
-    eventsNames.GET_REFRESH_TOKEN_EVENT,
+    requestsNames.GET_REFRESH_TOKEN_REQUEST,
   )),
 
   onTrigger: action(storeActions.onTrigger()),
@@ -39,4 +43,8 @@ export const docsStore = {
   setAccessToken: action(storeActions.onSuccess((state, { result }) => {
     state.accessToken = result;
   })),
+
+  reset: action((state) => {
+    state.accessToken = null;
+  }),
 };

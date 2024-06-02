@@ -5,14 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons/faUserAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
-import { Link } from '@client/router/components';
 import { useDropdownNav } from '@client/views/Webpage/components/Header/components/NavBar/NavImageButton/hooks';
-import { navImageButtonPropTypes, navImageButtonDefaultProps } from '@client/prop-types';
+import { navImageButtonPropTypes } from '@client/prop-types/navImageButtonPropTypes';
 import { routesConstants, rolesConstants, valuesConstants } from '@shared/constants';
 import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
-import LazyImage from '@client/components/LazyImage';
+import Link from '@client/router/components/Link';
+import LazyImage from '@client/components/Images/LazyImage';
 import NavLink from '@client/views/Webpage/components/Header/components/NavBar/NavLink';
+import Box from '@client/components/Box';
+import List from '@client/components/Lists/List';
+import ListItem from '@client/components/Lists/ListItem';
 
 const PATH = 'navigation';
 
@@ -20,6 +23,7 @@ const NavImageButton = memo(({
   src,
   type,
   gender,
+  handleSignOut,
   ...restProps
 }) => {
   const dropdownRef = useRef(null);
@@ -48,20 +52,23 @@ const NavImageButton = memo(({
   const isAdmin = useMemo(() => type !== rolesConstants.USER, [type]);
 
   return (
-    <div className="nav__link-image-wrapper">
+    <Box className="nav__link-image-wrapper">
       <button
         ref={buttonRef}
         type="button"
+        data-dropdown-nav="true"
         title={t(title)}
         disabled={isAnimated}
-        data-dropdown-nav="true"
         {...restProps}
         onClick={handleToggleNav}
         onBlur={handleCloseNavOnBlur}
       >
-        <span className="visually-hidden">
+        <Box
+          as="span"
+          className="visually-hidden"
+        >
           {t(`${PATH}.menu.MENU`)}
-        </span>
+        </Box>
         <LazyImage
           divClassName="nav__link-image"
           imgClassName="rounded-circle"
@@ -80,85 +87,98 @@ const NavImageButton = memo(({
         >
           <>
             {isOpen && (
-              <div
-                className="dropdown-nav"
-                data-dropdown-nav="true"
+              <Box
                 ref={dropdownRef}
+                data-dropdown-nav="true"
+                className="dropdown-nav"
               >
-                <ul
+                <List
                   className="dropdown-nav__list py-2"
                   data-dropdown-nav="true"
                 >
-                  <li className="dropdown-nav__item">
+                  <ListItem className="dropdown-nav__item">
                     <NavLink
+                      dataDropdownNav="true"
                       to={to}
                       title={t(`${PATH}.nav.profile.TITLE`)}
-                      dataDropdownNav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
                       <FontAwesomeIcon
                         icon={faUserAlt}
                         fixedWidth
                       />
-                      <span className="ms-2">
+                      <Box
+                        as="span"
+                        className="ms-2"
+                      >
                         {' '}
                         {t(`${PATH}.nav.profile.LINK`)}
-                      </span>
+                      </Box>
                     </NavLink>
-                  </li>
+                  </ListItem>
                   {!isAdmin && (
-                    <li className="dropdown-nav__item">
+                    <ListItem className="dropdown-nav__item">
                       <NavLink
+                        dataDropdownNav="true"
                         to={routesConstants.PROFILE.SETTINGS.ROOT}
                         title={t(`${PATH}.nav.settings.TITLE`)}
-                        dataDropdownNav="true"
                         onBlur={handleCloseNavOnBlur}
                       >
                         <FontAwesomeIcon
                           icon={faCog}
                           fixedWidth
                         />
-                        <span className="ms-2">
+                        <Box
+                          as="span"
+                          className="ms-2"
+                        >
                           {' '}
                           {t(`${PATH}.nav.settings.LINK`)}
-                        </span>
+                        </Box>
                       </NavLink>
-                    </li>
+                    </ListItem>
                   )}
-                  <li className="dropdown-nav__item">
+                  <ListItem className="dropdown-nav__item">
                     <Link
                       to={routesConstants.AUTH.SIGN_OUT.ROOT}
                       title={t(`${PATH}.nav.signOut.TITLE`)}
                       className="nav__link mx-auto"
                       data-dropdown-nav="true"
                       onBlur={handleCloseNavOnBlur}
+                      onClick={handleSignOut}
                     >
-                      <span className="nav__text">
+                      <Box
+                        as="span"
+                        className="nav__text"
+                      >
                         <FontAwesomeIcon
                           icon={faSignOutAlt}
                           fixedWidth
                         />
-                        <span className="ms-2">
+                        <Box
+                          as="span"
+                          className="ms-2"
+                        >
                           {' '}
                           {t(`${PATH}.nav.signOut.LINK`)}
-                        </span>
-                      </span>
+                        </Box>
+                      </Box>
                     </Link>
-                  </li>
-                </ul>
-              </div>
+                  </ListItem>
+                </List>
+              </Box>
             )}
           </>
         </CSSTransition>
       </TransitionGroup>
-    </div>
+    </Box>
   );
 });
 
 NavImageButton.displayName = 'NavImageButton';
 
-NavImageButton.propTypes = navImageButtonPropTypes;
+NavImageButton.propTypes = navImageButtonPropTypes.props;
 
-NavImageButton.defaultProps = navImageButtonDefaultProps;
+NavImageButton.defaultProps = navImageButtonPropTypes.default;
 
 export default NavImageButton;

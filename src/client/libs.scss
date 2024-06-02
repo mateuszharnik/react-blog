@@ -1,4 +1,13 @@
+@import "~bootstrap/scss/functions";
 @import "./assets/scss/variables";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+@import "~@fortawesome/fontawesome-free/scss/functions";
+@import "~@fortawesome/fontawesome-free/scss/mixins";
+@import "~@fortawesome/fontawesome-free/scss/variables";
 
 /*** Bootstrap ***/
 @import "~bootstrap/scss/functions";
@@ -31,7 +40,6 @@
 @import "~bootstrap/scss/close";
 @import "~bootstrap/scss/toasts";
 @import "~bootstrap/scss/modal";
-@import "~bootstrap/scss/tooltip";
 @import "~bootstrap/scss/popover";
 @import "~bootstrap/scss/carousel";
 @import "~bootstrap/scss/spinners";
@@ -42,9 +50,6 @@
 
 /*** AOS ***/
 @import "~aos/dist/aos";
-
-/*** OverlayScrollbars ***/
-@import "~overlayscrollbars/css/OverlayScrollbars";
 
 /*** EasyMDE ***/
 @import "~easymde/dist/easymde.min";

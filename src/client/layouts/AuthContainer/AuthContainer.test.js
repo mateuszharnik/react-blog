@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@client/utils/testUtils';
 import { testsConstants } from '@shared/constants';
 import AuthContainer from './index';
 
 describe('AuthContainer', () => {
   it('should render AuthContainer component', async () => {
-    render(<AuthContainer>Content</AuthContainer>);
+    await render(AuthContainer, {
+      children: 'Content',
+    });
 
     const authContainerEl = screen.getByTestId(testsConstants.AUTH_CONTAINER);
 

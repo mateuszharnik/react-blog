@@ -1,0 +1,31 @@
+@import "../../../assets/scss/variables";
+
+[data-bs-theme="light"] {
+  .btn-close {
+    &:focus,
+    &:focus-visible {
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: black auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  .btn-close {
+    &:focus,
+    &:focus-visible {
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: white auto 1px;
+      outline: -webkit-focus-ring-color auto 1px;
+    }
+  }
+}

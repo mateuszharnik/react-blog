@@ -1,10 +1,10 @@
 import { valuesConstants } from '@shared/constants';
-import { generateEventMetadata, checkIfStoreEventExist } from './index';
+import { generateRequestMetadata, checkIfStoreRequestExist } from './index';
 
 const { API_STATUSES } = valuesConstants;
 
 describe('storeUtils', () => {
-  describe('generateEventMetadata', () => {
+  describe('generateRequestMetadata', () => {
     const defaultPayload = {
       status: 'INVALID',
       error: 'Error',
@@ -12,7 +12,7 @@ describe('storeUtils', () => {
     };
 
     it(`should return correct object for status '${API_STATUSES.TRIGGERED}'`, () => {
-      expect(generateEventMetadata({
+      expect(generateRequestMetadata({
         ...defaultPayload,
         status: API_STATUSES.TRIGGERED,
       })).toMatchObject({
@@ -28,7 +28,7 @@ describe('storeUtils', () => {
     });
 
     it(`should return correct object for status '${API_STATUSES.FETCHING}'`, () => {
-      expect(generateEventMetadata({
+      expect(generateRequestMetadata({
         ...defaultPayload,
         status: API_STATUSES.FETCHING,
       })).toMatchObject({
@@ -44,7 +44,7 @@ describe('storeUtils', () => {
     });
 
     it(`should return correct object for status '${API_STATUSES.ERROR}'`, () => {
-      expect(generateEventMetadata({
+      expect(generateRequestMetadata({
         ...defaultPayload,
         status: API_STATUSES.ERROR,
       })).toMatchObject({
@@ -60,7 +60,7 @@ describe('storeUtils', () => {
     });
 
     it(`should return correct object for status '${API_STATUSES.SUCCESS}'`, () => {
-      expect(generateEventMetadata({
+      expect(generateRequestMetadata({
         ...defaultPayload,
         status: API_STATUSES.SUCCESS,
       })).toMatchObject({
@@ -76,48 +76,48 @@ describe('storeUtils', () => {
     });
 
     it('should throw error if status is invalid', () => {
-      expect(() => generateEventMetadata(defaultPayload)).toThrowError('Event status is invalid');
+      expect(() => generateRequestMetadata(defaultPayload)).toThrowError('Request status is invalid');
     });
   });
 
-  describe('checkIfStoreEventExist', () => {
+  describe('checkIfStoreRequestExist', () => {
     const defaultPayload = {
-      events: {},
-      event: 'getStore',
+      requests: {},
+      request: 'getStore',
       key: 'default',
     };
 
     it('should return false if returned value is not an object', () => {
-      expect(checkIfStoreEventExist(defaultPayload)).toStrictEqual(false);
+      expect(checkIfStoreRequestExist(defaultPayload)).toStrictEqual(false);
 
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { getStore: {} },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { getStore: {} },
       })).toStrictEqual(false);
 
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { get: { default: {} } },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { get: { default: {} } },
       })).toStrictEqual(false);
 
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { getStore: { InvalidDefault: {} } },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { getStore: { InvalidDefault: {} } },
       })).toStrictEqual(false);
 
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { getStore: { InvalidDefault: [] } },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { getStore: { InvalidDefault: [] } },
       })).toStrictEqual(false);
 
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { getStore: [] },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { getStore: [] },
       })).toStrictEqual(false);
     });
 
-    it('should throw error if events is not an object', () => {
-      expect(() => checkIfStoreEventExist({ ...defaultPayload, events: false })).toThrowError('Events should be an object');
+    it('should throw error if requests is not an object', () => {
+      expect(() => checkIfStoreRequestExist({ ...defaultPayload, requests: false })).toThrowError('Requests should be an object');
     });
 
     it('should return true is returned value is an object', () => {
-      expect(checkIfStoreEventExist({
-        ...defaultPayload, events: { getStore: { default: {} } },
+      expect(checkIfStoreRequestExist({
+        ...defaultPayload, requests: { getStore: { default: {} } },
       })).toStrictEqual(true);
     });
   });

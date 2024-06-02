@@ -1,0 +1,21 @@
+@import "../../../assets/scss/variables";
+
+.connection-status {
+  background-color: $primary;
+  color: $body-bg;
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  z-index: $zindex-tooltip;
+  @include toRem(border-radius, 8);
+  @include toRem(width, 180);
+  @include toRem(bottom, 10);
+  @include toRem(left, 10);
+  @include toRem(font-size, 14);
+}
+
+[data-bs-theme="dark"] {
+  .connection-status {
+    color: $body-bg-dark;
+  }
+}

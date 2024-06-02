@@ -4,4 +4,8 @@ module.exports = {
     'prettier/prettier': true,
     'order/properties-alphabetical-order': true,
   },
+  ignoreFiles: ['coverage/**/*.css', 'storybook-static/**/*.css'],
+  overrides: [
+    { files: ['*.scss'], customSyntax: 'postcss-scss' },
+  ],
 };

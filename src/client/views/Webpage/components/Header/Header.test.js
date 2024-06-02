@@ -1,44 +1,24 @@
-import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, createWrapperComponent } from '@client/utils/testUtils';
 import { testsConstants, routesConstants } from '@shared/constants';
-import I18nextProvider from '@client/providers/i18nextProvider';
-import StoreProvider from '@client/providers/storeProvider';
-import MatchMediaContext from '@client/context/MatchMediaContext';
+import WebpageNavigationContext from '@client/views/Webpage/contexts/WebpageNavigationContext';
 import Header from './index';
 
-describe('Header', () => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
-  });
+const wrapper = createWrapperComponent(({ children }) => (
+  <WebpageNavigationContext>
+    {children}
+  </WebpageNavigationContext>
+));
 
+describe('Header', () => {
   it('should render Header component', async () => {
-    render(
-      <StoreProvider>
-        <MemoryRouter
-          basename={process.env.BASE_URL}
-          initialEntries={[routesConstants.ABOUT.ROOT]}
-        >
-          <I18nextProvider>
-            <MatchMediaContext>
-              <Header />
-            </MatchMediaContext>
-          </I18nextProvider>
-        </MemoryRouter>
-      </StoreProvider>,
-    );
+    await render(Header, {
+      routerPath: routesConstants.ABOUT.ROOT,
+      wrapper,
+    });
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
+    const headerNavLinkTextHelperEl = screen.queryByTestId(`${testsConstants.NAV_LINK_TEXT_HELPER}-homepage`);
     const pageLogoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
     const pageNavEl = screen.getByTestId(testsConstants.PAGE_NAV);
 
@@ -50,28 +30,20 @@ describe('Header', () => {
     expect(headerNavLinkTextEl).toBeInTheDocument();
     expect(headerNavLinkTextEl).toHaveTextContent('Strona główna');
 
+    expect(headerNavLinkTextHelperEl).not.toBeInTheDocument();
     expect(pageLogoEl).toBeInTheDocument();
     expect(pageNavEl).toBeInTheDocument();
   });
 
   it('should render Header component with helper text if user is on the home page', async () => {
-    render(
-      <StoreProvider>
-        <MemoryRouter
-          basename={process.env.BASE_URL}
-          initialEntries={[routesConstants.ROOT]}
-        >
-          <I18nextProvider>
-            <MatchMediaContext>
-              <Header />
-            </MatchMediaContext>
-          </I18nextProvider>
-        </MemoryRouter>
-      </StoreProvider>,
-    );
+    await render(Header, {
+      routerPath: routesConstants.ROOT,
+      wrapper,
+    });
 
     const headerNavLinkEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK);
     const headerNavLinkTextEl = screen.getByTestId(testsConstants.HEADER_NAV_LINK_TEXT);
+    const headerNavLinkTextHelperEl = screen.getByTestId(`${testsConstants.NAV_LINK_TEXT_HELPER}-homepage`);
     const pageLogoEl = screen.getByTestId(testsConstants.PAGE_LOGO);
     const pageNavEl = screen.getByTestId(testsConstants.PAGE_NAV);
 
@@ -82,7 +54,10 @@ describe('Header', () => {
     expect(headerNavLinkEl).toHaveAttribute('href', routesConstants.ROOT);
 
     expect(headerNavLinkTextEl).toBeInTheDocument();
-    expect(headerNavLinkTextEl).toHaveTextContent('Strona główna (Jesteś tutaj)');
+    expect(headerNavLinkTextEl).toHaveTextContent('Strona główna');
+
+    expect(headerNavLinkTextHelperEl).toBeInTheDocument();
+    expect(headerNavLinkTextHelperEl).toHaveTextContent('(Jesteś tutaj)');
 
     expect(pageLogoEl).toBeInTheDocument();
     expect(pageNavEl).toBeInTheDocument();

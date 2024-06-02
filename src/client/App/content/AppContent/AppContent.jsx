@@ -1,4 +1,6 @@
-import { memo, useEffect, useState } from 'react';
+import {
+  memo, useEffect, useCallback, useState,
+} from 'react';
 import { useConfig } from '@client/store/config';
 import { useContact } from '@client/store/contact';
 import { useTokens } from '@client/store/tokens';
@@ -13,7 +15,7 @@ const AppContent = memo(() => {
   const { actions: { getRefreshToken } } = useTokens();
   const { actions: { getCSRFToken } } = useCSRF();
 
-  useEffect(async () => {
+  const fetchInitialData = useCallback(async () => {
     try {
       await getCSRFToken({ shouldUpdateMetadata: false });
       await getRefreshToken({ shouldUpdateMetadata: false });
@@ -22,6 +24,10 @@ const AppContent = memo(() => {
     } finally {
       setIsLoading(false);
     }
+  }, [getCSRFToken, getRefreshToken, getConfig, getContact]);
+
+  useEffect(() => {
+    fetchInitialData();
   }, []);
 
   return isLoading ? null : <Routes />;

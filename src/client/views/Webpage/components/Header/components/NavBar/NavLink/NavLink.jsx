@@ -1,7 +1,8 @@
 import { memo } from 'react';
-import { navLinkPropTypes, navLinkDefaultProps } from '@client/prop-types';
+import { navLinkPropTypes } from '@client/prop-types/navLinkPropTypes';
 import { testsConstants } from '@shared/constants';
 import ExactActiveLink from '@client/router/components/ExactActiveLink';
+import Box from '@client/components/Box';
 
 const NavLink = memo(({
   onBlur,
@@ -11,6 +12,7 @@ const NavLink = memo(({
   dataNav,
   dataDropdownNav,
   id,
+  ...restProps
 }) => (
   <ExactActiveLink
     id={id}
@@ -19,22 +21,24 @@ const NavLink = memo(({
     title={title}
     data-nav={dataNav}
     data-dropdown-nav={dataDropdownNav}
-    linkClassName="nav__link mx-auto"
+    className="nav__link mx-auto"
+    {...restProps}
     onBlur={onBlur}
   >
-    <span
+    <Box
+      as="span"
       data-testid={`${testsConstants.NAV_LINK_TEXT}${id ? `-${id}` : ''}`}
       className="nav__text"
     >
       {children}
-    </span>
+    </Box>
   </ExactActiveLink>
 ));
 
 NavLink.displayName = 'NavLink';
 
-NavLink.propTypes = navLinkPropTypes;
+NavLink.propTypes = navLinkPropTypes.props;
 
-NavLink.defaultProps = navLinkDefaultProps;
+NavLink.defaultProps = navLinkPropTypes.default;
 
 export default NavLink;

@@ -39,10 +39,8 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
       return responseWithError(409, 'Hasło jest nieprawidłowe.');
     }
 
-    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
-      email: user.email,
       role: user.role,
     };
 
@@ -125,10 +123,8 @@ export const signUp = async (req, res, next) => {
       return responseWithError(404, 'Użytkownik nie istnieje.');
     }
 
-    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
-      email: user.email,
       role: user.role,
     };
 
@@ -203,10 +199,8 @@ export const getRefreshToken = async (req, res, next) => {
       return res.status(200).json();
     }
 
-    // TODO: Remove email and role metadata from access token
     const payload = {
       id: user.id,
-      email: user.email,
       role: user.role,
     };
 

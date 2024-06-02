@@ -1,2 +1,2 @@
 export { configStore } from './config.store';
-export { useConfig } from './hooks';
+export { default as useConfig } from './hooks/useConfig';

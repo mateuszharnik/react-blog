@@ -1,0 +1,11 @@
+@import "../../../assets/scss/variables";
+
+.table-empty-state {
+  &__spinner {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    @include toRem(min-height, 200);
+    @include toRem(min-width, 200);
+  }
+}

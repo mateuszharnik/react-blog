@@ -1,6 +1,7 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from '@client/router/hooks';
-import { redirectPropTypes, redirectDefaultProps } from '@client/prop-types';
+import { redirectPropTypes } from '@client/prop-types/redirectPropTypes';
+import Box from '@client/components/Box';
 
 const Redirect = memo(({ to }) => {
   const { history: { replace } } = useRouter();
@@ -9,13 +10,13 @@ const Redirect = memo(({ to }) => {
     replace(to);
   }, []);
 
-  return <div />;
+  return <Box />;
 });
 
 Redirect.displayName = 'Redirect';
 
-Redirect.propTypes = redirectPropTypes;
+Redirect.propTypes = redirectPropTypes.props;
 
-Redirect.defaultProps = redirectDefaultProps;
+Redirect.defaultProps = redirectPropTypes.default;
 
 export default Redirect;

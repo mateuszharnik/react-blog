@@ -3,7 +3,7 @@ import { storeActions } from '@client/utils/storeUtils';
 
 export const userStore = {
   user: null,
-  events: {},
+  requests: {},
 
   permissions: computed((state) => state.user?.role),
 
@@ -18,4 +18,8 @@ export const userStore = {
   setUser: action(storeActions.onSuccess((state, { result }) => {
     state.user = result.user;
   })),
+
+  reset: action((state) => {
+    state.user = null;
+  }),
 };

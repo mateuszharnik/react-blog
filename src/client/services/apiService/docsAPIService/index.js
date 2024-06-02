@@ -1,1 +1,0 @@
-export { DocsAPIService } from './docsAPIService';

@@ -1,1 +1,1 @@
-export { adminsRoles, userProfileRoles } from './routerConfig';
+export { adminsRoles, userProfileRoles, editAboutPermissions } from './routerConfig';

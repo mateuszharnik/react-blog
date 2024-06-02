@@ -2,81 +2,66 @@ export default {
   ROOT: '/api',
 
   BASE_URL: {
-    ROOT: '/api/v1/',
+    ROOT: '/api/v1',
   },
 
   CSRF_TOKEN: {
-    ROOT: 'api/v1/csrf-token',
-    NAME: 'csrf-token',
+    ROOT: '/api/v1/csrf-token',
   },
 
   AUTH: {
-    ROOT: 'api/v1/auth',
-    NAME: 'auth',
-
-    REFRESH_TOKEN: {
-      ROOT: 'api/v1/auth/refresh-token',
-      NAME: 'auth/refresh-token',
-    },
+    ROOT: '/api/v1/auth',
 
     ADMIN: {
-      ROOT: 'api/v1/auth/admin',
-      NAME: 'auth/admin',
+      ROOT: '/admin',
 
       SIGN_IN: {
-        ROOT: 'api/v1/auth/admin/sign-in',
-        NAME: 'auth/admin/sign-in',
+        ROOT: '/admin/sign-in',
       },
     },
 
     SIGN_IN: {
-      ROOT: 'api/v1/auth/sign-in',
-      NAME: 'auth/sign-in',
+      ROOT: '/sign-in',
     },
 
     SIGN_UP: {
-      ROOT: 'api/v1/auth/sign-up',
-      NAME: 'auth/sign-up',
+      ROOT: '/sign-up',
     },
 
     SIGN_OUT: {
-      ROOT: 'api/v1/auth/sign-out',
-      NAME: 'auth/sign-out',
+      ROOT: '/sign-out',
+    },
+
+    REFRESH_TOKEN: {
+      ROOT: '/refresh-token',
     },
   },
 
   DOCS: {
-    ROOT: 'api/v1/docs',
-    NAME: 'docs',
+    ROOT: '/api/v1/docs',
 
     SIGN_IN: {
-      ROOT: 'api/v1/docs/sign-in',
-      NAME: 'docs/sign-in',
+      ROOT: '/sign-in',
     },
 
     REFRESH_TOKEN: {
-      ROOT: 'api/v1/docs/refresh-token',
-      NAME: 'docs/refresh-token',
+      ROOT: '/refresh-token',
     },
   },
 
   ABOUT: {
-    ROOT: 'api/v1/about',
-    NAME: 'about',
+    ROOT: '/api/v1/about',
   },
 
   CONTACT: {
-    ROOT: 'api/v1/contact',
-    NAME: 'contact',
+    ROOT: '/api/v1/contact',
   },
 
   CONFIG: {
-    ROOT: 'api/v1/config',
-    NAME: 'config',
+    ROOT: '/api/v1/config',
   },
 
   MESSAGES: {
-    ROOT: 'api/v1/messages',
-    NAME: 'messages',
+    ROOT: '/api/v1/messages',
   },
 };

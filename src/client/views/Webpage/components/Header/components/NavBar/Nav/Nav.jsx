@@ -1,15 +1,27 @@
-import { memo, useRef, useMemo } from 'react';
+import {
+  memo, useRef, useMemo, useCallback,
+} from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@client/router/components';
+import { useRouter } from '@client/router/hooks';
 import { useUser } from '@client/store/user';
-import { useMatchMediaContext } from '@client/context/MatchMediaContext';
+import { usePageSizeContext } from '@client/contexts/PageSizeContext';
 import { useNav } from '@client/views/Webpage/components/Header/components/NavBar/Nav/hooks';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import { testsConstants, routesConstants } from '@shared/constants';
 import OverlayScrollbars from '@client/components/OverlayScrollbars';
 import Hamburger from '@client/views/Webpage/components/Header/components/NavBar/Hamburger';
 import NavLink from '@client/views/Webpage/components/Header/components/NavBar/NavLink';
-import Heading from '@client/components/Heading';
+import Link from '@client/router/components/Link';
+import Heading from '@client/components/Typography/Heading';
+import Box from '@client/components/Box';
+import List from '@client/components/Lists/List';
+import ListItem from '@client/components/Lists/ListItem';
+import {
+  getNavClassName,
+  getDivClassName,
+  getNavItemClassName,
+  getNavListClassName,
+} from './Nav.classes';
 
 const NavImageLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'nav-image-link' */ '@client/views/Webpage/components/Header/components/NavBar/NavImageLink'),
@@ -30,8 +42,9 @@ const Nav = memo(() => {
   const closeNavButtonRef = useRef(null);
 
   const { t } = useTranslation();
+  const { history: { signOut } } = useRouter();
   const { user } = useUser();
-  const { isDesktop } = useMatchMediaContext();
+  const { isDesktop } = usePageSizeContext();
   const {
     isOpen,
     isAnimated,
@@ -43,32 +56,26 @@ const Nav = memo(() => {
     },
   } = useNav({ openNavButtonRef, closeNavButtonRef });
 
-  const navItemClassName = useMemo(
-    () => `nav__item text-center mb-3 mb-lg-0${user ? '' : ' nav__link-image-wrapper'}`,
-    [user],
-  );
+  const navItemClassName = useMemo(() => getNavItemClassName({ user: !!user }), [user]);
 
-  const navListClassName = useMemo(
-    () => `nav__list-wrapper${isOpen ? ' open' : ''}${
-      !isAnimated && !isOpen && !isDesktop && !isVisible ? ' d-none' : ''
-    }`,
-    [isOpen, isDesktop, isAnimated, isVisible],
-  );
+  const navListClassName = useMemo(() => getNavListClassName({
+    isOpen,
+    display: !isAnimated && !isOpen && !isDesktop && !isVisible,
+  }), [isOpen, isDesktop, isAnimated, isVisible]);
 
-  const navClassName = useMemo(
-    () => `nav${isAnimated ? ' nav--pointer-none' : ''}`,
-    [isAnimated],
-  );
+  const navClassName = useMemo(() => getNavClassName({ isAnimated }), [isAnimated]);
 
-  const divClassName = useMemo(
-    () => `nav__list-container d-flex align-items-center${
-      user ? ' justify-content-between' : ' justify-content-end'
-    }`,
-    [user],
-  );
+  const divClassName = useMemo(() => getDivClassName({ user: !!user }), [user]);
+
+  const handleSignOut = useCallback((event) => {
+    event.preventDefault();
+
+    signOut();
+  }, [signOut]);
 
   return (
-    <nav
+    <Box
+      as="nav"
       data-testid={testsConstants.PAGE_NAV}
       className={navClassName}
     >
@@ -87,24 +94,24 @@ const Nav = memo(() => {
           isExpanded={isOpen}
         />
       )}
-      <div className={navListClassName}>
-        <div className="nav__list-max-height">
+      <Box className={navListClassName}>
+        <Box className="nav__list-max-height">
           {!isDesktop && (
-            <div className={divClassName}>
+            <Box className={divClassName}>
               {isOpen && (
                 <Hamburger
+                  ref={closeNavButtonRef}
+                  className="open order-1 order-lg-0"
                   attr
                   isExpanded={isOpen}
-                  ref={closeNavButtonRef}
                   title={t(`${PATH}.menu.CLOSE_MENU`)}
                   text={t(`${PATH}.menu.CLOSE_MENU`)}
-                  hamburgerClassName="open order-1 order-lg-0"
                   onClick={handleCloseNav}
                   onBlur={handleCloseNavOnBlur}
                 />
               )}
               {user && (
-                <div className="order-0 order-lg-1">
+                <Box className="order-0 order-lg-1 d-lg-none">
                   <NavImageLink
                     className="d-block p-1"
                     onBlur={handleCloseNavOnBlur}
@@ -112,18 +119,18 @@ const Nav = memo(() => {
                     type={user?.role?.type}
                     src={user?.image_url}
                   />
-                </div>
+                </Box>
               )}
-            </div>
+            </Box>
           )}
           <OverlayScrollbars>
-            <ul
+            <List
               id="nav"
               className="nav__list nav__list-container pt-4 pt-lg-0"
             >
               <>
                 {!isDesktop && (
-                  <li className="nav__item text-center mb-3 mb-lg-0">
+                  <ListItem className="nav__item text-center mb-3 mb-lg-0 d-lg-none">
                     <NavLink
                       to={routesConstants.ROOT}
                       title={t(`${PATH}.nav.homepage.TITLE`)}
@@ -132,10 +139,10 @@ const Nav = memo(() => {
                     >
                       {t(`${PATH}.nav.homepage.LINK`)}
                     </NavLink>
-                  </li>
+                  </ListItem>
                 )}
               </>
-              <li className="nav__item text-center mb-3 mb-lg-0">
+              <ListItem className="nav__item text-center mb-3 mb-lg-0">
                 <NavLink
                   to={routesConstants.POSTS.ROOT}
                   title={t(`${PATH}.nav.posts.TITLE`)}
@@ -144,8 +151,8 @@ const Nav = memo(() => {
                 >
                   {t(`${PATH}.nav.posts.LINK`)}
                 </NavLink>
-              </li>
-              <li className="nav__item text-center mb-3 mb-lg-0">
+              </ListItem>
+              <ListItem className="nav__item text-center mb-3 mb-lg-0">
                 <NavLink
                   to={routesConstants.ABOUT.ROOT}
                   title={t(`${PATH}.nav.about.TITLE`)}
@@ -154,8 +161,8 @@ const Nav = memo(() => {
                 >
                   {t(`${PATH}.nav.about.LINK`)}
                 </NavLink>
-              </li>
-              <li className="nav__item text-center mb-3 mb-lg-0">
+              </ListItem>
+              <ListItem className="nav__item text-center mb-3 mb-lg-0">
                 <NavLink
                   to={routesConstants.FAQS.ROOT}
                   title={t(`${PATH}.nav.faq.TITLE`)}
@@ -164,8 +171,8 @@ const Nav = memo(() => {
                 >
                   {t(`${PATH}.nav.faq.LINK`)}
                 </NavLink>
-              </li>
-              <li className="nav__item text-center mb-3 mb-lg-0">
+              </ListItem>
+              <ListItem className="nav__item text-center mb-3 mb-lg-0">
                 <NavLink
                   to={routesConstants.CONTACT.ROOT}
                   title={t(`${PATH}.nav.contact.TITLE`)}
@@ -174,10 +181,10 @@ const Nav = memo(() => {
                 >
                   {t(`${PATH}.nav.contact.LINK`)}
                 </NavLink>
-              </li>
+              </ListItem>
               <>
                 {!user && (
-                  <li className={navItemClassName}>
+                  <ListItem className={navItemClassName}>
                     <Link
                       to={routesConstants.AUTH.SIGN_IN.ROOT}
                       title={t(`${PATH}.nav.signIn.TITLE`)}
@@ -185,44 +192,52 @@ const Nav = memo(() => {
                       data-nav="true"
                       onBlur={handleCloseNavOnBlur}
                     >
-                      <span className="nav__text">
+                      <Box
+                        as="span"
+                        className="nav__text"
+                      >
                         {t(`${PATH}.nav.signIn.LINK`)}
-                      </span>
+                      </Box>
                     </Link>
-                  </li>
+                  </ListItem>
                 )}
               </>
               <>
                 {user && (
-                  <li className="nav__item text-center mb-3 mb-lg-0">
+                  <ListItem className="nav__item text-center mb-3 mb-lg-0">
                     {isDesktop ? (
                       <NavImageButton
                         gender={user?.gender}
                         type={user?.role?.type}
                         src={user?.image_url}
+                        handleSignOut={handleSignOut}
                         className="nav__link nav__link-button mx-auto overflow-hidden"
                       />
                     ) : (
                       <Link
                         to={routesConstants.AUTH.SIGN_OUT.ROOT}
                         title={t(`${PATH}.nav.signOut.TITLE`)}
-                        className="nav__link mx-auto"
+                        className="nav__link mx-auto d-lg-none"
                         data-nav="true"
                         onBlur={handleCloseNavOnBlur}
+                        onClick={handleSignOut}
                       >
-                        <span className="nav__text">
+                        <Box
+                          as="span"
+                          className="nav__text"
+                        >
                           {t(`${PATH}.nav.signOut.LINK`)}
-                        </span>
+                        </Box>
                       </Link>
                     )}
-                  </li>
+                  </ListItem>
                 )}
               </>
-            </ul>
+            </List>
           </OverlayScrollbars>
-        </div>
-      </div>
-    </nav>
+        </Box>
+      </Box>
+    </Box>
   );
 });
 

@@ -3,13 +3,17 @@ import WelcomeBanner from './index';
 import '@client/libs.scss';
 import '@client/index.scss';
 
-aosService.init();
+aosService.initAOS();
 
 export default {
   title: 'Components/WelcomeBanner',
   component: WelcomeBanner,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
 };
 
-const Template = (args) => <WelcomeBanner {...args} />;
-
-export const Default = Template.bind({});
+export const Default = {
+  render: (args) => <WelcomeBanner {...args} />,
+};

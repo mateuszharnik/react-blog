@@ -1,5 +1,4 @@
 @import "./functions";
-@import "~bootstrap/scss/functions";
 
 /*** Font Awesome ***/
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
@@ -11,7 +10,7 @@ $body-bg: #ffffff;
 $body-color-dark: #bebebe;
 $body-bg-dark: #141414;
 
-$primary: #ca164c;
+$primary: #008489;
 
 $gray-200: #eeeeee;
 $gray-300: #d3d3d3;
@@ -30,15 +29,20 @@ $link-shade-percentage: 20%;
 $link-color-dark: $primary;
 $link-hover-color-dark: shift-color($link-color-dark, $link-shade-percentage);
 
-$font-family-sans-serif: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
-  "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif:
+  "Poppins",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  Roboto,
+  "Helvetica Neue",
+  Arial,
+  "Noto Sans",
+  "Liberation Sans",
+  sans-serif,
+  "Apple Color Emoji",
+  "Segoe UI Emoji",
+  "Segoe UI Symbol",
+  "Noto Color Emoji";
 
 $enable-smooth-scroll: false;
-
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/variables-dark";
-@import "~bootstrap/scss/maps";
-@import "~bootstrap/scss/mixins";
-@import "~@fortawesome/fontawesome-free/scss/mixins";
-@import "~@fortawesome/fontawesome-free/scss/variables";

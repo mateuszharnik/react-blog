@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@client/utils/testUtils';
 import { testsConstants } from '@shared/constants';
 import PageWrapper from './index';
 
 describe('PageWrapper', () => {
   it('should render PageWrapper component', async () => {
-    render(<PageWrapper>Content</PageWrapper>);
+    await render(PageWrapper, {
+      children: 'Content',
+    });
 
     const pageWrapperEl = screen.getByTestId(testsConstants.PAGE_WRAPPER);
 

@@ -2,30 +2,36 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_ABOUT_EVENT: 'getAboutEvent',
-  UPDATE_ABOUT_EVENT: 'updateAboutEvent',
+export const requestsNames = {
+  GET_ABOUT_REQUEST: 'getAboutRequest',
+  UPDATE_ABOUT_REQUEST: 'updateAboutRequest',
 };
 
 export const aboutStore = {
   about: null,
-  events: {},
+  requests: {},
 
   getAboutAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_ABOUT_EVENT,
+    request: requestsNames.GET_ABOUT_REQUEST,
     onSuccess: 'setAbout',
-    action: (_, { options }) => apiService.about.getAbout(options),
+    action: (_, { options }) => apiService.publicAbout
+      .getAbout(options),
   })),
 
   updateAboutAction: thunk(storeActions.createAction({
-    event: eventsNames.UPDATE_ABOUT_EVENT,
+    request: requestsNames.UPDATE_ABOUT_REQUEST,
     onSuccess: 'updateAbout',
-    action: (_, { payload, options }) => apiService.about.updateAbout(payload, options),
+    action: (_, { payload, options }) => apiService.privateAbout
+      .updateAbout(payload, options),
   })),
 
-  resetGetAboutMetadataAction: action(storeActions.onReset(eventsNames.GET_ABOUT_EVENT)),
+  resetGetAboutMetadataAction: action(storeActions.onReset(
+    requestsNames.GET_ABOUT_REQUEST,
+  )),
 
-  resetUpdateAboutMetadataAction: action(storeActions.onReset(eventsNames.UPDATE_ABOUT_EVENT)),
+  resetUpdateAboutMetadataAction: action(storeActions.onReset(
+    requestsNames.UPDATE_ABOUT_REQUEST,
+  )),
 
   onTrigger: action(storeActions.onTrigger()),
 
@@ -40,4 +46,8 @@ export const aboutStore = {
   updateAbout: action(storeActions.onSuccess((state, { result }) => {
     state.about = result;
   })),
+
+  reset: action((state) => {
+    state.about = null;
+  }),
 };

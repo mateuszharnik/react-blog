@@ -2,19 +2,19 @@ import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
 
-const eventsNames = {
-  GET_REFRESH_TOKEN_EVENT: 'getRefreshTokenEvent',
+export const requestsNames = {
+  GET_REFRESH_TOKEN_REQUEST: 'getRefreshTokenRequest',
 };
 
 export const tokensStore = {
-  accessToken: '',
-  events: {},
+  accessToken: null,
+  requests: {},
 
   getRefreshTokenAction: thunk(storeActions.createAction({
-    event: eventsNames.GET_REFRESH_TOKEN_EVENT,
+    request: requestsNames.GET_REFRESH_TOKEN_REQUEST,
     onSuccess: 'setAccessToken',
     action: async (_, { options }, { getStoreActions }) => {
-      const response = await apiService.auth.getRefreshToken(options);
+      const response = await apiService.publicAuth.getRefreshToken(options);
 
       getStoreActions().userStore.setUser({ result: response?.data });
 
@@ -23,7 +23,7 @@ export const tokensStore = {
   })),
 
   resetGetRefreshTokenMetadataAction: action(storeActions.onReset(
-    eventsNames.GET_REFRESH_TOKEN_EVENT,
+    requestsNames.GET_REFRESH_TOKEN_REQUEST,
   )),
 
   onTrigger: action(storeActions.onTrigger()),
@@ -37,4 +37,8 @@ export const tokensStore = {
   setAccessToken: action(storeActions.onSuccess((state, { result }) => {
     state.accessToken = result.accessToken;
   })),
+
+  reset: action((state) => {
+    state.accessToken = null;
+  }),
 };

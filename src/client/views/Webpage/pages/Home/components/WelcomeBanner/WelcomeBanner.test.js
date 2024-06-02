@@ -1,23 +1,12 @@
-import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
-import { testsConstants, routesConstants } from '@shared/constants';
-import I18nextProvider from '@client/providers/i18nextProvider';
+import { render, screen } from '@client/utils/testUtils';
+import { testsConstants } from '@shared/constants';
 import WelcomeBanner from './index';
 
 describe('WelcomeBanner', () => {
   it('should render WelcomeBanner component with styles equal 416px', async () => {
     window.innerHeight = 500;
 
-    render(
-      <MemoryRouter
-        basename={process.env.BASE_URL}
-        initialEntries={[routesConstants.ROOT]}
-      >
-        <I18nextProvider>
-          <WelcomeBanner />
-        </I18nextProvider>
-      </MemoryRouter>,
-    );
+    await render(WelcomeBanner);
 
     const welcomeBannerEl = screen.getByTestId(testsConstants.WELCOME_BANNER);
 

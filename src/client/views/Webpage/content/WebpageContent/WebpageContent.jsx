@@ -1,10 +1,11 @@
 import { memo, useRef, useEffect } from 'react';
-import { useLayerContext } from '@client/context/LayerContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import View from '@client/router/components/View';
 import PageWrapper from '@client/layouts/PageWrapper';
 import Header from '@client/views/Webpage/components/Header';
 import Footer from '@client/views/Webpage/components/Footer';
+import Box from '@client/components/Box';
 
 const SkipNavLink = lazyLoad({
   loader: () => import(/* webpackChunkName: 'skip-nav-link' */ '@client/components/SkipNavLink'),
@@ -13,7 +14,7 @@ const SkipNavLink = lazyLoad({
 });
 
 const ScrollToTopButton = lazyLoad({
-  loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/ScrollToTopButton'),
+  loader: () => import(/* webpackChunkName: 'scroll-to-top-button' */ '@client/components/Buttons/ScrollToTopButton'),
   loading: null,
   error: null,
 });
@@ -31,15 +32,16 @@ const WebpageContent = memo(() => {
     <>
       <SkipNavLink target={mainRef} />
       <Header />
-      <main
+      <Box
         id="main"
         ref={mainRef}
+        as="main"
         className="main"
       >
         <PageWrapper>
           <View />
         </PageWrapper>
-      </main>
+      </Box>
       <Footer />
       <ScrollToTopButton target={mainRef} />
     </>

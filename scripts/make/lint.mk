@@ -41,17 +41,17 @@ lint@scripts:
 .ONESHELL:
 lint@style: # Lint all css and scss files in client directory
 lint@style:
-	@npx stylelint ./src/client/**/*.{css,scss}
+	@cross-env NODE_ENV=production npx stylelint ./src/client/**/*.{css,scss}
 
 .ONESHELL:
 lint@eslint: # Lint .eslintrc.js file
 lint@eslint:
-	@npx eslint .eslintrc.js --no-ignore .eslintrc.js
+	@cross-env NODE_ENV=production npx eslint .eslintrc.js --no-ignore .eslintrc.js
 
 .ONESHELL:
 lint@storybook: # Lint .storybook files
 lint@storybook:
-	@npx eslint .storybook/ --ext .js
+	@cross-env NODE_ENV=production npx eslint .storybook/ --ext .js
 
 ##################################################
 ############### LINT WITH FIX FLAG ###############
@@ -96,14 +96,14 @@ lint-fix@scripts:
 .ONESHELL:
 lint-fix@style: # Lint and fix all css and scss files in client directory
 lint-fix@style:
-	@npx stylelint ./src/client/**/*.{css,scss} --fix
+	@cross-env NODE_ENV=production npx stylelint ./src/client/**/*.{css,scss} --fix
 
 .ONESHELL:
 lint-fix@eslint: # Lint and fix .eslintrc.js file
 lint-fix@eslint:
-	@npx eslint .eslintrc.js --no-ignore .eslintrc.js --fix
+	@cross-env NODE_ENV=production npx eslint .eslintrc.js --no-ignore .eslintrc.js --fix
 
 .ONESHELL:
 lint-fix@storybook: # Lint and fix .storybook files
 lint-fix@storybook:
-	@npx eslint .storybook/ --ext .js --fix
+	@cross-env NODE_ENV=production npx eslint .storybook/ --ext .js --fix
