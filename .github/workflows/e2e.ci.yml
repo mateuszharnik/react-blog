@@ -11,8 +11,6 @@ on:
         options:
           - all-tests
           - contact
-  schedule:
-    - cron: "0 3 * * *"
   pull_request:
     branches:
       - master
