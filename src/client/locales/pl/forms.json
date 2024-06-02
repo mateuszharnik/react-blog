@@ -11,11 +11,48 @@
   "SIGNING_IN": "Logowanie",
   "SEND": "Wyślij",
   "SEND_MESSAGE": "Wyślij wiadomość",
+  "SHOW_PASSWORD": "Pokaż hasło",
+  "HIDE_PASSWORD": "Ukryj hasło",
 
   "chars": {
-    "PLURAL_GENITIVE": "znaków",
     "SINGULAR_NOMINATIVE": "znak",
-    "PLURAL_NOMINATIVE": "znaki"
+    "PLURAL_NOMINATIVE": "znaki",
+    "PLURAL_GENITIVE": "znaków"
+  },
+
+  "updateAboutForm": {
+    "contents": {
+      "LABEL": "Zawartość strony",
+      "PLACEHOLDER": "Treść strony",
+      "HELPER": "Niedozwolone znaki zostaną usunięte."
+    }
+  },
+
+  "createMessageForm": {
+    "firstName": {
+      "LABEL": "Imię",
+      "PLACEHOLDER": "Podaj imię"
+    },
+
+    "lastName": {
+      "LABEL": "Nazwisko",
+      "PLACEHOLDER": "Podaj nazwisko"
+    },
+
+    "email": {
+      "LABEL": "Email",
+      "PLACEHOLDER": "email@domain.pl"
+    },
+
+    "subject": {
+      "LABEL": "Temat",
+      "PLACEHOLDER": "Podaj temat"
+    },
+
+     "contents": {
+      "LABEL": "Wiadomość",
+      "PLACEHOLDER": "O co chcesz zapytać?"
+    }
   },
 
   "signUpForm": {

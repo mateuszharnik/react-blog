@@ -2,15 +2,16 @@ import {
   memo, useEffect, useState, useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@client/router/components';
 import { useRouter } from '@client/router/hooks';
-import { useLayerContext } from '@client/context/LayerContext';
-import { useThemeContext } from '@client/context/ThemeContext';
+import { useLayerContext } from '@client/contexts/LayerContext';
+import { useThemeContext } from '@client/contexts/ThemeContext';
 import { routesConstants, valuesConstants } from '@shared/constants';
 import imageLight from '@client/assets/images/undraw_page_not_found_light_su7k.svg';
 import imageDark from '@client/assets/images/undraw_page_not_found_dark_su7k.svg';
+import Link from '@client/router/components/Link';
 import MaxViewHeight from '@client/components/MaxViewHeight';
-import LazyImage from '@client/components/LazyImage';
+import LazyImage from '@client/components/Images/LazyImage';
+import Box from '@client/components/Box';
 
 const PATH = 'common.notFound';
 
@@ -45,9 +46,9 @@ const NotFoundContent = memo(() => {
   }, []);
 
   return (
-    <MaxViewHeight maxViewHeightClassName="position-relative">
-      <div className="w-100 position-center">
-        <div className="not-found m-auto">
+    <MaxViewHeight className="position-relative">
+      <Box className="w-100 position-center">
+        <Box className="not-found m-auto">
           <LazyImage
             src={image}
             alt={t(`${PATH}.IMAGE_ALT_TEXT`)}
@@ -56,19 +57,21 @@ const NotFoundContent = memo(() => {
             height={477}
             width={1075}
           />
-          <div>{t(`${PATH}.PAGE_NOT_FOUND`)}</div>
-          <div>
+          <Box>{t(`${PATH}.PAGE_NOT_FOUND`)}</Box>
+          <Box>
             {t(`${PATH}.BACK_TO`)}{' '}
             <Link
               to={routesConstants.ROOT}
               title={t(`${PATH}.BACK_TO_HOMEPAGE`)}
             >
-              <span>{t(`${PATH}.HOME_PAGE`)}</span>
+              <Box as="span">
+                {t(`${PATH}.HOME_PAGE`)}
+              </Box>
             </Link>{' '}
             {t(`${PATH}.SECONDS`, { seconds })}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
     </MaxViewHeight>
   );
 });

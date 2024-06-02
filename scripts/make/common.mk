@@ -47,6 +47,11 @@ endif
 #######################################
 
 .ONESHELL:
+install@corepack-enable: # Enable corepack
+install@corepack-enable:
+	@corepack enable
+
+.ONESHELL:
 install@global: # Install all global npm dependencies
 install@global:
-	@npm install -g rimraf cross-env yarn
+	@npm i -g rimraf@5.0.5 cross-env@7.0.3 concurrently@8.2.2 purgecss@6.0.0

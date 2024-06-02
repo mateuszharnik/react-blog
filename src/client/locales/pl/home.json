@@ -1,9 +1,21 @@
 {
   "banner": {
-    "HEADER_FIRST_HALF": "Blog o",
-    "HEADER_SECOND_HALF": "kodowaniu",
+    "HEADER": "<span>Blog o</span> <span>kodowaniu</span>",
     "DESCRIPTION": "Witaj 👋🏼 Jesteś tutaj ponieważ szukasz informacji o tworzeniu stron internetowych. Może żaden ze mnie ekspert, ale kilka rzeczy potrafię. Tak więc śmiało rozejrzyj się, może znajdziesz coś przydatnego.",
     "BUTTON_TITLE": "Przejdź do wszystkich wpisów",
     "BUTTON_TEXT": "Przejdź do bloga"
+  },
+
+  "searchBar": {
+    "SEARCH": "Szukaj",
+    "SEARCH_PLACEHOLDER": "Szukaj wpisów...",
+
+    "searchHelp": {
+      "PRESS": "Naciśnij",
+      "CTRL_KEY": "Ctrl",
+      "TO_FOCUS": "aby zaznaczyć.",
+      "PLUS_KEY": "+",
+      "SLASH_KEY": "/"
+    }
   }
 }

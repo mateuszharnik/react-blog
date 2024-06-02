@@ -1,16 +1,12 @@
 import { memo, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useRouter } from '@client/router/hooks';
 import { useAuth } from '@client/store/auth';
-import { useToastsContext } from '@client/context/ToastsContext';
-import { useLayerContext } from '@client/context/LayerContext';
-import { routesConstants, toastsConstants } from '@shared/constants';
+import { useLayerContext } from '@client/contexts/LayerContext';
+import { signOutPropTypes } from '@client/views/Auth/SignOut/propTypes/signOutPropTypes';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
-const SignOutContent = memo(() => {
-  const { t } = useTranslation();
+const SignOutContent = memo(({ redirectUrl }) => {
   const { history: { replace } } = useRouter();
-  const { actions: { addToast } } = useToastsContext();
   const { hideLayer } = useLayerContext();
 
   const {
@@ -19,33 +15,17 @@ const SignOutContent = memo(() => {
   } = useAuth();
 
   useEffect(() => {
-    if (signOutMetadata.isSuccess) {
-      addToast({
-        message: signOutMetadata.data?.message,
-        type: toastsConstants.TYPE.SUCCESS,
-      });
-
-      replace(routesConstants.AUTH.SIGN_IN.ROOT);
-    }
-  }, [signOutMetadata.isSuccess]);
-
-  useEffect(() => {
-    if (signOutMetadata.isError) {
-      addToast({
-        message: signOutMetadata.error || t('common.errors.ERROR_OCCURRED'),
-        type: toastsConstants.TYPE.DANGER,
-      });
-    }
-  }, [signOutMetadata.isError]);
-
-  useEffect(() => {
     if (signOutMetadata.isFinished) {
       hideLayer();
     }
   }, [signOutMetadata.isFinished]);
 
-  useEffect(async () => {
-    await signOut();
+  useEffect(() => {
+    signOut({
+      onSuccess: () => {
+        replace(redirectUrl);
+      },
+    });
   }, []);
 
   useEffect(() => () => {
@@ -58,5 +38,9 @@ const SignOutContent = memo(() => {
 });
 
 SignOutContent.displayName = 'SignOutContent';
+
+SignOutContent.propTypes = signOutPropTypes.props;
+
+SignOutContent.defaultProps = signOutPropTypes.default;
 
 export default SignOutContent;

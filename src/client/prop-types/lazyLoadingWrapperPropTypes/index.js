@@ -1,1 +1,1 @@
-export { lazyLoadingWrapperPropTypes, lazyLoadingWrapperDefaultProps } from './lazyLoadingWrapperPropTypes';
+export { lazyLoadingWrapperPropTypes } from './lazyLoadingWrapperPropTypes';

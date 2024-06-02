@@ -1,59 +1,114 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useFormik } from 'formik';
+import { isSchema } from 'yup';
+import isString from 'lodash/isString';
+import isFunction from 'lodash/isFunction';
 
-export const useForm = ({
-  initialValues = {},
-  onSubmit = () => { },
+const useForm = ({
+  onSubmit,
   validationSchema,
+  initialValues: formValues = {},
+  ...restProps
 }) => {
   const {
-    handleSubmit,
-    handleBlur,
-    handleChange,
-    resetForm,
-    setTouched,
-    setErrors,
-    setValues,
-    errors: errorsMessages,
+    dirty,
+    isValid,
+    isSubmitting,
+    isValidating,
     values,
+    errors,
     touched,
-    // TODO: Add dirty
-  } = useFormik({
     initialValues,
+    initialErrors,
+    initialTouched,
+    setTouched,
+    setFieldTouched,
+    setErrors,
+    setFieldError,
+    setValues,
+    setFieldValue,
+    setSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    handleReset,
+    validateForm,
+    submitForm,
+    resetForm,
+    getFieldMeta,
+  } = useFormik({
+    initialValues: formValues,
     validationSchema,
     onSubmit,
+    ...restProps,
   });
 
-  const fields = useMemo(() => Object.keys(initialValues).reduce((acc, valueKey) => {
-    acc[valueKey] = {
-      errors: errorsMessages[valueKey] || '',
-      value: values[valueKey],
-      meta: { touched: touched[valueKey] || false },
-    };
+  const getFieldValue = useCallback((field) => {
+    if (!isString(field)) return;
 
-    return acc;
-  }, {}), [errorsMessages, values, touched]);
+    const metadata = getFieldMeta(field);
 
-  const exposedFields = useMemo(() => Object.entries(fields).reduce((acc, [key, field]) => {
-    const { value, errors, meta } = field;
+    return metadata?.value;
+  }, [getFieldMeta]);
 
-    acc.values[key] = { value };
-    acc.errors[key] = { value: errors };
-    acc.touched[key] = { value: meta.touched };
+  const getFieldError = useCallback((field) => {
+    if (!isString(field)) return;
 
-    return acc;
-  }, {
-    values: {}, errors: {}, touched: {},
-  }), [fields]);
+    const metadata = getFieldMeta(field);
+
+    return metadata?.error;
+  }, [getFieldMeta]);
+
+  const getFieldTouched = useCallback((field) => {
+    if (!isString(field)) return;
+
+    const metadata = getFieldMeta(field);
+
+    return metadata?.touched;
+  }, [getFieldMeta]);
+
+  const isComplete = useMemo(
+    () => {
+      const schema = isFunction(validationSchema)
+        ? validationSchema(values) : validationSchema;
+
+      const hasNoErrors = isSchema(schema) ? schema.isValidSync(values) : true;
+
+      return dirty ? isValid && hasNoErrors : false;
+    },
+    [dirty, isValid, values, validationSchema],
+  );
 
   return {
-    ...exposedFields,
-    handleSubmit,
+    isDirty: dirty,
+    isValid,
+    isComplete,
+    isSubmitting,
+    isValidating,
+    values,
+    errors,
+    touched,
+    initialValues,
+    initialErrors,
+    initialTouched,
+    setTouched,
+    setFieldTouched,
+    setErrors,
+    setFieldError,
+    setValues,
+    setFieldValue,
+    setIsSubmitting: setSubmitting,
     handleChange,
     handleBlur,
+    handleSubmit,
+    handleReset,
+    validateForm,
+    submitForm,
     resetForm,
-    setErrors,
-    setValues,
-    setTouched,
+    getFieldValue,
+    getFieldError,
+    getFieldTouched,
   };
 };
+
+export default useForm;

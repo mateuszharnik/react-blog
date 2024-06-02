@@ -1,0 +1,1 @@
+export { tablePageSizeSelectPropTypes } from './tablePageSizeSelectPropTypes';

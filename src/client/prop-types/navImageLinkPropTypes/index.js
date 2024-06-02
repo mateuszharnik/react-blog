@@ -1,1 +1,1 @@
-export { navImageLinkPropTypes, navImageLinkDefaultProps } from './navImageLinkPropTypes';
+export { navImageLinkPropTypes } from './navImageLinkPropTypes';

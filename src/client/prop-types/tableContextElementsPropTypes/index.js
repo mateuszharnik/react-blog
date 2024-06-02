@@ -1,0 +1,1 @@
+export { tableContextElementsPropTypes } from './tableContextElementsPropTypes';

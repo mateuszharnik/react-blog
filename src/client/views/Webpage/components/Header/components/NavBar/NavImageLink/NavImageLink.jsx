@@ -1,11 +1,12 @@
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActiveLink } from '@client/router/components';
-import { navImageLinkPropTypes, navImageLinkDefaultProps } from '@client/prop-types';
+import { navImageLinkPropTypes } from '@client/prop-types/navImageLinkPropTypes';
 import { routesConstants, valuesConstants, rolesConstants } from '@shared/constants';
 import female from '@client/assets/images/undraw_female_avatar_w3jk.svg';
 import male from '@client/assets/images/undraw_male_avatar_323b.svg';
-import LazyImage from '@client/components/LazyImage';
+import ExactActiveLink from '@client/router/components/ExactActiveLink';
+import LazyImage from '@client/components/Images/LazyImage';
+import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
@@ -31,45 +32,37 @@ const NavImageLink = memo(({
   ), [type]);
 
   return (
-    <div className="nav__link-image-wrapper">
-      <ActiveLink
+    <Box className="nav__link-image-wrapper">
+      <ExactActiveLink
         to={to}
-        end
         title={t(`${PATH}.nav.profile.TITLE`)}
-        data-nav
+        data-nav="true"
         {...restProps}
         onBlur={onBlur}
       >
-        {({ isActive }) => (
-          <>
-            <span className="visually-hidden">
-              {t(`${PATH}.nav.profile.LINK`)}
-            </span>
-            {isActive && (
-              <span className="visually-hidden">
-                {' '}
-                {t(`${PATH}.YOU_ARE_HERE`)}
-              </span>
-            )}
-            <LazyImage
-              divClassName="nav__link-image"
-              imgClassName="rounded-circle"
-              width={36}
-              height={36}
-              alt={t(`${PATH}.USER_IMAGE`)}
-              src={image}
-            />
-          </>
-        )}
-      </ActiveLink>
-    </div>
+        <Box
+          as="span"
+          className="visually-hidden"
+        >
+          {t(`${PATH}.nav.profile.LINK`)}
+        </Box>
+        <LazyImage
+          divClassName="nav__link-image"
+          imgClassName="rounded-circle"
+          width={36}
+          height={36}
+          alt={t(`${PATH}.USER_IMAGE`)}
+          src={image}
+        />
+      </ExactActiveLink>
+    </Box>
   );
 });
 
 NavImageLink.displayName = 'NavImageLink';
 
-NavImageLink.propTypes = navImageLinkPropTypes;
+NavImageLink.propTypes = navImageLinkPropTypes.props;
 
-NavImageLink.defaultProps = navImageLinkDefaultProps;
+NavImageLink.defaultProps = navImageLinkPropTypes.default;
 
 export default NavImageLink;

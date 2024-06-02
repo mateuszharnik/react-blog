@@ -1,0 +1,1 @@
+export { formLabelPropTypes } from './formLabelPropTypes';

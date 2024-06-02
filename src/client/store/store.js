@@ -1,10 +1,10 @@
 import { createStore } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
+import { queryService } from '@client/services/queryService';
 import { isDevtoolsEnabled } from '@client/utils/envUtils';
 import { csrfStore } from './csrf';
 import { authStore } from './auth';
 import { tokensStore } from './tokens';
-import { navigationStore } from './navigation';
 import { aboutStore } from './about';
 import { messagesStore } from './messages';
 import { contactStore } from './contact';
@@ -16,7 +16,6 @@ const model = {
   csrfStore,
   authStore,
   tokensStore,
-  navigationStore,
   aboutStore,
   messagesStore,
   contactStore,
@@ -32,4 +31,5 @@ export const store = createStore(
   },
 );
 
-apiService.setInterceptors(store);
+apiService.setStore(store);
+queryService.setStore(store);

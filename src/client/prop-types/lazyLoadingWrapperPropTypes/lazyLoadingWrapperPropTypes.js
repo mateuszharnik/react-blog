@@ -1,14 +1,15 @@
 import { number, string } from 'prop-types';
-import { childrenPropTypes, childrenDefaultProps } from '../childrenPropTypes';
+import { childrenPropTypes } from '../childrenPropTypes';
 
 export const lazyLoadingWrapperPropTypes = {
-  children: childrenPropTypes,
-  wrapperClassName: string,
-  offsetTop: number,
-};
-
-export const lazyLoadingWrapperDefaultProps = {
-  children: childrenDefaultProps,
-  wrapperClassName: '',
-  offsetTop: 0,
+  props: {
+    className: string,
+    offsetTop: number,
+    children: childrenPropTypes.props,
+  },
+  default: {
+    className: '',
+    offsetTop: 0,
+    children: childrenPropTypes.default,
+  },
 };

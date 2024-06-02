@@ -1,0 +1,1 @@
+export { closeButtonPropTypes } from './closeButtonPropTypes';

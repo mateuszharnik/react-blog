@@ -1,15 +1,16 @@
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { refPropTypes, refDefaultProps } from '@client/prop-types';
+import { refPropTypes } from '@client/prop-types/refPropTypes';
+import Link from '@client/router/components/Link';
 import Portal from '@client/components/Portal';
 
 const PATH = 'common.skipNavLink';
 
-const SkipNavLink = memo(({ target }) => {
+const SkipNavLink = memo(({ target, ...restProps }) => {
   const { t } = useTranslation();
 
-  const handleScroll = useCallback(async (e) => {
-    e.preventDefault();
+  const handleScroll = useCallback(async (event) => {
+    event.preventDefault();
 
     if (!target?.current) return;
 
@@ -23,15 +24,19 @@ const SkipNavLink = memo(({ target }) => {
   }, [target]);
 
   return (
-    <Portal to="skip-nav">
-      <a
-        href="#main"
+    <Portal
+      to="skip-nav"
+      prepend
+    >
+      <Link
+        to="#main"
         className="skip-nav-link px-3 py-2"
         title={t(`${PATH}.GO_TO_MAIN_CONTENT`)}
+        {...restProps}
         onClick={handleScroll}
       >
         {t(`${PATH}.SKIP_NAVIGATION`)}
-      </a>
+      </Link>
     </Portal>
   );
 });
@@ -39,11 +44,11 @@ const SkipNavLink = memo(({ target }) => {
 SkipNavLink.displayName = 'SkipNavLink';
 
 SkipNavLink.propTypes = {
-  target: refPropTypes,
+  target: refPropTypes.props,
 };
 
 SkipNavLink.defaultProps = {
-  target: refDefaultProps,
+  target: refPropTypes.default,
 };
 
 export default SkipNavLink;

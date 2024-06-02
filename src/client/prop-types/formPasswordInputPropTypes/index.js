@@ -1,0 +1,1 @@
+export { formPasswordInputPropTypes } from './formPasswordInputPropTypes';

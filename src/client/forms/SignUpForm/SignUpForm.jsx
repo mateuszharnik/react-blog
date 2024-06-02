@@ -5,16 +5,24 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
 import { useRouter } from '@client/router/hooks';
 import { useForm } from '@client/hooks/useForm';
 import { useAuth } from '@client/store/auth';
-import { useToastsContext } from '@client/context/ToastsContext';
-import { signUpSchema as validationSchema } from '@client/schemas/signUpSchemas';
-import { routesConstants, toastsConstants, valuesConstants } from '@shared/constants';
+import { signUpSchema } from '@client/schemas/signUpSchemas';
+import { routesConstants, valuesConstants } from '@shared/constants';
+import FormContext from '@client/contexts/FormContext';
+import FormTextInput from '@client/contexts/FormContext/components/FormTextInput';
+import FormCheckboxInput from '@client/contexts/FormContext/components/FormCheckboxInput';
+import FormRadioInput from '@client/contexts/FormContext/components/FormRadioInput';
+import FormPasswordInput from '@client/contexts/FormContext/components/FormPasswordInput';
+import FormValidationError from '@client/contexts/FormContext/components/FormValidationError';
+import FormGroup from '@client/contexts/FormContext/components/FormGroup';
+import Box from '@client/components/Box';
+import Button from '@client/components/Buttons/Button';
+import AcceptTermsOfUseLabel from '@client/forms/SignUpForm/components/AcceptTermsOfUseLabel';
 
 const FORMS_PATH = 'forms';
 const PATH = 'forms.signUpForm';
 
-const SignUpForm = memo(() => {
+const SignUpForm = memo((props) => {
   const { t } = useTranslation();
-  const { actions: { addToast } } = useToastsContext();
   const { history: { push } } = useRouter();
 
   const {
@@ -26,246 +34,126 @@ const SignUpForm = memo(() => {
     signUpMetadata.isFetching ? `${FORMS_PATH}.SIGNING_UP` : `${FORMS_PATH}.SIGN_UP`
   ), [signUpMetadata.isFetching]);
 
+  const initialValues = useMemo(() => ({
+    username: '',
+    email: '',
+    gender: valuesConstants.GENDER.MALE,
+    password: '',
+    confirm_password: '',
+    is_terms_of_use_accepted: false,
+  }), []);
+
+  const validationSchema = useMemo(() => signUpSchema, []);
+
   const form = useForm({
-    initialValues: {
-      username: '',
-      email: '',
-      gender: valuesConstants.GENDER.MALE,
-      password: '',
-      confirm_password: '',
-      is_terms_of_use_accepted: false,
-    },
+    initialValues,
     validationSchema,
     onSubmit: async (payload) => {
-      await signUp({ payload });
+      await signUp({
+        payload,
+        onSuccess: () => {
+          push(routesConstants.PROFILE.DASHBOARD.ROOT);
+        },
+      });
     },
   });
-
-  useEffect(() => {
-    if (signUpMetadata.isSuccess) {
-      addToast({
-        message: t(`${FORMS_PATH}.SUCCESSFULLY_REGISTERED`),
-        type: toastsConstants.TYPE.SUCCESS,
-      });
-
-      form.resetForm();
-      push(routesConstants.PROFILE.DASHBOARD.ROOT);
-    }
-  }, [signUpMetadata.isSuccess]);
-
-  useEffect(() => {
-    if (signUpMetadata.isError) {
-      addToast({
-        message: signUpMetadata.error,
-        type: toastsConstants.TYPE.DANGER,
-      });
-    }
-  }, [signUpMetadata.isError]);
 
   useEffect(() => () => {
     resetSignUpMetadata();
   }, []);
 
   return (
-    <form
-      className="row"
-      onSubmit={form.handleSubmit}
+    <FormContext
+      form={form}
+      {...props}
     >
-      <div className="mb-3 col-12">
-        <label
-          htmlFor="username"
-          className="form-label"
-        >
-          {t(`${PATH}.username.LABEL`)}{' '}
-        </label>
-        <input
-          type="text"
-          className={`form-control${!form.errors.username.value && form.touched.username.value ? ' valid' : ''}`}
-          id="username"
-          name="username"
+      <FormGroup>
+        <FormTextInput
+          field="username"
+          label={t(`${PATH}.username.LABEL`)}
           placeholder={t(`${PATH}.username.PLACEHOLDER`)}
-          onChange={form.handleChange}
-          onBlur={form.handleBlur}
-          value={form.values.username.value}
         />
-        {form.touched.username.value && form.errors.username.value ? (
-          <div className="invalid-feedback">
-            {form.errors.username.value}
-          </div>
-        ) : null}
-      </div>
-      <div className="mb-3 col-12">
-        <label
-          htmlFor="email"
-          className="form-label"
-        >
-          {t(`${PATH}.email.LABEL`)}{' '}
-        </label>
-        <input
-          type="text"
-          className={`form-control${!form.errors.email.value && form.touched.email.value ? ' valid' : ''}`}
-          id="email"
-          name="email"
+      </FormGroup>
+      <FormGroup>
+        <FormTextInput
+          field="email"
+          label={t(`${PATH}.email.LABEL`)}
           placeholder={t(`${PATH}.email.PLACEHOLDER`)}
-          onChange={form.handleChange}
-          onBlur={form.handleBlur}
-          value={form.values.email.value}
         />
-        {form.touched.email.value && form.errors.email.value ? (
-          <div className="invalid-feedback">
-            {form.errors.email.value}
-          </div>
-        ) : null}
-      </div>
-      <div className="mb-3 col-12">
-        <label
-          htmlFor="password"
-          className="form-label"
-        >
-          {t(`${PATH}.password.LABEL`)}{' '}
-        </label>
-        <input
-          type="password"
-          className={`form-control${!form.errors.password.value && form.touched.password.value ? ' valid' : ''}`}
-          id="password"
-          name="password"
+      </FormGroup>
+      <FormGroup>
+        <FormPasswordInput
+          field="password"
+          label={t(`${PATH}.password.LABEL`)}
           placeholder={t(`${PATH}.password.PLACEHOLDER`)}
-          onChange={form.handleChange}
-          onBlur={form.handleBlur}
-          value={form.values.password.value}
         />
-        {form.touched.password.value && form.errors.password.value ? (
-          <div className="invalid-feedback">
-            {form.errors.password.value}
-          </div>
-        ) : null}
-      </div>
-      <div className="mb-3 col-12">
-        <label
-          htmlFor="confirm_password"
-          className="form-label"
-        >
-          {t(`${PATH}.confirmPassword.LABEL`)}{' '}
-        </label>
-        <input
-          type="password"
-          className={`form-control${!form.errors.confirm_password.value && form.touched.confirm_password.value ? ' valid' : ''}`}
-          id="confirm_password"
-          name="confirm_password"
+      </FormGroup>
+      <FormGroup>
+        <FormPasswordInput
+          field="confirm_password"
+          label={t(`${PATH}.confirmPassword.LABEL`)}
           placeholder={t(`${PATH}.confirmPassword.PLACEHOLDER`)}
-          onChange={form.handleChange}
-          onBlur={form.handleBlur}
-          value={form.values.confirm_password.value}
         />
-        {form.touched.confirm_password.value && form.errors.confirm_password.value ? (
-          <div className="invalid-feedback">
-            {form.errors.confirm_password.value}
-          </div>
-        ) : null}
-      </div>
-      <div className="mb-3 col-12">
-        <div className="form-label">
+      </FormGroup>
+      <FormGroup>
+        <Box className="form-label">
           {t(`${PATH}.gender.LABEL`)}{' '}
-        </div>
-        <div className="row mx-0 justify-content-center">
-          <div className="form-check col-auto">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="gender"
-              id="male"
-              value={valuesConstants.GENDER.MALE}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              checked={form.values.gender.value === valuesConstants.GENDER.MALE}
-            />{' '}
-            <label
-              className="form-check-label"
-              htmlFor="male"
-            >
-              {t(`${PATH}.gender.MALE_VALUE`)}
-            </label>
-          </div>
-          <div className="form-check col-auto">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="gender"
-              id="female"
-              value={valuesConstants.GENDER.FEMALE}
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              checked={form.values.gender.value === valuesConstants.GENDER.FEMALE}
-            />{' '}
-            <label
-              className="form-check-label"
-              htmlFor="female"
-            >
-              {t(`${PATH}.gender.FEMALE_VALUE`)}
-            </label>
-          </div>
-        </div>
-        {form.touched.gender.value && form.errors.gender.value ? (
-          <div className="invalid-feedback text-center">
-            {form.errors.gender.value}
-          </div>
-        ) : null}
-      </div>
-      <div className="mb-3 col-12 text-center">
-        <div className="form-check d-inline-block">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="is_terms_of_use_accepted"
-            id="is_terms_of_use_accepted"
-            value={form.values.is_terms_of_use_accepted.value}
-            onChange={form.handleChange}
-            onBlur={form.handleBlur}
-          />{' '}
-          <label
-            className="form-check-label"
-            htmlFor="is_terms_of_use_accepted"
-          >
-            {t(`${PATH}.isTermsOfUseAccepted.LABEL`)}
-          </label>{' '}
-          <button
-            type="button"
-            title={t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON_TITLE`)}
-            className="button-link"
-          >
-            {t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON`)}
-          </button>
-        </div>
-        {(
-          form.touched.is_terms_of_use_accepted.value
-            && form.errors.is_terms_of_use_accepted.value
-        ) ? (
-          <div className="invalid-feedback">
-            {form.errors.is_terms_of_use_accepted.value}
-          </div>
-          ) : null}
-      </div>
-      <div className="col-12 text-center">
-        <button
+        </Box>
+        <Box className="row mx-0 justify-content-center">
+          <FormRadioInput
+            id="male"
+            field="gender"
+            label={t(`${PATH}.gender.MALE_VALUE`)}
+            value={valuesConstants.GENDER.MALE}
+          />
+          <FormRadioInput
+            id="female"
+            field="gender"
+            label={t(`${PATH}.gender.FEMALE_VALUE`)}
+            value={valuesConstants.GENDER.FEMALE}
+          />
+        </Box>
+        <FormValidationError
+          className="text-center"
+          error={form.errors.gender}
+          touched={form.touched.gender}
+        />
+      </FormGroup>
+      <FormGroup className="text-center">
+        <FormCheckboxInput
+          field="is_terms_of_use_accepted"
+          label={AcceptTermsOfUseLabel}
+        />
+      </FormGroup>
+      <FormGroup
+        className="text-center"
+        type="button"
+      >
+        <Button
           type="submit"
+          className="px-4"
+          variant="solid"
+          rounded
           title={t(title)}
           disabled={signUpMetadata.isFetching}
-          className="btn btn-primary rounded-pill px-4"
         >
-          <span>
+          <Box as="span">
             {t(`${FORMS_PATH}.SIGN_UP`)}
-          </span>{' '}
+          </Box>{' '}
           {signUpMetadata.isFetching && (
-            <span className="ms-1">
+            <Box
+              as="span"
+              className="ms-1"
+            >
               <FontAwesomeIcon
                 spin
                 icon={faCircleNotch}
               />
-            </span>
+            </Box>
           )}
-        </button>
-      </div>
-    </form>
+        </Button>
+      </FormGroup>
+    </FormContext>
   );
 });
 

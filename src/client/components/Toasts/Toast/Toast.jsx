@@ -3,19 +3,24 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToastsContext } from '@client/context/ToastsContext';
 import { getToastIcon } from '@client/utils/iconsUtils';
-import { toastPropTypes } from '@client/prop-types';
+import { toastPropTypes } from '@client/prop-types/toastPropTypes';
+import Box from '@client/components/Box';
+import CloseButton from '@client/components/Buttons/CloseButton';
+import Text from '@client/components/Typography/Text';
+import { getToastClassName } from './Toast.classes';
 
 const PATH = 'common.toasts';
 
-const Toast = memo(({ marginBottom, toast }) => {
+const Toast = memo(({ marginBottom, toast, removeToast }) => {
   const { t } = useTranslation();
-  const { actions: { removeToast } } = useToastsContext();
 
   const divClassName = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
 
-  const toastClassName = useMemo(() => `toast toast-${toast.type} ${marginBottom ? 'mt-2' : 'mb-2'}`, [toast, marginBottom]);
+  const toastClassName = useMemo(() => getToastClassName({
+    type: toast.type,
+    marginBottom,
+  }), [toast, marginBottom]);
 
   const icon = useMemo(() => {
     if (!toast.icon) {
@@ -54,69 +59,70 @@ const Toast = memo(({ marginBottom, toast }) => {
   }, []);
 
   return (
-    <div
+    <Box
       className={toastClassName}
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
     >
       {toast.title && (
-        <div className="toast-header">
+        <Box className="toast-header">
           {icon && (
-            <div className="toast-icon me-2">
+            <Box className="toast-icon me-2">
               {isFontAwesomeIcon ? (
                 <FontAwesomeIcon
                   icon={icon}
                 />
               ) : (
-                <span>
+                <Box as="span">
                   {icon}
-                </span>
+                </Box>
               )}
-            </div>
+            </Box>
           )}
-          <strong className="me-auto">
+          <Text
+            as="strong"
+            className="me-auto"
+          >
             {toast.title}
-          </strong>
-          <button
-            type="button"
+          </Text>
+          <CloseButton
             title={t(`${PATH}.CLOSE_NOTIFICATION`)}
-            className="btn-close ms-auto"
+            className="ms-auto"
             aria-label={t(`${PATH}.CLOSE`)}
             onClick={handleRemove}
           />
-        </div>
+        </Box>
       )}
-      <div className={divClassName}>
-        <div className="toast-body">
+      <Box className={divClassName}>
+        <Box className="toast-body">
           {toast.message}
-        </div>
+        </Box>
         {!toast.title && (
-          <button
-            type="button"
+          <CloseButton
             title={t(`${PATH}.CLOSE_NOTIFICATION`)}
-            className="btn-close me-2 m-auto"
+            className="me-2 m-auto"
             aria-label={t(`${PATH}.CLOSE`)}
             onClick={handleRemove}
           />
         )}
-      </div>
+      </Box>
       {toast.progressBar && toast.autoClose && (
-        <div className="toast-progress__wrapper px-1 pb-1">
-          <div className="toast-progress">
-            <div
+        <Box className="toast-progress__wrapper px-1 pb-1">
+          <Box className="toast-progress">
+            <Box
               className="toast-progress__bar"
               style={{ animationDuration: `${toast.delay}ms` }}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 });
 
 Toast.displayName = 'Toast';
 
-Toast.propTypes = toastPropTypes;
+Toast.propTypes = toastPropTypes.props;
 
 export default Toast;

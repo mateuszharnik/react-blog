@@ -1,45 +1,52 @@
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink as Link } from 'react-router-dom';
-import { activeLinkPropTypes, activeLinkDefaultProps } from '@client/prop-types';
+import { activeLinkPropTypes } from '@client/prop-types/activeLinkPropTypes';
 import { testsConstants } from '@shared/constants';
+import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const ExactActiveLink = memo(({
-  id, to, linkClassName, children, ...restProps
-}) => {
+const ExactActiveLink = memo(forwardRef(({
+  id,
+  to,
+  className,
+  children,
+  ...restProps
+}, linkRef) => {
   const { t } = useTranslation();
 
   return (
     <Link
+      ref={linkRef}
       end
       to={to}
-      className={linkClassName}
+      className={className}
       {...restProps}
     >
       {({ isActive }) => (
         <>
           {children}
           {isActive && (
-            <span
+            <Box
+              as="span"
               data-testid={`${testsConstants.NAV_LINK_TEXT_HELPER}${id ? `-${id}` : ''}`}
               className="visually-hidden"
             >
               {' '}
               {t(`${PATH}.YOU_ARE_HERE`)}
-            </span>
+            </Box>
           )}
         </>
       )}
     </Link>
   );
-});
+}));
 
 ExactActiveLink.displayName = 'ExactActiveLink';
 
-ExactActiveLink.propTypes = activeLinkPropTypes;
+ExactActiveLink.propTypes = activeLinkPropTypes.props;
 
-ExactActiveLink.defaultProps = activeLinkDefaultProps;
+ExactActiveLink.defaultProps = activeLinkPropTypes.default;
 
 export default ExactActiveLink;

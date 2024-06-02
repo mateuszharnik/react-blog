@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageContainer from '@client/layouts/PageContainer';
 
-const Posts = memo(() => {
+const PostsContent = memo(() => {
   const { t } = useTranslation();
 
   return (
@@ -12,6 +12,6 @@ const Posts = memo(() => {
   );
 });
 
-Posts.displayName = 'Posts';
+PostsContent.displayName = 'PostsContent';
 
-export default Posts;
+export default PostsContent;

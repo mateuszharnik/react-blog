@@ -1,2 +1,2 @@
 export { authStore } from './auth.store';
-export { useAuth } from './hooks';
+export { default as useAuth } from './hooks/useAuth';

@@ -1,8 +1,10 @@
+@import "../../assets/scss/variables";
+
 /*** Content ***/
 @import "./content/AdminContent/index";
 
 /*** Context ***/
-@import "./context/AdminLayerContext/index";
+@import "./contexts/AdminLayerContext/index";
 
 /*** Components ***/
 @import "./components/LazyLoading/LazyAdminComponentError/index";

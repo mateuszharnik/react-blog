@@ -1,1 +1,0 @@
-export { ConfigAPIService } from './configAPIService';

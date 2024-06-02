@@ -5,14 +5,14 @@
 .ONESHELL:
 storybook@build: # Build storybook
 storybook@build:
-	@npx build-storybook
+	@npx storybook build
 
 .ONESHELL:
 storybook@start: # Start storybook
 storybook@start:
-	@npx start-storybook -p 6006
+	@npx storybook dev -p 6006
 
 .ONESHELL:
 storybook@init: # Init storybook
 storybook@init:
-	@npx sb init
+	@npx storybook init

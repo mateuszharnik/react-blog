@@ -1,6 +1,6 @@
 import { memo, useState, useEffect } from 'react';
-import Loadable from 'react-loadable';
-import { childrenPropTypes } from '@client/prop-types';
+import Loadable from '@docusaurus/react-loadable';
+import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyComponentError from '@client/components/LazyLoading/LazyComponentError';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
@@ -23,7 +23,7 @@ const AsyncComponent = memo(({ component: Component }) => {
 AsyncComponent.displayName = 'AsyncComponent';
 
 AsyncComponent.propTypes = {
-  component: childrenPropTypes.isRequired,
+  component: childrenPropTypes.props.isRequired,
 };
 
 export const lazyLoad = ({

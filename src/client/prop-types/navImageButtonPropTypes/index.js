@@ -1,1 +1,1 @@
-export { navImageButtonPropTypes, navImageButtonDefaultProps } from './navImageButtonPropTypes';
+export { navImageButtonPropTypes } from './navImageButtonPropTypes';

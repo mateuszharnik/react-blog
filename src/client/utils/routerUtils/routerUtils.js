@@ -1,4 +1,4 @@
-import { queryService } from '@client/services/queryService';
+import { urlQueryService } from '@client/services/urlQueryService';
 
 export const generatePath = (to, options = {}) => {
   const { params = {}, query = {} } = options;
@@ -11,7 +11,7 @@ export const generatePath = (to, options = {}) => {
 
   path = Object.keys(params).reduce((url, key) => url.replaceAll(new RegExp(`:${key}`, 'gm'), params[key]), path);
 
-  const stringifiedQuery = queryService.stringify(query);
+  const stringifiedQuery = urlQueryService.stringify(query);
 
   if (stringifiedQuery) {
     path += `?${stringifiedQuery}`;
@@ -20,15 +20,15 @@ export const generatePath = (to, options = {}) => {
   return path;
 };
 
-export const getQuery = (search) => queryService.parse(search);
+export const getQuery = (search) => urlQueryService.parse(search);
 
 export const getUrl = (path) => {
-  const { url } = queryService.parseUrl(path);
+  const { url } = urlQueryService.parseUrl(path);
   return url;
 };
 
 export const parseQuery = (query) => {
-  const parsed = queryService.stringify(query);
+  const parsed = urlQueryService.stringify(query);
 
   return parsed ? `?${parsed}` : parsed;
 };

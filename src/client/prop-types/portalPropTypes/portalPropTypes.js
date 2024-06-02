@@ -1,11 +1,14 @@
-import { string } from 'prop-types';
-import { childrenPropTypes, childrenDefaultProps } from '../childrenPropTypes';
+import { string, bool } from 'prop-types';
+import { childrenPropTypes } from '../childrenPropTypes';
 
 export const portalPropTypes = {
-  children: childrenPropTypes,
-  to: string.isRequired,
-};
-
-export const portalDefaultProps = {
-  children: childrenDefaultProps,
+  props: {
+    to: string.isRequired,
+    prepend: bool,
+    children: childrenPropTypes.props,
+  },
+  default: {
+    prepend: false,
+    children: childrenPropTypes.default,
+  },
 };

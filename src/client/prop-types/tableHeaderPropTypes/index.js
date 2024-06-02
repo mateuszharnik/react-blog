@@ -1,0 +1,1 @@
+export { tableHeaderPropTypes } from './tableHeaderPropTypes';

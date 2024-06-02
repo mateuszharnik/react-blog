@@ -34,7 +34,7 @@ const UserSchema = new Schema(
     },
     gender: {
       type: String,
-      enum: ['kobieta', 'mężczyzna'],
+      enum: ['female', 'male'],
       required: true,
     },
     facebook_url: {

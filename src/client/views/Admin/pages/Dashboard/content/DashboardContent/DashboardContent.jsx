@@ -1,6 +1,7 @@
 import { memo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAdminLayerContext } from '@client/views/Admin/context/AdminLayerContext';
+import { useAdminLayerContext } from '@client/views/Admin/contexts/AdminLayerContext';
+import Box from '@client/components/Box';
 
 const DashboardContent = memo(() => {
   const { t } = useTranslation();
@@ -11,9 +12,9 @@ const DashboardContent = memo(() => {
   }, []);
 
   return (
-    <div>
+    <Box>
       {t('head.title.ADMIN_DASHBOARD')}
-    </div>
+    </Box>
   );
 });
 

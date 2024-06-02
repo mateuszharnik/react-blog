@@ -1,2 +1,2 @@
 export { docsStore } from './docs.store';
-export { useDocs } from './hooks';
+export { default as useDocs } from './hooks/useDocs';

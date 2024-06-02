@@ -2,22 +2,16 @@ import { memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
-import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import { isDevtoolsEnabled } from '@client/utils/envUtils';
-import ThemeContext from '@client/context/ThemeContext';
-import LayerContext from '@client/context/LayerContext';
-import MatchMediaContext from '@client/context/MatchMediaContext';
-import LanguageContext from '@client/context/LanguageContext';
-import ToastsContext from '@client/context/ToastsContext';
-import ConnectionStatus from '@client/components/ConnectionStatus';
-import Heading from '@client/components/Heading';
+import ThemeContext from '@client/contexts/ThemeContext';
+import LayerContext from '@client/contexts/LayerContext';
+import PageSizeContext from '@client/contexts/PageSizeContext';
+import LanguageContext from '@client/contexts/LanguageContext';
+import ToastsContext from '@client/contexts/ToastsContext';
+import ConnectionStatus from '@client/components/Errors/ConnectionStatus';
+import Heading from '@client/components/Typography/Heading';
+import ErrorBoundary from '@client/components/Errors/ErrorBoundary';
 import AppContent from '@client/App/content/AppContent';
-
-const ToastsContainer = lazyLoad({
-  loader: () => import(/* webpackChunkName: 'toasts' */ '@client/components/Toasts/ToastsContainer'),
-  loading: null,
-  error: null,
-});
 
 const PATH = 'head';
 
@@ -37,16 +31,17 @@ const App = memo(() => {
       <ThemeContext>
         <LayerContext>
           <LanguageContext>
-            <MatchMediaContext>
+            <PageSizeContext>
               <ToastsContext>
                 <Heading className="visually-hidden">
                   {t(`${PATH}.TITLE`)}
                 </Heading>
-                <AppContent />
-                <ToastsContainer />
-                <ConnectionStatus />
+                <ErrorBoundary>
+                  <AppContent />
+                  <ConnectionStatus />
+                </ErrorBoundary>
               </ToastsContext>
-            </MatchMediaContext>
+            </PageSizeContext>
           </LanguageContext>
         </LayerContext>
       </ThemeContext>

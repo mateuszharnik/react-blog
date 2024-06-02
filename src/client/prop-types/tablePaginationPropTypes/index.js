@@ -1,0 +1,1 @@
+export { tablePaginationPropTypes } from './tablePaginationPropTypes';

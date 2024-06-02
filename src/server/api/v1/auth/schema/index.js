@@ -12,7 +12,9 @@ import {
 } from '@shared/regexps';
 
 export const validateSignUp = (
-  newUser = {}, options = { abortEarly: false }, useInvalid = true,
+  newUser = {},
+  options = { abortEarly: false },
+  useInvalid = true,
 ) => {
   const invalid = useInvalid ? invalidUsernames : [];
 
@@ -27,7 +29,7 @@ export const validateSignUp = (
       .messages(usernameMessages),
     gender: Joi.string()
       .trim()
-      .valid('kobieta', 'mężczyzna')
+      .valid('female', 'male')
       .lowercase()
       .required()
       .messages(genderMessages),

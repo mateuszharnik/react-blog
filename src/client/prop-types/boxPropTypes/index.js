@@ -1,0 +1,1 @@
+export { boxPropTypes } from './boxPropTypes';

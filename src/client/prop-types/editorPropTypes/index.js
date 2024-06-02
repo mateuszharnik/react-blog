@@ -1,0 +1,1 @@
+export { editorPropTypes } from './editorPropTypes';

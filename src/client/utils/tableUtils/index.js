@@ -1,0 +1,1 @@
+export { getTableSortIcon } from './tableUtils';
