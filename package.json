@@ -1,6 +1,6 @@
 {
   "name": "react-blog",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Mateusz Harnik",
   "license": "MIT",
   "main": "./src/server/index.js",
@@ -19,6 +19,7 @@
     "lint:shared": "cross-env NODE_ENV=production eslint ./src/shared/ --ext .js",
     "lint:e2e": "cross-env NODE_ENV=production eslint ./src/e2e/ --ext .js,.json",
     "lint:style": "cross-env NODE_ENV=production stylelint ./src/client/**/*.{css,scss}",
+    "migration:up": "cross-env NODE_ENV=production migrate-mongo up -f migrations.config.js",
     "prepare": "husky"
   },
   "lint-staged": {
