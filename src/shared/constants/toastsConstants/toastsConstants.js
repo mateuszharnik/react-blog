@@ -14,4 +14,5 @@ export default {
     BOTTOM_CENTER: 'bottom-center',
     BOTTOM_RIGHT: 'bottom-right',
   },
+  DEFAULT_LIMIT: 5,
 };

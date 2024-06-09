@@ -4,5 +4,6 @@ export const envConfig = {
   CLIENT_URL: process.env.CLIENT_URL,
   SERVER_URL: process.env.SERVER_URL,
   DEVTOOLS_ENABLED: process.env.DEVTOOLS_ENABLED,
-  SENTRY_DSN: process.env.SENTRY_DSN,
+  SENTRY_FRONTEND_DSN: process.env.SENTRY_FRONTEND_DSN,
+  SENTRY_FRONTEND_ENABLED: process.env.SENTRY_FRONTEND_ENABLED,
 };

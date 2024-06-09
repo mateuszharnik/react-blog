@@ -11,13 +11,9 @@ register(babelConfig);
 
 config();
 
-if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
+const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
-  if (existsSync(path)) {
-    config({ path });
-  }
-}
+if (existsSync(path)) config({ path });
 
 module.exports = defineConfig({
   fixturesFolder: 'src/e2e/data/fixtures',

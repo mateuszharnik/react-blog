@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { envConfig } from '@client/configs/envConfig';
-import { isSentryDisabled } from '@client/utils/envUtils';
+import { isSentryEnabled } from '@client/utils/envUtils';
 
 class SentryService {
   constructor() {
@@ -8,10 +8,10 @@ class SentryService {
   }
 
   initSentry = () => {
-    if (isSentryDisabled) return;
+    if (!isSentryEnabled) return;
 
     this.client.init({
-      dsn: envConfig.SENTRY_DSN,
+      dsn: envConfig.SENTRY_FRONTEND_DSN,
       integrations: [],
       tracesSampleRate: 0.2,
       normalizeDepth: 5,

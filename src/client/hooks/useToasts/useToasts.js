@@ -1,11 +1,12 @@
 import { useState, useRef, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultToast } from '@client/configs/toastsConfig';
-import { propTypesConstants } from '@shared/constants';
+import { propTypesConstants, toastsConstants } from '@shared/constants';
 
 const { BOTTOM_RIGHT } = propTypesConstants.TOAST_POSITIONS;
+const { DEFAULT_LIMIT } = toastsConstants;
 
-const useToasts = ({ limit = 5, position = BOTTOM_RIGHT } = {}) => {
+const useToasts = ({ limit = DEFAULT_LIMIT, position = BOTTOM_RIGHT } = {}) => {
   const [toasts, setToasts] = useState([]);
   const limitRef = useRef(limit);
   const [toastPosition] = useState(position);
