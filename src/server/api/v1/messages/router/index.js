@@ -14,9 +14,9 @@ import {
 
 const router = Router();
 
-const messageLimiter = config.NODE_ENV !== 'test' && config.APP_ENV !== 'e2e' ? rateLimit({
+const messageLimiter = config.RATE_LIMIT_ENABLED ? rateLimit({
   windowMs: 1000 * 60 * 30,
-  max: 5,
+  max: config.RATE_LIMIT,
   message: 'Przekroczono limit, Spróbuj ponownie później.',
 }) : (req, res, next) => next();
 

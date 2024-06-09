@@ -1,1 +1,1 @@
-export { isNotProductionEnv, isDevtoolsEnabled, isSentryDisabled } from './envUtils';
+export { isNotProductionEnv, isDevtoolsEnabled, isSentryEnabled } from './envUtils';

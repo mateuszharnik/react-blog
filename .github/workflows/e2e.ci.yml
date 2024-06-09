@@ -62,7 +62,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Build project 🔨
-        run: yarn run build
+        run: make build@e2e
 
       - name: Start Docker 🐳
         run: make docker@up-background

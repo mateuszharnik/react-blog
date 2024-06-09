@@ -1,7 +1,7 @@
 import logger from 'loglevel';
 import config from '@server/config';
 
-const level = config.NODE_ENV !== 'test' && config.APP_ENV !== 'e2e' ? 'debug' : 'info';
+const level = config.LOGGER_ENABLED ? 'debug' : 'info';
 
 logger.setLevel(level);
 

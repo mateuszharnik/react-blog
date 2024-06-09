@@ -7,4 +7,4 @@ export const isNotProductionEnv = envConfig.NODE_ENV !== PRODUCTION;
 
 export const isDevtoolsEnabled = envConfig.DEVTOOLS_ENABLED;
 
-export const isSentryDisabled = !envConfig.SENTRY_DSN || isNotProductionEnv;
+export const isSentryEnabled = envConfig.SENTRY_FRONTEND_ENABLED;

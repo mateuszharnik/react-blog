@@ -49,7 +49,7 @@ const Router = memo(() => (
           path={routesConstants.ABOUT.EDIT.ROOT}
           element={(
             <ProtectedRoute
-              key="EditAbout"
+              key={routesConstants.ABOUT.EDIT.ROOT}
               pageComponent={EditAbout}
               requiredPermissions={editAboutPermissions}
             />
@@ -68,7 +68,7 @@ const Router = memo(() => (
         path={routesConstants.PROFILE.ROOT}
         element={(
           <ProtectedRoute
-            key="Profile"
+            key={routesConstants.PROFILE.ROOT}
             pageComponent={Profile}
             requiredRoles={userProfileRoles}
           />
@@ -96,7 +96,7 @@ const Router = memo(() => (
       path={routesConstants.ADMIN.ROOT}
       element={(
         <ProtectedRoute
-          key="Admin"
+          key={routesConstants.ADMIN.ROOT}
           pageComponent={Admin}
           requiredRoles={adminsRoles}
         />
@@ -111,7 +111,7 @@ const Router = memo(() => (
       path={routesConstants.AUTH.SIGN_IN.ROOT}
       element={(
         <ProtectedRoute
-          key="SignIn"
+          key={routesConstants.AUTH.SIGN_IN.ROOT}
           pageComponent={SignIn}
           shouldBeAuthenticated={false}
         />
@@ -121,7 +121,7 @@ const Router = memo(() => (
       path={routesConstants.AUTH.SIGN_IN.ADMIN.ROOT}
       element={(
         <ProtectedRoute
-          key="AdminSignIn"
+          key={routesConstants.AUTH.SIGN_IN.ADMIN.ROOT}
           pageComponent={AdminSignIn}
           shouldBeAuthenticated={false}
         />
@@ -131,7 +131,7 @@ const Router = memo(() => (
       path={routesConstants.AUTH.SIGN_UP.ROOT}
       element={(
         <ProtectedRoute
-          key="SignUp"
+          key={routesConstants.AUTH.SIGN_UP.ROOT}
           pageComponent={SignUp}
           shouldBeAuthenticated={false}
         />

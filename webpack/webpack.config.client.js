@@ -22,13 +22,9 @@ const { version } = require('../package.json');
 
 config();
 
-// Set USE_SEPARATE_ENVIRONMENTS to true in the
-// .env file to use env specific environments variables
-if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
+const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
-  if (existsSync(path)) config({ path });
-}
+if (existsSync(path)) config({ path });
 
 const schema = Joi.object({
   NODE_ENV: Joi.string()
@@ -44,10 +40,11 @@ const schema = Joi.object({
   BASE_URL: Joi.string().trim().required(),
   SERVER_URL: Joi.string().trim().required(),
   CLIENT_URL: Joi.string().trim().required(),
-  SENTRY_DSN: Joi.string().trim().allow('').required(),
-  SENTRY_ORGANIZATION_NAME: Joi.string().trim().allow('').required(),
-  SENTRY_PROJECT_NAME: Joi.string().trim().allow('').required(),
-  SENTRY_AUTH_TOKEN: Joi.string().trim().allow('').required(),
+  SENTRY_FRONTEND_ENABLED: Joi.bool().required(),
+  SENTRY_FRONTEND_DSN: Joi.string().trim().allow('').required(),
+  SENTRY_FRONTEND_ORGANIZATION_NAME: Joi.string().trim().allow('').required(),
+  SENTRY_FRONTEND_PROJECT_NAME: Joi.string().trim().allow('').required(),
+  SENTRY_FRONTEND_AUTH_TOKEN: Joi.string().trim().allow('').required(),
 }).unknown(true);
 
 module.exports = (webpackEnv, { mode }) => {
@@ -86,12 +83,12 @@ module.exports = (webpackEnv, { mode }) => {
     }),
   ] : [];
 
-  // Use Sentry plugin only if APP_ENV is equal production and we specify SENTRY_DSN
-  const sentryPlugin = env.APP_ENV === 'production' && env.SENTRY_DSN ? [
+  // Use Sentry plugin only if SENTRY_FRONTEND_ENABLED is set to true
+  const sentryPlugin = env.SENTRY_FRONTEND_ENABLED ? [
     sentryWebpackPlugin({
-      org: env.SENTRY_ORGANIZATION_NAME,
-      project: env.SENTRY_PROJECT_NAME,
-      authToken: env.SENTRY_AUTH_TOKEN,
+      org: env.SENTRY_FRONTEND_ORGANIZATION_NAME,
+      project: env.SENTRY_FRONTEND_PROJECT_NAME,
+      authToken: env.SENTRY_FRONTEND_AUTH_TOKEN,
       release: version,
       include: './dist/client',
       ignore: ['node_modules'],
@@ -251,7 +248,8 @@ module.exports = (webpackEnv, { mode }) => {
         'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
         'process.env.SERVER_URL': JSON.stringify(env.SERVER_URL),
         'process.env.CLIENT_URL': JSON.stringify(env.CLIENT_URL),
-        'process.env.SENTRY_DSN': JSON.stringify(env.SENTRY_DSN),
+        'process.env.SENTRY_FRONTEND_DSN': JSON.stringify(env.SENTRY_FRONTEND_DSN),
+        'process.env.SENTRY_FRONTEND_ENABLED': JSON.stringify(env.SENTRY_FRONTEND_ENABLED),
         ...(!env.DEVTOOLS_ENABLED && isProduction && { __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
       }),
       ...developmentPlugins,

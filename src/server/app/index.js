@@ -13,9 +13,7 @@ import { notFound, CSRFErrorHandler, errorHandler } from '@server/middlewares/er
 
 const app = express();
 
-if (config.NODE_ENV !== 'test' && config.APP_ENV !== 'e2e') {
-  app.use(morgan('dev'));
-}
+if (config.LOGGER_ENABLED) app.use(morgan('dev'));
 
 app.use(compression());
 app.use(express.json());
@@ -38,21 +36,14 @@ app.use(csrf({
     secure: config.NODE_ENV === 'production',
   },
 }));
+app.use(cors({ origin: config.CLIENT_URL }));
 app.use(checkToken);
 
-if (config.NODE_ENV === 'development' || config.NODE_ENV === 'test') {
-  app.use(cors({ origin: config.CLIENT_URL }));
-}
-
-if (config.NODE_ENV === 'production') {
-  app.use(express.static(join(__dirname, '../client')));
-}
+if (config.NODE_ENV === 'production') app.use(express.static(join(__dirname, '../client')));
 
 app.use('/api', api);
 
-if (config.NODE_ENV === 'production') {
-  app.get('(/*)?', (req, res) => res.sendFile('dist/client/index.html', { root: '.' }));
-}
+if (config.NODE_ENV === 'production') app.get('(/*)?', (req, res) => res.sendFile('dist/client/index.html', { root: '.' }));
 
 app.use(notFound);
 app.use(CSRFErrorHandler);

@@ -7,13 +7,9 @@ import { emailRegExp } from '@shared/regexps';
 
 config();
 
-if (process.env.USE_SEPARATE_ENVIRONMENTS === 'true') {
-  const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
+const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
-  if (fs.existsSync(path)) {
-    config({ path });
-  }
-}
+if (fs.existsSync(path)) config({ path });
 
 const schema = Joi.object({
   NODE_ENV: Joi.string()
@@ -62,6 +58,12 @@ const schema = Joi.object({
   DB_URL: Joi.string()
     .trim()
     .default('mongodb://localhost:27017/db'),
+  RATE_LIMIT: Joi.number()
+    .default(5),
+  LOGGER_ENABLED: Joi.bool()
+    .default(false),
+  RATE_LIMIT_ENABLED: Joi.bool()
+    .default(true),
 }).unknown(true);
 
 const { error, value } = schema.validate(process.env);
