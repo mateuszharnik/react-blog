@@ -51,7 +51,6 @@ jobs:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
