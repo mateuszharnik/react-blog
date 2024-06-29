@@ -11,7 +11,9 @@ on:
       - feature/*
       - task/*
       - improve/*
+      - version/*
       - release/*
+      - pre-release/*
       - bugfix/*
       - hotfix/*
 
@@ -26,10 +28,10 @@ jobs:
 
     steps:
       - name: Checkout branch 🌿
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node.js ✨
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
 
@@ -43,12 +45,12 @@ jobs:
         run: make install@global
 
       - name: Yarn cache 📷
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         env:
           cache-name: lint-yarn-cache
         with:
           path: ~/.cache/yarn
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-

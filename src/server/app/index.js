@@ -15,6 +15,7 @@ const app = express();
 
 if (config.LOGGER_ENABLED) app.use(morgan('dev'));
 
+app.use(cors({ origin: config.CLIENT_URL }));
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,13 +31,13 @@ app.use(
 );
 app.use(cookieParser());
 app.use(csrf({
+  value: (req) => req.headers['x-csrf-token'],
   cookie: {
     httpOnly: true,
     sameSite: 'strict',
     secure: config.NODE_ENV === 'production',
   },
 }));
-app.use(cors({ origin: config.CLIENT_URL }));
 app.use(checkToken);
 
 if (config.NODE_ENV === 'production') app.use(express.static(join(__dirname, '../client')));
