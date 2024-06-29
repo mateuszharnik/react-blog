@@ -27,10 +27,10 @@ jobs:
 
     steps:
       - name: Checkout branch 🌿
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node.js ✨
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
 
@@ -44,14 +44,13 @@ jobs:
         run: make install@global
 
       - name: Yarn cache 📷
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         env:
           cache-name: e2e-yarn-cache
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-build-${{ env.cache-name }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
@@ -71,17 +70,17 @@ jobs:
         run: make migration@up-e2e
 
       - name: Run Cypress 🧪
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           install: false
           browser: chrome
           start: make start@e2e
-          command: make e2e@suite SUITE=${{ (github.event.inputs.suite == '' || github.event.inputs.suite == 'all-tests') && '**' || github.event.inputs.suite }}
+          command: make e2e@suite SUITE=${{ (github.event.inputs.suite == "" || github.event.inputs.suite == "all-tests") && "**" || github.event.inputs.suite }}
           wait-on: "http://localhost:3000"
           wait-on-timeout: 180
 
       - name: Archive screenshots 💼
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots

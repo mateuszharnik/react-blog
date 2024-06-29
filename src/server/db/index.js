@@ -4,6 +4,8 @@ import logger from '@server/logger';
 import config from '@server/config';
 import { removeVersionKey, softDelete } from './plugins';
 
+mongoose.set('strictQuery', false);
+
 mongoose.plugin(removeVersionKey);
 mongoose.plugin(softDelete);
 
