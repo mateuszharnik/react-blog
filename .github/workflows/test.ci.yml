@@ -86,7 +86,7 @@ jobs:
         run: yarn install
 
       - name: Create .env file 💾
-        run: ./scripts/shell/create-env.sh
+        run: make create-env
 
       - name: Start Docker 🐳
         run: make docker@up-background
