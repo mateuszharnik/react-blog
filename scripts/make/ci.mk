@@ -4,6 +4,12 @@
 ###################################################
 
 .ONESHELL:
+create-env: # Create .env file
+create-env:
+	@chmod +x ./scripts/shell/create-env.sh
+	@./scripts/shell/create-env.sh
+
+.ONESHELL:
 start@e2e: # Start project in e2e environment
 start@e2e:
 	@cross-env NODE_ENV=production APP_ENV=e2e node ./dist/server/server.js
