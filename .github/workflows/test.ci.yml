@@ -85,8 +85,8 @@ jobs:
       - name: Install all local dependencies 📦
         run: yarn install
 
-      - name: Start Docker 🐳
-        run: make docker@up-background
+      # - name: Start Docker 🐳
+      #   run: make docker@up-background
 
       - name: Run migrations 🌱
         run: make migration@up-test

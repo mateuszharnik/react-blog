@@ -13,6 +13,8 @@ const path = resolve(process.cwd(), `.env.${process.env.APP_ENV}`);
 
 if (existsSync(path)) config({ path });
 
+console.log({ TESTOWANIE: process.env.DB_URL });
+
 module.exports = {
   mongodb: {
     url: process.env.DB_URL,
