@@ -6,6 +6,7 @@
 .ONESHELL:
 create-env: # Create .env file
 create-env:
+	@chmod +x ./scripts/shell/create-env.sh
 	@./scripts/shell/create-env.sh
 
 .ONESHELL:
