@@ -84,7 +84,7 @@ jobs:
       - name: Install all local dependencies 📦
         run: yarn install
 
-      - name: Create env file 💾
+      - name: Create .env file 💾
         run: make create-env
 
       - name: Build project 🔨

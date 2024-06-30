@@ -6,7 +6,7 @@
 .ONESHELL:
 create-env: # Create .env file
 create-env:
-	@./scripts/create-env.sh
+	@./scripts/shell/create-env.sh
 
 .ONESHELL:
 start@e2e: # Start project in e2e environment
