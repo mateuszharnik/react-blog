@@ -24,7 +24,34 @@ concurrency:
 jobs:
   Jest:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      CLIENT_URL: ${{ vars.CLIENT_URL }}
+      CLIENT_PORT: ${{ vars.CLIENT_PORT }}
+      DEVTOOLS_ENABLED: ${{ vars.DEVTOOLS_ENABLED }}
+      SERVER_URL: ${{ vars.SERVER_URL }}
+      PORT: ${{ vars.PORT }}
+      DB_URL: ${{ secrets.DB_URL }}
+      LOGGER_ENABLED: ${{ vars.LOGGER_ENABLED }}
+      RATE_LIMIT_ENABLED: ${{ vars.RATE_LIMIT_ENABLED }}
+      RATE_LIMIT: ${{ vars.RATE_LIMIT }}
+      DOCKER_MONGO_PORT: ${{ secrets.DOCKER_MONGO_PORT }}
+      DOCKER_ADMIN_PANEL_PORT: ${{ secrets.DOCKER_ADMIN_PANEL_PORT }}
+      ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+      DOCS_TOKEN_SECRET: ${{ secrets.DOCS_TOKEN_SECRET }}
+      DOCS_PASSWORD: ${{ secrets.DOCS_PASSWORD }}
+      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      APP_ENV: "e2e"
+      NODE_ENV: "test"
+      SENTRY_FRONTEND_ENABLED: ${{ vars.SENTRY_FRONTEND_ENABLED }}
+      SENTRY_FRONTEND_DSN: ${{ secrets.SENTRY_FRONTEND_DSN }}
+      SENTRY_FRONTEND_AUTH_TOKEN: ${{ secrets.SENTRY_FRONTEND_AUTH_TOKEN }}
+      SENTRY_FRONTEND_ORGANIZATION_NAME: ${{ secrets.SENTRY_FRONTEND_ORGANIZATION_NAME }}
+      SENTRY_FRONTEND_PROJECT_NAME: ${{ secrets.SENTRY_FRONTEND_PROJECT_NAME }}
 
     steps:
       - name: Checkout branch 🌿
@@ -57,9 +84,6 @@ jobs:
 
       - name: Install all local dependencies 📦
         run: yarn install
-
-      - name: Copy environment variables 💾
-        run: cp .env.example .env
 
       - name: Start Docker 🐳
         run: make docker@up-background
