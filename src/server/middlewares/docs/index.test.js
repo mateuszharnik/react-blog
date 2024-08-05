@@ -1,20 +1,21 @@
 import colors from 'colors/safe';
 import jwt, { sign, JsonWebTokenError } from 'jsonwebtoken';
-import db from '@server/db';
 import config from '@server/config';
 import logger from '@server/logger';
 import Config from '@server/api/v1/config/model';
 import cleanDB from '@server/seeds/cleanDB';
 import { seedConfig } from '@server/seeds/config';
 import { mockedConfig } from '@server/mocks/config';
-import createResponseWithError from '@server/helpers/createResponseWithError';
+import { ApiForbiddenError, ApiUnauthorizedError } from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
+
 import {
   isLoggedIn,
   isNotLoggedIn,
   isNotUseDocsPassword,
 } from './index';
 
-jest.mock('../../helpers/createResponseWithError');
+const { AUTH_ERRORS, DOCS_ERRORS } = errorsConstants;
 
 describe('Docs middlewares', () => {
   const next = jest.fn();
@@ -28,18 +29,11 @@ describe('Docs middlewares', () => {
     }),
   };
 
-  const responseWithError = jest.fn();
-  createResponseWithError.mockImplementation(() => responseWithError);
-
   const loggerSpy = jest.spyOn(logger, 'error');
   const findOneSpy = jest.spyOn(Config, 'findOne');
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    await db.close();
   });
 
   /* =============== isLoggedIn middleware =============== */
@@ -164,41 +158,37 @@ describe('Docs middlewares', () => {
       await cleanDB();
     });
 
-    it('should return status 403 and error if config not exist in db', async () => {
+    it('should return ApiForbiddenError error if config not exist in db', async () => {
       const req = {};
 
       await isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(ApiForbiddenError({
+        key: DOCS_ERRORS.OPTION_DISABLED_ERROR,
+        message: 'Option disabled',
+      }));
+      expect(next).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledWith(403, 'Opcja zablokowana.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(0);
+      expect(loggerSpy).toBeCalledTimes(1);
     });
 
-    it('should return status 403 and error if `use_docs_password` is equal `false`', async () => {
+    it('should return ApiForbiddenError error if `use_docs_password` is equal `false`', async () => {
       const req = {};
 
       await seedConfig({ ...mockedConfig, use_docs_password: false });
 
       await isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(ApiForbiddenError({
+        key: DOCS_ERRORS.OPTION_DISABLED_ERROR,
+        message: 'Option disabled',
+      }));
+      expect(next).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledWith(403, 'Opcja zablokowana.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(0);
+      expect(loggerSpy).toBeCalledTimes(1);
     });
 
-    it('should return status 403 and error if token exist in `req.cookies`', async () => {
+    it('should return ApiUnauthorizedError error if token exist in `req.cookies`', async () => {
       await cleanDB();
       await seedConfig(mockedConfig);
 
@@ -207,15 +197,13 @@ describe('Docs middlewares', () => {
 
       await isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(ApiUnauthorizedError({
+        key: AUTH_ERRORS.CANNOT_BE_LOGGED_IN_ERROR,
+        message: 'Cannot be logged in',
+      }));
+      expect(next).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledWith(403, 'Nie możesz być zalogowany.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(0);
+      expect(loggerSpy).toBeCalledTimes(1);
     });
 
     it('should return `next` function if token not exist in `req.cookies`', async () => {
@@ -223,32 +211,24 @@ describe('Docs middlewares', () => {
 
       await isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(0);
+      expect(next).toBeCalledWith();
+      expect(next).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(1);
     });
 
-    it('should return status 500 and error message if error occurred', async () => {
+    it('should return error message if error occurred', async () => {
       const req = {};
 
       findOneSpy.mockRejectedValueOnce('error');
 
       await isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith('error');
+      expect(next).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledWith(colors.red('error'));
       expect(loggerSpy).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
     });
   });
 
@@ -264,30 +244,22 @@ describe('Docs middlewares', () => {
     it('should return `next` function if `use_docs_password` is equal `true`', async () => {
       await isNotUseDocsPassword(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(0);
+      expect(next).toBeCalledWith();
+      expect(next).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(1);
     });
 
-    it('should return status 500 and error message if error occurred', async () => {
+    it('should return error message if error occurred', async () => {
       findOneSpy.mockRejectedValueOnce('error');
 
       await isNotUseDocsPassword(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith('error');
+      expect(next).toBeCalledTimes(1);
 
       expect(loggerSpy).toBeCalledWith(colors.red('error'));
       expect(loggerSpy).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
     });
 
     it('should return status 200 if `use_docs_password` is equal `false`', async () => {
@@ -296,19 +268,15 @@ describe('Docs middlewares', () => {
 
       await isNotUseDocsPassword(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
       expect(res.status).toBeCalledWith(200);
       expect(res.status).toBeCalledTimes(1);
 
+      expect(res.json).toBeCalledWith(true);
       expect(res.json).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledTimes(0);
+      expect(next).toBeCalledTimes(0);
 
       expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(0);
     });
 
     it('should return status 200 if config not exist in db', async () => {
@@ -316,19 +284,15 @@ describe('Docs middlewares', () => {
 
       await isNotUseDocsPassword(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
       expect(res.status).toBeCalledWith(200);
       expect(res.status).toBeCalledTimes(1);
 
+      expect(res.json).toBeCalledWith(true);
       expect(res.json).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledTimes(0);
+      expect(next).toBeCalledTimes(0);
 
       expect(loggerSpy).toBeCalledTimes(0);
-
-      expect(next).toBeCalledTimes(0);
     });
   });
 });

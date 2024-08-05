@@ -27,5 +27,6 @@ export default {
     FETCHING: 'FETCHING',
     ERROR: 'ERROR',
     SUCCESS: 'SUCCESS',
+    CANCELED: 'CANCELED',
   },
 };

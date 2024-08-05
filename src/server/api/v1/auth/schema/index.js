@@ -1,11 +1,5 @@
 import Joi from 'joi';
 import invalidUsernames from '@server/helpers/validation/invalidUsernames';
-import usernameMessages from '@server/helpers/messages/username';
-import passwordMessages from '@server/helpers/messages/password';
-import confirmPasswordMessages from '@server/helpers/messages/confirmPassword';
-import emailMessages from '@server/helpers/messages/email';
-import genderMessages from '@server/helpers/messages/gender';
-import isTermsOfUseAcceptedMessages from '@server/helpers/messages/isTermsOfUseAccepted';
 import {
   usernameRegExp,
   emailRegExp,
@@ -26,33 +20,33 @@ export const validateSignUp = (
       .max(32)
       .invalid(...invalid)
       .required()
-      .messages(usernameMessages),
+      .messages(),
     gender: Joi.string()
       .trim()
       .valid('female', 'male')
       .lowercase()
       .required()
-      .messages(genderMessages),
+      .messages(),
     email: Joi.string()
       .trim()
       .regex(emailRegExp)
       .required()
-      .messages(emailMessages),
+      .messages(),
     password: Joi.string()
       .trim()
       .min(8)
       .max(32)
       .required()
-      .messages(passwordMessages),
+      .messages(),
     confirm_password: Joi.string()
       .trim()
       .valid(Joi.ref('password'))
       .required()
-      .messages(confirmPasswordMessages),
+      .messages(),
     is_terms_of_use_accepted: Joi.boolean()
       .valid(true)
       .required()
-      .messages(isTermsOfUseAcceptedMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(newUser, options);
@@ -66,11 +60,11 @@ export const validateSignIn = (user = {}, options = { abortEarly: false }) => {
       .trim()
       .regex(usernameRegExp)
       .required()
-      .messages(usernameMessages),
+      .messages(),
     password: Joi.string()
       .trim()
       .required()
-      .messages(passwordMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(user, options);

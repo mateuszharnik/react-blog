@@ -20,7 +20,7 @@ const schema = Joi.object({
     .trim()
     .default('development')
     .valid('development', 'production', 'test', 'e2e', 'staging', 'testing'),
-  PORT: Joi.string()
+  SERVER_PORT: Joi.string()
     .trim()
     .default('3000'),
   ACCESS_TOKEN_SECRET: Joi.string()

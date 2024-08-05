@@ -1,14 +1,9 @@
 import request from 'supertest';
-import db from '@server/db';
 import app from '@server/app';
 
 describe('API version 1', () => {
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    await db.close();
   });
 
   /* =============== GET test data =============== */

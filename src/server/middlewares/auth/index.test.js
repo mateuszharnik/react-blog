@@ -3,7 +3,16 @@ import colors from 'colors/safe';
 import jwt, { sign, JsonWebTokenError } from 'jsonwebtoken';
 import config from '@server/config';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
+import { seedUsers } from '@server/seeds/users';
+import { seedRoles } from '@server/seeds/roles';
+import { mockedAdmin } from '@server/mocks/users';
+import { mockedAdminRole } from '@server/mocks/roles';
+import {
+  ApiPermissionRequiredError,
+  ApiPermissionNotExistError,
+  ApiUnauthorizedError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import {
   checkToken,
   canManage,
@@ -11,7 +20,8 @@ import {
   isNotLoggedIn,
 } from './index';
 
-jest.mock('../../helpers/createResponseWithError');
+const { AUTH_ERRORS } = errorsConstants;
+
 jest.mock('jwt-decode', () => {
   const originalDecode = jest.requireActual('jwt-decode');
 
@@ -21,19 +31,23 @@ jest.mock('jwt-decode', () => {
 describe('Auth middlewares', () => {
   const res = {};
   const next = jest.fn();
+  let user = null;
 
-  const responseWithError = jest.fn();
-  createResponseWithError.mockImplementation(() => responseWithError);
+  const loggerSpy = jest.spyOn(logger, 'error');
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  beforeAll(async () => {
+    const adminRole = await seedRoles(mockedAdminRole);
+    user = await seedUsers({ ...mockedAdmin, role: adminRole.id });
   });
 
   /* =============== checkToken middleware =============== */
   describe('checkToken', () => {
     const req = {};
 
-    const loggerSpy = jest.spyOn(logger, 'error');
     const verifySpy = jest.spyOn(jwt, 'verify');
 
     it('should log error message if `req` is empty object', async () => {
@@ -179,48 +193,43 @@ describe('Auth middlewares', () => {
 
   /* =============== isLoggedIn middleware =============== */
   describe('isLoggedIn', () => {
-    it('should return status 401 and error if user is not logged in', () => {
+    it('should return ApiUnauthorizedError error if user is not logged in', async () => {
       const req = {};
 
-      isLoggedIn(req, res, next);
+      await isLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(ApiUnauthorizedError());
+      expect(next).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledWith(401, 'Musisz być zalogowany.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
+      expect(loggerSpy).toBeCalledTimes(1);
     });
 
-    it('should return `next` function if user is logged in', () => {
-      const req = { user: true };
+    it('should return `next` function if user is logged in', async () => {
+      const req = { user };
 
-      isLoggedIn(req, res, next);
+      await isLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(0);
-
+      expect(next).toBeCalledWith();
       expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(0);
     });
   });
 
   /* =============== isNotLoggedIn middleware =============== */
   describe('isNotLoggedIn', () => {
-    it('should return status 403 and error if user is logged in', () => {
-      const req = { user: true };
+    it('should return ApiUnauthorizedError error if user is logged in', () => {
+      const req = { user };
 
       isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(ApiUnauthorizedError({
+        key: AUTH_ERRORS.CANNOT_BE_LOGGED_IN_ERROR,
+        message: 'Cannot be logged in',
+      }));
+      expect(next).toBeCalledTimes(1);
 
-      expect(responseWithError).toBeCalledWith(403, 'Nie możesz być zalogowany.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
+      expect(loggerSpy).toBeCalledTimes(1);
     });
 
     it('should return `next` function if user is not logged in', () => {
@@ -228,126 +237,108 @@ describe('Auth middlewares', () => {
 
       isNotLoggedIn(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(0);
-
+      expect(next).toBeCalledWith();
       expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(0);
     });
   });
 
   /* =============== canManage middleware =============== */
   describe('canManage', () => {
-    it('should return status 403 and error if we pass empty string to the function and role not exist', () => {
+    it('should return ApiPermissionNotExistError error if we pass empty string to the function and role not exist', async () => {
       const req = {};
 
-      canManage()(req, res, next);
+      await canManage()(req, res, next);
 
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass `true` and role not exist', () => {
-      const req = {};
-
-      canManage(true)(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass `false` and role not exist', () => {
-      const req = {};
-
-      canManage(false)(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass empty string and role exist', () => {
-      const req = { user: { role: { test: true } } };
-
-      canManage('')(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass `true` and role exist', () => {
-      const req = { user: { role: { test: true } } };
-
-      canManage(true)(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass `false` and role exist', () => {
-      const req = { user: { role: { test: true } } };
-
-      canManage(false)(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return status 403 and error if we pass role that not exist', () => {
-      const req = { user: { role: { test: true } } };
-
-      canManage('foo')(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledWith(403, 'Brak dostępu.');
-      expect(responseWithError).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
-    });
-
-    it('should return `next` function if we pass valid role name', () => {
-      const req = { user: { role: { test: true } } };
-
-      canManage('test')(req, res, next);
-
-      expect(createResponseWithError).toBeCalledWith(res, next);
-      expect(createResponseWithError).toBeCalledTimes(1);
-
-      expect(responseWithError).toBeCalledTimes(0);
-
+      expect(next).toBeCalledWith(ApiPermissionNotExistError({ permission: undefined }));
       expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionRequiredError error if we pass `true` and role not exist', async () => {
+      const req = {};
+      const permission = true;
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionRequiredError({ missingPermissions: [permission] }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionNotExistError error if we pass `false` and role not exist', async () => {
+      const req = {};
+      const permission = false;
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionNotExistError({ permission }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionNotExistError error if we pass empty string and role exist', async () => {
+      const req = { user };
+      const permission = '';
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionNotExistError({ permission }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionRequiredError error if we pass `true` and role exist', async () => {
+      const req = { user };
+      const permission = true;
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionRequiredError({ missingPermissions: [permission] }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionNotExistError error if we pass `false` and role exist', async () => {
+      const req = { user };
+      const permission = false;
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionNotExistError({ permission }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return ApiPermissionRequiredError error if we pass role that not exist', async () => {
+      const req = { user };
+      const permission = 'foo';
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith(ApiPermissionRequiredError({ missingPermissions: [permission] }));
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(1);
+    });
+
+    it('should return `next` function if we pass valid role name', async () => {
+      const req = { user };
+      const permission = 'can_manage_contact';
+
+      await canManage(permission)(req, res, next);
+
+      expect(next).toBeCalledWith();
+      expect(next).toBeCalledTimes(1);
+
+      expect(loggerSpy).toBeCalledTimes(0);
     });
   });
 });

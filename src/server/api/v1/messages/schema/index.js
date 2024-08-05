@@ -1,9 +1,4 @@
 import Joi from 'joi';
-import firstNameMessages from '@server/helpers/messages/firstName';
-import lastNameMessages from '@server/helpers/messages/lastName';
-import emailMessages from '@server/helpers/messages/email';
-import subjectMessages from '@server/helpers/messages/subject';
-import messageContentsMessages from '@server/helpers/messages/messageContents';
 import { nameRegExp, emailRegExp } from '@shared/regexps';
 
 const validateMessage = (message = {}, options = { abortEarly: false }) => {
@@ -14,29 +9,29 @@ const validateMessage = (message = {}, options = { abortEarly: false }) => {
       .max(32)
       .regex(nameRegExp)
       .required()
-      .messages(firstNameMessages),
+      .messages(),
     last_name: Joi.string()
       .trim()
       .min(3)
       .max(32)
       .regex(nameRegExp)
       .required()
-      .messages(lastNameMessages),
+      .messages(),
     email: Joi.string()
       .trim()
       .regex(emailRegExp)
       .required()
-      .messages(emailMessages),
+      .messages(),
     subject: Joi.string()
       .trim()
       .max(200)
       .required()
-      .messages(subjectMessages),
+      .messages(),
     contents: Joi.string()
       .trim()
       .max(2000)
       .required()
-      .messages(messageContentsMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(message, options);

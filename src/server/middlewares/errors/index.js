@@ -1,28 +1,39 @@
 import config from '@server/config';
+import { AppError } from '@server/errors/appError';
+import {
+  ApiInternalServerError,
+  ApiNotFoundUrlError,
+  ApiInvalidCSRFTokenError,
+} from '@server/utils/errorUtils';
 
 export const notFound = (req, res, next) => {
-  const error = new Error(JSON.stringify({ message: `Nie znaleziono ${req.originalUrl}` }));
-  res.status(404);
-  next(error);
+  next(ApiNotFoundUrlError({ url: req.originalUrl }));
 };
 
 export const CSRFErrorHandler = (error, req, res, next) => {
-  if (error.code !== 'EBADCSRFTOKEN') {
-    return next(error);
-  }
+  if (error.code !== 'EBADCSRFTOKEN') return next(error);
 
-  res.status(403).json({
-    messages: [{ message: 'Wystąpił błąd.' }],
-  });
+  next(ApiInvalidCSRFTokenError());
 };
 
 // eslint-disable-next-line no-unused-vars
-export const errorHandler = ({ message, stack }, req, res, next) => {
-  const status = res.statusCode === 200 ? 500 : res.statusCode;
-  const parsedMessage = JSON.parse(message);
+export const errorHandler = (error, req, res, next) => {
+  let appError = error;
 
-  res.status(status).json({
-    messages: Array.isArray(parsedMessage) ? parsedMessage : [parsedMessage],
-    stack: config.NODE_ENV === 'development' ? stack : '💩',
+  if (!(error instanceof AppError)) {
+    appError = ApiInternalServerError();
+  }
+
+  const {
+    status, stack, errorMessage, ...errorDetails
+  } = appError;
+
+  const statusCode = status === 200 ? 500 : status;
+  const stackDetails = config.NODE_ENV === 'development' ? { stack } : {};
+
+  res.status(statusCode).json({
+    ...errorDetails,
+    ...stackDetails,
+    message: errorMessage,
   });
 };

@@ -1,21 +1,5 @@
 import Joi from 'joi';
 import invalidUsernames from '@server/helpers/validation/invalidUsernames';
-import nameMessages from '@server/helpers/messages/roles/name';
-import descriptionMessages from '@server/helpers/messages/roles/description';
-import managePostsMessages from '@server/helpers/messages/roles/managePosts';
-import manageCategoriesMessages from '@server/helpers/messages/roles/manageCategories';
-import manageTagsMessages from '@server/helpers/messages/roles/manageTags';
-import manageCommentsMessages from '@server/helpers/messages/roles/manageComments';
-import manageMessagesMessages from '@server/helpers/messages/roles/manageMessages';
-import manageContactMessages from '@server/helpers/messages/roles/manageContact';
-import manageAboutUsMessages from '@server/helpers/messages/roles/manageAboutUs';
-import manageNewsletterMessages from '@server/helpers/messages/roles/manageNewsletter';
-import manageUsersMessages from '@server/helpers/messages/roles/manageUsers';
-import manageAdminUsersMessages from '@server/helpers/messages/roles/manageAdminUsers';
-import manageRolesMessages from '@server/helpers/messages/roles/manageRoles';
-import manageTermsOfUseMessages from '@server/helpers/messages/roles/manageTermsOfUse';
-import manageConfigMessages from '@server/helpers/messages/roles/manageConfig';
-import manageFAQsMessages from '@server/helpers/messages/roles/manageFAQs';
 
 const validateRole = (role = {}, options = { abortEarly: false }, useInvalid = true) => {
   const invalid = useInvalid ? invalidUsernames : [];
@@ -28,55 +12,55 @@ const validateRole = (role = {}, options = { abortEarly: false }, useInvalid = t
       .max(100)
       .invalid(...invalid)
       .required()
-      .messages(nameMessages),
+      .messages(),
     description: Joi.string()
       .trim()
       .min(3)
       .max(2000)
       .required()
-      .messages(descriptionMessages),
+      .messages(),
     can_manage_posts: Joi.boolean()
       .required()
-      .messages(managePostsMessages),
+      .messages(),
     can_manage_categories: Joi.boolean()
       .required()
-      .messages(manageCategoriesMessages),
+      .messages(),
     can_manage_tags: Joi.boolean()
       .required()
-      .messages(manageTagsMessages),
+      .messages(),
     can_manage_comments: Joi.boolean()
       .required()
-      .messages(manageCommentsMessages),
+      .messages(),
     can_manage_messages: Joi.boolean()
       .required()
-      .messages(manageMessagesMessages),
+      .messages(),
     can_manage_contact: Joi.boolean()
       .required()
-      .messages(manageContactMessages),
+      .messages(),
     can_manage_about_us: Joi.boolean()
       .required()
-      .messages(manageAboutUsMessages),
+      .messages(),
     can_manage_newsletter: Joi.boolean()
       .required()
-      .messages(manageNewsletterMessages),
+      .messages(),
     can_manage_users: Joi.boolean()
       .required()
-      .messages(manageUsersMessages),
+      .messages(),
     can_manage_admin_users: Joi.boolean()
       .required()
-      .messages(manageAdminUsersMessages),
+      .messages(),
     can_manage_roles: Joi.boolean()
       .required()
-      .messages(manageRolesMessages),
+      .messages(),
     can_manage_terms_of_use: Joi.boolean()
       .required()
-      .messages(manageTermsOfUseMessages),
+      .messages(),
     can_manage_config: Joi.boolean()
       .required()
-      .messages(manageConfigMessages),
+      .messages(),
     can_manage_faqs: Joi.boolean()
       .required()
-      .messages(manageFAQsMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(role, options);

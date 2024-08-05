@@ -1,16 +1,22 @@
 import colors from 'colors/safe';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
 import validateIds from '@server/helpers/validation/validateIds';
+import {
+  ApiBodyValidationError,
+  ApiParamsValidationError,
+  ApiConflictError,
+  ApiNotFoundError,
+} from '@server/utils/errorUtils';
 import sanitize from '@server/helpers/purify';
+import { errorsConstants } from '@shared/constants';
 import FAQ from '../model';
 import validateFAQ from '../schema';
 
+const { FAQ_ERRORS } = errorsConstants;
+
 export const getFAQs = async (req, res, next) => {
   const { asAdmin = false } = req.query;
-  const responseWithError = createResponseWithError(res, next);
   const select = {};
 
   if (!asAdmin) {
@@ -26,14 +32,13 @@ export const getFAQs = async (req, res, next) => {
     return res.status(200).json(faqs);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getFAQ = async (req, res, next) => {
   const { asAdmin = false } = req.query;
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
   const select = {};
 
   if (!asAdmin) {
@@ -44,7 +49,7 @@ export const getFAQ = async (req, res, next) => {
     const { validationError } = validateId(id);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      throw ApiParamsValidationError({ validationError });
     }
 
     const faq = await FAQ.findOne({ _id: id, deleted_at: null })
@@ -52,19 +57,20 @@ export const getFAQ = async (req, res, next) => {
       .select(select);
 
     if (!faq) {
-      return responseWithError(404, 'Nie znaleziono pytania.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQ_NOT_FOUND_ERROR,
+        message: 'FAQ not found',
+      });
     }
 
     return res.status(200).json(faq);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const createFAQ = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     req.body.title = sanitize(req.body.title);
     req.body.contents = sanitize(req.body.contents);
@@ -72,13 +78,16 @@ export const createFAQ = async (req, res, next) => {
     const { validationError, data } = validateFAQ(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     const faq = await FAQ.findOne({ title: data.title, deleted_at: null });
 
     if (faq) {
-      return responseWithError(409, 'Pytanie o takim tytule już istnieje.');
+      throw ApiConflictError({
+        key: FAQ_ERRORS.FAQ_ALREADY_EXIST_ERROR,
+        message: 'FAQ already exist',
+      });
     }
 
     const createdFAQ = await FAQ.create({
@@ -88,25 +97,27 @@ export const createFAQ = async (req, res, next) => {
     });
 
     if (!createdFAQ) {
-      return responseWithError(409, 'Nie udało się utworzyć pytania.');
+      throw ApiConflictError({
+        key: FAQ_ERRORS.FAQ_NOT_CREATED_ERROR,
+        message: 'FAQ not created',
+      });
     }
 
     return res.status(201).json(createdFAQ);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const updateFAQ = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError: validationIdError } = validateId(id);
 
     if (validationIdError) {
-      return responseWithError(409, validationIdError.details[0].message);
+      throw ApiParamsValidationError({ validationError: validationIdError });
     }
 
     req.body.title = sanitize(req.body.title);
@@ -115,7 +126,7 @@ export const updateFAQ = async (req, res, next) => {
     const { validationError, data } = validateFAQ(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     const faqs = await FAQ.find({
@@ -139,11 +150,17 @@ export const updateFAQ = async (req, res, next) => {
     }, {}) : {};
 
     if (!faq?.id) {
-      return responseWithError(404, 'Pytanie nie istnieje.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQ_NOT_FOUND_ERROR,
+        message: 'FAQ not found',
+      });
     }
 
     if (faq?.title) {
-      return responseWithError(409, 'Pytanie o takim tytule już istnieje.');
+      throw ApiConflictError({
+        key: FAQ_ERRORS.FAQ_ALREADY_EXIST_ERROR,
+        message: 'FAQ already exist',
+      });
     }
 
     const updatedFAQ = await FAQ.findOneAndUpdate({
@@ -151,31 +168,36 @@ export const updateFAQ = async (req, res, next) => {
     }, { ...data }, { new: true });
 
     if (!updatedFAQ) {
-      return responseWithError(409, 'Nie udało się zaktualizować pytania.');
+      throw ApiConflictError({
+        key: FAQ_ERRORS.FAQ_NOT_UPDATED_ERROR,
+        message: 'FAQ not updated',
+      });
     }
 
     return res.status(200).json(updatedFAQ);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const toggleIsPublishedFAQ = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError: validationIdError } = validateId(id);
 
     if (validationIdError) {
-      return responseWithError(409, validationIdError.details[0].message);
+      throw ApiParamsValidationError({ validationError: validationIdError });
     }
 
     const faq = await FAQ.findOne({ _id: id, deleted_at: null });
 
     if (!faq) {
-      return responseWithError(404, 'Pytanie nie istnieje.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQ_NOT_FOUND_ERROR,
+        message: 'FAQ not found',
+      });
     }
 
     const updatedFAQ = await FAQ.findOneAndUpdate({
@@ -183,19 +205,20 @@ export const toggleIsPublishedFAQ = async (req, res, next) => {
     }, { is_published: !faq.is_published }, { new: true });
 
     if (!updatedFAQ) {
-      return responseWithError(409, 'Nie udało się zaktualizować pytania.');
+      throw ApiConflictError({
+        key: FAQ_ERRORS.FAQ_NOT_UPDATED_ERROR,
+        message: 'FAQ not updated',
+      });
     }
 
     return res.status(200).json(updatedFAQ);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const deleteFAQs = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const query = { deleted_at: null };
 
@@ -203,7 +226,7 @@ export const deleteFAQs = async (req, res, next) => {
       const { validationError, data } = validateIds(req.body);
 
       if (validationError) {
-        return responseWithError(409, mapValidationMessages(validationError));
+        throw ApiBodyValidationError({ validationError });
       }
 
       query._id = { $in: data };
@@ -212,7 +235,10 @@ export const deleteFAQs = async (req, res, next) => {
     const faqs = await FAQ.find(query);
 
     if (!faqs?.length) {
-      return responseWithError(404, 'Nie znaleziono pytań.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQS_NOT_FOUND_ERROR,
+        message: 'FAQs not found',
+      });
     }
 
     const ids = faqs.map(({ _id }) => _id.toString());
@@ -223,37 +249,45 @@ export const deleteFAQs = async (req, res, next) => {
     );
 
     if (!updatedFAQs) {
-      return responseWithError(409, 'Nie udało się usunąć pytań.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQS_NOT_DELETED_ERROR,
+        message: 'FAQs not deleted',
+      });
     }
 
     const deletedFAQs = await FAQ.find({ _id: { $in: ids }, deleted_at: { $ne: null } });
 
     if (!deletedFAQs?.length) {
-      return responseWithError(404, 'Nie znaleziono pytań.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQS_NOT_FOUND_ERROR,
+        message: 'FAQs not found',
+      });
     }
 
     return res.status(200).json(deletedFAQs);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const deleteFAQ = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError } = validateId(id);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      throw ApiParamsValidationError({ validationError });
     }
 
     const faq = await FAQ.findOne({ _id: id, deleted_at: null });
 
     if (!faq) {
-      return responseWithError(404, 'Nie znaleziono pytania.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQ_NOT_FOUND_ERROR,
+        message: 'FAQ not found',
+      });
     }
 
     const deletedFAQ = await FAQ.findOneAndSoftDelete(
@@ -262,12 +296,15 @@ export const deleteFAQ = async (req, res, next) => {
     );
 
     if (!deletedFAQ) {
-      return responseWithError(409, 'Nie udało się usunąć pytania.');
+      throw ApiNotFoundError({
+        key: FAQ_ERRORS.FAQ_NOT_DELETED_ERROR,
+        message: 'FAQ not deleted',
+      });
     }
 
     return res.status(200).json(deletedFAQ);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };

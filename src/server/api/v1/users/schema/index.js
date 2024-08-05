@@ -1,25 +1,5 @@
 import Joi from 'joi';
 import invalidUsernames from '@server/helpers/validation/invalidUsernames';
-import usernameMessages from '@server/helpers/messages/username';
-import passwordMessages from '@server/helpers/messages/password';
-import descriptionMessages from '@server/helpers/messages/description';
-import emailMessages from '@server/helpers/messages/email';
-import genderMessages from '@server/helpers/messages/gender';
-import youtubeMessages from '@server/helpers/messages/youtubeUrl';
-import facebookMessages from '@server/helpers/messages/facebookUrl';
-import githubMessages from '@server/helpers/messages/githubUrl';
-import twitterMessages from '@server/helpers/messages/twitterUrl';
-import instagramMessages from '@server/helpers/messages/instagramUrl';
-import dribbbleMessages from '@server/helpers/messages/dribbbleUrl';
-import stackOverflowMessages from '@server/helpers/messages/stackOverflowUrl';
-import linkedinMessages from '@server/helpers/messages/linkedinUrl';
-import twitchMessages from '@server/helpers/messages/twitchUrl';
-import imageMessages from '@server/helpers/messages/imageUrl';
-import websiteMessages from '@server/helpers/messages/websiteUrl';
-import isPublicMessages from '@server/helpers/messages/isPublic';
-import isBannedMessages from '@server/helpers/messages/isBanned';
-import isTermsOfUseAcceptedMessages from '@server/helpers/messages/isTermsOfUseAccepted';
-import isEmailPublicMessages from '@server/helpers/messages/isEmailPublic';
 import {
   instagramRegExp,
   emailRegExp,
@@ -46,109 +26,109 @@ const validateUser = (user = {}, options = { abortEarly: false }, useInvalid = t
       .max(32)
       .invalid(...invalid)
       .required()
-      .messages(usernameMessages),
+      .messages(),
     description: Joi.string()
       .trim()
       .max(3000)
       .allow('')
       .required()
-      .messages(descriptionMessages),
+      .messages(),
     gender: Joi.string()
       .trim()
       .valid('female', 'male')
       .lowercase()
       .required()
-      .messages(genderMessages),
+      .messages(),
     email: Joi.string()
       .trim()
       .regex(emailRegExp)
       .required()
-      .messages(emailMessages),
+      .messages(),
     password: Joi.string()
       .trim()
       .min(8)
       .max(32)
       .required()
-      .messages(passwordMessages),
+      .messages(),
     facebook_url: Joi.string()
       .trim()
       .regex(facebookRegExp)
       .allow('')
       .required()
-      .messages(facebookMessages),
+      .messages(),
     dribbble_url: Joi.string()
       .trim()
       .regex(dribbbleRegExp)
       .allow('')
       .required()
-      .messages(dribbbleMessages),
+      .messages(),
     youtube_url: Joi.string()
       .trim()
       .regex(youtubeRegExp)
       .allow('')
       .required()
-      .messages(youtubeMessages),
+      .messages(),
     twitter_url: Joi.string()
       .trim()
       .regex(twitterRegExp)
       .allow('')
       .required()
-      .messages(twitterMessages),
+      .messages(),
     instagram_url: Joi.string()
       .trim()
       .regex(instagramRegExp)
       .allow('')
       .required()
-      .messages(instagramMessages),
+      .messages(),
     github_url: Joi.string()
       .trim()
       .regex(githubRegExp)
       .allow('')
       .required()
-      .messages(githubMessages),
+      .messages(),
     linkedin_url: Joi.string()
       .trim()
       .regex(linkedinRegExp)
       .allow('')
       .required()
-      .messages(linkedinMessages),
+      .messages(),
     stack_overflow_url: Joi.string()
       .trim()
       .regex(stackOverflowRegExp)
       .allow('')
       .required()
-      .messages(stackOverflowMessages),
+      .messages(),
     twitch_url: Joi.string()
       .trim()
       .regex(twitchRegExp)
       .allow('')
       .required()
-      .messages(twitchMessages),
+      .messages(),
     website_url: Joi.string()
       .trim()
       .regex(websiteRegExp)
       .allow('')
       .required()
-      .messages(websiteMessages),
+      .messages(),
     image_url: Joi.string()
       .trim()
       .regex(imageRegExp)
       .allow('')
       .required()
-      .messages(imageMessages),
+      .messages(),
     is_terms_of_use_accepted: Joi.boolean()
       .valid(true)
       .required()
-      .messages(isTermsOfUseAcceptedMessages),
+      .messages(),
     is_public: Joi.boolean()
       .required()
-      .messages(isPublicMessages),
+      .messages(),
     is_email_public: Joi.boolean()
       .required()
-      .messages(isEmailPublicMessages),
+      .messages(),
     is_banned: Joi.boolean()
       .required()
-      .messages(isBannedMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(user, options);

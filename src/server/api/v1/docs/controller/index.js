@@ -5,29 +5,35 @@ import { compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
+import { ApiNotFoundError, ApiConflictError, ApiBodyValidationError } from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import Docs from '../model';
 import validateSignIn from '../schema';
 
-export const signIn = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+const { DOCS_ERRORS } = errorsConstants;
 
+export const signIn = async (req, res, next) => {
   try {
     const { validationError, data } = validateSignIn(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     const docs = await Docs.findOne({});
 
     if (!docs) {
-      return responseWithError(404, 'Nie znaleziono konfiguracji dokumentacji.');
+      throw ApiNotFoundError({
+        key: DOCS_ERRORS.CONFIGURATION_NOT_FOUND_ERROR,
+        message: 'Configuration not found',
+      });
     }
 
     if (!await compare(data.password, docs?.password)) {
-      return responseWithError(409, 'Hasło jest nieprawidłowe.');
+      throw ApiConflictError({
+        key: DOCS_ERRORS.PASSWORD_NOT_CORRECT_ERROR,
+        message: 'Password not correct',
+      });
     }
 
     const payload = {
@@ -44,21 +50,19 @@ export const signIn = async (req, res, next) => {
       maxAge: ms('3d'),
     });
 
-    return res.status(200).json({ docsToken });
+    return res.status(200).json(true);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getRefreshToken = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const token = req.cookies?._docs;
 
     if (!token) {
-      return res.status(200).json();
+      return res.status(200).json(false);
     }
 
     const { exp } = decode(token);
@@ -71,7 +75,7 @@ export const getRefreshToken = async (req, res, next) => {
         secure: config.NODE_ENV === 'production',
       });
 
-      return res.status(200).json();
+      return res.status(200).json(false);
     }
 
     const decodedToken = await verify(token, config.DOCS_TOKEN_SECRET);
@@ -89,7 +93,10 @@ export const getRefreshToken = async (req, res, next) => {
         secure: config.NODE_ENV === 'production',
       });
 
-      return responseWithError(404, 'Nie znaleziono konfiguracji dokumentacji.');
+      throw ApiNotFoundError({
+        key: DOCS_ERRORS.CONFIGURATION_NOT_FOUND_ERROR,
+        message: 'Configuration not found',
+      });
     }
 
     const payload = {
@@ -106,18 +113,18 @@ export const getRefreshToken = async (req, res, next) => {
       secure: config.NODE_ENV === 'production',
     });
 
-    return res.status(200).json({ docsToken });
+    return res.status(200).json(true);
   } catch (error) {
     logger.error(colors.red(error));
 
-    res.clearCookie('_refresh', {
+    res.clearCookie('_docs', {
       httpOnly: true,
       sameSite: 'strict',
       path: '/api/v1/docs',
       secure: config.NODE_ENV === 'production',
     });
 
-    responseWithError(400, 'Błędny token.');
+    next(error);
   }
 };
 

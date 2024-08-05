@@ -1,9 +1,4 @@
 import Joi from 'joi';
-import emailMessages from '@server/helpers/messages/email';
-import facebookMessages from '@server/helpers/messages/facebookUrl';
-import githubMessages from '@server/helpers/messages/githubUrl';
-import twitterMessages from '@server/helpers/messages/twitterUrl';
-import instagramMessages from '@server/helpers/messages/instagramUrl';
 import {
   emailRegExp,
   githubRegExp,
@@ -19,31 +14,31 @@ const validateContact = (contact = {}, options = { abortEarly: false }) => {
       .regex(emailRegExp)
       .allow('')
       .required()
-      .messages(emailMessages),
+      .messages(),
     facebook_url: Joi.string()
       .trim()
       .regex(facebookRegExp)
       .allow('')
       .required()
-      .messages(facebookMessages),
+      .messages(),
     twitter_url: Joi.string()
       .trim()
       .regex(twitterRegExp)
       .allow('')
       .required()
-      .messages(twitterMessages),
+      .messages(),
     instagram_url: Joi.string()
       .trim()
       .regex(instagramRegExp)
       .allow('')
       .required()
-      .messages(instagramMessages),
+      .messages(),
     github_url: Joi.string()
       .trim()
       .regex(githubRegExp)
       .allow('')
       .required()
-      .messages(githubMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(contact, options);

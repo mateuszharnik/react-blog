@@ -35,6 +35,10 @@ export default {
     REFRESH_TOKEN: {
       ROOT: '/refresh-token',
     },
+
+    REVOKE_REFRESH_TOKEN: {
+      ROOT: '/revoke-refresh-token',
+    },
   },
 
   DOCS: {
@@ -46,6 +50,14 @@ export default {
 
     REFRESH_TOKEN: {
       ROOT: '/refresh-token',
+    },
+  },
+
+  USERS: {
+    ROOT: '/api/v1/users',
+
+    ME: {
+      ROOT: '/me',
     },
   },
 

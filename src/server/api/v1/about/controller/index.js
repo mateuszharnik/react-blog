@@ -1,36 +1,37 @@
 import colors from 'colors/safe';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
 import markdownToHTML from '@server/helpers/markdownToHTML';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
+import { ApiBodyValidationError, ApiConflictError, ApiNotFoundError } from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import About from '../model';
 import validateAbout from '../schema';
 
-export const getAbout = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+const { ABOUT_ERRORS } = errorsConstants;
 
+export const getAbout = async (req, res, next) => {
   try {
     const about = await About.findOne({});
 
     if (!about) {
-      return responseWithError(404, 'Nie znaleziono informacji o blogu.');
+      throw ApiNotFoundError({
+        key: ABOUT_ERRORS.ABOUT_NOT_FOUND_ERROR,
+        message: 'About information not found',
+      });
     }
 
     return res.status(200).json(about);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const updateAbout = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const { validationError, data } = validateAbout(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     data.html_contents = markdownToHTML(data.contents);
@@ -38,12 +39,15 @@ export const updateAbout = async (req, res, next) => {
     const updatedAbout = await About.findOneAndUpdate({}, { ...data }, { new: true });
 
     if (!updatedAbout) {
-      return responseWithError(409, 'Nie udało się zaktualizować informacji o blogu.');
+      throw ApiConflictError({
+        key: ABOUT_ERRORS.ABOUT_NOT_UPDATED_ERROR,
+        message: 'About information not updated',
+      });
     }
 
     return res.status(200).json(updatedAbout);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };

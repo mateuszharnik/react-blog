@@ -9,3 +9,4 @@ export { default as permissionsConstants } from './permissionsConstants';
 export { default as testsConstants } from './testsConstants';
 export { default as propTypesConstants } from './propTypesConstants';
 export { default as tableConstants } from './tableConstants';
+export { default as errorsConstants } from './errorsConstants';
