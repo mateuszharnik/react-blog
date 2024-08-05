@@ -1,58 +1,64 @@
 import colors from 'colors/safe';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import validateId from '@server/helpers/validation/validateId';
 import sanitize from '@server/helpers/purify';
+import {
+  ApiParamsValidationError,
+  ApiBodyValidationError,
+  ApiConflictError,
+  ApiNotFoundError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import TermsOfUse from '../model';
 import validateTermsOfUse from '../schema';
 
-export const getTermsOfUse = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+const { TERMS_OF_USE_ERRORS } = errorsConstants;
 
+export const getTermsOfUse = async (req, res, next) => {
   try {
     const termsOfUse = await TermsOfUse.find({ deleted_at: null }).sort({ created_at: -1 });
 
     return res.status(200).json(termsOfUse);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getOneTermsOfUse = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError } = validateId(id);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      throw ApiParamsValidationError({ validationError });
     }
 
     const termsOfUse = await TermsOfUse.findOne({ _id: id, deleted_at: null });
 
     if (!termsOfUse) {
-      return responseWithError(404, 'Nie znaleziono regulaminu.');
+      throw ApiNotFoundError({
+        key: TERMS_OF_USE_ERRORS.TERMS_OF_USE_NOT_FOUND_ERROR,
+        message: 'Terms of use not found',
+      });
     }
 
     return res.status(200).json(termsOfUse);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const updateTermsOfUse = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError: validationIdError } = validateId(id);
 
     if (validationIdError) {
-      return responseWithError(409, validationIdError.details[0].message);
+      throw ApiParamsValidationError({ validationError: validationIdError });
     }
 
     req.body.contents = sanitize(req.body.contents);
@@ -60,7 +66,7 @@ export const updateTermsOfUse = async (req, res, next) => {
     const { validationError, data } = validateTermsOfUse(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     const updatedTermsOfUse = await TermsOfUse.findOneAndUpdate({
@@ -68,12 +74,15 @@ export const updateTermsOfUse = async (req, res, next) => {
     }, { ...data }, { new: true });
 
     if (!updatedTermsOfUse) {
-      return responseWithError(409, 'Nie udało się zaktualizować regulaminu.');
+      throw ApiConflictError({
+        key: TERMS_OF_USE_ERRORS.TERMS_OF_USE_NOT_UPDATED_ERROR,
+        message: 'Terms of use not updated',
+      });
     }
 
     return res.status(200).json(updatedTermsOfUse);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };

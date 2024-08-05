@@ -3,7 +3,15 @@ import decode from 'jwt-decode';
 import { verify } from 'jsonwebtoken';
 import logger from '@server/logger';
 import config from '@server/config';
-import createResponseWithError from '@server/helpers/createResponseWithError';
+import User from '@server/api/v1/users/model';
+import {
+  ApiPermissionRequiredError,
+  ApiPermissionNotExistError,
+  ApiUnauthorizedError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
+
+const { AUTH_ERRORS } = errorsConstants;
 
 export const checkToken = async (req, res, next) => {
   try {
@@ -31,32 +39,56 @@ export const checkToken = async (req, res, next) => {
   next();
 };
 
-export const canManage = (manageName = '') => (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+export const canManage = (permission = '') => async (req, res, next) => {
+  try {
+    if (!permission) throw ApiPermissionNotExistError({ permission });
 
-  if (!manageName || !req.user?.role?.[manageName]) {
-    return responseWithError(403, 'Brak dostępu.');
+    const user = await User.findOne({
+      _id: req.user?.id,
+      deleted_at: null,
+    }).populate('role').select('role');
+
+    if (!user?.role?.[permission]) {
+      throw ApiPermissionRequiredError({ missingPermissions: [permission] });
+    }
+
+    next();
+  } catch (error) {
+    logger.error(colors.red(error));
+    next(error);
   }
-
-  next();
 };
 
-export const isLoggedIn = (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+export const isLoggedIn = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      _id: req.user?.id,
+      deleted_at: null,
+    }).select('token_version');
 
-  if (!req.user) {
-    return responseWithError(401, 'Musisz być zalogowany.');
+    if (!req.user || req.user?.token_version !== user?.token_version) {
+      throw ApiUnauthorizedError();
+    }
+
+    next();
+  } catch (error) {
+    logger.error(colors.red(error));
+    next(error);
   }
-
-  next();
 };
 
 export const isNotLoggedIn = (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+  try {
+    if (req.user) {
+      throw ApiUnauthorizedError({
+        key: AUTH_ERRORS.CANNOT_BE_LOGGED_IN_ERROR,
+        message: 'Cannot be logged in',
+      });
+    }
 
-  if (req.user) {
-    return responseWithError(403, 'Nie możesz być zalogowany.');
+    next();
+  } catch (error) {
+    logger.error(colors.red(error));
+    next(error);
   }
-
-  next();
 };

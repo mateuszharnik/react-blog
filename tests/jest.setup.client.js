@@ -1,6 +1,6 @@
+import '../scripts/tests';
 import '@testing-library/jest-dom';
 import { mswService } from '@client/services/mswService';
-import '../scripts/tests';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

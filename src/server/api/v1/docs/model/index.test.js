@@ -1,19 +1,9 @@
 import { Types } from 'mongoose';
-import db from '@server/db';
-import cleanDB from '@server/seeds/cleanDB';
 import Docs from './index';
 
 describe('Docs Model', () => {
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  afterAll(async () => {
-    await db.close();
-  });
-
-  beforeAll(async () => {
-    await cleanDB();
   });
 
   it('should return validation error if we pass empty object', async () => {

@@ -1,5 +1,14 @@
 import config from '@server/config';
+import { AppError } from '@server/errors/appError';
+import {
+  ApiInvalidCSRFTokenError,
+  ApiNotFoundError,
+  ApiNotFoundUrlError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import { CSRFErrorHandler, notFound, errorHandler } from './index';
+
+const { GLOBAL_ERRORS } = errorsConstants;
 
 jest.mock('../../config', () => ({
   __esModule: true,
@@ -31,57 +40,38 @@ describe('Error middlewares', () => {
 
       CSRFErrorHandler(error, req, res, next);
 
-      expect(res.status).toBeCalledTimes(0);
-      expect(res.json).toBeCalledTimes(0);
-
       expect(next).toBeCalledWith(error);
       expect(next).toBeCalledTimes(1);
     });
 
-    it('should return status 403 and error message if `error.code` is equal `EBADCSRFTOKEN`', () => {
+    it('should return ApiInvalidCSRFTokenError error if `error.code` is equal `EBADCSRFTOKEN`', () => {
       const error = { code: 'EBADCSRFTOKEN' };
       const req = {};
 
       CSRFErrorHandler(error, req, res, next);
 
-      expect(res.status).toBeCalledWith(403);
-      expect(res.status).toBeCalledTimes(1);
-
-      expect(res.json).toBeCalledWith({
-        messages: [{ message: 'Wystąpił błąd.' }],
-      });
-      expect(res.json).toBeCalledTimes(1);
-
-      expect(next).toBeCalledTimes(0);
+      expect(next).toBeCalledWith(ApiInvalidCSRFTokenError());
+      expect(next).toBeCalledTimes(1);
     });
   });
 
   /* =============== notFound middleware =============== */
   describe('notFound', () => {
-    it('should return status 404 and `next` function with error', () => {
-      const error = new Error(JSON.stringify({ message: 'Nie znaleziono /abc' }));
+    it('should return ApiNotFoundUrlError error', () => {
       const req = { originalUrl: '/abc' };
 
       notFound(req, res, next);
 
-      expect(res.status).toBeCalledWith(404);
-      expect(res.status).toBeCalledTimes(1);
-
-      expect(next).toBeCalledWith(error);
+      expect(next).toBeCalledWith(ApiNotFoundUrlError({ url: req.originalUrl }));
       expect(next).toBeCalledTimes(1);
     });
   });
 
   /* =============== errorHandler middleware =============== */
   describe('errorHandler', () => {
-    it('should return status 500 and array with 2 messages', () => {
+    it('should return status 500 and ApiInternalServerError error', () => {
       const req = {};
-      const error = {
-        message: JSON.stringify([{ message: 'Wystąpił błąd 1.' }, { message: 'Wystąpił błąd 2.' }]),
-        stack: 'stack',
-      };
-
-      res.statusCode = 200;
+      const error = new Error('Error');
 
       errorHandler(error, req, res, next);
 
@@ -89,20 +79,15 @@ describe('Error middlewares', () => {
       expect(res.status).toBeCalledTimes(1);
 
       expect(res.json).toBeCalledWith({
-        messages: [{ message: 'Wystąpił błąd 1.' }, { message: 'Wystąpił błąd 2.' }],
-        stack: '💩',
+        message: 'Something went wrong',
+        key: GLOBAL_ERRORS.INTERNAL_SERVER_ERROR,
       });
       expect(res.json).toBeCalledTimes(1);
     });
 
-    it('should return status 404 and array with message', () => {
+    it('should return status 404 and ApiNotFoundError error', () => {
       const req = {};
-      const error = {
-        message: JSON.stringify({ message: 'Wystąpił błąd 1.' }),
-        stack: 'stack',
-      };
-
-      res.statusCode = 404;
+      const error = ApiNotFoundError();
 
       errorHandler(error, req, res, next);
 
@@ -110,20 +95,21 @@ describe('Error middlewares', () => {
       expect(res.status).toBeCalledTimes(1);
 
       expect(res.json).toBeCalledWith({
-        messages: [{ message: 'Wystąpił błąd 1.' }],
-        stack: '💩',
+        message: 'Not found',
+        key: GLOBAL_ERRORS.NOT_FOUND_ERROR,
       });
       expect(res.json).toBeCalledTimes(1);
     });
 
     it('should return stack information', () => {
       const req = {};
-      const error = {
-        message: JSON.stringify({ message: 'Wystąpił błąd 1.' }),
+      const error = new AppError({
+        message: 'Not found',
+        key: GLOBAL_ERRORS.NOT_FOUND_ERROR,
+        status: 404,
         stack: 'stack',
-      };
+      });
 
-      res.statusCode = 404;
       config.NODE_ENV = 'development';
 
       errorHandler(error, req, res, next);
@@ -132,7 +118,8 @@ describe('Error middlewares', () => {
       expect(res.status).toBeCalledTimes(1);
 
       expect(res.json).toBeCalledWith({
-        messages: [{ message: 'Wystąpił błąd 1.' }],
+        message: 'Not found',
+        key: GLOBAL_ERRORS.NOT_FOUND_ERROR,
         stack: 'stack',
       });
       expect(res.json).toBeCalledTimes(1);

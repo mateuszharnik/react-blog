@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import termsOfUseContentsMessages from '@server/helpers/messages/termsOfUseContents';
 
 const validateTermsOfUse = (termsOfUse = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
@@ -8,7 +7,7 @@ const validateTermsOfUse = (termsOfUse = {}, options = { abortEarly: false }) =>
       .min(3)
       .max(20000)
       .required()
-      .messages(termsOfUseContentsMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(termsOfUse, options);

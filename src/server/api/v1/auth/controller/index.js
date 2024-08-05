@@ -5,20 +5,22 @@ import { hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import config from '@server/config';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import User from '@server/api/v1/users/model';
 import Role from '@server/api/v1/roles/model';
+import {
+  ApiBodyValidationError, ApiNotFoundError, ApiBadRequestError, ApiConflictError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
 import { validateSignUp, validateSignIn } from '../schema';
 
-export const signIn = (isAdmin = false) => async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+const { TOKEN_ERRORS, ROLE_ERRORS, USER_ERRORS } = errorsConstants;
 
+export const signIn = (isAdmin = false) => async (req, res, next) => {
   try {
     const { validationError, data } = validateSignIn(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     const user = await User.findOne({
@@ -32,23 +34,26 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
     const isCorrectType = isAdmin ? user?.role?.type === 'USER' : user?.role?.type !== 'USER';
 
     if (!user || isCorrectType) {
-      return responseWithError(404, 'Użytkownik nie istnieje.');
+      throw ApiNotFoundError({
+        key: USER_ERRORS.USER_NOT_FOUND_ERROR,
+        message: 'User not found',
+      });
     }
 
     if (!await compare(data.password, user?.password)) {
-      return responseWithError(409, 'Hasło jest nieprawidłowe.');
+      throw ApiConflictError({
+        key: USER_ERRORS.PASSWORD_NOT_CORRECT_ERROR,
+        message: 'Password not correct',
+      });
     }
 
     const payload = {
       id: user.id,
-      role: user.role,
+      token_version: user.token_version,
     };
 
     const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
-    const refreshToken = sign({
-      id: user.id,
-      token_version: user.token_version,
-    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const refreshToken = sign(payload, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -66,18 +71,16 @@ export const signIn = (isAdmin = false) => async (req, res, next) => {
     });
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const signUp = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const { validationError, data } = validateSignUp(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
     }
 
     delete data.confirm_password;
@@ -93,11 +96,17 @@ export const signUp = async (req, res, next) => {
     });
 
     if (existingUser?.username === data.username) {
-      return responseWithError(409, 'Nazwa użytkownika jest zajęta.');
+      throw ApiConflictError({
+        key: USER_ERRORS.USERNAME_ALREADY_EXIST_ERROR,
+        message: 'Username is already taken',
+      });
     }
 
     if (existingUser?.email === data.email) {
-      return responseWithError(409, 'Email jest już używany.');
+      throw ApiConflictError({
+        key: USER_ERRORS.EMAIL_ALREADY_EXIST_ERROR,
+        message: 'Email is already taken',
+      });
     }
 
     data.password = await hash(data.password, 8);
@@ -105,7 +114,10 @@ export const signUp = async (req, res, next) => {
     const role = await Role.findOne({ type: 'USER', deleted_at: null });
 
     if (!role) {
-      return responseWithError(404, 'Nie znaleziono roli użytkownika.');
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLE_NOT_FOUND_ERROR,
+        message: 'Role not found',
+      });
     }
 
     const createdUser = await User.create({
@@ -114,25 +126,28 @@ export const signUp = async (req, res, next) => {
     });
 
     if (!createdUser) {
-      return responseWithError(409, 'Nie udało się utworzyć konta.');
+      throw ApiConflictError({
+        key: USER_ERRORS.USER_NOT_CREATED_ERROR,
+        message: 'User not created',
+      });
     }
 
     const user = await User.findById(createdUser.id).populate('role', '-description -name').select('-password');
 
     if (!user) {
-      return responseWithError(404, 'Użytkownik nie istnieje.');
+      throw ApiNotFoundError({
+        key: USER_ERRORS.USER_NOT_FOUND_ERROR,
+        message: 'User not found',
+      });
     }
 
     const payload = {
       id: user.id,
-      role: user.role,
+      token_version: user.token_version,
     };
 
     const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
-    const refreshToken = sign({
-      id: user.id,
-      token_version: user.token_version,
-    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const refreshToken = sign(payload, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -150,18 +165,23 @@ export const signUp = async (req, res, next) => {
     });
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getRefreshToken = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+  const silent = !!req.query?.silent;
 
   try {
     const token = req.cookies?._refresh;
 
     if (!token) {
-      return res.status(200).json();
+      if (silent) return res.status(200).json();
+
+      throw ApiBadRequestError({
+        key: TOKEN_ERRORS.INVALID_REFRESH_TOKEN_ERROR,
+        message: 'Invalid refresh token',
+      });
     }
 
     const { exp } = decode(token);
@@ -174,7 +194,12 @@ export const getRefreshToken = async (req, res, next) => {
         secure: config.NODE_ENV === 'production',
       });
 
-      return res.status(200).json();
+      if (silent) return res.status(200).json();
+
+      throw ApiBadRequestError({
+        key: TOKEN_ERRORS.INVALID_REFRESH_TOKEN_ERROR,
+        message: 'Invalid refresh token',
+      });
     }
 
     const decodedToken = await verify(token, config.REFRESH_TOKEN_SECRET);
@@ -192,23 +217,28 @@ export const getRefreshToken = async (req, res, next) => {
         secure: config.NODE_ENV === 'production',
       });
 
-      return responseWithError(404, 'Użytkownik nie istnieje.');
+      throw ApiNotFoundError({
+        key: USER_ERRORS.USER_NOT_FOUND_ERROR,
+        message: 'User not found',
+      });
     }
 
     if (user?.token_version !== decodedToken?.token_version) {
-      return res.status(200).json();
+      if (silent) return res.status(200).json();
+
+      throw ApiBadRequestError({
+        key: TOKEN_ERRORS.INVALID_REFRESH_TOKEN_ERROR,
+        message: 'Invalid refresh token',
+      });
     }
 
     const payload = {
       id: user.id,
-      role: user.role,
+      token_version: user.token_version,
     };
 
     const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
-    const refreshToken = sign({
-      id: user.id,
-      token_version: user.token_version,
-    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const refreshToken = sign(payload, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -218,12 +248,7 @@ export const getRefreshToken = async (req, res, next) => {
       maxAge: ms('7d'),
     });
 
-    const { token_version, ...rest } = user.toJSON();
-
-    return res.status(200).json({
-      user: rest,
-      accessToken,
-    });
+    return res.status(200).json(accessToken);
   } catch (error) {
     logger.error(colors.red(error));
 
@@ -234,13 +259,11 @@ export const getRefreshToken = async (req, res, next) => {
       secure: config.NODE_ENV === 'production',
     });
 
-    responseWithError(400, 'Błędny token.');
+    next(error);
   }
 };
 
 export const revokeRefreshToken = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.user?.id, deleted_at: null },
@@ -249,13 +272,26 @@ export const revokeRefreshToken = async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      return responseWithError(409, 'Wystąpił błąd.');
+      res.clearCookie('_refresh', {
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/api/v1/auth/refresh-token',
+        secure: config.NODE_ENV === 'production',
+      });
+
+      throw ApiNotFoundError({
+        key: USER_ERRORS.USER_NOT_FOUND_ERROR,
+        message: 'User not found',
+      });
     }
 
-    const refreshToken = sign({
+    const payload = {
       id: updatedUser.id,
       token_version: updatedUser.token_version,
-    }, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    };
+
+    const accessToken = sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+    const refreshToken = sign(payload, config.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
     res.cookie('_refresh', refreshToken, {
       httpOnly: true,
@@ -265,16 +301,22 @@ export const revokeRefreshToken = async (req, res, next) => {
       maxAge: ms('7d'),
     });
 
-    return res.status(200).json({ message: 'Pomyślnie wylogowano z wszystkich urządzeń.' });
+    return res.status(200).json(accessToken);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+
+    res.clearCookie('_refresh', {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth/refresh-token',
+      secure: config.NODE_ENV === 'production',
+    });
+
+    next(error);
   }
 };
 
 export const signOut = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     res.clearCookie('_refresh', {
       httpOnly: true,
@@ -283,9 +325,9 @@ export const signOut = async (req, res, next) => {
       secure: config.NODE_ENV === 'production',
     });
 
-    return res.status(200).json({ message: 'Pomyślnie wylogowano.' });
+    return res.status(200).json(true);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };

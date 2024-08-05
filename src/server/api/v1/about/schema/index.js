@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import aboutContentsMessages from '@server/helpers/messages/aboutContents';
 
 const validateAbout = (about = {}, options = { abortEarly: false }) => {
   const schema = Joi.object().keys({
@@ -8,7 +7,7 @@ const validateAbout = (about = {}, options = { abortEarly: false }) => {
       .allow('')
       .max(20000)
       .required()
-      .messages(aboutContentsMessages),
+      .messages(),
   });
 
   const { error: validationError, value: data } = schema.validate(about, options);

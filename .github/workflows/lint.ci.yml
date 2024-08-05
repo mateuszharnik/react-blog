@@ -31,7 +31,7 @@ jobs:
       CLIENT_PORT: ${{ vars.CLIENT_PORT }}
       DEVTOOLS_ENABLED: ${{ vars.DEVTOOLS_ENABLED }}
       SERVER_URL: ${{ vars.SERVER_URL }}
-      PORT: ${{ vars.PORT }}
+      SERVER_PORT: ${{ vars.SERVER_PORT }}
       DB_URL: ${{ secrets.DB_URL }}
       LOGGER_ENABLED: ${{ vars.LOGGER_ENABLED }}
       RATE_LIMIT_ENABLED: ${{ vars.RATE_LIMIT_ENABLED }}

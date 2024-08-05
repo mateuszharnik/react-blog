@@ -8,6 +8,7 @@ import faqs from '@server/api/v1/faqs/router';
 import auth from '@server/api/v1/auth/router';
 import roles from '@server/api/v1/roles/router';
 import docs from '@server/api/v1/docs/router';
+import users from '@server/api/v1/users/router';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use('/faqs', faqs);
 router.use('/roles', roles);
 router.use('/terms-of-use', termsOfUse);
 router.use('/docs', docs);
+router.use('/users', users);
 
 export default router;

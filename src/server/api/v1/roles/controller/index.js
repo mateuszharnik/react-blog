@@ -1,66 +1,79 @@
 import colors from 'colors/safe';
 import logger from '@server/logger';
-import createResponseWithError from '@server/helpers/createResponseWithError';
-import mapValidationMessages from '@server/helpers/validation/mapValidationMessages';
 import sanitize from '@server/helpers/purify';
 import validateId from '@server/helpers/validation/validateId';
+import {
+  ApiBodyValidationError,
+  ApiParamsValidationError,
+  ApiConflictError,
+  ApiNotFoundError,
+} from '@server/utils/errorUtils';
+import { errorsConstants } from '@shared/constants';
+
 import validateRole from '../schema';
 import Role from '../model';
 
-export const countRoles = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
+const { ROLE_ERRORS } = errorsConstants;
 
+export const countRoles = async (req, res, next) => {
   try {
     const roles = await Role.count({ deleted_at: null });
 
     return res.status(200).json({ roles });
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getRoles = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const roles = await Role.find({ deleted_at: null }).sort({ created_at: -1 });
 
     return res.status(200).json(roles);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const getRole = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError } = validateId(id);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      throw ApiParamsValidationError({ validationError });
     }
 
     const role = await Role.findOne({ _id: id, deleted_at: null });
 
     if (!role) {
-      return responseWithError(404, 'Nie znaleziono roli użytkownika.');
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLE_NOT_FOUND_ERROR,
+        message: 'Role not found',
+      });
     }
 
     return res.status(200).json(role);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const createRole = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
+    req.body.name = sanitize(req.body.name);
+    req.body.description = sanitize(req.body.description);
+
+    const { validationError, data } = validateRole(req.body);
+
+    if (validationError) {
+      throw ApiBodyValidationError({ validationError });
+    }
+
     const role = await Role.findOne({
       name: req.body.name.toLowerCase(),
       deleted_at: null,
@@ -69,16 +82,10 @@ export const createRole = async (req, res, next) => {
     });
 
     if (role) {
-      return responseWithError(409, 'Rola o takiej nazwie już istnieje.');
-    }
-
-    req.body.name = sanitize(req.body.name);
-    req.body.description = sanitize(req.body.description);
-
-    const { validationError, data } = validateRole(req.body);
-
-    if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_ALREADY_EXIST_ERROR,
+        message: 'Role already exist',
+      });
     }
 
     const createdRole = await Role.create({
@@ -89,35 +96,27 @@ export const createRole = async (req, res, next) => {
     });
 
     if (!createdRole) {
-      return responseWithError(409, 'Nie udało się utworzyć nowej roli użytkownika.');
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_NOT_CREATED_ERROR,
+        message: 'Role not created',
+      });
     }
 
     return res.status(201).json(createdRole);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const updateRole = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError: validationIdError } = validateId(id);
 
     if (validationIdError) {
-      return responseWithError(409, validationIdError.details[0].message);
-    }
-
-    const role = await Role.findOne({ _id: id, deleted_at: null });
-
-    if (!role) {
-      return responseWithError(404, 'Nie znaleziono roli użytkownika.');
-    }
-
-    if (role?.type !== 'SUPERUSER') {
-      return responseWithError(409, 'Nie można zaktualizować tej roli użytkownika.');
+      throw ApiParamsValidationError({ validationError: validationIdError });
     }
 
     req.body.name = sanitize(req.body.name);
@@ -126,7 +125,23 @@ export const updateRole = async (req, res, next) => {
     const { validationError, data } = validateRole(req.body);
 
     if (validationError) {
-      return responseWithError(409, mapValidationMessages(validationError));
+      throw ApiBodyValidationError({ validationError });
+    }
+
+    const role = await Role.findOne({ _id: id, deleted_at: null });
+
+    if (!role) {
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLE_NOT_FOUND_ERROR,
+        message: 'Role not found',
+      });
+    }
+
+    if (role?.type !== 'SUPERUSER') {
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_CANNOT_BE_CHANGED_ERROR,
+        message: 'Role cannot be changed',
+      });
     }
 
     const updatedRole = await Role.findOneAndUpdate(
@@ -138,24 +153,28 @@ export const updateRole = async (req, res, next) => {
     );
 
     if (!updatedRole) {
-      return responseWithError(409, 'Nie udało się zaktualizować roli użytkownika.');
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_NOT_UPDATED_ERROR,
+        message: 'Role not updated',
+      });
     }
 
     return res.status(200).json(updatedRole);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const deleteRoles = async (req, res, next) => {
-  const responseWithError = createResponseWithError(res, next);
-
   try {
     const roles = await Role.find({ deleted_at: null, can_be_modified: true, type: 'SUPERUSER' });
 
     if (!roles?.length) {
-      return responseWithError(404, 'Nie znaleziono żadnej roli użytkownika.');
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLES_NOT_FOUND_ERROR,
+        message: 'Roles not found',
+      });
     }
 
     const ids = roles.map(({ _id }) => _id.toString());
@@ -166,7 +185,10 @@ export const deleteRoles = async (req, res, next) => {
     );
 
     if (!updatedRoles) {
-      return responseWithError(409, 'Nie udało się usunąć roli użytkownika.');
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLES_NOT_DELETED_ERROR,
+        message: 'Roles not deleted',
+      });
     }
 
     const deletedRoles = await Role.find({
@@ -176,35 +198,43 @@ export const deleteRoles = async (req, res, next) => {
     });
 
     if (!deletedRoles?.length) {
-      return responseWithError(404, 'Nie znaleziono żadnej roli użytkownika.');
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLES_NOT_FOUND_ERROR,
+        message: 'Roles not found',
+      });
     }
 
     return res.status(200).json(deletedRoles);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
 
 export const deleteRole = async (req, res, next) => {
   const { id } = req.params;
-  const responseWithError = createResponseWithError(res, next);
 
   try {
     const { validationError } = validateId(id);
 
     if (validationError) {
-      return responseWithError(409, validationError.details[0].message);
+      throw ApiParamsValidationError({ validationError });
     }
 
     const role = await Role.findOne({ _id: id, deleted_at: null });
 
     if (!role) {
-      return responseWithError(404, 'Nie znaleziono roli użytkownika.');
+      throw ApiNotFoundError({
+        key: ROLE_ERRORS.ROLE_NOT_FOUND_ERROR,
+        message: 'Role not found',
+      });
     }
 
     if (role?.type !== 'SUPERUSER') {
-      return responseWithError(409, 'Nie można usunąć tej roli użytkownika.');
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_CANNOT_BE_DELETED_ERROR,
+        message: 'Role cannot be deleted',
+      });
     }
 
     const deletedRole = await Role.findOneAndSoftDelete(
@@ -215,12 +245,15 @@ export const deleteRole = async (req, res, next) => {
     );
 
     if (!deletedRole) {
-      return responseWithError(409, 'Nie udało się usunąć roli użytkownika.');
+      throw ApiConflictError({
+        key: ROLE_ERRORS.ROLE_NOT_DELETED_ERROR,
+        message: 'Role not deleted',
+      });
     }
 
     return res.status(200).json(deletedRole);
   } catch (error) {
     logger.error(colors.red(error));
-    responseWithError();
+    next(error);
   }
 };
