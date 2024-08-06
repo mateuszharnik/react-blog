@@ -1,7 +1,7 @@
+import { CanceledError } from 'axios';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import { errorsConstants } from '@shared/constants';
-import { CanceledError } from 'axios';
 
 const {
   GLOBAL_ERRORS: { INTERNAL_SERVER_ERROR },
