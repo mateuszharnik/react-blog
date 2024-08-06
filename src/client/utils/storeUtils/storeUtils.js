@@ -10,6 +10,7 @@ import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 import cloneDeep from 'lodash/cloneDeep';
 import pick from 'lodash/pick';
+import { ApiResponseError } from '@client/errors/apiResponseError';
 import { apiService } from '@client/services/apiService';
 import { valuesConstants } from '@shared/constants';
 
@@ -22,6 +23,7 @@ const defaultActionNames = {
   ON_SUCCESS: 'onSuccess',
   ON_ERROR: 'onError',
   ON_TRIGGER: 'onTrigger',
+  ON_CANCELED: 'onCanceled',
 };
 
 const defaultMetadata = {
@@ -30,45 +32,63 @@ const defaultMetadata = {
   isLoading: true, // If isIdle or isFetching is true
   isError: false,
   isSuccess: false,
-  isFinished: false, // If isSuccess or isError is true
-  error: '',
-  data: null,
+  isCanceled: false,
+  isFinished: false, // If isSuccess, isCanceled or isError is true
+  payload: null,
+  error: null,
+  result: null,
 };
 
-export const generateRequestMetadata = ({ status = API_STATUSES.TRIGGERED, error = '', data = null } = {}) => {
+export const generateRequestMetadata = ({
+  status = API_STATUSES.TRIGGERED, error = null, result = null, payload = null,
+} = {}) => {
   const getRequestMetadataForStatus = cond([
     [
       ({ status: requestStatus }) => requestStatus === API_STATUSES.TRIGGERED,
-      () => ({ ...defaultMetadata }),
+      ({ payload: requestPayload }) => ({ ...defaultMetadata, payload: requestPayload }),
     ],
     [
       ({ status: requestStatus }) => requestStatus === API_STATUSES.FETCHING,
-      () => ({
+      ({ payload: requestPayload }) => ({
         ...defaultMetadata,
         isIdle: false,
         isFetching: true,
+        payload: requestPayload,
+      }),
+    ],
+    [
+      ({ status: requestStatus }) => requestStatus === API_STATUSES.CANCELED,
+      ({ payload: requestPayload }) => ({
+        ...defaultMetadata,
+        isIdle: false,
+        isLoading: false,
+        isCanceled: true,
+        isFinished: true,
+        payload: requestPayload,
       }),
     ],
     [
       ({ status: requestStatus }) => requestStatus === API_STATUSES.ERROR,
-      ({ error: requestError }) => ({
+      ({ payload: requestPayload, error: requestError }) => ({
         ...defaultMetadata,
         isIdle: false,
         isLoading: false,
         isError: true,
         isFinished: true,
+        payload: requestPayload,
         error: requestError,
       }),
     ],
     [
       ({ status: requestStatus }) => requestStatus === API_STATUSES.SUCCESS,
-      ({ data: requestData }) => ({
+      ({ payload: requestPayload, result: requestResult }) => ({
         ...defaultMetadata,
         isIdle: false,
         isLoading: false,
         isSuccess: true,
         isFinished: true,
-        data: requestData,
+        payload: requestPayload,
+        result: requestResult,
       }),
     ],
     [
@@ -79,7 +99,9 @@ export const generateRequestMetadata = ({ status = API_STATUSES.TRIGGERED, error
     ],
   ]);
 
-  return getRequestMetadataForStatus({ status, error, data });
+  return getRequestMetadataForStatus({
+    status, error, result, payload,
+  });
 };
 
 export const checkIfStoreRequestExist = ({ requests = {}, request, key } = {}) => {
@@ -98,9 +120,11 @@ export const setRequestMetadata = ({
   }
 };
 
-const onTriggerAction = (callback) => (state, payload = {}) => {
-  const { request, shouldUpdateMetadata = false, key = defaultKey } = payload;
-  const metadata = generateRequestMetadata({ status: API_STATUSES.TRIGGERED });
+const onTriggerAction = (callback) => (state, data = {}) => {
+  const {
+    request, payload, result, error, key, context, options, params, shouldUpdateMetadata = true,
+  } = data;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.TRIGGERED, payload });
 
   if (shouldUpdateMetadata) {
     setRequestMetadata({
@@ -109,30 +133,17 @@ const onTriggerAction = (callback) => (state, payload = {}) => {
   }
 
   if (isFunction(callback)) {
-    callback(state, payload);
-  }
-};
-
-const onFetchingAction = (callback) => (state, payload = {}) => {
-  const { request, shouldUpdateMetadata = false, key = defaultKey } = payload;
-  const metadata = generateRequestMetadata({ status: API_STATUSES.FETCHING });
-
-  if (shouldUpdateMetadata) {
-    setRequestMetadata({
-      state, request, key, metadata,
+    callback(state, {
+      request, payload, result, error, shouldUpdateMetadata, key, context, options, params,
     });
   }
-
-  if (isFunction(callback)) {
-    callback(state, payload);
-  }
 };
 
-const onErrorAction = (callback) => (state, payload = {}) => {
+const onFetchingAction = (callback) => (state, data = {}) => {
   const {
-    request, shouldUpdateMetadata = false, key = defaultKey, error,
-  } = payload;
-  const metadata = generateRequestMetadata({ status: API_STATUSES.ERROR, error });
+    request, payload, result, error, key, context, options, params, shouldUpdateMetadata = true,
+  } = data;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.FETCHING, payload });
 
   if (shouldUpdateMetadata) {
     setRequestMetadata({
@@ -141,15 +152,17 @@ const onErrorAction = (callback) => (state, payload = {}) => {
   }
 
   if (isFunction(callback)) {
-    callback(state, payload);
+    callback(state, {
+      request, payload, result, error, shouldUpdateMetadata, key, context, options, params,
+    });
   }
 };
 
-const onSuccessAction = (callback) => (state, payload = {}) => {
+const onCanceledAction = (callback) => (state, data = {}) => {
   const {
-    request, shouldUpdateMetadata = false, key = defaultKey, result,
-  } = payload;
-  const metadata = generateRequestMetadata({ status: API_STATUSES.SUCCESS, data: result });
+    request, payload, result, error, key, context, options, params, shouldUpdateMetadata = true,
+  } = data;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.CANCELED, payload });
 
   if (shouldUpdateMetadata) {
     setRequestMetadata({
@@ -158,12 +171,52 @@ const onSuccessAction = (callback) => (state, payload = {}) => {
   }
 
   if (isFunction(callback)) {
-    callback(state, payload);
+    callback(state, {
+      request, payload, result, error, shouldUpdateMetadata, key, context, options, params,
+    });
   }
 };
 
-const onResetAction = (request, callback) => (state, payload = {}) => {
-  const { key = defaultKey } = payload;
+const onErrorAction = (callback) => (state, data = {}) => {
+  const {
+    request, payload, result, error, key, context, options, params, shouldUpdateMetadata = true,
+  } = data;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.ERROR, payload, error });
+
+  if (shouldUpdateMetadata) {
+    setRequestMetadata({
+      state, request, key, metadata,
+    });
+  }
+
+  if (isFunction(callback)) {
+    callback(state, {
+      request, payload, result, error, shouldUpdateMetadata, key, context, options, params,
+    });
+  }
+};
+
+const onSuccessAction = (callback) => (state, data = {}) => {
+  const {
+    request, payload, result, error, key, context, options, params, shouldUpdateMetadata = true,
+  } = data;
+  const metadata = generateRequestMetadata({ status: API_STATUSES.SUCCESS, payload, result });
+
+  if (shouldUpdateMetadata) {
+    setRequestMetadata({
+      state, request, key, metadata,
+    });
+  }
+
+  if (isFunction(callback)) {
+    callback(state, {
+      request, payload, result, error, shouldUpdateMetadata, key, context, options, params,
+    });
+  }
+};
+
+const onResetAction = (request, callback) => (state, data = {}) => {
+  const { key = defaultKey } = data;
 
   if (!isString(request)) {
     throw new Error('Request must be type of string');
@@ -178,59 +231,78 @@ const onResetAction = (request, callback) => (state, payload = {}) => {
   }
 
   if (isFunction(callback)) {
-    callback(state, payload);
+    callback(state, { request, key });
   }
 };
 
 const createAction = ({
-  request, action, onTrigger, onFetching, onSuccess, onError,
-} = {}) => async (actions, payload = {}, helpers) => {
-  const shouldUpdateMetadata = payload.shouldUpdateMetadata || true;
-  const result = { data: null, error: null };
+  request, action, onTrigger, onFetching, onSuccess, onError, onCanceled,
+} = {}) => async (actions, data = {}, helpers) => {
+  const { getStoreState } = helpers;
 
-  actions[onTrigger || defaultActionNames.ON_TRIGGER]({
-    request, shouldUpdateMetadata, ...payload,
-  });
-  if (isFunction(payload.onTrigger)) await payload.onTrigger(payload);
+  const {
+    onError: onActionError,
+    onSuccess: onActionSuccess,
+    onFetching: onActionFetching,
+    onTrigger: onActionTrigger,
+    onCanceled: onActionCanceled,
+    ...restData
+  } = data;
+
+  const response = { result: null, error: null, payload: restData.payload };
+  const payload = {
+    ...restData, request, result: null, error: null,
+  };
+
+  actions[onTrigger || defaultActionNames.ON_TRIGGER](payload);
+  if (isFunction(onActionTrigger)) await onActionTrigger(payload);
 
   try {
-    actions[onFetching || defaultActionNames.ON_FETCHING]({
-      request, shouldUpdateMetadata, ...payload,
-    });
-    if (isFunction(payload.onFetching)) await payload.onFetching(payload);
+    actions[onFetching || defaultActionNames.ON_FETCHING](payload);
+    if (isFunction(onActionFetching)) await onActionFetching(payload);
 
-    const response = await action(actions, payload, helpers);
+    const { data: result } = await action(actions, payload, helpers);
 
-    actions[onSuccess || defaultActionNames.ON_SUCCESS]({
-      request, result: response.data, shouldUpdateMetadata, ...payload,
-    });
-    if (isFunction(payload.onSuccess)) await payload.onSuccess(payload, response.data);
+    actions[onSuccess || defaultActionNames.ON_SUCCESS]({ ...payload, result });
+    if (isFunction(onActionSuccess)) await onActionSuccess({ ...payload, result });
 
-    result.data = response.data;
+    response.result = result;
   } catch (e) {
-    let error = null;
+    const error = (e instanceof ApiResponseError) ? e : new ApiResponseError();
 
-    if (apiService.isCancel(e)) {
-      error = e.message;
-    } else {
-      const { data = {} } = e.response;
-      error = data.messages ? data.messages[0].message : data;
+    if (error.shouldCheckForRefresh) {
+      if (error.isRefreshTokenError) return window.location.reload();
+
+      if (error.isPermissionError) {
+        const { user } = getStoreState().userStore;
+        const role = get(user, 'role', null);
+
+        const userHasMissingPermission = error.missingPermissions.some(
+          (missingPermission) => role[missingPermission],
+        );
+
+        if (userHasMissingPermission) return window.location.reload();
+      }
     }
 
-    actions[onError || defaultActionNames.ON_ERROR]({
-      request, error, shouldUpdateMetadata, ...payload,
-    });
-    if (isFunction(payload.onError)) await payload.onError(payload, error);
+    if (error.isCanceled) {
+      actions[onCanceled || defaultActionNames.ON_CANCELED](payload);
+      if (isFunction(onActionCanceled)) await onActionCanceled(payload);
+    } else {
+      actions[onError || defaultActionNames.ON_ERROR]({ ...payload, error });
+      if (isFunction(onActionError)) await onActionError({ ...payload, error });
+    }
 
-    result.error = error;
+    response.error = error;
   }
 
-  return result;
+  return response;
 };
 
 export const storeActions = {
   onTrigger: onTriggerAction,
   onFetching: onFetchingAction,
+  onCanceled: onCanceledAction,
   onError: onErrorAction,
   onSuccess: onSuccessAction,
   onReset: onResetAction,
@@ -244,6 +316,7 @@ export const createStoreActionsHook = ({
   action,
   resetMetadataAction,
   onError: onActionError,
+  onCanceled: onActionCanceled,
   onSuccess: onActionSuccess,
   onFetching: onActionFetching,
   onTrigger: onActionTrigger,
@@ -258,49 +331,59 @@ export const createStoreActionsHook = ({
     return generateRequestMetadata();
   }, [requests]);
 
-  const onError = useCallback((actions) => async (payload, error) => {
+  const onError = useCallback((actions) => async (payload) => {
     if (isFunction(actions.onPayloadError)) {
-      await actions.onPayloadError({ payload, error });
+      await actions.onPayloadError(payload);
     }
 
     if (isFunction(actions.onActionError)) {
-      await actions.onActionError({ payload, error });
+      await actions.onActionError(payload);
     }
   }, []);
 
-  const onSuccess = useCallback((actions) => async (payload, data) => {
+  const onCanceled = useCallback((actions) => async (payload) => {
+    if (isFunction(actions.onPayloadCanceled)) {
+      await actions.onPayloadCanceled(payload);
+    }
+
+    if (isFunction(actions.onActionCanceled)) {
+      await actions.onActionCanceled(payload);
+    }
+  }, []);
+
+  const onSuccess = useCallback((actions) => async (payload) => {
     if (isFunction(actions.onPayloadSuccess)) {
-      await actions.onPayloadSuccess({ payload, data });
+      await actions.onPayloadSuccess(payload);
     }
 
     if (isFunction(actions.onActionSuccess)) {
-      await actions.onActionSuccess({ payload, data });
+      await actions.onActionSuccess(payload);
     }
   }, []);
 
   const onFetching = useCallback((actions) => async (payload) => {
     if (isFunction(actions.onPayloadFetching)) {
-      await actions.onPayloadFetching({ payload });
+      await actions.onPayloadFetching(payload);
     }
 
     if (isFunction(actions.onActionFetching)) {
-      await actions.onActionFetching({ payload });
+      await actions.onActionFetching(payload);
     }
   }, []);
 
   const onTrigger = useCallback((actions) => async (payload) => {
     if (isFunction(actions.onPayloadTrigger)) {
-      await actions.onPayloadTrigger({ payload });
+      await actions.onPayloadTrigger(payload);
     }
 
     if (isFunction(actions.onActionTrigger)) {
-      await actions.onActionTrigger({ payload });
+      await actions.onActionTrigger(payload);
     }
   }, []);
 
-  const storeAction = useCallback((payload = {}) => {
+  const storeAction = useCallback((data = {}) => {
     const cancelTokenSource = apiService.CancelToken.source();
-    const options = { cancelToken: cancelTokenSource.token };
+    const defaultOption = { cancelToken: cancelTokenSource.token };
     cancelToken.current = cancelTokenSource;
 
     const {
@@ -308,25 +391,33 @@ export const createStoreActionsHook = ({
       onSuccess: onPayloadSuccess,
       onFetching: onPayloadFetching,
       onTrigger: onPayloadTrigger,
-      ...rest
-    } = payload;
+      onCanceled: onPayloadCanceled,
+      shouldUpdateMetadata = true,
+      params = null,
+      context = null,
+      payload = null,
+      options: dataOptions = null,
+    } = data;
+
+    const options = isObject(dataOptions) ? { ...dataOptions, ...defaultOption } : defaultOption;
 
     return action({
       key,
+      payload,
       options,
-      onError: isFunction(onPayloadError) || isFunction(onActionError)
-        ? onError({ onPayloadError, onActionError }) : null,
-      onSuccess: isFunction(onPayloadSuccess) || isFunction(onActionSuccess)
-        ? onSuccess({ onPayloadSuccess, onActionSuccess }) : null,
-      onFetching: isFunction(onPayloadFetching) || isFunction(onActionFetching)
-        ? onFetching({ onPayloadFetching, onActionFetching }) : null,
-      onTrigger: isFunction(onPayloadTrigger) || isFunction(onActionTrigger)
-        ? onTrigger({ onPayloadTrigger, onActionTrigger }) : null,
-      ...rest,
+      params,
+      context,
+      shouldUpdateMetadata,
+      onError: onError({ onPayloadError, onActionError }),
+      onCanceled: onCanceled({ onPayloadCanceled, onActionCanceled }),
+      onSuccess: onSuccess({ onPayloadSuccess, onActionSuccess }),
+      onFetching: onFetching({ onPayloadFetching, onActionFetching }),
+      onTrigger: onTrigger({ onPayloadTrigger, onActionTrigger }),
     });
   }, [
     cancelToken,
     onActionError,
+    onActionCanceled,
     onActionSuccess,
     onActionFetching,
     onActionTrigger,

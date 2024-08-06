@@ -7,8 +7,7 @@ describe('storeUtils', () => {
   describe('generateRequestMetadata', () => {
     const defaultPayload = {
       status: 'INVALID',
-      error: 'Error',
-      data: { title: 'Title' },
+      payload: { title: 'Title' },
     };
 
     it(`should return correct object for status '${API_STATUSES.TRIGGERED}'`, () => {
@@ -21,9 +20,11 @@ describe('storeUtils', () => {
         isLoading: true,
         isError: false,
         isSuccess: false,
+        isCanceled: false,
         isFinished: false,
-        error: '',
-        data: null,
+        error: null,
+        result: null,
+        payload: defaultPayload.payload,
       });
     });
 
@@ -36,42 +37,68 @@ describe('storeUtils', () => {
         isFetching: true,
         isLoading: true,
         isError: false,
+        isCanceled: false,
         isSuccess: false,
         isFinished: false,
-        error: '',
-        data: null,
+        error: null,
+        result: null,
+        payload: defaultPayload.payload,
+      });
+    });
+
+    it(`should return correct object for status '${API_STATUSES.CANCELED}'`, () => {
+      expect(generateRequestMetadata({
+        ...defaultPayload,
+        status: API_STATUSES.CANCELED,
+      })).toMatchObject({
+        isIdle: false,
+        isFetching: false,
+        isLoading: false,
+        isError: false,
+        isCanceled: true,
+        isSuccess: false,
+        isFinished: true,
+        error: null,
+        result: null,
+        payload: defaultPayload.payload,
       });
     });
 
     it(`should return correct object for status '${API_STATUSES.ERROR}'`, () => {
       expect(generateRequestMetadata({
         ...defaultPayload,
+        error: 'Error',
         status: API_STATUSES.ERROR,
       })).toMatchObject({
         isIdle: false,
         isFetching: false,
         isLoading: false,
         isError: true,
+        isCanceled: false,
         isSuccess: false,
         isFinished: true,
         error: 'Error',
-        data: null,
+        result: null,
+        payload: defaultPayload.payload,
       });
     });
 
     it(`should return correct object for status '${API_STATUSES.SUCCESS}'`, () => {
       expect(generateRequestMetadata({
         ...defaultPayload,
+        result: { title: 'Title' },
         status: API_STATUSES.SUCCESS,
       })).toMatchObject({
         isIdle: false,
         isFetching: false,
         isLoading: false,
         isError: false,
+        isCanceled: false,
         isSuccess: true,
         isFinished: true,
-        error: '',
-        data: { title: 'Title' },
+        error: null,
+        result: { title: 'Title' },
+        payload: defaultPayload.payload,
       });
     });
 

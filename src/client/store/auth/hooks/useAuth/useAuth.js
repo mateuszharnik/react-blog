@@ -42,7 +42,7 @@ export const useAuth = ({ key } = {}) => {
     },
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -65,7 +65,7 @@ export const useAuth = ({ key } = {}) => {
     },
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -88,7 +88,7 @@ export const useAuth = ({ key } = {}) => {
     },
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -103,15 +103,15 @@ export const useAuth = ({ key } = {}) => {
     request: requestsNames.SIGN_OUT_REQUEST,
     action: signOutAction,
     resetMetadataAction: resetSignOutMetadataAction,
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       addToast({
-        message: data?.message,
+        message: t('forms.SUCCESSFULLY_LOGGED_OUT'),
         type: toastsConstants.TYPE.SUCCESS,
       });
     },
     onError: ({ error }) => {
       addToast({
-        message: error || t('common.errors.ERROR_OCCURRED'),
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },

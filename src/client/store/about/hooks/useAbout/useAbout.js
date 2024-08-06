@@ -31,10 +31,8 @@ export const useAbout = ({ key } = {}) => {
     action: getAboutAction,
     resetMetadataAction: resetGetAboutMetadataAction,
     onError: ({ error }) => {
-      if (error === 'canceled') return;
-
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -57,7 +55,7 @@ export const useAbout = ({ key } = {}) => {
     },
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },

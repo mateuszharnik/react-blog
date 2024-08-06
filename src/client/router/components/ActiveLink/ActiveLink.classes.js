@@ -6,4 +6,7 @@ export const getActiveLinkClassName = cva('', {
       true: 'exact-active',
     },
   },
+  defaultVariants: {
+    isActive: false,
+  },
 });

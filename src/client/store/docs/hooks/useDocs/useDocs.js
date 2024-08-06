@@ -1,13 +1,16 @@
 import { useCallback } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useTranslation } from 'react-i18next';
 import { useToastsContext } from '@client/contexts/ToastsContext';
 import { createStoreActionsHook } from '@client/utils/storeUtils';
 import { requestsNames } from '@client/store/docs/docs.store';
 import { toastsConstants } from '@shared/constants';
 
 export const useDocs = ({ key } = {}) => {
-  const { accessToken, requests } = useStoreState((store) => store.docsStore);
+  const { t } = useTranslation();
   const { actions: { addToast } } = useToastsContext();
+
+  const { hasAccess, requests } = useStoreState((store) => store.docsStore);
 
   const {
     signInAction,
@@ -29,7 +32,7 @@ export const useDocs = ({ key } = {}) => {
     resetMetadataAction: resetSignInMetadataAction,
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -52,7 +55,7 @@ export const useDocs = ({ key } = {}) => {
   }, []);
 
   return {
-    accessToken,
+    hasAccess,
     actions: {
       signIn,
       cancelSignIn,

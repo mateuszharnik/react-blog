@@ -1,7 +1,5 @@
-import { PublicAPIService } from '@client/utils/apiUtils';
+import PublicAPIService from '@client/services/apiService/public/publicAPIService';
 
 export class PublicConfigAPIService extends PublicAPIService {
-  getConfig(options) {
-    return this.client.get('', options);
-  }
+  getConfig = (options) => this.client.get('', options);
 }

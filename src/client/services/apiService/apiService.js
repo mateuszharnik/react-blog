@@ -7,6 +7,7 @@ import { PrivateMessagesAPIService } from './private/privateMessagesAPIService';
 import { PrivateContactAPIService } from './private/privateContactAPIService';
 import { PrivateConfigAPIService } from './private/privateConfigAPIService';
 import { PrivateAuthAPIService } from './private/privateAuthAPIService';
+import { PrivateUsersAPIService } from './private/privateUsersAPIService';
 
 import { PublicAboutAPIService } from './public/publicAboutAPIService';
 import { PublicMessagesAPIService } from './public/publicMessagesAPIService';
@@ -29,6 +30,7 @@ class ApiService {
     this.privateContact = new PrivateContactAPIService(apiConstants.CONTACT.ROOT);
     this.privateConfig = new PrivateConfigAPIService(apiConstants.CONFIG.ROOT);
     this.privateAuth = new PrivateAuthAPIService(apiConstants.AUTH.ROOT);
+    this.privateUsers = new PrivateUsersAPIService(apiConstants.USERS.ROOT);
 
     this.publicAbout = new PublicAboutAPIService(apiConstants.ABOUT.ROOT);
     this.publicMessages = new PublicMessagesAPIService(apiConstants.MESSAGES.ROOT);
@@ -45,6 +47,7 @@ class ApiService {
     this.privateContact.setStore(store);
     this.privateConfig.setStore(store);
     this.privateAuth.setStore(store);
+    this.privateUsers.setStore(store);
 
     this.publicAbout.setStore(store);
     this.publicMessages.setStore(store);

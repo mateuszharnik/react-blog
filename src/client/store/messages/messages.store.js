@@ -46,6 +46,8 @@ export const messagesStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   onSuccessGetMessages: action(storeActions.onSuccess((state, { result }) => {

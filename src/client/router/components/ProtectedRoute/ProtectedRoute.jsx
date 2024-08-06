@@ -2,9 +2,12 @@ import { memo, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
+import omit from 'lodash/omit';
 import { usePermissions } from '@client/store/user';
 import { protectedRoutePropTypes } from '@client/prop-types/protectedRoutePropTypes';
 import Redirect from '@client/router/components/Redirect';
+
+const definedPropsKeys = Object.keys(protectedRoutePropTypes.props);
 
 const result = cond([
   [
@@ -64,16 +67,16 @@ const result = cond([
   ],
   [
     ({ props }) => props.pageComponent,
-    ({ props }) => ({
+    ({ props, restProps }) => ({
       component: props.pageComponent,
-      props: {},
+      props: restProps,
     }),
   ],
   [
     stubTrue,
-    () => ({
+    ({ restProps }) => ({
       component: Outlet,
-      props: {},
+      props: restProps,
     }),
   ],
 ]);
@@ -90,17 +93,21 @@ const ProtectedRoute = memo((props) => {
     requiredRoles: props.requiredRoles,
   });
 
+  const restProps = useMemo(() => omit(props, definedPropsKeys), [props]);
+
   const render = useMemo(() => result({
     isAuthenticated,
     hasPermissions,
     hasRoles,
     hasSubscriptions,
+    restProps,
     props,
   }), [
     isAuthenticated,
     hasPermissions,
     hasRoles,
     hasSubscriptions,
+    restProps,
     props,
   ]);
 

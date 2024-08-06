@@ -37,6 +37,8 @@ export const configStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   setConfig: action(storeActions.onSuccess((state, { result }) => {

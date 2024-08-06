@@ -37,6 +37,8 @@ export const contactStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   setContact: action(storeActions.onSuccess((state, { result }) => {

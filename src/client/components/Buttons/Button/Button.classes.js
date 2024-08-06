@@ -5,6 +5,18 @@ const { BUTTON_SIZES, BUTTON_COLORS, BUTTON_VARIANTS } = propTypesConstants;
 
 export const getButtonClassName = cva('btn', {
   variants: {
+    color: {
+      [BUTTON_COLORS.PRIMARY]: null,
+      [BUTTON_COLORS.SECONDARY]: null,
+      [BUTTON_COLORS.SUCCESS]: null,
+      [BUTTON_COLORS.DANGER]: null,
+      [BUTTON_COLORS.WARNING]: null,
+      [BUTTON_COLORS.INFO]: null,
+    },
+    variant: {
+      [BUTTON_VARIANTS.SOLID]: null,
+      [BUTTON_VARIANTS.OUTLINE]: null,
+    },
     size: {
       [BUTTON_SIZES.SMALL]: 'btn-sm',
       [BUTTON_SIZES.MEDIUM]: 'btn-md',

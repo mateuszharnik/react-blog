@@ -37,6 +37,8 @@ export const aboutStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   setAbout: action(storeActions.onSuccess((state, { result }) => {
