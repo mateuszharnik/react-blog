@@ -23,10 +23,12 @@ export const csrfStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   onSuccess: action(storeActions.onSuccess((state, { result }) => {
-    state.csrfToken = result?.CSRFToken;
+    state.csrfToken = result?.CSRFToken || null;
   })),
 
   reset: action((state) => {

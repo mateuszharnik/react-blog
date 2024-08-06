@@ -176,7 +176,12 @@ export const deleteMessage = async (req, res, next) => {
 
     const message = await Message.findOne({ _id: id, deleted_at: null });
 
-    if (!message) throw ApiNotFoundError({ key: 'MESSAGE_NOT_FOUND_ERROR' });
+    if (!message) {
+      throw ApiNotFoundError({
+        key: MESSAGE_ERRORS.MESSAGE_NOT_FOUND_ERROR,
+        message: 'Message not found',
+      });
+    }
 
     const deletedMessage = await Message.findOneAndSoftDelete(
       { _id: id, deleted_at: null },

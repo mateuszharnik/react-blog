@@ -1,7 +1,5 @@
-import { PrivateAPIService } from '@client/utils/apiUtils';
+import PrivateAPIService from '@client/services/apiService/private/privateAPIService';
 
 export class PrivateMessagesAPIService extends PrivateAPIService {
-  getMessages(options) {
-    return this.client.get('', options);
-  }
+  getMessages = (options) => this.client.get('', options);
 }

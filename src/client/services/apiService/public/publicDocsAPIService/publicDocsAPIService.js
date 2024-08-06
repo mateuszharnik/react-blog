@@ -1,12 +1,9 @@
-import { PublicAPIService } from '@client/utils/apiUtils';
+import PublicAPIService from '@client/services/apiService/public/publicAPIService';
 import { apiConstants } from '@shared/constants';
 
 export class PublicDocsAPIService extends PublicAPIService {
-  getRefreshToken(options) {
-    return this.client.post(apiConstants.DOCS.REFRESH_TOKEN.ROOT, options);
-  }
+  getRefreshToken = (payload, options) => this.client
+    .post(apiConstants.DOCS.REFRESH_TOKEN.ROOT, payload, options);
 
-  signIn(payload, options) {
-    return this.client.post(apiConstants.DOCS.SIGN_IN.ROOT, payload, options);
-  }
+  signIn = (payload, options) => this.client.post(apiConstants.DOCS.SIGN_IN.ROOT, payload, options);
 }

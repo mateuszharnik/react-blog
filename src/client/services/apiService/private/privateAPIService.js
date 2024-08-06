@@ -1,56 +1,10 @@
-// eslint-disable-next-line max-classes-per-file
 import decode from 'jwt-decode';
 import axios, { CanceledError } from 'axios';
+import { ApiResponseError } from '@client/errors/apiResponseError';
 import { envConfig } from '@client/configs/envConfig';
 import { apiConstants, statusesConstants } from '@shared/constants';
 
-export class PublicAPIService {
-  #store = null;
-
-  constructor(baseURL) {
-    this.client = axios.create({ baseURL });
-
-    this.#setInterceptors();
-  }
-
-  #setResponseInterceptor() {
-    this.client.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error instanceof CanceledError) {
-          return Promise.reject(error);
-        }
-
-        return Promise.reject(error);
-      },
-    );
-  }
-
-  #setRequestInterceptor() {
-    this.client.interceptors.request.use((config) => {
-      if (!this.#store) Promise.reject(new Error('Store must be initiate'));
-
-      const csrfToken = this.#store.getState().csrfStore?.csrfToken;
-
-      if (csrfToken) {
-        config.headers.common['X-CSRF-TOKEN'] = csrfToken;
-      }
-
-      return config;
-    });
-  }
-
-  #setInterceptors() {
-    this.#setRequestInterceptor();
-    this.#setResponseInterceptor();
-  }
-
-  setStore(store) {
-    this.#store = store;
-  }
-}
-
-export class PrivateAPIService {
+class PrivateAPIService {
   #store = null;
 
   constructor(baseURL) {
@@ -76,7 +30,7 @@ export class PrivateAPIService {
         const { response, config } = error;
 
         if (error instanceof CanceledError) {
-          return Promise.reject(error);
+          return Promise.reject(new ApiResponseError(error));
         }
 
         if (this.#checkIfShouldRefresh(response, config)) {
@@ -88,20 +42,18 @@ export class PrivateAPIService {
             const { exp } = decode(accessToken);
 
             if ((Math.floor(Date.now() / 1000)) < exp) {
-              return Promise.reject(error);
+              return Promise.reject(new ApiResponseError(error));
             }
 
-            const { data } = await this.#store.getActions().tokensStore.getRefreshTokenAction({});
+            const { result } = await this.#store.getActions().tokensStore.getRefreshTokenAction({});
 
-            if (data) {
-              return this.client(config);
-            }
+            if (result) return this.client(config);
           } catch (e) {
-            return Promise.reject(error);
+            return Promise.reject(new ApiResponseError(error));
           }
         }
 
-        return Promise.reject(error);
+        return Promise.reject(new ApiResponseError(error));
       },
     );
   }
@@ -134,3 +86,5 @@ export class PrivateAPIService {
     this.#store = store;
   }
 }
+
+export default PrivateAPIService;

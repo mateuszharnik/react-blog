@@ -1,7 +1,5 @@
-import { PublicAPIService } from '@client/utils/apiUtils';
+import PublicAPIService from '@client/services/apiService/public/publicAPIService';
 
 export class PublicCsrfAPIService extends PublicAPIService {
-  async getCSRFToken(options) {
-    return this.client.get('', options);
-  }
+  getCSRFToken = (options) => this.client.get('', options);
 }

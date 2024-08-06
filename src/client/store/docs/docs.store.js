@@ -8,7 +8,7 @@ export const requestsNames = {
 };
 
 export const docsStore = {
-  accessToken: null,
+  hasAccess: false,
   requests: {},
 
   signInAction: thunk(storeActions.createAction({
@@ -19,9 +19,9 @@ export const docsStore = {
 
   getRefreshTokenAction: thunk(storeActions.createAction({
     request: requestsNames.GET_REFRESH_TOKEN_REQUEST,
-    onSuccess: 'setAccessToken',
-    action: (_, { options }) => apiService.publicDocs
-      .getRefreshToken(options),
+    onSuccess: 'setHasAccess',
+    action: (_, { payload, options }) => apiService.publicDocs
+      .getRefreshToken(payload, options),
   })),
 
   resetSignInMetadataAction: action(storeActions.onReset(
@@ -36,15 +36,17 @@ export const docsStore = {
 
   onFetching: action(storeActions.onFetching()),
 
+  onCanceled: action(storeActions.onCanceled()),
+
   onError: action(storeActions.onError()),
 
   onSuccess: action(storeActions.onSuccess()),
 
-  setAccessToken: action(storeActions.onSuccess((state, { result }) => {
-    state.accessToken = result;
+  setHasAccess: action(storeActions.onSuccess((state, { result }) => {
+    state.hasAccess = result;
   })),
 
   reset: action((state) => {
-    state.accessToken = null;
+    state.hasAccess = false;
   }),
 };

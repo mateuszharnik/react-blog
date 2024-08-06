@@ -14,5 +14,9 @@ export const getToastClassName = cva('toast', {
       true: 'mt-2',
       false: 'mb-2',
     },
+    defaultVariants: {
+      marginBottom: true,
+      type: toastsConstants.TYPE.PRIMARY,
+    },
   },
 });

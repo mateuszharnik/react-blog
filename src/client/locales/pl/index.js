@@ -9,6 +9,7 @@ import contact from './contact.json';
 import about from './about.json';
 import dictionary from './dictionary.json';
 import footer from './footer.json';
+import errors from './errors.json';
 
 export const pl = {
   translation: {
@@ -23,5 +24,6 @@ export const pl = {
     about,
     dictionary,
     footer,
+    errors,
   },
 };

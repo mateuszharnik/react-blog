@@ -12,7 +12,7 @@ const DocsRoute = memo(() => {
   const [isLoading, setIsLoading] = useState(true);
 
   const {
-    accessToken,
+    hasAccess,
     actions: { getRefreshToken },
     utils: { getRefreshTokenMetadata },
   } = useDocs();
@@ -28,13 +28,13 @@ const DocsRoute = memo(() => {
 
   useEffect(() => {
     if (getRefreshTokenMetadata.isSuccess) {
-      if (accessToken) {
+      if (hasAccess) {
         document.location.href = apiDocsUrl;
       } else {
         setIsLoading(false);
       }
     }
-  }, [accessToken, getRefreshTokenMetadata.isSuccess]);
+  }, [hasAccess, getRefreshTokenMetadata.isSuccess]);
 
   useEffect(() => {
     if (getRefreshTokenMetadata.isError) {

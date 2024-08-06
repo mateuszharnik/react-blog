@@ -17,8 +17,8 @@ export const authStore = {
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.publicAuth.signIn(payload, options, true);
 
-      getStoreActions().userStore.setUser({ result: response?.data });
-      getStoreActions().tokensStore.setAccessToken({ result: response?.data });
+      getStoreActions().userStore.setUser({ result: response?.data?.user || null });
+      getStoreActions().tokensStore.setAccessToken({ result: response?.data?.accessToken || null });
 
       return response;
     },
@@ -29,8 +29,8 @@ export const authStore = {
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.publicAuth.signIn(payload, options);
 
-      getStoreActions().userStore.setUser({ result: response?.data });
-      getStoreActions().tokensStore.setAccessToken({ result: response?.data });
+      getStoreActions().userStore.setUser({ result: response?.data?.user || null });
+      getStoreActions().tokensStore.setAccessToken({ result: response?.data?.accessToken || null });
 
       return response;
     },
@@ -41,8 +41,8 @@ export const authStore = {
     action: async (_, { payload, options }, { getStoreActions }) => {
       const response = await apiService.publicAuth.signUp(payload, options);
 
-      getStoreActions().userStore.setUser({ result: response?.data });
-      getStoreActions().tokensStore.setAccessToken({ result: response?.data });
+      getStoreActions().userStore.setUser({ result: response?.data?.user || null });
+      getStoreActions().tokensStore.setAccessToken({ result: response?.data?.accessToken || null });
 
       return response;
     },
@@ -80,6 +80,8 @@ export const authStore = {
   onTrigger: action(storeActions.onTrigger()),
 
   onFetching: action(storeActions.onFetching()),
+
+  onCanceled: action(storeActions.onCanceled()),
 
   onError: action(storeActions.onError()),
 

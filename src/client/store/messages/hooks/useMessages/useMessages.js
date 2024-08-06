@@ -7,9 +7,10 @@ import { requestsNames } from '@client/store/messages/messages.store';
 import { toastsConstants } from '@shared/constants';
 
 export const useMessages = ({ key } = {}) => {
-  const { ids, entities, requests } = useStoreState((store) => store.messagesStore);
   const { t } = useTranslation();
   const { actions: { addToast } } = useToastsContext();
+
+  const { ids, entities, requests } = useStoreState((store) => store.messagesStore);
 
   const messages = useMemo(() => ids.map((id) => entities[id]), [ids, entities]);
 
@@ -33,7 +34,7 @@ export const useMessages = ({ key } = {}) => {
     resetMetadataAction: resetGetMessageMetadataAction,
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },
@@ -56,7 +57,7 @@ export const useMessages = ({ key } = {}) => {
     },
     onError: ({ error }) => {
       addToast({
-        message: error,
+        message: t(`errors.apiResponseErrors.${error.key}`),
         type: toastsConstants.TYPE.DANGER,
       });
     },

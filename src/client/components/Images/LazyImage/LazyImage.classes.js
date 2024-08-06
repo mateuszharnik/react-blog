@@ -6,4 +6,7 @@ export const getImageClassName = cva('lazy-load-image', {
       false: 'lazy-load-image--hidden',
     },
   },
+  defaultVariants: {
+    isLoaded: false,
+  },
 });

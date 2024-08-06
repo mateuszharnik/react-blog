@@ -14,4 +14,7 @@ export const getDivClassName = cva('toast-wrapper', {
       [TOAST_POSITIONS.BOTTOM_RIGHT]: 'toast-wrapper__bottom-right',
     },
   },
+  defaultVariants: {
+    position: TOAST_POSITIONS.BOTTOM_RIGHT,
+  },
 });

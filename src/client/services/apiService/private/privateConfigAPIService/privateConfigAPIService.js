@@ -1,7 +1,5 @@
-import { PrivateAPIService } from '@client/utils/apiUtils';
+import PrivateAPIService from '@client/services/apiService/private/privateAPIService';
 
 export class PrivateConfigAPIService extends PrivateAPIService {
-  updateConfig(payload, options) {
-    return this.client.put('', payload, options);
-  }
+  updateConfig = (payload, options) => this.client.put('', payload, options);
 }
