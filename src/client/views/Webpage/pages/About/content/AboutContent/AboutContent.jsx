@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAbout } from '@client/store/about';
 import { useWebpageLayerContext } from '@client/views/Webpage/contexts/WebpageLayerContext';
 import { sanitize } from '@client/utils/sanitizeUtils';
-import { routesConstants, rolesConstants } from '@shared/constants';
+import { routesConstants } from '@shared/constants';
 import Link from '@client/router/components/Link';
 import ProtectedComponent from '@client/router/components/ProtectedComponent';
 import PageContainer from '@client/layouts/PageContainer';
@@ -41,7 +41,7 @@ const AboutContent = memo(() => {
         </Box>
       ) : (
         <>
-          <ProtectedComponent requiredRoles={[rolesConstants.ADMIN, rolesConstants.SUPERUSER]}>
+          <ProtectedComponent requiredPermissions={['can_manage_about_us']}>
             <Box className="text-end my-2">
               <Link
                 to={routesConstants.ABOUT.EDIT.ROOT}

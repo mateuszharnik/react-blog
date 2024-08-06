@@ -259,6 +259,8 @@ export const getRefreshToken = async (req, res, next) => {
       secure: config.NODE_ENV === 'production',
     });
 
+    if (silent) return res.status(200).json();
+
     next(error);
   }
 };
