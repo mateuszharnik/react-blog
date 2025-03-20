@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '@client/components/Buttons/Button';
+import Link from '@client/router/components/Link';
 
 const PATH = 'forms.signUpForm';
 
@@ -10,13 +10,13 @@ const AcceptTermsOfUseLabel = memo((props) => {
   return (
     <>
       {t(`${PATH}.isTermsOfUseAccepted.LABEL`)}{' '}
-      <Button
-        className="button-link"
+      <Link
+        to="#terms-of-use"
         title={t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON_TITLE`)}
         {...props}
       >
         {t(`${PATH}.isTermsOfUseAccepted.LABEL_BUTTON`)}
-      </Button>
+      </Link>
     </>
   );
 });

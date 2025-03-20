@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import decode from 'jwt-decode';
 import { thunk, action } from 'easy-peasy';
 import { apiService } from '@client/services/apiService';
 import { storeActions } from '@client/utils/storeUtils';
@@ -22,7 +22,7 @@ export const tokensStore = {
       const { user } = getStoreState().userStore;
 
       if (response.data && user) {
-        const data = jwtDecode(response.data);
+        const data = decode(response.data);
 
         if (data?.id !== user?.id) window.location.reload(true);
       }

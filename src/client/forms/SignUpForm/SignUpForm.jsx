@@ -119,7 +119,7 @@ const SignUpForm = memo((props) => {
           touched={form.touched.gender}
         />
       </FormGroup>
-      <FormGroup className="text-center">
+      <FormGroup className="d-flex justify-content-center">
         <FormCheckboxInput
           field="is_terms_of_use_accepted"
           label={AcceptTermsOfUseLabel}
