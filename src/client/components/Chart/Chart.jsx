@@ -1,12 +1,12 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import ReactChart from 'react-apexcharts';
 
-const Chart = memo(forwardRef((props, chartRef) => (
+const Chart = forwardRef((props, chartRef) => (
   <ReactChart
     ref={chartRef}
     {...props}
   />
-)));
+));
 
 Chart.displayName = 'Chart';
 

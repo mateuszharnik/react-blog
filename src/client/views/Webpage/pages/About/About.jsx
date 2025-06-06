@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAbout } from '@client/store/about';
 import { useHead } from '@client/hooks/useHead';
@@ -13,7 +13,7 @@ const AboutContent = lazyLoad({
   error: LazyWebpageComponentError,
 });
 
-const About = memo(() => {
+const About = () => {
   const { t } = useTranslation();
 
   const {
@@ -40,7 +40,7 @@ const About = memo(() => {
       <AboutContent />
     </WebpageLayerContext>
   );
-});
+};
 
 About.displayName = 'About';
 

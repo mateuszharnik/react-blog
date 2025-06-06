@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { headingPropTypes } from '@client/prop-types/headingPropTypes';
 
-const Heading = memo(forwardRef(({
+const Heading = forwardRef(({
   as: Component,
   children,
   ...restProps
@@ -12,7 +12,7 @@ const Heading = memo(forwardRef(({
   >
     {children}
   </Component>
-)));
+));
 
 Heading.displayName = 'Heading';
 

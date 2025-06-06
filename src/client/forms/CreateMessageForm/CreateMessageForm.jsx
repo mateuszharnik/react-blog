@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
@@ -16,7 +16,7 @@ import Button from '@client/components/Buttons/Button';
 const FORMS_PATH = 'forms';
 const PATH = 'forms.createMessageForm';
 
-const CreateMessageForm = memo((props) => {
+const CreateMessageForm = (props) => {
   const { t } = useTranslation();
 
   const {
@@ -24,23 +24,17 @@ const CreateMessageForm = memo((props) => {
     utils: { createMessageMetadata, resetCreateMessageMetadata },
   } = useMessages();
 
-  const icon = useMemo(() => (
-    createMessageMetadata.isFetching ? faCircleNotch : faPaperPlane
-  ), [createMessageMetadata.isFetching]);
-
-  const initialValues = useMemo(() => ({
-    first_name: '',
-    last_name: '',
-    email: '',
-    subject: '',
-    contents: '',
-  }), []);
-
-  const validationSchema = useMemo(() => createMessageSchema, []);
+  const icon = createMessageMetadata.isFetching ? faCircleNotch : faPaperPlane;
 
   const form = useForm({
-    initialValues,
-    validationSchema,
+    initialValues: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      subject: '',
+      contents: '',
+    },
+    validationSchema: createMessageSchema,
     onSubmit: async (payload, { resetForm }) => {
       await createMessage({
         payload,
@@ -123,7 +117,7 @@ const CreateMessageForm = memo((props) => {
       </FormGroup>
     </FormContext>
   );
-});
+};
 
 CreateMessageForm.displayName = 'CreateMessageForm';
 

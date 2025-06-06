@@ -1,10 +1,9 @@
-import { memo } from 'react';
 import { navLinkPropTypes } from '@client/prop-types/navLinkPropTypes';
 import { testsConstants } from '@shared/constants';
 import ExactActiveLink from '@client/router/components/ExactActiveLink';
 import Box from '@client/components/Box';
 
-const NavLink = memo(({
+const NavLink = ({
   onBlur,
   to,
   title,
@@ -33,7 +32,7 @@ const NavLink = memo(({
       {children}
     </Box>
   </ExactActiveLink>
-));
+);
 
 NavLink.displayName = 'NavLink';
 

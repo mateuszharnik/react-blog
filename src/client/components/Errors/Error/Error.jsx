@@ -1,6 +1,4 @@
-import {
-  memo, useState, useMemo, useCallback,
-} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -15,21 +13,19 @@ import Button from '@client/components/Buttons/Button';
 
 const PATH = 'common.errors';
 
-const Error = memo((props) => {
+const Error = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { t } = useTranslation();
   const { theme } = useThemeContext();
 
-  const image = useMemo(() => (
-    theme === valuesConstants.THEME.DARK ? imageDark : imageLight
-  ), [theme]);
+  const image = theme === valuesConstants.THEME.DARK ? imageDark : imageLight;
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     setIsLoading(true);
 
     window.location.reload(true);
-  }, []);
+  };
 
   return (
     <Box
@@ -74,7 +70,7 @@ const Error = memo((props) => {
       </Button>
     </Box>
   );
-});
+};
 
 Error.displayName = 'Error';
 

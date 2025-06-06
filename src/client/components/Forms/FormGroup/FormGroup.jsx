@@ -1,15 +1,11 @@
-import { memo, useMemo } from 'react';
 import { formGroupPropTypes } from '@client/prop-types/formGroupPropTypes';
 import Box from '@client/components/Box';
 import { getFormGroupClassName } from './FormGroup.classes';
 
-const FormGroup = memo(({
+const FormGroup = ({
   className, type, children, ...restProps
 }) => {
-  const formGroupClassName = useMemo(() => getFormGroupClassName({
-    type,
-    className,
-  }), [type, className]);
+  const formGroupClassName = getFormGroupClassName({ type, className });
 
   return (
     <Box
@@ -19,7 +15,7 @@ const FormGroup = memo(({
       {children}
     </Box>
   );
-});
+};
 
 FormGroup.displayName = 'FormGroup';
 

@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { boxPropTypes } from '@client/prop-types/boxPropTypes';
 
-const Box = memo(forwardRef(({
+const Box = forwardRef(({
   as: Component,
   children,
   ...restProps
@@ -12,7 +12,7 @@ const Box = memo(forwardRef(({
   >
     {children}
   </Component>
-)));
+));
 
 Box.displayName = 'Box';
 

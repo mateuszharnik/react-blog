@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useConfig } from '@client/store/config';
 import { useDocs } from '@client/store/docs';
 import { envConfig } from '@client/configs/envConfig';
@@ -8,7 +8,7 @@ import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSp
 
 const apiDocsUrl = `${envConfig.CLIENT_URL}${apiConstants.DOCS.ROOT}`;
 
-const DocsRoute = memo(() => {
+const DocsRoute = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -43,7 +43,7 @@ const DocsRoute = memo(() => {
   }, [getRefreshTokenMetadata.isError]);
 
   return isLoading ? <LazyComponentSpinner /> : <Docs />;
-});
+};
 
 DocsRoute.displayName = 'DocsRoute';
 

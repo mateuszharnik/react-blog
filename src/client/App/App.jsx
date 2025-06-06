@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
@@ -15,7 +14,7 @@ import AppContent from '@client/App/content/AppContent';
 
 const PATH = 'head';
 
-const App = memo(() => {
+const App = () => {
   const { t } = useTranslation();
 
   useHead({
@@ -50,7 +49,7 @@ const App = memo(() => {
       )}
     </>
   );
-});
+};
 
 App.displayName = 'App';
 

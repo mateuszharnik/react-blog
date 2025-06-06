@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
@@ -11,7 +10,7 @@ const FAQsContent = lazyLoad({
   error: LazyWebpageComponentError,
 });
 
-const FAQs = memo(() => {
+const FAQs = () => {
   const { t } = useTranslation();
 
   useHead({
@@ -22,7 +21,7 @@ const FAQs = memo(() => {
   return (
     <FAQsContent />
   );
-});
+};
 
 FAQs.displayName = 'FAQs';
 

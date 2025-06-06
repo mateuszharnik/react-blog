@@ -1,6 +1,4 @@
-import {
-  memo, useEffect, useState, useMemo,
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from '@client/router/hooks';
 import { useLayerContext } from '@client/contexts/LayerContext';
@@ -15,7 +13,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'common.notFound';
 
-const NotFoundContent = memo(() => {
+const NotFoundContent = () => {
   const [seconds, setSeconds] = useState(10);
 
   const { t } = useTranslation();
@@ -23,9 +21,7 @@ const NotFoundContent = memo(() => {
   const { theme } = useThemeContext();
   const { history: { push } } = useRouter();
 
-  const image = useMemo(() => (
-    theme === valuesConstants.THEME.DARK ? imageDark : imageLight
-  ), [theme]);
+  const image = theme === valuesConstants.THEME.DARK ? imageDark : imageLight;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,7 +70,7 @@ const NotFoundContent = memo(() => {
       </Box>
     </MaxViewHeight>
   );
-});
+};
 
 NotFoundContent.displayName = 'NotFoundContent';
 

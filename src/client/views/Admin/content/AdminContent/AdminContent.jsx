@@ -1,8 +1,8 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLayerContext } from '@client/contexts/LayerContext';
 import View from '@client/router/components/View';
 
-const AdminContent = memo(() => {
+const AdminContent = () => {
   const { hideLayer } = useLayerContext();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const AdminContent = memo(() => {
   return (
     <View />
   );
-});
+};
 
 AdminContent.displayName = 'AdminContent';
 

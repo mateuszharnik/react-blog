@@ -1,11 +1,11 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from '@client/router/hooks';
 import { useAuth } from '@client/store/auth';
 import { useLayerContext } from '@client/contexts/LayerContext';
 import { signOutPropTypes } from '@client/views/Auth/SignOut/propTypes/signOutPropTypes';
 import LazyComponentSpinner from '@client/components/LazyLoading/LazyComponentSpinner';
 
-const SignOutContent = memo(({ redirectUrl }) => {
+const SignOutContent = ({ redirectUrl }) => {
   const { history: { replace } } = useRouter();
   const { hideLayer } = useLayerContext();
 
@@ -35,7 +35,7 @@ const SignOutContent = memo(({ redirectUrl }) => {
   return (
     <LazyComponentSpinner />
   );
-});
+};
 
 SignOutContent.displayName = 'SignOutContent';
 

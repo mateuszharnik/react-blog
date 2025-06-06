@@ -1,4 +1,4 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useFormContext } from '@client/contexts/FormContext';
 import { useFormsUtils } from '@client/hooks/useFormsUtils';
 import { formContextElementsPropTypes } from '@client/prop-types/formContextElementsPropTypes';
@@ -6,7 +6,7 @@ import RadioInput from '@client/components/Forms/FormRadioInput';
 import FormLabel from '@client/components/Forms/FormLabel';
 import Box from '@client/components/Box';
 
-const FormRadioInput = memo(forwardRef(({
+const FormRadioInput = forwardRef(({
   id,
   value,
   field,
@@ -52,7 +52,7 @@ const FormRadioInput = memo(forwardRef(({
       )}
     </Box>
   );
-}));
+});
 
 FormRadioInput.displayName = 'FormRadioInput';
 

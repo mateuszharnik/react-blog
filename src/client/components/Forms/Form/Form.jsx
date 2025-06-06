@@ -1,13 +1,13 @@
-import { memo, forwardRef, useMemo } from 'react';
+import { forwardRef } from 'react';
 import { formPropTypes } from '@client/prop-types/formPropTypes';
 import { getFormClassName } from './Form.classes';
 
-const Form = memo(forwardRef(({
+const Form = forwardRef(({
   className,
   children,
   ...restProps
 }, formRef) => {
-  const formClassName = useMemo(() => getFormClassName({ className }), [className]);
+  const formClassName = getFormClassName({ className });
 
   return (
     <form
@@ -18,7 +18,7 @@ const Form = memo(forwardRef(({
       {children}
     </form>
   );
-}));
+});
 
 Form.displayName = 'Form';
 

@@ -1,10 +1,9 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from '@client/router/components/Link';
 
 const PATH = 'forms.signUpForm';
 
-const AcceptTermsOfUseLabel = memo((props) => {
+const AcceptTermsOfUseLabel = (props) => {
   const { t } = useTranslation();
 
   return (
@@ -19,7 +18,7 @@ const AcceptTermsOfUseLabel = memo((props) => {
       </Link>
     </>
   );
-});
+};
 
 AcceptTermsOfUseLabel.displayName = 'AcceptTermsOfUseLabel';
 

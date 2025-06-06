@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const TableFooter = memo(forwardRef(({
+const TableFooter = forwardRef(({
   children,
   ...restProps
 }, tableFooterRef) => (
@@ -11,7 +11,7 @@ const TableFooter = memo(forwardRef(({
   >
     {children}
   </tfoot>
-)));
+));
 
 TableFooter.displayName = 'TableFooter';
 

@@ -1,10 +1,10 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { tablePageSizeSelectPropTypes } from '@client/prop-types/tablePageSizeSelectPropTypes';
 import { tableConstants } from '@shared/constants';
 
 const pageSizes = Object.values(tableConstants.TABLE_PAGE_SIZES);
 
-const TablePageSizeSelect = memo(forwardRef(({
+const TablePageSizeSelect = forwardRef(({
   pageSize,
   pageSizeChange,
   ...restProps
@@ -24,7 +24,7 @@ const TablePageSizeSelect = memo(forwardRef(({
       </option>
     ))}
   </select>
-)));
+));
 
 TablePageSizeSelect.displayName = 'TablePageSizeSelect';
 

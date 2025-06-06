@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useScrollToSection } from '@client/hooks/useScrollToSection';
 import PageContainer from '@client/layouts/PageContainer';
@@ -7,7 +6,7 @@ import Heading from '@client/components/Typography/Heading';
 
 const PATH = 'contact';
 
-const ContactContent = memo(() => {
+const ContactContent = () => {
   const { t } = useTranslation();
 
   useScrollToSection({ id: '#text' });
@@ -24,7 +23,7 @@ const ContactContent = memo(() => {
       <CreateMessageForm />
     </PageContainer>
   );
-});
+};
 
 ContactContent.displayName = 'ContactContent';
 

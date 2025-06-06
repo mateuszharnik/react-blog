@@ -1,9 +1,8 @@
-import { memo } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import { testsConstants } from '@shared/constants';
 import Box from '@client/components/Box';
 
-const PageWrapper = memo(({ children, ...restProps }) => (
+const PageWrapper = ({ children, ...restProps }) => (
   <Box
     data-testid={testsConstants.PAGE_WRAPPER}
     className="page-wrapper"
@@ -11,7 +10,7 @@ const PageWrapper = memo(({ children, ...restProps }) => (
   >
     {children}
   </Box>
-));
+);
 
 PageWrapper.displayName = 'PageWrapper';
 

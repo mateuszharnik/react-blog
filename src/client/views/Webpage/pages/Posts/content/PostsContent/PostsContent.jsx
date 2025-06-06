@@ -1,8 +1,7 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageContainer from '@client/layouts/PageContainer';
 
-const PostsContent = memo(() => {
+const PostsContent = () => {
   const { t } = useTranslation();
 
   return (
@@ -10,7 +9,7 @@ const PostsContent = memo(() => {
       {t('head.title.POSTS')}
     </PageContainer>
   );
-});
+};
 
 PostsContent.displayName = 'PostsContent';
 

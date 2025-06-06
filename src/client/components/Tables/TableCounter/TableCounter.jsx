@@ -1,8 +1,8 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import Box from '@client/components/Box';
 
-const TableCounter = memo(forwardRef(({
+const TableCounter = forwardRef(({
   children,
   ...restProps
 }, tableCounterRef) => (
@@ -17,7 +17,7 @@ const TableCounter = memo(forwardRef(({
       {children}
     </Box>
   </Box>
-)));
+));
 
 TableCounter.displayName = 'TableCounter';
 

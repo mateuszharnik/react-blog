@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useRef } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
@@ -11,16 +11,16 @@ import Box from '@client/components/Box';
 
 const PATH = 'home.banner';
 
-const WelcomeBanner = memo(() => {
-  const { t } = useTranslation();
+const WelcomeBanner = () => {
+  const height = useRef(`${getWindowInnerHeight() - 84}px`);
 
-  const height = useMemo(() => `${getWindowInnerHeight() - 84}px`, []);
+  const { t } = useTranslation();
 
   return (
     <Box
       data-testid={testsConstants.WELCOME_BANNER}
       className="welcome-banner d-flex flex-wrap justify-content-center align-items-center"
-      style={{ height }}
+      style={{ height: height.current }}
     >
       <Box className="container text-white text-center">
         <Box
@@ -85,7 +85,7 @@ const WelcomeBanner = memo(() => {
       </Box>
     </Box>
   );
-});
+};
 
 WelcomeBanner.displayName = 'WelcomeBanner';
 

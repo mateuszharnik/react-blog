@@ -1,4 +1,4 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink as Link } from 'react-router-dom';
 import { useRouter } from '@client/router/hooks';
@@ -10,7 +10,7 @@ import { getActiveLinkClassName } from './ActiveLink.classes';
 
 const PATH = 'navigation';
 
-const ActiveLink = memo(forwardRef(({
+const ActiveLink = forwardRef(({
   id,
   to,
   className,
@@ -20,11 +20,9 @@ const ActiveLink = memo(forwardRef(({
   const { t } = useTranslation();
   const { location: { path } } = useRouter();
 
-  const isActive = useMemo(() => path === getUrl(to), [to, path]);
+  const isActive = path === getUrl(to);
 
-  const linkClassName = useMemo(() => getActiveLinkClassName({
-    isActive, className,
-  }), [isActive, className]);
+  const linkClassName = getActiveLinkClassName({ isActive, className });
 
   return (
     <Link
@@ -49,7 +47,7 @@ const ActiveLink = memo(forwardRef(({
       </>
     </Link>
   );
-}));
+});
 
 ActiveLink.displayName = 'ActiveLink';
 

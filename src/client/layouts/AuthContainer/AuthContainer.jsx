@@ -1,9 +1,8 @@
-import { memo } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import { testsConstants } from '@shared/constants';
 import Box from '@client/components/Box';
 
-const AuthContainer = memo(({ children, ...restProps }) => (
+const AuthContainer = ({ children, ...restProps }) => (
   <Box
     data-testid={testsConstants.AUTH_CONTAINER}
     className="auth-container"
@@ -11,7 +10,7 @@ const AuthContainer = memo(({ children, ...restProps }) => (
   >
     {children}
   </Box>
-));
+);
 
 AuthContainer.displayName = 'AuthContainer';
 

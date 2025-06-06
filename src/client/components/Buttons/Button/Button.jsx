@@ -1,8 +1,8 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { buttonPropTypes } from '@client/prop-types/buttonPropTypes';
 import { getButtonClassName } from './Button.classes';
 
-const Button = memo(forwardRef(({
+const Button = forwardRef(({
   type,
   variant,
   disabled,
@@ -13,13 +13,13 @@ const Button = memo(forwardRef(({
   children,
   ...restProps
 }, buttonRef) => {
-  const buttonClassName = useMemo(() => getButtonClassName({
+  const buttonClassName = getButtonClassName({
     variant,
     color,
     size,
     rounded,
     className,
-  }), [variant, color, size, rounded, className]);
+  });
 
   return (
     <button
@@ -32,7 +32,7 @@ const Button = memo(forwardRef(({
       {children}
     </button>
   );
-}));
+});
 
 Button.displayName = 'Button';
 

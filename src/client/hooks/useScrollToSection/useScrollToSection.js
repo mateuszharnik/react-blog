@@ -29,7 +29,7 @@ const useScrollToSection = ({
 
   useEffect(() => {
     if (checkIfShouldScroll()) scrollToSection();
-  }, [idHash, hash]);
+  }, [checkIfShouldScroll, scrollToSection]);
 
   return {
     scrollToSection,

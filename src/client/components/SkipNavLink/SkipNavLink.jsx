@@ -1,4 +1,3 @@
-import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { refPropTypes } from '@client/prop-types/refPropTypes';
 import Link from '@client/router/components/Link';
@@ -6,10 +5,10 @@ import Portal from '@client/components/Portal';
 
 const PATH = 'common.skipNavLink';
 
-const SkipNavLink = memo(({ target, ...restProps }) => {
+const SkipNavLink = ({ target, ...restProps }) => {
   const { t } = useTranslation();
 
-  const handleScroll = useCallback(async (event) => {
+  const handleScroll = async (event) => {
     event.preventDefault();
 
     if (!target?.current) return;
@@ -21,7 +20,7 @@ const SkipNavLink = memo(({ target, ...restProps }) => {
     } catch (error) {
       return null;
     }
-  }, [target]);
+  };
 
   return (
     <Portal
@@ -39,7 +38,7 @@ const SkipNavLink = memo(({ target, ...restProps }) => {
       </Link>
     </Portal>
   );
-});
+};
 
 SkipNavLink.displayName = 'SkipNavLink';
 

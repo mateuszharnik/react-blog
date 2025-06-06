@@ -1,10 +1,10 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTableContext } from '@client/contexts/TableContext';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import MainSection from '@client/components/Tables/TableMainSection';
 import EmptyState from '@client/components/Tables/TableEmptyState';
 
-const TableMainSection = memo(forwardRef(({
+const TableMainSection = forwardRef(({
   children,
   ...restProps
 }, tableMainSectionRef) => {
@@ -22,7 +22,7 @@ const TableMainSection = memo(forwardRef(({
       {children}
     </MainSection>
   );
-}));
+});
 
 TableMainSection.displayName = 'TableMainSection';
 

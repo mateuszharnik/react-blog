@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { tableSearchPropTypes } from '@client/prop-types/tableSearchPropTypes';
 
-const TableSearch = memo(forwardRef(({
+const TableSearch = forwardRef(({
   globalFilter,
   setGlobalFilters,
   ...restProps
@@ -13,7 +13,7 @@ const TableSearch = memo(forwardRef(({
     {...restProps}
     onChange={setGlobalFilters}
   />
-)));
+));
 
 TableSearch.displayName = 'TableSearch';
 

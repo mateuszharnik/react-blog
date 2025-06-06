@@ -1,6 +1,4 @@
-import {
-  memo, useMemo, useCallback, useState, forwardRef,
-} from 'react';
+import { useState, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons/faEyeSlash';
@@ -11,7 +9,7 @@ import { getPasswordInputClassName } from './FormPasswordInput.classes';
 
 const PATH = 'forms';
 
-const FormPasswordInput = memo(forwardRef(({
+const FormPasswordInput = forwardRef(({
   className,
   value,
   error,
@@ -26,30 +24,21 @@ const FormPasswordInput = memo(forwardRef(({
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const inputClassName = useMemo(() => getPasswordInputClassName({
+  const inputClassName = getPasswordInputClassName({
     isValid: !error && touched,
     showToggler,
     className,
-  }), [error, touched, showToggler, className]);
+  });
 
-  const inputType = useMemo(
-    () => (isPasswordVisible ? 'text' : 'password'),
-    [isPasswordVisible],
-  );
+  const inputType = isPasswordVisible ? 'text' : 'password';
 
-  const icon = useMemo(
-    () => (isPasswordVisible ? faEye : faEyeSlash),
-    [isPasswordVisible],
-  );
+  const icon = isPasswordVisible ? faEye : faEyeSlash;
 
-  const title = useMemo(
-    () => (isPasswordVisible ? `${PATH}.HIDE_PASSWORD` : `${PATH}.SHOW_PASSWORD`),
-    [isPasswordVisible],
-  );
+  const title = isPasswordVisible ? `${PATH}.HIDE_PASSWORD` : `${PATH}.SHOW_PASSWORD`;
 
-  const toggleShowPassword = useCallback(() => {
+  const toggleShowPassword = () => {
     setIsPasswordVisible((state) => !state);
-  }, []);
+  };
 
   return (
     <Box className="position-relative">
@@ -74,7 +63,7 @@ const FormPasswordInput = memo(forwardRef(({
       )}
     </Box>
   );
-}));
+});
 
 FormPasswordInput.displayName = 'FormPasswordInput';
 

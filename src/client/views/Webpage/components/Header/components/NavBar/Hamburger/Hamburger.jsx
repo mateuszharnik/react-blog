@@ -1,9 +1,9 @@
-import { memo, forwardRef, useMemo } from 'react';
+import { forwardRef } from 'react';
 import { hamburgerPropTypes } from '@client/prop-types/hamburgerPropTypes';
 import Box from '@client/components/Box';
 import { getButtonClassName } from './Hamburger.classes';
 
-const Hamburger = memo(forwardRef(({
+const Hamburger = forwardRef(({
   onBlur,
   onClick,
   title,
@@ -13,7 +13,7 @@ const Hamburger = memo(forwardRef(({
   text,
   ...restProps
 }, buttonRef) => {
-  const buttonClassName = useMemo(() => getButtonClassName({ className }), [className]);
+  const buttonClassName = getButtonClassName({ className });
 
   return (
     <button
@@ -38,7 +38,7 @@ const Hamburger = memo(forwardRef(({
       <Box className="hamburger__bar" />
     </button>
   );
-}));
+});
 
 Hamburger.displayName = 'Hamburger';
 

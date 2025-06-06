@@ -1,5 +1,5 @@
 import {
-  memo, useCallback, useRef, useEffect, forwardRef, useImperativeHandle,
+  useCallback, useRef, useEffect, forwardRef, useImperativeHandle,
 } from 'react';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import throttle from 'lodash/throttle';
@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import { overlayScrollbarConfig as options } from '@client/configs/overlayScrollbarConfig';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const OverlayScrollbars = memo(forwardRef(({
+const OverlayScrollbars = forwardRef(({
   children,
 }, ref) => {
   const scrollbarRef = useRef(null);
@@ -28,6 +28,9 @@ const OverlayScrollbars = memo(forwardRef(({
     window.addEventListener('resize', debouncedUpdateScrollbar);
 
     return () => {
+      throttledUpdateScrollbar.cancel();
+      debouncedUpdateScrollbar.cancel();
+
       window.removeEventListener('resize', throttledUpdateScrollbar);
       window.removeEventListener('resize', debouncedUpdateScrollbar);
     };
@@ -41,7 +44,7 @@ const OverlayScrollbars = memo(forwardRef(({
       {children}
     </OverlayScrollbarsComponent>
   );
-}));
+});
 
 OverlayScrollbars.displayName = 'OverlayScrollbars';
 

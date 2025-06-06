@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback } from 'react';
 import isString from 'lodash/isString';
 
 const useFormsUtils = ({
@@ -8,14 +8,6 @@ const useFormsUtils = ({
   onBlur,
   form,
 }) => {
-  const LabelComponent = useMemo(() => label, [label]);
-
-  const HelpTextComponent = useMemo(() => helpText, [helpText]);
-
-  const isLabelString = useMemo(() => isString(label), [label]);
-
-  const isHelpTextString = useMemo(() => isString(helpText), [helpText]);
-
   const handleChange = useCallback((event) => {
     if (onChange) {
       onChange(event);
@@ -34,12 +26,12 @@ const useFormsUtils = ({
 
   return {
     components: {
-      LabelComponent,
-      HelpTextComponent,
+      LabelComponent: label,
+      HelpTextComponent: helpText,
     },
     utils: {
-      isLabelString,
-      isHelpTextString,
+      isLabelString: isString(label),
+      isHelpTextString: isString(helpText),
     },
     actions: {
       handleChange,

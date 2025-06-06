@@ -1,5 +1,5 @@
 import {
-  memo, useRef, useEffect, useCallback, useState, useMemo,
+  useRef, useEffect, useCallback, useState,
 } from 'react';
 import EasyMDE from 'easymde';
 import { editorConfig as options } from '@client/configs/editorConfig';
@@ -8,7 +8,7 @@ import FormValidationError from '@client/components/Forms/FormValidationError';
 import Box from '@client/components/Box';
 import { getEditorWrapperClassName } from './Editor.classes';
 
-const Editor = memo(({
+const Editor = ({
   id,
   name,
   initialValue,
@@ -24,10 +24,10 @@ const Editor = memo(({
   const editorRef = useRef(null);
   const editor = useRef(null);
 
-  const editorWrapperClassName = useMemo(() => getEditorWrapperClassName({
+  const editorWrapperClassName = getEditorWrapperClassName({
     isFocus,
     isValid: !errors && touched,
-  }), [isFocus, errors, touched]);
+  });
 
   const setValue = useCallback(() => {
     setValues({ contents: editor.current.value() }, true);
@@ -83,7 +83,7 @@ const Editor = memo(({
       />
     </>
   );
-});
+};
 
 Editor.displayName = 'Editor';
 

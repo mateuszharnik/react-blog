@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +19,7 @@ import ListItem from '@client/components/Lists/ListItem';
 
 const PATH = 'navigation';
 
-const NavImageButton = memo(({
+const NavImageButton = ({
   src,
   type,
   gender,
@@ -35,21 +35,15 @@ const NavImageButton = memo(({
     actions: { handleToggleNav, handleCloseNavOnBlur },
   } = useDropdownNav({ buttonRef, dropdownRef });
 
-  const image = useMemo(() => {
-    if (src) return src;
+  const image = src || (gender === valuesConstants.GENDER.FEMALE ? female : male);
 
-    return gender === valuesConstants.GENDER.FEMALE ? female : male;
-  }, [src, gender]);
+  const to = type === rolesConstants.USER
+    ? routesConstants.PROFILE.DASHBOARD.ROOT
+    : routesConstants.ADMIN.ROOT;
 
-  const to = useMemo(() => (
-    type === rolesConstants.USER
-      ? routesConstants.PROFILE.DASHBOARD.ROOT
-      : routesConstants.ADMIN.ROOT
-  ), [type]);
+  const title = `${PATH}.menu.${isOpen ? 'CLOSE_MENU' : 'OPEN_MENU'}`;
 
-  const title = useMemo(() => `${PATH}.menu.${isOpen ? 'CLOSE_MENU' : 'OPEN_MENU'}`, [isOpen]);
-
-  const isAdmin = useMemo(() => type !== rolesConstants.USER, [type]);
+  const isAdmin = type !== rolesConstants.USER;
 
   return (
     <Box className="nav__link-image-wrapper">
@@ -173,7 +167,7 @@ const NavImageButton = memo(({
       </TransitionGroup>
     </Box>
   );
-});
+};
 
 NavImageButton.displayName = 'NavImageButton';
 

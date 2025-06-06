@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -18,7 +18,7 @@ import Button from '@client/components/Buttons/Button';
 const FORMS_PATH = 'forms';
 const PATH = 'forms.signInForm';
 
-const AdminSignInForm = memo((props) => {
+const AdminSignInForm = (props) => {
   const { t } = useTranslation();
   const { history: { push } } = useRouter();
 
@@ -27,20 +27,11 @@ const AdminSignInForm = memo((props) => {
     utils: { adminSignInMetadata, resetAdminSignInMetadata },
   } = useAuth();
 
-  const title = useMemo(() => (
-    adminSignInMetadata.isFetching ? `${FORMS_PATH}.SIGNING_IN` : `${FORMS_PATH}.SIGN_IN`
-  ), [adminSignInMetadata.isFetching]);
-
-  const initialValues = useMemo(() => ({
-    username: '',
-    password: '',
-  }), []);
-
-  const validationSchema = useMemo(() => signInSchema, []);
+  const title = adminSignInMetadata.isFetching ? `${FORMS_PATH}.SIGNING_IN` : `${FORMS_PATH}.SIGN_IN`;
 
   const form = useForm({
-    initialValues,
-    validationSchema,
+    initialValues: { username: '', password: '' },
+    validationSchema: signInSchema,
     onSubmit: async (payload) => {
       await adminSignIn({
         payload,
@@ -112,7 +103,7 @@ const AdminSignInForm = memo((props) => {
       </FormGroup>
     </FormContext>
   );
-});
+};
 
 AdminSignInForm.displayName = 'AdminSignInForm';
 

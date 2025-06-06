@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
@@ -18,12 +18,12 @@ const year = new Date().getFullYear();
 
 const PATH = 'footer';
 
-const Footer = memo((props) => {
+const Footer = (props) => {
   const { t } = useTranslation();
   const { contact } = useContact();
   const { config } = useConfig();
 
-  const mailTo = useMemo(() => `mailto:${contact?.email}`, [contact]);
+  const mailTo = `mailto:${contact?.email}`;
 
   const shouldRender = useMemo(() => {
     const contactExist = contact ? Object.keys(contact)
@@ -208,7 +208,7 @@ const Footer = memo((props) => {
       </Box>
     </Box>
   );
-});
+};
 
 Footer.displayName = 'Footer';
 

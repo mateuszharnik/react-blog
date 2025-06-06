@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
@@ -14,7 +14,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'auth';
 
-const SignInContent = memo(() => {
+const SignInContent = () => {
   const { t } = useTranslation();
   const { hideLayer } = useLayerContext();
 
@@ -60,7 +60,7 @@ const SignInContent = memo(() => {
       </AuthContainer>
     </AuthWrapper>
   );
-});
+};
 
 SignInContent.displayName = 'SignInContent';
 

@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAbout } from '@client/store/about';
 import { useWebpageLayerContext } from '@client/views/Webpage/contexts/WebpageLayerContext';
 import Spinner from '@client/components/Spinner';
@@ -6,7 +6,7 @@ import UpdateAboutForm from '@client/forms/UpdateAboutForm';
 import PageContainer from '@client/layouts/PageContainer';
 import Box from '@client/components/Box';
 
-const EditAbout = memo(() => {
+const EditAbout = () => {
   const { hideWebpageLayer } = useWebpageLayerContext();
 
   const { utils: { getAboutMetadata } } = useAbout({ key: 'update' });
@@ -28,7 +28,7 @@ const EditAbout = memo(() => {
       )}
     </PageContainer>
   );
-});
+};
 
 EditAbout.displayName = 'EditAbout';
 

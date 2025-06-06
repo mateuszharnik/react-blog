@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const KeyboardKey = memo(forwardRef(({
+const KeyboardKey = forwardRef(({
   children,
   ...restProps
 }, keyboardKeyRef) => (
@@ -11,7 +11,7 @@ const KeyboardKey = memo(forwardRef(({
   >
     {children}
   </kbd>
-)));
+));
 
 KeyboardKey.displayName = 'KeyboardKey';
 

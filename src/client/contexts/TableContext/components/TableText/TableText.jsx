@@ -1,8 +1,8 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { tableContextElementsPropTypes } from '@client/prop-types/tableContextElementsPropTypes';
 import Text from '@client/components/Tables/TableText';
 
-const TableText = memo(({ header, cell, footer }) => {
+const TableText = ({ header, cell, footer }) => {
   const restProps = useMemo(() => {
     if (header) {
       return {
@@ -29,7 +29,7 @@ const TableText = memo(({ header, cell, footer }) => {
   }, [header, cell, footer]);
 
   return restProps ? <Text {...restProps} /> : null;
-});
+};
 
 TableText.displayName = 'TableText';
 

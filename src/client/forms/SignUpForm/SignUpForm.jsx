@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -21,7 +21,7 @@ import AcceptTermsOfUseLabel from '@client/forms/SignUpForm/components/AcceptTer
 const FORMS_PATH = 'forms';
 const PATH = 'forms.signUpForm';
 
-const SignUpForm = memo((props) => {
+const SignUpForm = (props) => {
   const { t } = useTranslation();
   const { history: { push } } = useRouter();
 
@@ -30,24 +30,18 @@ const SignUpForm = memo((props) => {
     utils: { signUpMetadata, resetSignUpMetadata },
   } = useAuth();
 
-  const title = useMemo(() => (
-    signUpMetadata.isFetching ? `${FORMS_PATH}.SIGNING_UP` : `${FORMS_PATH}.SIGN_UP`
-  ), [signUpMetadata.isFetching]);
-
-  const initialValues = useMemo(() => ({
-    username: '',
-    email: '',
-    gender: valuesConstants.GENDER.MALE,
-    password: '',
-    confirm_password: '',
-    is_terms_of_use_accepted: false,
-  }), []);
-
-  const validationSchema = useMemo(() => signUpSchema, []);
+  const title = signUpMetadata.isFetching ? `${FORMS_PATH}.SIGNING_UP` : `${FORMS_PATH}.SIGN_UP`;
 
   const form = useForm({
-    initialValues,
-    validationSchema,
+    initialValues: {
+      username: '',
+      email: '',
+      gender: valuesConstants.GENDER.MALE,
+      password: '',
+      confirm_password: '',
+      is_terms_of_use_accepted: false,
+    },
+    validationSchema: signUpSchema,
     onSubmit: async (payload) => {
       await signUp({
         payload,
@@ -155,7 +149,7 @@ const SignUpForm = memo((props) => {
       </FormGroup>
     </FormContext>
   );
-});
+};
 
 SignUpForm.displayName = 'SignUpForm';
 

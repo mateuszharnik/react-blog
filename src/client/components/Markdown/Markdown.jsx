@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { markdownPropTypes } from '@client/prop-types/markdownPropTypes';
 
-const Markdown = memo(forwardRef(({
+const Markdown = forwardRef(({
   html,
   ...restProps
 }, markdownRef) => (
@@ -11,7 +11,7 @@ const Markdown = memo(forwardRef(({
     // eslint-disable-next-line react/no-danger
     dangerouslySetInnerHTML={{ __html: html }}
   />
-)));
+));
 
 Markdown.displayName = 'Markdown';
 

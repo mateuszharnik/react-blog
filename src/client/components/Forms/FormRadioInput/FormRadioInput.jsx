@@ -1,10 +1,10 @@
 import {
-  memo, useMemo, useEffect, useRef, useImperativeHandle, forwardRef,
+  useEffect, useRef, useImperativeHandle, forwardRef,
 } from 'react';
 import { formRadioInputPropTypes } from '@client/prop-types/formRadioInputPropTypes';
 import { getRadioInputClassName } from './FormRadioInput.classes';
 
-const FormRadioInput = memo(forwardRef(({
+const FormRadioInput = forwardRef(({
   className,
   value,
   checked,
@@ -15,9 +15,7 @@ const FormRadioInput = memo(forwardRef(({
 }, ref) => {
   const inputRef = useRef(null);
 
-  const inputClassName = useMemo(() => getRadioInputClassName({
-    className,
-  }), [className]);
+  const inputClassName = getRadioInputClassName({ className });
 
   useImperativeHandle(ref, () => inputRef, []);
 
@@ -39,7 +37,7 @@ const FormRadioInput = memo(forwardRef(({
       />{' '}
     </>
   );
-}));
+});
 
 FormRadioInput.displayName = 'FormRadioInput';
 

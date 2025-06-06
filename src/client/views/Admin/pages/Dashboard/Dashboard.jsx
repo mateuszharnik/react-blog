@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
@@ -12,7 +11,7 @@ const DashboardContent = lazyLoad({
   error: LazyAdminComponentError,
 });
 
-const Dashboard = memo(() => {
+const Dashboard = () => {
   const { t } = useTranslation();
 
   useHead({
@@ -25,7 +24,7 @@ const Dashboard = memo(() => {
       <DashboardContent />
     </AdminLayerContext>
   );
-});
+};
 
 Dashboard.displayName = 'Dashboard';
 

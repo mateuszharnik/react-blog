@@ -1,6 +1,4 @@
-import {
-  memo, useRef, useMemo, useCallback,
-} from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from '@client/router/hooks';
 import { useUser } from '@client/store/user';
@@ -37,7 +35,7 @@ const NavImageButton = lazyLoad({
 
 const PATH = 'navigation';
 
-const Nav = memo(() => {
+const Nav = () => {
   const openNavButtonRef = useRef(null);
   const closeNavButtonRef = useRef(null);
 
@@ -56,22 +54,22 @@ const Nav = memo(() => {
     },
   } = useNav({ openNavButtonRef, closeNavButtonRef });
 
-  const navItemClassName = useMemo(() => getNavItemClassName({ user: !!user }), [user]);
+  const navItemClassName = getNavItemClassName({ user: !!user });
 
-  const navListClassName = useMemo(() => getNavListClassName({
+  const navListClassName = getNavListClassName({
     isOpen,
     display: !isAnimated && !isOpen && !isDesktop && !isVisible,
-  }), [isOpen, isDesktop, isAnimated, isVisible]);
+  });
 
-  const navClassName = useMemo(() => getNavClassName({ isAnimated }), [isAnimated]);
+  const navClassName = getNavClassName({ isAnimated });
 
-  const divClassName = useMemo(() => getDivClassName({ user: !!user }), [user]);
+  const divClassName = getDivClassName({ user: !!user });
 
-  const handleSignOut = useCallback((event) => {
+  const handleSignOut = (event) => {
     event.preventDefault();
 
     signOut();
-  }, [signOut]);
+  };
 
   return (
     <Box
@@ -239,7 +237,7 @@ const Nav = memo(() => {
       </Box>
     </Box>
   );
-});
+};
 
 Nav.displayName = 'Nav';
 

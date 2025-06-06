@@ -1,6 +1,4 @@
-import {
-  memo, useState, useMemo, useCallback, useEffect, forwardRef,
-} from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import lazySizes from 'lazysizes';
 import { lazyImagePropTypes } from '@client/prop-types/lazyImagePropTypes';
 import { testsConstants } from '@shared/constants';
@@ -13,7 +11,7 @@ lazySizes.cfg.loadedClass = 'lazy-loaded-image';
 lazySizes.cfg.lazyClass = 'lazy-load-image';
 lazySizes.cfg.loadingClass = 'lazy-loading-image';
 
-const LazyImage = memo(forwardRef(({
+const LazyImage = forwardRef(({
   src,
   alt,
   divClassName,
@@ -25,13 +23,13 @@ const LazyImage = memo(forwardRef(({
 }, imageRef) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const imageClassName = useMemo(() => getImageClassName({
+  const imageClassName = getImageClassName({
     isLoaded, className: imgClassName,
-  }), [isLoaded, imgClassName]);
+  });
 
-  const handleLoad = useCallback(() => {
+  const handleLoad = () => {
     setIsLoaded(true);
-  }, []);
+  };
 
   useEffect(() => {
     setIsLoaded(false);
@@ -63,7 +61,7 @@ const LazyImage = memo(forwardRef(({
       )}
     </Box>
   );
-}));
+});
 
 LazyImage.displayName = 'LazyImage';
 
