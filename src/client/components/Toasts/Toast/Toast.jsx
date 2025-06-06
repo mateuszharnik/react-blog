@@ -1,6 +1,4 @@
-import {
-  memo, useCallback, useEffect, useMemo,
-} from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getToastIcon } from '@client/utils/iconsUtils';
@@ -12,35 +10,20 @@ import { getToastClassName } from './Toast.classes';
 
 const PATH = 'common.toasts';
 
-const Toast = memo(({ marginBottom, toast, removeToast }) => {
+const Toast = ({ marginBottom, toast, removeToast }) => {
   const { t } = useTranslation();
 
-  const divClassName = useMemo(() => (!toast.title ? 'toast-body__wrapper' : null), [toast]);
+  const divClassName = !toast.title ? 'toast-body__wrapper' : null;
 
-  const toastClassName = useMemo(() => getToastClassName({
-    type: toast.type,
-    marginBottom,
-  }), [toast, marginBottom]);
+  const toastClassName = getToastClassName({ type: toast.type, marginBottom });
 
-  const icon = useMemo(() => {
-    if (!toast.icon) {
-      return getToastIcon(toast.type);
-    }
+  const icon = !toast.icon ? getToastIcon(toast.type) : toast.icon;
 
-    return toast.icon;
-  }, [toast]);
+  const isFontAwesomeIcon = !(toast.icon && typeof toast.icon === 'string');
 
-  const isFontAwesomeIcon = useMemo(() => {
-    if (toast.icon && typeof toast.icon === 'string') {
-      return false;
-    }
-
-    return true;
-  }, [toast]);
-
-  const handleRemove = useCallback(() => {
+  const handleRemove = () => {
     removeToast(toast.id);
-  }, [toast]);
+  };
 
   useEffect(() => {
     let timeout = null;
@@ -119,7 +102,7 @@ const Toast = memo(({ marginBottom, toast, removeToast }) => {
       )}
     </Box>
   );
-});
+};
 
 Toast.displayName = 'Toast';
 

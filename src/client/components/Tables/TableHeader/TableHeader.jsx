@@ -1,10 +1,10 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getTableSortIcon } from '@client/utils/tableUtils';
 import { tableHeaderPropTypes } from '@client/prop-types/tableHeaderPropTypes';
 import Box from '@client/components/Box';
 
-const TableHeader = memo(forwardRef(({
+const TableHeader = forwardRef(({
   isPlaceholder,
   getCanSort,
   getIsSorted,
@@ -12,7 +12,7 @@ const TableHeader = memo(forwardRef(({
   children,
   ...restProps
 }, tableHeaderRef) => {
-  const sortingEnabled = useMemo(() => !isPlaceholder && getCanSort(), [isPlaceholder, getCanSort]);
+  const sortingEnabled = !isPlaceholder && getCanSort();
 
   return (
     <th
@@ -33,7 +33,7 @@ const TableHeader = memo(forwardRef(({
       ) : children}
     </th>
   );
-}));
+});
 
 TableHeader.displayName = 'TableHeader';
 

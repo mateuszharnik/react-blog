@@ -1,8 +1,8 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTableContext } from '@client/contexts/TableContext';
 import Pagination from '@client/components/Tables/TablePagination';
 
-const TablePagination = memo(forwardRef((props, tablePaginationRef) => {
+const TablePagination = forwardRef((props, tablePaginationRef) => {
   const { table } = useTableContext();
 
   return (
@@ -17,7 +17,7 @@ const TablePagination = memo(forwardRef((props, tablePaginationRef) => {
       {...props}
     />
   );
-}));
+});
 
 TablePagination.displayName = 'TablePagination';
 

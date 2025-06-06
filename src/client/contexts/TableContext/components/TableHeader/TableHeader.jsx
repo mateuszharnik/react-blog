@@ -1,9 +1,9 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { tableContextElementsPropTypes } from '@client/prop-types/tableContextElementsPropTypes';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import Header from '@client/components/Tables/TableHeader';
 
-const TableHeader = memo(forwardRef(({
+const TableHeader = forwardRef(({
   data,
   children,
   ...restProps
@@ -19,7 +19,7 @@ const TableHeader = memo(forwardRef(({
   >
     {children}
   </Header>
-)));
+));
 
 TableHeader.displayName = 'TableHeader';
 

@@ -1,19 +1,18 @@
 import {
-  memo, useState, useMemo, useEffect,
+  useState, useMemo, useRef, useEffect,
 } from 'react';
 import { createPortal } from 'react-dom';
 import uniqueId from 'lodash/uniqueId';
 import { portalPropTypes } from '@client/prop-types/portalPropTypes';
 
-const Portal = memo(({ to, prepend, children }) => {
+const Portal = ({ to, prepend, children }) => {
   const [isCreated, setIsCreated] = useState(false);
+  const id = useRef(uniqueId());
 
   const targetId = useMemo(() => {
-    const id = uniqueId();
+    if (!to.startsWith('#')) return `${to}-${id.current}`;
 
-    if (!to.startsWith('#')) return `${to}-${id}`;
-
-    return `${to.substr(1)}-${id}`;
+    return `${to.substr(1)}-${id.current}`;
   }, [to]);
 
   useEffect(() => {
@@ -35,10 +34,12 @@ const Portal = memo(({ to, prepend, children }) => {
         document.body.removeChild(elementToDelete);
       }
     };
-  }, []);
+  }, [targetId, prepend]);
 
-  return isCreated ? createPortal(children, document.querySelector(`#${targetId}`)) : null;
-});
+  const targetElement = document.getElementById(targetId);
+
+  return isCreated && targetElement ? createPortal(children, targetElement) : null;
+};
 
 Portal.displayName = 'Portal';
 

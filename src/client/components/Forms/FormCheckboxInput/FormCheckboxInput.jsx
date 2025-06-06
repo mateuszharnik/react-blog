@@ -1,10 +1,10 @@
 import {
-  memo, useMemo, useEffect, useRef, useImperativeHandle, forwardRef,
+  useEffect, useRef, useImperativeHandle, forwardRef,
 } from 'react';
 import { formCheckboxInputPropTypes } from '@client/prop-types/formCheckboxInputPropTypes';
 import { getCheckboxInputClassName } from './FormCheckboxInput.classes';
 
-const FormCheckboxInput = memo(forwardRef(({
+const FormCheckboxInput = forwardRef(({
   className,
   value,
   checked,
@@ -15,9 +15,7 @@ const FormCheckboxInput = memo(forwardRef(({
 }, ref) => {
   const inputRef = useRef(null);
 
-  const inputClassName = useMemo(() => getCheckboxInputClassName({
-    className,
-  }), [className]);
+  const inputClassName = getCheckboxInputClassName({ className });
 
   useImperativeHandle(ref, () => inputRef, []);
 
@@ -39,7 +37,7 @@ const FormCheckboxInput = memo(forwardRef(({
       />{' '}
     </>
   );
-}));
+});
 
 FormCheckboxInput.displayName = 'FormCheckboxInput';
 

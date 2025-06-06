@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const TableMainSection = memo(forwardRef(({
+const TableMainSection = forwardRef(({
   children,
   ...restProps
 }, tableMainSectionRef) => (
@@ -12,7 +12,7 @@ const TableMainSection = memo(forwardRef(({
   >
     {children}
   </table>
-)));
+));
 
 TableMainSection.displayName = 'TableMainSection';
 

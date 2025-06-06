@@ -5,9 +5,7 @@ import Table from '@client/components/Tables/Table';
 export const Context = createContext();
 
 const TableContext = memo(({ table, children, ...restProps }) => {
-  const context = useMemo(() => ({
-    table,
-  }), [table]);
+  const context = useMemo(() => ({ table }), [table]);
 
   return (
     <Context.Provider value={context}>

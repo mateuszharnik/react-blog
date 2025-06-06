@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { tablePaginationPropTypes } from '@client/prop-types/tablePaginationPropTypes';
 
-const TablePagination = memo(forwardRef(({
+const TablePagination = forwardRef(({
   setPageIndex,
   getPageCount,
   previousPage,
@@ -57,7 +57,7 @@ const TablePagination = memo(forwardRef(({
       </li>
     </ul>
   </nav>
-)));
+));
 
 TablePagination.displayName = 'TablePagination';
 

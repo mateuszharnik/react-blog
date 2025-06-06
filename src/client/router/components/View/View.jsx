@@ -1,7 +1,6 @@
-import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const View = memo(() => <Outlet />);
+const View = () => <Outlet />;
 
 View.displayName = 'View';
 

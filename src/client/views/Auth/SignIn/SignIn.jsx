@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
@@ -7,7 +6,7 @@ const SignInContent = lazyLoad({
   loader: () => import(/* webpackChunkName: 'sign-in' */ '@client/views/Auth/SignIn/content/SignInContent'),
 });
 
-const SignIn = memo(() => {
+const SignIn = () => {
   const { t } = useTranslation();
 
   useHead({
@@ -18,7 +17,7 @@ const SignIn = memo(() => {
   return (
     <SignInContent />
   );
-});
+};
 
 SignIn.displayName = 'SignIn';
 

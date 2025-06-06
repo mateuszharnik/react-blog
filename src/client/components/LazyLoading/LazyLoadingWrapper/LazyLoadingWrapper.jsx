@@ -1,15 +1,12 @@
-import { memo, useMemo } from 'react';
 import { lazyLoadingWrapperPropTypes } from '@client/prop-types/lazyLoadingWrapperPropTypes';
 import MaxViewHeight from '@client/components/MaxViewHeight';
 import Box from '@client/components/Box';
 import { getMaxViewHeightClassName } from './LazyLoadingWrapper.classes';
 
-const LazyLoadingWrapper = memo(({
+const LazyLoadingWrapper = ({
   children, className, offsetTop, ...restProps
 }) => {
-  const maxViewHeightClassName = useMemo(() => getMaxViewHeightClassName({
-    className,
-  }), [className]);
+  const maxViewHeightClassName = getMaxViewHeightClassName({ className });
 
   return (
     <MaxViewHeight
@@ -24,7 +21,7 @@ const LazyLoadingWrapper = memo(({
       </Box>
     </MaxViewHeight>
   );
-});
+};
 
 LazyLoadingWrapper.displayName = 'LazyLoadingWrapper';
 

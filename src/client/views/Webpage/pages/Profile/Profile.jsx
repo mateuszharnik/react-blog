@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import LazyWebpageComponentError from '@client/views/Webpage/components/LazyLoading/LazyWebpageComponentError';
 import LazyWebpageComponentSpinner from '@client/views/Webpage/components/LazyLoading/LazyWebpageComponentSpinner';
@@ -9,9 +8,7 @@ const ProfileContent = lazyLoad({
   error: LazyWebpageComponentError,
 });
 
-const Profile = memo(() => (
-  <ProfileContent />
-));
+const Profile = () => <ProfileContent />;
 
 Profile.displayName = 'Profile';
 

@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import { useRouter } from '@client/router/hooks';
@@ -26,7 +26,7 @@ const result = cond([
   ],
 ]);
 
-const SignOutRoute = memo(() => {
+const SignOutRoute = () => {
   const { location: { state } } = useRouter();
   const { isAuthenticated, permissions } = usePermissions();
 
@@ -37,7 +37,7 @@ const SignOutRoute = memo(() => {
   const render = useMemo(() => result({ redirectUrl, isAuthenticated, state }), []);
 
   return <render.component {...render.props} />;
-});
+};
 
 SignOutRoute.displayName = 'SignOutRoute';
 

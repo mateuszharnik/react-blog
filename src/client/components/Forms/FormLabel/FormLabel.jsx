@@ -1,14 +1,10 @@
-import { memo, useMemo } from 'react';
 import { formLabelPropTypes } from '@client/prop-types/formLabelPropTypes';
 import { getFormLabelClassName } from './FormLabel.classes';
 
-const FormLabel = memo(({
+const FormLabel = ({
   type, className, children, ...restProps
 }) => {
-  const labelClassName = useMemo(() => getFormLabelClassName({
-    type,
-    className,
-  }), [type, className]);
+  const labelClassName = getFormLabelClassName({ type, className });
 
   return (
     <>
@@ -20,7 +16,7 @@ const FormLabel = memo(({
       </label>{' '}
     </>
   );
-});
+};
 
 FormLabel.displayName = 'FormLabel';
 

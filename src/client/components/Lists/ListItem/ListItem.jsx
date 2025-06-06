@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const ListItem = memo(forwardRef(({
+const ListItem = forwardRef(({
   children,
   ...restProps
 }, listItemRef) => (
@@ -11,7 +11,7 @@ const ListItem = memo(forwardRef(({
   >
     {children}
   </li>
-)));
+));
 
 ListItem.displayName = 'ListItem';
 

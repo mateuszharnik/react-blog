@@ -1,8 +1,8 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { formTextareaInputPropTypes } from '@client/prop-types/formTextareaInputPropTypes';
 import { getTextareaInputClassName } from './FormTextareaInput.classes';
 
-const FormTextareaInput = memo(forwardRef(({
+const FormTextareaInput = forwardRef(({
   className,
   value,
   error,
@@ -12,10 +12,10 @@ const FormTextareaInput = memo(forwardRef(({
   onChange,
   ...restProps
 }, textareaRef) => {
-  const textareaClassName = useMemo(() => getTextareaInputClassName({
+  const textareaClassName = getTextareaInputClassName({
     isValid: !error && touched,
     className,
-  }), [error, touched, className]);
+  });
 
   return (
     <textarea
@@ -28,7 +28,7 @@ const FormTextareaInput = memo(forwardRef(({
       onBlur={onBlur}
     />
   );
-}));
+});
 
 FormTextareaInput.displayName = 'FormTextareaInput';
 

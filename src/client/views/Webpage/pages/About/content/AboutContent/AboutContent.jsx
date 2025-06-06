@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAbout } from '@client/store/about';
 import { useWebpageLayerContext } from '@client/views/Webpage/contexts/WebpageLayerContext';
@@ -13,19 +13,13 @@ import Markdown from '@client/components/Markdown';
 
 const PATH = 'about.aboutPage';
 
-const AboutContent = memo(() => {
+const AboutContent = () => {
   const { t } = useTranslation();
   const { hideWebpageLayer } = useWebpageLayerContext();
 
   const { about, utils: { getAboutMetadata } } = useAbout();
 
-  const contents = useMemo(() => {
-    if (about?.html_contents) {
-      return sanitize(about?.html_contents);
-    }
-
-    return about?.html_contents;
-  }, [about]);
+  const contents = about?.html_contents ? sanitize(about?.html_contents) : about?.html_contents;
 
   useEffect(() => {
     if (getAboutMetadata.isFinished) {
@@ -67,7 +61,7 @@ const AboutContent = memo(() => {
       )}
     </PageContainer>
   );
-});
+};
 
 AboutContent.displayName = 'AboutContent';
 

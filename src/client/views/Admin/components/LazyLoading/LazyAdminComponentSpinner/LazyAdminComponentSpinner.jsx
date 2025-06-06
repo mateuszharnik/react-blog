@@ -1,12 +1,11 @@
-import { memo } from 'react';
 import Spinner from '@client/components/Spinner';
 import LazyLoadingWrapper from '@client/components/LazyLoading/LazyLoadingWrapper';
 
-const LazyAdminComponentSpinner = memo(() => (
+const LazyAdminComponentSpinner = () => (
   <LazyLoadingWrapper className="lazy-loading-admin-wrapper">
     <Spinner />
   </LazyLoadingWrapper>
-));
+);
 
 LazyAdminComponentSpinner.displayName = 'LazyAdminComponentSpinner';
 

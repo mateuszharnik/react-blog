@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHead } from '@client/hooks/useHead';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
@@ -11,7 +10,7 @@ const HomeContent = lazyLoad({
   error: LazyWebpageComponentError,
 });
 
-const Home = memo(() => {
+const Home = () => {
   const { t } = useTranslation();
 
   useHead({
@@ -22,7 +21,7 @@ const Home = memo(() => {
   return (
     <HomeContent />
   );
-});
+};
 
 Home.displayName = 'Home';
 

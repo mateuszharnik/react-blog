@@ -1,4 +1,4 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useFormContext } from '@client/contexts/FormContext';
 import { useFormsUtils } from '@client/hooks/useFormsUtils';
 import { formContextElementsPropTypes } from '@client/prop-types/formContextElementsPropTypes';
@@ -8,7 +8,7 @@ import FormValidationError from '@client/components/Forms/FormValidationError';
 import FormHelpText from '@client/components/Forms/FormHelpText';
 import Box from '@client/components/Box';
 
-const FormCheckboxInput = memo(forwardRef(({
+const FormCheckboxInput = forwardRef(({
   id,
   value,
   field,
@@ -66,7 +66,7 @@ const FormCheckboxInput = memo(forwardRef(({
       />
     </>
   );
-}));
+});
 
 FormCheckboxInput.displayName = 'FormCheckboxInput';
 

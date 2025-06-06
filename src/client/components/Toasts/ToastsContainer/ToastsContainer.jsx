@@ -1,6 +1,4 @@
-import {
-  memo, useCallback, useEffect, useMemo,
-} from 'react';
+import { useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { toastsContainerPropTypes } from '@client/prop-types/toastsContainerPropTypes';
 import Toast from '@client/components/Toasts/Toast';
@@ -8,20 +6,20 @@ import Portal from '@client/components/Portal';
 import Box from '@client/components/Box';
 import { getDivClassName } from './ToastsContainer.classes';
 
-const ToastsContainer = memo(({
+const ToastsContainer = ({
   toasts, limit, position, marginBottom, removeToasts, removeToast, ...restProps
 }) => {
-  const divClassName = useMemo(() => getDivClassName({ position }), [position]);
+  const divClassName = getDivClassName({ position });
 
-  const setHeight = useCallback((element) => {
+  const setHeight = (element) => {
     element.style.height = `${element.clientHeight}px`;
-  }, []);
+  };
 
-  const removeHeight = useCallback((element) => {
+  const removeHeight = (element) => {
     setTimeout(() => {
       element.style.height = '0px';
     }, 0);
-  }, []);
+  };
 
   useEffect(() => () => {
     removeToasts();
@@ -57,7 +55,7 @@ const ToastsContainer = memo(({
       </Box>
     </Portal>
   );
-});
+};
 
 ToastsContainer.displayName = 'ToastsContainer';
 

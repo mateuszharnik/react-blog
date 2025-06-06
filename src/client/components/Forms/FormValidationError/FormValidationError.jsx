@@ -1,14 +1,11 @@
-import { memo, useMemo } from 'react';
 import { formValidationErrorPropTypes } from '@client/prop-types/formValidationErrorPropTypes';
 import Box from '@client/components/Box';
 import { getFormValidationErrorClassName } from './FormValidationError.classes';
 
-const FormValidationError = memo(({
+const FormValidationError = ({
   error, touched, className, ...restProps
 }) => {
-  const validationErrorClassName = useMemo(() => getFormValidationErrorClassName({
-    className,
-  }), [className]);
+  const validationErrorClassName = getFormValidationErrorClassName({ className });
 
   return error && touched ? (
     <Box
@@ -18,7 +15,7 @@ const FormValidationError = memo(({
       {error}
     </Box>
   ) : null;
-});
+};
 
 FormValidationError.displayName = 'FormValidationError';
 

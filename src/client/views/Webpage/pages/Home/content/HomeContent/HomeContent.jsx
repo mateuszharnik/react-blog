@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import WelcomeBanner from '@client/views/Webpage/pages/Home/components/WelcomeBanner';
 import PageContainer from '@client/layouts/PageContainer';
@@ -6,7 +5,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'common';
 
-const Home = memo(() => {
+const Home = () => {
   const { t } = useTranslation();
 
   return (
@@ -21,7 +20,7 @@ const Home = memo(() => {
       </PageContainer>
     </>
   );
-});
+};
 
 Home.displayName = 'Home';
 

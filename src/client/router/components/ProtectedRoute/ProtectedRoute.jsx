@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
@@ -81,16 +81,18 @@ const result = cond([
   ],
 ]);
 
-const ProtectedRoute = memo((props) => {
+const ProtectedRoute = (props) => {
+  const { requiredPermissions, requiredSubscriptions, requiredRoles } = props;
+
   const {
     isAuthenticated,
     hasPermissions,
     hasSubscriptions,
     hasRoles,
   } = usePermissions({
-    requiredPermissions: props.requiredPermissions,
-    requiredSubscriptions: props.requiredSubscriptions,
-    requiredRoles: props.requiredRoles,
+    requiredPermissions,
+    requiredSubscriptions,
+    requiredRoles,
   });
 
   const restProps = useMemo(() => omit(props, definedPropsKeys), [props]);
@@ -112,7 +114,7 @@ const ProtectedRoute = memo((props) => {
   ]);
 
   return <render.component {...render.props} />;
-});
+};
 
 ProtectedRoute.displayName = 'ProtectedRoute';
 

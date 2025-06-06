@@ -1,4 +1,3 @@
-import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { navImageLinkPropTypes } from '@client/prop-types/navImageLinkPropTypes';
 import { routesConstants, valuesConstants, rolesConstants } from '@shared/constants';
@@ -10,7 +9,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const NavImageLink = memo(({
+const NavImageLink = ({
   onBlur,
   type,
   src,
@@ -19,17 +18,11 @@ const NavImageLink = memo(({
 }) => {
   const { t } = useTranslation();
 
-  const image = useMemo(() => {
-    if (src) return src;
+  const image = src || gender === valuesConstants.GENDER.FEMALE ? female : male;
 
-    return gender === valuesConstants.GENDER.FEMALE ? female : male;
-  }, [src, gender]);
-
-  const to = useMemo(() => (
-    type === rolesConstants.USER
-      ? routesConstants.PROFILE.DASHBOARD.ROOT
-      : routesConstants.ADMIN.ROOT
-  ), [type]);
+  const to = type === rolesConstants.USER
+    ? routesConstants.PROFILE.DASHBOARD.ROOT
+    : routesConstants.ADMIN.ROOT;
 
   return (
     <Box className="nav__link-image-wrapper">
@@ -57,7 +50,7 @@ const NavImageLink = memo(({
       </ExactActiveLink>
     </Box>
   );
-});
+};
 
 NavImageLink.displayName = 'NavImageLink';
 

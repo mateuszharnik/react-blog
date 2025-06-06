@@ -1,8 +1,8 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTableContext } from '@client/contexts/TableContext';
 import PageSizeSelect from '@client/components/Tables/TablePageSizeSelect';
 
-const TablePageSizeSelect = memo(forwardRef((props, tablePageSizeSelectRef) => {
+const TablePageSizeSelect = forwardRef((props, tablePageSizeSelectRef) => {
   const { table } = useTableContext();
 
   return (
@@ -13,7 +13,7 @@ const TablePageSizeSelect = memo(forwardRef((props, tablePageSizeSelectRef) => {
       {...props}
     />
   );
-}));
+});
 
 TablePageSizeSelect.displayName = 'TablePageSizeSelect';
 

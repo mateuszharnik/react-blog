@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const TableBody = memo(forwardRef(({
+const TableBody = forwardRef(({
   children,
   ...restProps
 }, tableBodyRef) => (
@@ -11,7 +11,7 @@ const TableBody = memo(forwardRef(({
   >
     {children}
   </tbody>
-)));
+));
 
 TableBody.displayName = 'TableBody';
 

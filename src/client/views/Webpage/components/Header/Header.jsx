@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { testsConstants, routesConstants } from '@shared/constants';
 import Nav from '@client/views/Webpage/components/Header/components/NavBar/Nav';
@@ -8,7 +7,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'navigation';
 
-const Header = memo((props) => {
+const Header = (props) => {
   const { t } = useTranslation();
 
   return (
@@ -41,7 +40,7 @@ const Header = memo((props) => {
       </Box>
     </Box>
   );
-});
+};
 
 Header.displayName = 'Header';
 

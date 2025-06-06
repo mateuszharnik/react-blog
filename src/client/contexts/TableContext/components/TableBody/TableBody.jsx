@@ -1,12 +1,10 @@
-import {
-  memo, useCallback, forwardRef, Fragment,
-} from 'react';
+import { useCallback, forwardRef, Fragment } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useTableContext } from '@client/contexts/TableContext';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import Body from '@client/components/Tables/TableBody';
 
-const TableBody = memo(forwardRef(({
+const TableBody = forwardRef(({
   children,
   ...restProps
 }, tableBodyRef) => {
@@ -36,7 +34,7 @@ const TableBody = memo(forwardRef(({
       ))}
     </Body>
   );
-}));
+});
 
 TableBody.displayName = 'TableBody';
 

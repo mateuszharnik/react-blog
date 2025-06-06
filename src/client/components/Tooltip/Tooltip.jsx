@@ -1,4 +1,3 @@
-import { memo, useMemo, useCallback } from 'react';
 import isFunction from 'lodash/isFunction';
 import { useFloatingPosition } from '@client/hooks/useFloatingPosition';
 import { tooltipPropTypes } from '@client/prop-types/tooltipPropTypes';
@@ -6,7 +5,7 @@ import Box from '@client/components/Box';
 
 import { getTooltipClassName } from './Tooltip.classes';
 
-const Tooltip = memo(({
+const Tooltip = ({
   show,
   position,
   className,
@@ -42,40 +41,34 @@ const Tooltip = memo(({
     maxWidth,
   });
 
-  const tooltipClassName = useMemo(() => getTooltipClassName({
-    bordered,
-    color,
-  }), [bordered, color]);
+  const tooltipClassName = getTooltipClassName({ bordered, color });
 
-  const wrapperClassName = useMemo(() => className, [className]);
-
-  const handleShowTooltip = useCallback((event) => {
+  const handleShowTooltip = (event) => {
     if (isFunction(onShowTooltip)) {
       onShowTooltip(showTooltip.bind(null, event), event);
     } else {
       showTooltip(event);
     }
-  }, [onShowTooltip, showTooltip]);
+  };
 
-  const handleHideTooltip = useCallback((event) => {
+  const handleHideTooltip = (event) => {
     if (isFunction(onHideTooltip)) {
       onHideTooltip(hideTooltip.bind(null, event), event);
     } else {
       hideTooltip(event);
     }
-  }, [onHideTooltip, hideTooltip]);
+  };
 
-  const optionalProps = useMemo(() => (
-    triggerManual ? {} : {
-      tabIndex: '0',
-      onMouseEnter: handleShowTooltip,
-      onFocus: handleShowTooltip,
-      onMouseLeave: handleHideTooltip,
-      onBlur: handleHideTooltip,
-    }), [triggerManual, handleShowTooltip, handleHideTooltip]);
+  const optionalProps = triggerManual ? {} : {
+    tabIndex: '0',
+    onMouseEnter: handleShowTooltip,
+    onFocus: handleShowTooltip,
+    onMouseLeave: handleHideTooltip,
+    onBlur: handleHideTooltip,
+  };
 
   return (
-    <Box className={wrapperClassName}>
+    <Box className={className}>
       <Box
         ref={wrapperRef}
         className="d-inline-block"
@@ -109,7 +102,7 @@ const Tooltip = memo(({
       )}
     </Box>
   );
-});
+};
 
 Tooltip.displayName = 'Tooltip';
 

@@ -1,7 +1,7 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const TableCell = memo(forwardRef(({
+const TableCell = forwardRef(({
   children,
   ...restProps
 }, tableCellRef) => (
@@ -11,7 +11,7 @@ const TableCell = memo(forwardRef(({
   >
     {children}
   </td>
-)));
+));
 
 TableCell.displayName = 'TableCell';
 

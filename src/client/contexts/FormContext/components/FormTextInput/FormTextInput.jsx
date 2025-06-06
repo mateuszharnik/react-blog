@@ -1,4 +1,4 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useFormContext } from '@client/contexts/FormContext';
 import { useFormsUtils } from '@client/hooks/useFormsUtils';
 import { formContextElementsPropTypes } from '@client/prop-types/formContextElementsPropTypes';
@@ -7,7 +7,7 @@ import FormLabel from '@client/components/Forms/FormLabel';
 import FormValidationError from '@client/components/Forms/FormValidationError';
 import FormHelpText from '@client/components/Forms/FormHelpText';
 
-const FormTextInput = memo(forwardRef(({
+const FormTextInput = forwardRef(({
   id,
   value,
   field,
@@ -59,7 +59,7 @@ const FormTextInput = memo(forwardRef(({
       />
     </>
   );
-}));
+});
 
 FormTextInput.displayName = 'FormTextInput';
 

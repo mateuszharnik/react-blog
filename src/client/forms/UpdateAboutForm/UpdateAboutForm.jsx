@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
@@ -25,7 +25,7 @@ const Editor = lazyLoad({
 const FORMS_PATH = 'forms';
 const PATH = 'forms.updateAboutForm';
 
-const UpdateAboutForm = memo((props) => {
+const UpdateAboutForm = (props) => {
   const { t } = useTranslation();
 
   const {
@@ -34,19 +34,11 @@ const UpdateAboutForm = memo((props) => {
     utils: { updateAboutMetadata, resetUpdateAboutMetadata },
   } = useAbout({ key: 'update' });
 
-  const icon = useMemo(() => (
-    updateAboutMetadata.isFetching ? faCircleNotch : faPaperPlane
-  ), [updateAboutMetadata.isFetching]);
-
-  const initialValues = useMemo(() => ({
-    contents: about?.contents,
-  }), [about]);
-
-  const validationSchema = useMemo(() => updateAboutSchema, []);
+  const icon = updateAboutMetadata.isFetching ? faCircleNotch : faPaperPlane;
 
   const form = useForm({
-    initialValues,
-    validationSchema,
+    initialValues: { contents: about?.contents },
+    validationSchema: updateAboutSchema,
     onSubmit: async (payload) => {
       await updateAbout({ payload });
     },
@@ -113,7 +105,7 @@ const UpdateAboutForm = memo((props) => {
       </FormGroup>
     </FormContext>
   );
-});
+};
 
 UpdateAboutForm.displayName = 'UpdateAboutForm';
 

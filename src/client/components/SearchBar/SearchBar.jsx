@@ -1,6 +1,4 @@
-import {
-  memo, useEffect, useRef, useCallback,
-} from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Box from '@client/components/Box';
 import Button from '@client/components/Buttons/Button';
@@ -8,7 +6,7 @@ import KeyboardKey from '@client/components/KeyboardKey';
 
 const PATH = 'home.searchBar';
 
-const SearchBar = memo(() => {
+const SearchBar = () => {
   const searchBarRef = useRef(null);
 
   const { t } = useTranslation();
@@ -79,7 +77,7 @@ const SearchBar = memo(() => {
       </Button>
     </form>
   );
-});
+};
 
 SearchBar.displayName = 'SearchBar';
 

@@ -1,6 +1,4 @@
-import {
-  memo, useEffect, useCallback, useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useConfig } from '@client/store/config';
 import { useContact } from '@client/store/contact';
 import { useTokens } from '@client/store/tokens';
@@ -8,7 +6,7 @@ import { useCSRF } from '@client/store/csrf';
 import { useUser } from '@client/store/user';
 import { Routes } from '@client/router';
 
-const AppContent = memo(() => {
+const AppContent = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { actions: { getConfig } } = useConfig();
@@ -17,7 +15,7 @@ const AppContent = memo(() => {
   const { actions: { getCSRFToken } } = useCSRF();
   const { actions: { getMe } } = useUser();
 
-  const fetchInitialData = useCallback(async () => {
+  const fetchInitialData = async () => {
     try {
       await getCSRFToken({ shouldUpdateMetadata: false });
       await getConfig({ shouldUpdateMetadata: false });
@@ -29,14 +27,14 @@ const AppContent = memo(() => {
     } finally {
       setIsLoading(false);
     }
-  }, [getCSRFToken, getLoggedUser, getConfig, getContact, getMe]);
+  };
 
   useEffect(() => {
     fetchInitialData();
   }, []);
 
   return isLoading ? null : <Routes />;
-});
+};
 
 AppContent.displayName = 'AppContent';
 

@@ -1,4 +1,4 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logoPropTypes } from '@client/prop-types/logoPropTypes';
 import { testsConstants } from '@shared/constants';
@@ -7,7 +7,7 @@ import logoDark from '@client/assets/images/logo-dark.svg';
 
 const PATH = 'navigation';
 
-const Logo = memo(forwardRef(({
+const Logo = forwardRef(({
   width,
   height,
   dark,
@@ -15,7 +15,7 @@ const Logo = memo(forwardRef(({
 }, logoRef) => {
   const { t } = useTranslation();
 
-  const logo = useMemo(() => (dark ? logoDark : logoLight));
+  const logo = dark ? logoDark : logoLight;
 
   return (
     <img
@@ -29,7 +29,7 @@ const Logo = memo(forwardRef(({
       {...restProps}
     />
   );
-}));
+});
 
 Logo.displayName = 'Logo';
 

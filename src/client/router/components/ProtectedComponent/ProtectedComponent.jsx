@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import cond from 'lodash/cond';
 import stubTrue from 'lodash/stubTrue';
 import { usePermissions } from '@client/store/user';
@@ -78,7 +78,7 @@ const result = cond([
   ],
 ]);
 
-const ProtectedComponent = memo(({ children, ...props }) => {
+const ProtectedComponent = ({ children, ...props }) => {
   const {
     isAuthenticated,
     hasPermissions,
@@ -107,7 +107,7 @@ const ProtectedComponent = memo(({ children, ...props }) => {
   ]);
 
   return render.component ? <render.component {...render.props} /> : null;
-});
+};
 
 ProtectedComponent.displayName = 'ProtectedComponent';
 

@@ -1,10 +1,10 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import LazyImage from '@client/components/Images/LazyImage';
 import Box from '@client/components/Box';
 import noData from '@client/assets/images/undraw_no_data_re_kwbl.svg';
 
-const TableEmptyState = memo(forwardRef(({
+const TableEmptyState = forwardRef(({
   children,
   ...restProps
 }, tableEmptyStateRef) => (
@@ -25,7 +25,7 @@ const TableEmptyState = memo(forwardRef(({
       {children}
     </Box>
   </Box>
-)));
+));
 
 TableEmptyState.displayName = 'TableEmptyState';
 

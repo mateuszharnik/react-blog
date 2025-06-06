@@ -1,8 +1,7 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageContainer from '@client/layouts/PageContainer';
 
-const DashboardContent = memo(() => {
+const DashboardContent = () => {
   const { t } = useTranslation();
 
   return (
@@ -10,7 +9,7 @@ const DashboardContent = memo(() => {
       {t('head.title.PROFILE')}
     </PageContainer>
   );
-});
+};
 
 DashboardContent.displayName = 'DashboardContent';
 

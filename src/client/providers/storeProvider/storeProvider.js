@@ -1,13 +1,12 @@
-import { memo } from 'react';
 import { StoreProvider as EasyPeasyStoreProvider } from 'easy-peasy';
 import { store } from '@client/store';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 
-const StoreProvider = memo(({ children }) => (
+const StoreProvider = ({ children }) => (
   <EasyPeasyStoreProvider store={store}>
     {children}
   </EasyPeasyStoreProvider>
-));
+);
 
 StoreProvider.displayName = 'StoreProvider';
 

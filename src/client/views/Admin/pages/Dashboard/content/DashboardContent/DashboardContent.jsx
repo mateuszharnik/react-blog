@@ -1,9 +1,9 @@
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAdminLayerContext } from '@client/views/Admin/contexts/AdminLayerContext';
 import Box from '@client/components/Box';
 
-const DashboardContent = memo(() => {
+const DashboardContent = () => {
   const { t } = useTranslation();
   const { hideAdminLayer } = useAdminLayerContext();
 
@@ -16,7 +16,7 @@ const DashboardContent = memo(() => {
       {t('head.title.ADMIN_DASHBOARD')}
     </Box>
   );
-});
+};
 
 DashboardContent.displayName = 'DashboardContent';
 

@@ -1,8 +1,7 @@
-import { memo } from 'react';
 import { tablePropTypes } from '@client/prop-types/tablePropTypes';
 import Box from '@client/components/Box';
 
-const Table = memo(({ rows, children, ...restProps }) => (
+const Table = ({ rows, children, ...restProps }) => (
   <Box className="border rounded-2 overflow-hidden my-2">
     <Box
       className="table-responsive"
@@ -11,7 +10,7 @@ const Table = memo(({ rows, children, ...restProps }) => (
       {children}
     </Box>
   </Box>
-));
+);
 
 Table.displayName = 'Table';
 

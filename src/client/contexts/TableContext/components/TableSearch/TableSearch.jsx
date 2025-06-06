@@ -1,8 +1,8 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTableContext } from '@client/contexts/TableContext';
 import Search from '@client/components/Tables/TableSearch';
 
-const TableSearch = memo(forwardRef((props, tableSearchRef) => {
+const TableSearch = forwardRef((props, tableSearchRef) => {
   const { table } = useTableContext();
 
   return (
@@ -13,7 +13,7 @@ const TableSearch = memo(forwardRef((props, tableSearchRef) => {
       {...props}
     />
   );
-}));
+});
 
 TableSearch.displayName = 'TableSearch';
 

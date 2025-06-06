@@ -1,6 +1,4 @@
-import {
-  memo, useState, useEffect, useCallback,
-} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +12,7 @@ import Box from '@client/components/Box';
 
 const PATH = 'common.scrollToTopButton';
 
-const ScrollToTopButton = memo(({ target, ...restProps }) => {
+const ScrollToTopButton = ({ target, ...restProps }) => {
   const [isVisible, setIsVisible] = useState(window.scrollY >= 300);
 
   const { t } = useTranslation();
@@ -23,7 +21,7 @@ const ScrollToTopButton = memo(({ target, ...restProps }) => {
     setIsVisible(window.scrollY >= 300);
   }, []);
 
-  const handleScroll = useCallback(async (event) => {
+  const handleScroll = async (event) => {
     event.preventDefault();
 
     if (!target?.current) return;
@@ -35,7 +33,7 @@ const ScrollToTopButton = memo(({ target, ...restProps }) => {
     } catch (error) {
       return null;
     }
-  }, [target]);
+  };
 
   useEffect(() => {
     const throttledToggleIsVisible = throttle(toggleIsVisible, 100);
@@ -45,10 +43,13 @@ const ScrollToTopButton = memo(({ target, ...restProps }) => {
     window.addEventListener('scroll', debouncedToggleIsVisible);
 
     return () => {
+      throttledToggleIsVisible.cancel();
+      debouncedToggleIsVisible.cancel();
+
       window.removeEventListener('scroll', throttledToggleIsVisible);
       window.removeEventListener('scroll', debouncedToggleIsVisible);
     };
-  }, []);
+  }, [toggleIsVisible]);
 
   return (
     <Portal to="scroll-button">
@@ -82,7 +83,7 @@ const ScrollToTopButton = memo(({ target, ...restProps }) => {
       </TransitionGroup>
     </Portal>
   );
-});
+};
 
 ScrollToTopButton.displayName = 'ScrollToTopButton';
 

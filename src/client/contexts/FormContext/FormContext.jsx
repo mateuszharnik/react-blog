@@ -7,11 +7,9 @@ export const Context = createContext();
 const FormContext = memo(({
   form, onSubmit, children, ...restProps
 }) => {
-  const handleSubmit = useMemo(() => onSubmit || form.handleSubmit, [onSubmit, form]);
+  const handleSubmit = onSubmit || form.handleSubmit;
 
-  const context = useMemo(() => ({
-    form,
-  }), [form]);
+  const context = useMemo(() => ({ form }), [form]);
 
   return (
     <Context.Provider value={context}>

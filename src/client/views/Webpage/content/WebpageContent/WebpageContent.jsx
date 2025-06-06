@@ -1,4 +1,4 @@
-import { memo, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useLayerContext } from '@client/contexts/LayerContext';
 import { lazyLoad } from '@client/utils/lazyLoadUtils';
 import View from '@client/router/components/View';
@@ -19,7 +19,7 @@ const ScrollToTopButton = lazyLoad({
   error: null,
 });
 
-const WebpageContent = memo(() => {
+const WebpageContent = () => {
   const mainRef = useRef(null);
 
   const { hideLayer } = useLayerContext();
@@ -46,7 +46,7 @@ const WebpageContent = memo(() => {
       <ScrollToTopButton target={mainRef} />
     </>
   );
-});
+};
 
 WebpageContent.displayName = 'WebpageContent';
 

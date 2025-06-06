@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons/faCircleNotch';
@@ -18,7 +18,7 @@ const apiDocsUrl = `${envConfig.CLIENT_URL}${apiConstants.DOCS.ROOT}`;
 const FORMS_PATH = 'forms';
 const PATH = 'forms.docsSignInForm';
 
-const DocsSignInForm = memo((props) => {
+const DocsSignInForm = (props) => {
   const { t } = useTranslation();
 
   const {
@@ -26,19 +26,11 @@ const DocsSignInForm = memo((props) => {
     utils: { signInMetadata, resetSignInMetadata },
   } = useDocs();
 
-  const title = useMemo(() => (
-    signInMetadata.isFetching ? `${FORMS_PATH}.SIGNING_IN` : `${FORMS_PATH}.SIGN_IN`
-  ), [signInMetadata.isFetching]);
-
-  const initialValues = useMemo(() => ({
-    password: '',
-  }), []);
-
-  const validationSchema = useMemo(() => docsSignInSchema, []);
+  const title = signInMetadata.isFetching ? `${FORMS_PATH}.SIGNING_IN` : `${FORMS_PATH}.SIGN_IN`;
 
   const form = useForm({
-    initialValues,
-    validationSchema,
+    initialValues: { password: '' },
+    validationSchema: docsSignInSchema,
     onSubmit: async (payload) => {
       await signIn({
         payload,
@@ -97,7 +89,7 @@ const DocsSignInForm = memo((props) => {
       </FormGroup>
     </FormContext>
   );
-});
+};
 
 DocsSignInForm.displayName = 'DocsSignInForm';
 

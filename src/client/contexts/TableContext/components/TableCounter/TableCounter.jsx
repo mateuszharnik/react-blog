@@ -1,10 +1,10 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import isFunction from 'lodash/isFunction';
 import { useTableContext } from '@client/contexts/TableContext';
 import { childrenPropTypes } from '@client/prop-types/childrenPropTypes';
 import Counter from '@client/components/Tables/TableCounter';
 
-const TableCounter = memo(forwardRef(({
+const TableCounter = forwardRef(({
   children,
   ...restProps
 }, tableCounterRef) => {
@@ -18,7 +18,7 @@ const TableCounter = memo(forwardRef(({
       {isFunction(children) ? children(table.counter) : (children || table.counter)}
     </Counter>
   );
-}));
+});
 
 TableCounter.displayName = 'TableCounter';
 

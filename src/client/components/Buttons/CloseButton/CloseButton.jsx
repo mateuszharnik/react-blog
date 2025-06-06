@@ -1,13 +1,13 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { closeButtonPropTypes } from '@client/prop-types/closeButtonPropTypes';
 import { getCloseButtonClassName } from './CloseButton.classes';
 
-const CloseButton = memo(forwardRef(({
+const CloseButton = forwardRef(({
   className,
   children,
   ...restProps
 }, buttonRef) => {
-  const buttonClassName = useMemo(() => getCloseButtonClassName({ className }), [className]);
+  const buttonClassName = getCloseButtonClassName({ className });
 
   return (
     <button
@@ -19,7 +19,7 @@ const CloseButton = memo(forwardRef(({
       {children}
     </button>
   );
-}));
+});
 
 CloseButton.displayName = 'CloseButton';
 

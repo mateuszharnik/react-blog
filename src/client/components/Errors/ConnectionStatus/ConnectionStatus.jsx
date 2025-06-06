@@ -1,6 +1,4 @@
-import {
-  memo, useState, useEffect, useCallback,
-} from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,20 +8,15 @@ import Box from '@client/components/Box';
 
 const PATH = 'common.connectionStatus';
 
-const ConnectionStatus = memo((props) => {
+const ConnectionStatus = (props) => {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
   const { t } = useTranslation();
 
-  const setOffline = useCallback(() => {
-    setIsOffline(true);
-  }, []);
-
-  const setOnline = useCallback(() => {
-    setIsOffline(false);
-  }, []);
-
   useEffect(() => {
+    const setOnline = () => setIsOffline(false);
+    const setOffline = () => setIsOffline(true);
+
     window.addEventListener('online', setOnline);
     window.addEventListener('offline', setOffline);
 
@@ -62,7 +55,7 @@ const ConnectionStatus = memo((props) => {
       </TransitionGroup>
     </Portal>
   );
-});
+};
 
 ConnectionStatus.displayName = 'ConnectionStatus';
 

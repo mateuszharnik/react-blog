@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { adminsRoles, userProfileRoles, editAboutPermissions } from '@client/configs/routerConfig';
 import { routesConstants } from '@shared/constants';
@@ -23,7 +22,7 @@ import DocsRoute from '@client/router/components/DocsRoute';
 import SignOutRoute from '@client/router/components/SignOutRoute';
 import Redirect from '@client/router/components/Redirect';
 
-const Router = memo(() => (
+const Router = () => (
   <Routes>
     <Route
       path={routesConstants.ROOT}
@@ -150,7 +149,7 @@ const Router = memo(() => (
       element={<NotFound />}
     />
   </Routes>
-));
+);
 
 Router.displayName = 'Router';
 
