@@ -54,10 +54,10 @@ jobs:
 
     steps:
       - name: Checkout branch 🌿
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Use Node.js ✨
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
 
@@ -72,7 +72,7 @@ jobs:
         run: echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm 📷
-        uses: actions/cache@v4
+        uses: actions/cache@v4.1.2
         env:
           cache-name: e2e-pnpm-cache
         with:
@@ -99,7 +99,7 @@ jobs:
         run: make migration@up-e2e
 
       - name: Run Cypress 🧪
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v6.7.16
         with:
           install: false
           browser: chrome
@@ -109,7 +109,7 @@ jobs:
           wait-on-timeout: 180
 
       - name: Archive screenshots 💼
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         if: failure()
         with:
           name: cypress-screenshots

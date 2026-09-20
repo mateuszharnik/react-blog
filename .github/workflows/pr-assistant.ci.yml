@@ -30,10 +30,10 @@ jobs:
 
     steps:
       - name: Checkout branch 🌿
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Add labels 🏷️
-        uses: actions/labeler@v5
+        uses: actions/labeler@v5.0.0
 
       - name: Add assignee 🖊️
         uses: kentaro-m/auto-assign-action@v2.0.0
