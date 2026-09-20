@@ -1,0 +1,17 @@
+{
+  "name": "react-blog",
+  "dockerComposeFile": [
+    "docker-compose.yaml",
+    "../docker/docker-compose.yaml"
+  ],
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/react-blog",
+  "remoteUser": "node",
+  "shutdownAction": "stopCompose",
+  "initializeCommand": "cp .devcontainer/.env.example .devcontainer/.env",
+  "postCreateCommand": "pnpm config set store-dir /home/node/.pnpm-store",
+  "postStartCommand": "rm -f \"$SSH_AUTH_SOCK\"; unset SSH_AUTH_SOCK; rm -f ~/.gitconfig",
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": ""
+  }
+}

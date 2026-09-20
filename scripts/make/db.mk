@@ -95,7 +95,6 @@ db@clean-testing:
 .ONESHELL:
 migration@create: # Create new migration file
 migration@create:
-	@echo -e "This task will never end automatically so you should kill this task manually after creating a new migration file\n"
 	@cross-env NODE_ENV=development APP_ENV=development npx migrate-mongo create -f migrations.config.js $(NAME)
 
 ##############################################

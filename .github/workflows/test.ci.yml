@@ -55,35 +55,37 @@ jobs:
 
     steps:
       - name: Checkout branch 🌿
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Use Node.js ✨
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
 
       - name: Install make package for Ubuntu 🐧
         run: sudo apt-get install -y build-essential make
 
-      - name: Enable corepack 🧶
-        run: make install@corepack-enable
-
       - name: Install all global dependencies 🌍
         run: make install@global
 
-      - name: Yarn cache 📷
-        uses: actions/cache@v4
+      - name: Get pnpm store path 🖋️
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm 📷
+        uses: actions/cache@v4.2.3
         env:
-          cache-name: test-yarn-cache
+          cache-name: test-pnpm-cache
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
       - name: Install all local dependencies 📦
-        run: yarn install
+        run: pnpm install --frozen-lockfile
 
       - name: Create .env file 💾
         run: make create-env
@@ -98,7 +100,7 @@ jobs:
         run: make test-ci
 
       - name: Archive code coverages 💼
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: jest-code-coverages
           path: coverage/*

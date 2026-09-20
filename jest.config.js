@@ -25,4 +25,5 @@ module.exports = {
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/'],
   setupFilesAfterEnv: [`<rootDir>/tests/jest.setup.${path}.js`],
+  watchPathIgnorePatterns: ['<rootDir>/docker-data/', '<rootDir>/node_modules/', '<rootDir>/.devcontainer/docker-data/'],
 };
