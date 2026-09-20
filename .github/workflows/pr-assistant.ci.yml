@@ -36,4 +36,4 @@ jobs:
         uses: actions/labeler@v5
 
       - name: Add assignee 🖊️
-        uses: kentaro-m/auto-assign-action@v2
+        uses: kentaro-m/auto-assign-action@v2.0.0
