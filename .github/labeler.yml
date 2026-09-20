@@ -1,0 +1,39 @@
+frontend:
+- changed-files:
+  - any-glob-to-any-file: ['src/client/**/*', 'public/**/*']
+
+backend:
+- changed-files:
+  - any-glob-to-any-file: ['src/server/**/*', 'migrations.config.js']
+
+e2e:
+- changed-files:
+  - any-glob-to-any-file: ['src/e2e/**/*', 'cypress.config.js']
+
+documentation:
+- changed-files:
+  - any-glob-to-any-file: ['docs/**/*', 'README.md']
+
+feature:
+  - head-branch: ['^feature', 'feature']
+
+bugfix:
+  - head-branch: ['^bugfix', 'bugfix']
+
+hotfix:
+  - head-branch: ['^hotfix', 'hotfix']
+
+task:
+  - head-branch: ['^task', 'task']
+
+improve:
+  - head-branch: ['^improve', 'improve']
+
+version:
+  - head-branch: ['^version', 'version']
+
+release:
+  - head-branch: ['^release', 'release']
+
+pre-release:
+  - head-branch: ['^pre-release', 'pre-release']

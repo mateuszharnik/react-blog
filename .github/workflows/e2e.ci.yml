@@ -64,25 +64,27 @@ jobs:
       - name: Install make package for Ubuntu 🐧
         run: sudo apt-get install -y build-essential make
 
-      - name: Enable corepack 🧶
-        run: make install@corepack-enable
-
       - name: Install all global dependencies 🌍
         run: make install@global
 
-      - name: Yarn cache 📷
+      - name: Get pnpm store path 🖋️
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm 📷
         uses: actions/cache@v4
         env:
-          cache-name: e2e-yarn-cache
+          cache-name: e2e-pnpm-cache
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
       - name: Install all local dependencies 📦
-        run: yarn install
+        run: pnpm install --frozen-lockfile
 
       - name: Create .env file 💾
         run: make create-env

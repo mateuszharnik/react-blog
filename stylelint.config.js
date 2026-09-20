@@ -3,6 +3,7 @@ module.exports = {
   rules: {
     'prettier/prettier': true,
     'order/properties-alphabetical-order': true,
+    'at-rule-no-unknown': null,
   },
   ignoreFiles: ['coverage/**/*.css', 'storybook-static/**/*.css'],
   overrides: [
